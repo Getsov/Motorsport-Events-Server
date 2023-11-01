@@ -19,27 +19,10 @@ const initializeDatabase = () => mongoose.connect(dbConnectionString)
 });
 
 
-app.get('/', (req, res) => {
-    res.json({ message: 'Service operational' });
-});
-
-const User = require('./src/models/User');
-
-app.get('/register', async (req, res) => {
-    try {
-        const user = await User.create({username: 'Michael', email: 'Shumaher'});
-        res.status(201).json(user);
-        res.end();
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
-})
-
-
 async function startServer() {
     initializeDatabase();
     // TODO: USE aditional libraties, middlewares!
-    
+    app.use(cors);
     app.use(router);
     app.listen('3030', () => console.log('Server operational on port: 3030!'));
 };
