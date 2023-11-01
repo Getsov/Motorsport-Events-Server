@@ -1,10 +1,10 @@
 const express = require('express');
 const app = express();
 const { mongoose } = require("mongoose");
-const dbConnectionString = 'mongodb://127.0.0.1:27017/Race-Fanatic-DB'; // Name of DB is: Race-Fanatic-DB
-mongoose.set('strictQuery', true);
+const dbConnectionString = 'mongodb://127.0.0.1:27017/Race-Fanatic-DB';
 // TODO: Add aditional libraties, middlewares!
 
+mongoose.set('strictQuery', true);
 
 const initializeDatabase = () => mongoose.connect(dbConnectionString)
     .then(() => {
