@@ -11,12 +11,12 @@ const router = require('./src/routes');
 mongoose.set('strictQuery', true);
 
 const initializeDatabase = () => mongoose.connect(dbConnectionString)
-.then(() => {
-    console.log('Database connected!');
-})
-.catch(() => {
-    console.log('Database connection FAILED!');
-});
+    .then(() => {
+        console.log('Database connected!');
+    })
+    .catch(() => {
+        console.log('Database connection FAILED!');
+    });
 
 
 async function startServer() {
