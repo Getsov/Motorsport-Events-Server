@@ -3,7 +3,7 @@ const { authController } = require("./controllers/authController");
 const router = require('express').Router();
 
 router.get('/', (req, res) => {
-    res.json({ message: 'Service operational' });
+    res.json({ message: 'Service operational..' });
 });
 
 
