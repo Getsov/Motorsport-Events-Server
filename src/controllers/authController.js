@@ -1,7 +1,7 @@
 const authController = require('express').Router();
 const { registerUser } = require('../services/authService');
 
-authController.post('/register', async (req, res) => {
+authController.get('/register', async (req, res) => {
     try {
         const user = await registerUser();
         
@@ -11,3 +11,7 @@ authController.post('/register', async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 });
+
+module.exports = {
+    authController
+}
