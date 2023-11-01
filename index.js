@@ -1,7 +1,11 @@
 const express = require('express');
 const app = express();
+const cors = require('./src/middlewares/cors')
+
 const { mongoose } = require("mongoose");
 const dbConnectionString = 'mongodb://127.0.0.1:27017/Race-Fanatic-DB';
+
+
 // TODO: Add aditional libraties, middlewares!
 
 mongoose.set('strictQuery', true);
