@@ -1,7 +1,7 @@
 const eventController = require('express').Router();
 const { registerEvent } = require('../services/eventsService');
 
-eventController.post('/register', async (req, res) => {
+eventController.get('/register', async (req, res) => {
     try {
         const event = await registerEvent();
         
