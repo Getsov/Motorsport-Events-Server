@@ -8,6 +8,7 @@ router.get('/', (req, res) => {
 
 
 router.use('/auth', authController);
+router.use('/events', authController);
 
 
 module.exports = router;
