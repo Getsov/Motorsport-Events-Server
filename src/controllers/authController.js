@@ -4,6 +4,8 @@ const { registerUser, loginUser } = require('../services/authService');
 //TODO:  In Future Pavka! Check CORS for requests "req" authorization, in index.js wich is commented!!!
 //TODO: In other words, if you turn on cors in index.js, no file will be returned on the client!
 
+
+//TODO: Change request from get => post
 authController.get('/register', async (req, res) => {
     // TODO: Check for passwords and token..
     try {
@@ -16,6 +18,7 @@ authController.get('/register', async (req, res) => {
     }
 });
 
+//TODO: Change request from get => post
 authController.get('/login', async (req, res) => {
     // TODO: Check for passwords and token..
     try {
