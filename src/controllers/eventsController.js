@@ -1,6 +1,7 @@
 const eventController = require('express').Router();
 const { registerEvent } = require('../services/eventsService');
 
+// TODO: Change the request method! and validate iputs when client is ready..
 eventController.get('/register', async (req, res) => {
     try {
         const event = await registerEvent();
