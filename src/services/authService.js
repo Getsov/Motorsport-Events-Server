@@ -9,58 +9,66 @@ const secret = 'q213fdfsddfasd231adfas12321kl'
 
 
 async function registerUser() {
+    /*
+    TODO: use next line for real app without hardcore the user
 
-    //TODO: use next line for real app without hardcore the user
-    // async function registerUser(username, email, firstName, lastName) {
+    async function registerUser(username, email, firstName, lastName, password) {
 
-    //TODO: use next lines for real app
-    // const existing = await User.findOne({ email });
-    // if(existing){
-    //     throw new Error ('Email is already taken!!!');
-    // } 
+        const existing = await User.findOne({ email });
+        if (existing) {
+            throw new Error('Email is already taken!!!');
+        }
 
+        const user = await User.create({
+            username,
+            email,
+            firstName,
+            lastName,
+            hashedPassword: await bcrypt.hash(password, 10)
+        });
+        return createToken(user)
 
+*/
 
-    //TODO: remove hardcore user
-    const user = await User.create({
-        username: 'Scuderia',
-        email: 'Shumaher@gmail.com',
-        firstName: 'Michael',
-        lastName: 'Schumaher'
-    });
+        // TODO: remove hardcore user & password
+        let password = 123456789;
+        const user = await User.create({
+            username: 'Scuderia',
+            email: 'Shumaher@gmail.com',
+            firstName: 'Michael',
+            lastName: 'Schumaher',
+            hashedPassword: bcrypt.hash(password, 10)
+        });
 
-    return user;
-
-
-    //TODO: use next line for real development
-    // return createToken(user)
-};
-
-function createToken(user) {
-    const payload = {
-        _id: user.id,
-        username: user.username,
-        firstName: user.firstName,
-        lastName: user.lastName
+        return user;
     };
-    return {
-        _id: user.id,
-        username: user.username,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        accessToken: jwt.sign(payload, secret)
+
+
+    function createToken(user) {
+        const payload = {
+            _id: user.id,
+            username: user.username,
+            firstName: user.firstName,
+            lastName: user.lastName
+        };
+        return {
+            _id: user.id,
+            username: user.username,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            accessToken: jwt.sign(payload, secret)
+        }
+    };
+
+    function parseToken(token) {
+        try {
+            return jwt.verify(token, secret)
+        } catch { error } {
+            throw new Error('Invalid acces token!')
+        }
     }
-};
 
-function parseToken(token) {
-    try {
-        return jwt.verify(token, secret)
-    } catch { error } {
-        throw new Error('Invalid acces token!')
+
+    module.exports = {
+        registerUser
     }
-}
-
-
-module.exports = {
-    registerUser
-}
