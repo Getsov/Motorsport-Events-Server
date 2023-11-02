@@ -18,6 +18,13 @@ function createToken(user) {
         username: user.username,
         firstName: user.firstName,
         lastName: user.lastName
+    };
+    return {
+        _id: user.id,
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        accessToken: jwt.sign(payload, secret)
     }
 }
 
