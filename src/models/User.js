@@ -1,9 +1,12 @@
 const { Schema, model } = require('mongoose');
-const emailValidator = /^[a-zA-Z0-9._%+-]{3,}@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
+
+//TODO: add validation for fields in the schema
 const userSchema = new Schema({
     username: { type: String, require: true, },
-    email: { type: String, require: true }
+    email: { type: String, require: true },
+    firstName: { type: String, require: true },
+    lastName: { type: String, require: true },
 });
 
 userSchema.index(
