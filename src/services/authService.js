@@ -15,7 +15,9 @@ async function registerUser() {
 function createToken(user) {
     const payload = {
         _id: user.id,
-        username: user.username
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName
     }
 }
 
