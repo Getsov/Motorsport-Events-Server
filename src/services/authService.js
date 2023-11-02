@@ -26,6 +26,14 @@ function createToken(user) {
         lastName: user.lastName,
         accessToken: jwt.sign(payload, secret)
     }
+};
+
+function parseToken(token){
+    try{
+        return jwt.verify(token, secret)
+    } catch{error}{
+        throw new Error('Invalid acces token!')
+    }
 }
 
 
