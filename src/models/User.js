@@ -15,7 +15,7 @@ const userSchema = new Schema({
     },
     firstName: { type: String, require: true },
     lastName: { type: String, require: true },
-    isDelete: {type: Boolean, default: false}
+    isDeleted: {type: Boolean, default: false}
 });
 
 userSchema.index(
