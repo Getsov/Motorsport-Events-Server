@@ -43,6 +43,7 @@ async function registerUser() {
     return user;
 };
 
+//TODO: With username or with email user will login into the app? Change appropriate 
 async function loginUser(email, password) {
     const user = await User.findOne({ email });
 
