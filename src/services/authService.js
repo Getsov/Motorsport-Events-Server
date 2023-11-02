@@ -30,45 +30,62 @@ async function registerUser() {
 
 */
 
-        // TODO: remove hardcore user & password
-        let password = 123456789;
-        const user = await User.create({
-            username: 'Scuderia',
-            email: 'Shumaher@gmail.com',
-            firstName: 'Michael',
-            lastName: 'Schumaher',
-            hashedPassword: bcrypt.hash(password, 10)
-        });
+    // TODO: remove hardcore user & password
+    let password = 123456789;
+    const user = await User.create({
+        username: 'Scuderia',
+        email: 'Shumaher@gmail.com',
+        firstName: 'Michael',
+        lastName: 'Schumaher',
+        hashedPassword: await bcrypt.hash(password, 10)
+    });
 
-        return user;
-    };
+    return user;
+};
 
+async function loginUser(email, password) {
+    const user = await User.findOne({ email });
 
-    function createToken(user) {
-        const payload = {
-            _id: user.id,
-            username: user.username,
-            firstName: user.firstName,
-            lastName: user.lastName
-        };
-        return {
-            _id: user.id,
-            username: user.username,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            accessToken: jwt.sign(payload, secret)
-        }
-    };
-
-    function parseToken(token) {
-        try {
-            return jwt.verify(token, secret)
-        } catch { error } {
-            throw new Error('Invalid acces token!')
-        }
+    if (!user) {
+        throw new Error('Invalid  email or password!!!')
     }
 
+    const match = await bcrypt.compare(password, user.hashedPassword);
 
-    module.exports = {
-        registerUser
+    if (!match) {
+        throw new Error('Invalid email or password!!!')
     }
+    return createToken(user)
+}
+
+
+function createToken(user) {
+    const payload = {
+        _id: user.id,
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName
+    };
+    return {
+        _id: user.id,
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        accessToken: jwt.sign(payload, secret)
+    }
+};
+
+function parseToken(token) {
+    try {
+        return jwt.verify(token, secret)
+    } catch { error } {
+        throw new Error('Invalid acces token!')
+    }
+}
+
+
+module.exports = {
+    registerUser,
+    loginUser,
+    parseToken
+}
