@@ -14,13 +14,13 @@ const eventSchema = new Schema({
         maxlength: [200, "Description must be maximum 30 characters long!"],
     },
     date: { type: Date, require: true, },
-    time: { 
+    time: {
         type: String,
         require: true,
         minlength: [5, "Hour must be in format: 'hh:mm'!"],
         maxlength: [5, "Hour must be in format: 'hh:mm'!"],
     },
-    eventLocation: { type: String, require: true, },
+    eventLocation: { type: String, required: true },
     isDeleted: { type: Boolean, default: false }
 });
 
@@ -36,3 +36,26 @@ eventSchema.index(
 
 const Event = model("Event", eventSchema);
 module.exports = Event;
+
+
+
+// let organisationExample {
+//     name,
+//     createdEvents: [{ }],
+//     phone,
+//     email
+// }
+
+// let eventExample {
+//     title,
+//     shortDescription,
+//     longDescr,
+//     dates: [{ date, startTime, endTime?}, { date2, startTime2, endTime2?}],
+//     imageUrl,
+//     contacts: { coordinates { lat, long }, city: string, address: string, phone: string, email: string },
+//     category,
+//     likedCount,
+//     creator ?,
+//     winners[{}, {}, {}],
+//     isDeleted: false
+// }
