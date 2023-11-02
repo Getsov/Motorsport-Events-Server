@@ -1,4 +1,5 @@
 const { authController } = require("./controllers/authController");
+const { eventController } = require("./controllers/eventsController");
 
 const router = require('express').Router();
 
@@ -8,7 +9,7 @@ router.get('/', (req, res) => {
 
 
 router.use('/auth', authController);
-router.use('/events', authController);
+router.use('/events', eventController);
 
 
 module.exports = router;
