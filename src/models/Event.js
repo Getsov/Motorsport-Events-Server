@@ -39,23 +39,32 @@ module.exports = Event;
 
 
 
-// let organisationExample {
-//     name,
-//     createdEvents: [{ }],
-//     phone,
-//     email
-// }
+// const organisation = {
+//     name: 'string', // Organisation's name
+//     createdEvents: [{}], // Array of created events (you can specify event properties here)
+//     phone: 'string', // Organisation's phone number
+//     email: 'string' // Organisation's email
+// };
 
-// let eventExample {
-//     title,
-//     shortDescription,
-//     longDescr,
-//     dates: [{ date, startTime, endTime?}, { date2, startTime2, endTime2?}],
-//     imageUrl,
-//     contacts: { coordinates { lat, long }, city: string, address: string, phone: string, email: string },
-//     category,
-//     likedCount,
-//     creator ?,
-//     winners[{}, {}, {}],
-//     isDeleted: false
-// }
+// const event = {
+//     title: 'string', // Event title
+//     shortDescription: 'string', // Short description of the event (up to XXX characters)
+//     longDescr: 'string', // Long description of the event (up to XXX characters)
+//     dates: [
+//         { date: 'date', startTime: 'time', endTime: 'time' }, // Event date and time
+//         { date: 'date2', startTime: 'time2', endTime: 'time2' } // Additional date and time (if needed)
+//     ],
+//     imageUrl: 'string', // URL of the event's image
+//     contacts: {
+//         coordinates: { lat: 'latitude', long: 'longitude' }, // Coordinates of the event
+//         city: 'string', // Event city
+//         address: 'string', // Event address
+//         phone: 'string', // Event phone number
+//         email: 'string' // Event email
+//     },
+//     category: 'string', // Event category
+//     likedCount: 0, // Count of users who liked the event
+//     creator: {}, // User who created the event (you can specify user properties here)
+//     winners: [{}, {}, {}], // Array of event winners (you can specify winner properties here)
+//     isDeleted: false // Indicates whether the event is deleted or not
+// };
