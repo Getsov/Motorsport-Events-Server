@@ -33,7 +33,7 @@ async function registerUser() {
 
 
     //TODO: use next line for real development
-    return createToken(user)
+    // return createToken(user)
 };
 
 function createToken(user) {
