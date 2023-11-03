@@ -8,7 +8,7 @@ const organizationController = require('express').Router();
 
 
 //TODO: Change request from get => post
-organizationController.get('/register', async (req, res) => {
+organizationController.get('/registerOrganization', async (req, res) => {
     // TODO: Check for passwords and token..
     //TODO: Fix propper registration of organization
     try {
@@ -22,7 +22,7 @@ organizationController.get('/register', async (req, res) => {
 });
 
 //TODO: Change request from get => post
-organizationController.get('/login', async (req, res) => {
+organizationController.get('/loginOrganization', async (req, res) => {
     // TODO: Check for passwords and token..
     try {
         const user = await loginUser();
