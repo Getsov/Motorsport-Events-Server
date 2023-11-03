@@ -1,4 +1,5 @@
 const { Schema, model, Types: { ObjectId }, } = require('mongoose');
+const validTime = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
 
 const eventSchema = new Schema({
     title: {
@@ -26,14 +27,19 @@ const eventSchema = new Schema({
             startTime: {
                 type: String,
                 required: true,
-                minlength: [5, "Hour must be in format: 'hh:mm'!"],
-                maxlength: [5, "Hour must be in format: 'hh:mm'!"],
+                validate: {
+                    validator: (value) => validTime.test(value),
+                    message: 'Invalid time format! Example: hh:mm (24h)'
+                },
             },
             endTime: {
                 type: String,
                 required: true,
-                minlength: [5, "Hour must be in format: 'hh:mm'!"],
-                maxlength: [5, "Hour must be in format: 'hh:mm'!"],
+                validate: {
+                    validator: (value) => validTime.test(value),
+                    message: 'Invalid time format! Example: hh:mm (24h)'
+                }
+                
             }
         }, { // Additional date and time (if needed)
             date: { type: Date },
@@ -45,14 +51,14 @@ const eventSchema = new Schema({
     contacts: {
         // TODO: Check later for unique COORDS..!
         coordinates: { lat: { type: String }, long: { type: String } },
-        city: { type: String },
-        address: { type: String },
-        phone: { type: String }, 
-        email: { type: String }
+        city: { type: String, required: true },
+        address: { type: String, required: true },
+        phone: { type: String, required: true }, 
+        email: { type: String, required: true }
     },
-    category: { typr: String }, // Event category
+    category: { type: String, required: true }, // Event category
     likedCount: { type: Number, default: 0 }, // Count of users who liked the event
-    creator: { type: ObjectId, ref: 'User' }, // User who created the event (you can specify user properties here)
+    creator: { type: ObjectId, ref: 'User', required: true }, // User who created the event (you can specify user properties here)
     winners: [{ name: { type: String } }, { name: { type: String } }, { name: { type: String } }], // Array of event winners (you can specify winner properties here)
     isDeleted: { type: Boolean, default: false }
 });
