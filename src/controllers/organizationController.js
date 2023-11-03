@@ -10,28 +10,30 @@ const organizationController = require('express').Router();
 //TODO: Change request from get => post
 organizationController.get('/registerOrganization', async (req, res) => {
     // TODO: Check for passwords and token..
+
     //TODO: Fix propper registration of organization
-    try {
-        const user = await registerUser();
+    // try {
+    //     const user = await registerUser();
         
-        res.status(200).json(user);
-        res.end();
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
+    //     res.status(200).json(user);
+    //     res.end();
+    // } catch (error) {
+    //     res.status(400).json({ error: error.message });
+    // }
 });
 
 //TODO: Change request from get => post
 organizationController.get('/loginOrganization', async (req, res) => {
     // TODO: Check for passwords and token..
-    try {
-        const user = await loginUser();
+    //TODO: Fix propper login of organization
+    // try {
+    //     const user = await loginUser();
         
-        res.status(200).json(user);
-        res.end();
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
+    //     res.status(200).json(user);
+    //     res.end();
+    // } catch (error) {
+    //     res.status(400).json({ error: error.message });
+    // }
 });
 
 module.exports = {
