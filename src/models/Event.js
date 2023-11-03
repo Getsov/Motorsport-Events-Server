@@ -4,7 +4,7 @@ const eventSchema = new Schema({
     title: {
         type: String,
         required: true,
-        unique: true,
+        // index: { unique: true },
         minlength: [5, "Title must be minimum 5 characters long!"],
         maxlength: [30, "Title must be maximum 30 characters long!"],
     },
@@ -20,32 +20,35 @@ const eventSchema = new Schema({
         minlength: [5, "Description must be minimum 5 characters long!"],
         maxlength: [200, "Description must be maximum 200 characters long!"],
     },
-    dates: [{
-        startDate: { type: Date, required: true },
-        startTime: {
-            type: String,
-            required: true,
-            minlength: [5, "Hour must be in format: 'hh:mm'!"],
-            maxlength: [5, "Hour must be in format: 'hh:mm'!"],
-        },
-        endTime: {
-            type: String,
-            required: true,
-            minlength: [5, "Hour must be in format: 'hh:mm'!"],
-            maxlength: [5, "Hour must be in format: 'hh:mm'!"],
-        }
-    }, { // Additional date and time (if needed)
-        date: { type: Date },
-        startTime: { type: String },
-        endTime: { type: String }
-    }],
+    dates: {
+        type: [{
+            startDate: { type: Date, required: true },
+            startTime: {
+                type: String,
+                required: true,
+                minlength: [5, "Hour must be in format: 'hh:mm'!"],
+                maxlength: [5, "Hour must be in format: 'hh:mm'!"],
+            },
+            endTime: {
+                type: String,
+                required: true,
+                minlength: [5, "Hour must be in format: 'hh:mm'!"],
+                maxlength: [5, "Hour must be in format: 'hh:mm'!"],
+            }
+        }, { // Additional date and time (if needed)
+            date: { type: Date },
+            startTime: { type: String },
+            endTime: { type: String }
+        }]
+    },
     imageUrl: { type: String, required: true },
     contacts: {
-        coordinates: { lat: { type: String }, long: { type: String } }, // Coordinates of the event
-        city: { type: String }, // Event city
-        address: { type: String }, // Event address
-        phone: { type: String }, // Event phone number
-        email: { type: String } // Event email
+        // TODO: Check later for unique COORDS..!
+        coordinates: { lat: { type: String }, long: { type: String } },
+        city: { type: String },
+        address: { type: String },
+        phone: { type: String }, 
+        email: { type: String }
     },
     category: { typr: String }, // Event category
     likedCount: { type: Number, default: 0 }, // Count of users who liked the event
