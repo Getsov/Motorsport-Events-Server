@@ -6,7 +6,7 @@ const { registerUser, loginUser } = require('../services/userService');
 
 
 //TODO: Change request from get => post
-userController.get('/register', async (req, res) => {
+userController.get('/registerUser', async (req, res) => {
     // TODO: Check for passwords and token..
     try {
         const user = await registerUser();
@@ -19,7 +19,7 @@ userController.get('/register', async (req, res) => {
 });
 
 //TODO: Change request from get => post
-userController.get('/login', async (req, res) => {
+userController.get('/loginUser', async (req, res) => {
     // TODO: Check for passwords and token..
     try {
         const user = await loginUser();
