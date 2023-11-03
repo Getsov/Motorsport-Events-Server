@@ -1,26 +1,56 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model, Types: { ObjectId }, } = require('mongoose');
 
 const eventSchema = new Schema({
     title: {
         type: String,
-        require: true,
+        required: true,
+        unique: true,
         minlength: [5, "Title must be minimum 5 characters long!"],
         maxlength: [30, "Title must be maximum 30 characters long!"],
     },
-    description: {
+    shortDescription: {
         type: String,
-        require: true,
+        required: true,
         minlength: [5, "Description must be minimum 5 characters long!"],
-        maxlength: [200, "Description must be maximum 30 characters long!"],
+        maxlength: [40, "Description must be maximum 40 characters long!"],
     },
-    date: { type: Date, require: true, },
-    time: {
+    longDescription: {
         type: String,
-        require: true,
-        minlength: [5, "Hour must be in format: 'hh:mm'!"],
-        maxlength: [5, "Hour must be in format: 'hh:mm'!"],
+        required: true,
+        minlength: [5, "Description must be minimum 5 characters long!"],
+        maxlength: [200, "Description must be maximum 200 characters long!"],
     },
-    eventLocation: { type: String, required: true },
+    dates: [{
+        startDate: { type: Date, required: true },
+        startTime: {
+            type: String,
+            required: true,
+            minlength: [5, "Hour must be in format: 'hh:mm'!"],
+            maxlength: [5, "Hour must be in format: 'hh:mm'!"],
+        },
+        endTime: {
+            type: String,
+            required: true,
+            minlength: [5, "Hour must be in format: 'hh:mm'!"],
+            maxlength: [5, "Hour must be in format: 'hh:mm'!"],
+        }
+    }, { // Additional date and time (if needed)
+        date: { type: Date },
+        startTime: { type: String },
+        endTime: { type: String }
+    }],
+    imageUrl: { type: String, required: true },
+    contacts: {
+        coordinates: { lat: { type: String }, long: { type: String } }, // Coordinates of the event
+        city: { type: String }, // Event city
+        address: { type: String }, // Event address
+        phone: { type: String }, // Event phone number
+        email: { type: String } // Event email
+    },
+    category: { typr: String }, // Event category
+    likedCount: { type: Number, default: 0 }, // Count of users who liked the event
+    creator: { type: ObjectId, ref: 'User' }, // User who created the event (you can specify user properties here)
+    winners: [{ name: { type: String } }, { name: { type: String } }, { name: { type: String } }], // Array of event winners (you can specify winner properties here)
     isDeleted: { type: Boolean, default: false }
 });
 
@@ -36,35 +66,3 @@ eventSchema.index(
 
 const Event = model("Event", eventSchema);
 module.exports = Event;
-
-
-
-// const organisation = {
-//     name: 'string', // Organisation's name
-//     createdEvents: [{}], // Array of created events (you can specify event properties here)
-//     phone: 'string', // Organisation's phone number
-//     email: 'string' // Organisation's email
-// };
-
-// const event = {
-//     title: 'string', // Event title
-//     shortDescription: 'string', // Short description of the event (up to XXX characters)
-//     longDescr: 'string', // Long description of the event (up to XXX characters)
-//     dates: [
-//         { date: 'date', startTime: 'time', endTime: 'time' }, // Event date and time
-//         { date: 'date2', startTime: 'time2', endTime: 'time2' } // Additional date and time (if needed)
-//     ],
-//     imageUrl: 'string', // URL of the event's image
-//     contacts: {
-//         coordinates: { lat: 'latitude', long: 'longitude' }, // Coordinates of the event
-//         city: 'string', // Event city
-//         address: 'string', // Event address
-//         phone: 'string', // Event phone number
-//         email: 'string' // Event email
-//     },
-//     category: 'string', // Event category
-//     likedCount: 0, // Count of users who liked the event
-//     creator: {}, // User who created the event (you can specify user properties here)
-//     winners: [{}, {}, {}], // Array of event winners (you can specify winner properties here)
-//     isDeleted: false // Indicates whether the event is deleted or not
-// };
