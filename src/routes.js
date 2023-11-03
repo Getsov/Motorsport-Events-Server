@@ -8,7 +8,8 @@ router.get('/', (req, res) => {
 });
 
 
-router.use('/auth', authController);
+router.use('/user', userController);
+router.use('/organization', organizationController);
 router.use('/events', eventController);
 
 
