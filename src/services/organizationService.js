@@ -82,7 +82,7 @@ async function registerOrganization(name, email, address, manager,phone,createdE
 /*
 TODO:
 - loginOrganization,
-- parseToken
+- parseToken (can be exported)
 
 */
 
