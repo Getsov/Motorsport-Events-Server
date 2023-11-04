@@ -3,7 +3,7 @@ const Event = require('../models/Event');
 async function registerEvent() {
     // TODO: make more tests with different values!
     const event = await Event.create({
-        title: 'Race Fanatic!',
+        title: 'Race Fanatic',
         shortDescription: 'ala bala',
         longDescription: 'Lorem ipsum dolor sit amet.',
         dates: [{
