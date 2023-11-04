@@ -51,10 +51,10 @@ const eventSchema = new Schema({
     },
     contacts: {
         // TODO: Check later for unique COORDS..!
-        coordinates: { lat: { type: String }, long: { type: String } },
+        coordinates: { lat: { type: String, required: true }, long: { type: String, required: true } },
         city: { type: String, required: true },
         address: { type: String, required: true },
-        phone: { type: String, required: true }, 
+        phone: { type: String, required: true },
         email: { type: String, required: true }
     },
     category: { type: String, required: true }, // Event category
