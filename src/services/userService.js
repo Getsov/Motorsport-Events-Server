@@ -82,7 +82,7 @@ function parseToken(token) {
     }
 };
 
-
+//TODO: parseToken can be exported
 module.exports = {
     registerUser,
     loginUser,
