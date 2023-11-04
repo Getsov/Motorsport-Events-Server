@@ -1,6 +1,7 @@
 const { Schema, model, Types: { ObjectId }, } = require('mongoose');
 const validTime = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
 const validString = /https?:\/\/./i;
+
 const eventSchema = new Schema({
     title: {
         type: String,
@@ -63,9 +64,9 @@ const eventSchema = new Schema({
         required: true,
         minlength: [2, "Category must be minimum 2 characters long!"],
         maxlength: [30, "Category must be maximum 30 characters long!"],
-    }, // Event category
-    likedCount: { type: Number, default: 0 },
-    creator: { type: ObjectId, ref: 'User', required: true },
+    },
+    userLikes: [{ type: ObjectId, ref: 'User' } || { type: ObjectId, ref: 'Organization' }],
+    creator: { type: ObjectId, ref: 'User', required: true } || { type: ObjectId, ref: 'Organization', required: true },
     winners: [
         { name: String, vehicle: String },
         { name: String, vehicle: String },
