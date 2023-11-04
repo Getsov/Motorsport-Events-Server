@@ -4,7 +4,7 @@ const User = require('../models/User');
 
 
 //TODO: use env and change secret
-const secret = 'q213fdfsddfasd231adfas12321kl'
+const secret = 'q213fdfsddfasd231adfas12321kl';
 
 async function registerUser() {
     /*
