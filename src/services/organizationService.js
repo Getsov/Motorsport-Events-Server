@@ -79,6 +79,14 @@ async function registerOrganization(name, email, address, manager,phone,createdE
   return organization;
 }
 
+/*
+TODO:
+- loginOrganization,
+- parseToken
+
+*/
+
+
 moduke.exports = {
   registerOrganization,
 };
