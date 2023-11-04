@@ -80,7 +80,7 @@ function parseToken(token) {
     } catch { error } {
         throw new Error('Invalid acces token!')
     }
-}
+};
 
 
 module.exports = {
