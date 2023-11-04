@@ -4,5 +4,9 @@ const emailRegex = /^[a-zA-Z0-9._%+-]{3,}@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 
 constOrgnaizationSchema = new Schema({
-    
-})
+
+});
+
+
+const Organization = model("Organization", constOrgnaizationSchema);
+module.exports = Organization;
