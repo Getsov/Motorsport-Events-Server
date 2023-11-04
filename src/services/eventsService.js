@@ -10,7 +10,7 @@ async function registerEvent() {
             startDate: Date.now(),
             startTime: '23:59',
             endTime: '06:40'
-        }], // Eventually add another date!
+        }],
         imageUrl: 'https://cdn.akamai.steamstatic.com/steam/apps/1839940/capsule_616x353.jpg?t=1683123302',
         contacts: {
             coordinates: { lat: 'sda', long: 'sad' },
@@ -19,14 +19,35 @@ async function registerEvent() {
             phone: '0123456789',
             email: 'peter@abv.bg'
         },
-        winners: [{ name: 'Pavel', vehicle: "Trabant" }, { name: 'Pavel', vehicle: "Trabant" }, { name: 'Pavel', vehicle: "Trabant" }],
         category: 'Off Road',
-        creator: '6542c24b6102c6f4e79108fc'
+        likedCount: ['6542c24b6102c6f4e79108fc', '6542c24b6102c6f4e79108fc'],
+        creator: '6542c24b6102c6f4e79108fc',
+        winners: [
+            { name: 'Pavel', vehicle: "Trabant" },
+            { name: 'Pavel', vehicle: "Trabant" },
+            { name: 'Pavel', vehicle: "Trabant" }
+        ],
     });
 
     return event;
 };
 
+async function findOne(eventId) {
+    // TODO: make more tests with different values!
+    const event = await Event.findById(eventId);
+
+    return event;
+};
+
+async function findAll(eventId) {
+    // TODO: make more tests with different values!
+    const event = await Event.find();
+
+    return event;
+};
+
 module.exports = {
-    registerEvent
+    registerEvent,
+    findOne,
+    findAll,
 }
