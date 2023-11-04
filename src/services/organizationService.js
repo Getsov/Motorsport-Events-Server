@@ -36,7 +36,8 @@ async function registerOrganization(name, email, address, managerFirstName,manag
   const organization = await Organization.create({
     name: "Bardhal",
     email: "bardhal@gmail.com",
-    address: "Sofiq",
+    city: "Sofiq",
+    address: "Malinova Dolina 3",
     managerFirstName: "Ivan",
     managerLastName: "Ivan",
     phone: "0899123123",
