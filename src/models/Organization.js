@@ -17,22 +17,20 @@ OrgnaizationSchema = new Schema({
       message: "Invalid email",
     },
   },
-  //TODO adress,
-  managerFirstName: { type: String, require: true },
-  managerLasttName: { type: String, require: true },
-  //TODO regex for phone, or minimum and maximum length
+  //TODO:  minimum and maximum length firstName
+   managerFirstName: { type: String, require: true },
+  //TODO:  minimum and maximum length lastName
+  managerLastName: { type: String, require: true },
+  //TODO: regex for phone, or minimum and maximum length
   phone: { type: String, require: true },
+  //TODO:  minimum and maximum length city
   city: { type: String, required: true },
+  //TODO:  minimum and maximum length address
   address: { type: String, required: true },
   createdEvents: { type: ObjectId, ref: "Event", required: true },
   isDeleted: { type: Boolean, default: false },
 });
-/*
 
-
-isDeleted,
-
-*/
 
 const Organization = model("Organization", OrgnaizationSchema);
 module.exports = Organization;
