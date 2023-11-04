@@ -29,8 +29,7 @@ async function registerUser() {
 
 */
 
-  // TODO: remove hardcore user & password
-  let password = 123456789;
+  // TODO: remove hardcore user 
   const user = await User.create({
     email: "Shumaher@gmail.com",
     firstName: "Michael",
@@ -39,13 +38,12 @@ async function registerUser() {
     city: "Sofia",
     address: "Banishora 22",
     likedEvents: [{ _id: "randomId" }],
+    hashedPassword: "123456789",
     isDeleted: false,
-    hashedPassword: password,
-    
   });
 
   return user;
-};
+}
 
 //TODO: With username or with email user will login into the app? Change appropriate
 async function loginUser(email, password) {
