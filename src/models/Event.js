@@ -1,6 +1,6 @@
 const { Schema, model, Types: { ObjectId }, } = require('mongoose');
 const validTime = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
-
+const validString = /https?:\/\/./i;
 const eventSchema = new Schema({
     title: {
         type: String,
@@ -39,11 +39,16 @@ const eventSchema = new Schema({
                     validator: (value) => validTime.test(value),
                     message: 'Invalid time format! Example: hh:mm (24h)'
                 }
-                
             }
         }]
     },
-    imageUrl: { type: String, required: true },
+    imageUrl: {
+        type: String,
+        validate: {
+            validator: (value) => validString.test(value),
+            message: "Invalid URL, must start with HTTP/HTTPS",
+        },
+    },
     contacts: {
         // TODO: Check later for unique COORDS..!
         coordinates: { lat: { type: String }, long: { type: String } },
