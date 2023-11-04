@@ -3,6 +3,7 @@ const {
   model,
   Types: { ObjectId },
 } = require("mongoose");
+
 const emailRegex = /^[a-zA-Z0-9._%+-]{3,}@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 // const emailRegex2 = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
 
@@ -19,10 +20,27 @@ const userSchema = new Schema({
     },
   },
   //TODO:  minimum and maximum length firstName
-  firstName: { type: String, require: true },
+  firstName: {
+    type: String,
+    require: true,
+    minlength: [2, "First name must be minimum 2 characters long!"],
+    maxlength: [15, "First name must be maximum 15 characters long!"],
+  },
   //TODO:  minimum and maximum length lastName
-  lastName: { type: String, require: true },
-  role: { type: String, require: true },
+  lastName: {
+    type: String,
+    require: true,
+    minlength: [2, "Last name must be minimum 2 characters long!"],
+    maxlength: [15, "Last name must be maximum 15 characters long!"],
+  },
+  role: {
+    type: String,
+    require: true,
+    /* TODO: Propper validation for role length
+    minlength: [2, "Last name must be minimum 2 characters long!"],
+    maxlength: [15, "Last name must be maximum 15 characters long!"],
+    */
+  },
   city: { type: String, required: true },
   //TODO:  minimum and maximum length address
   address: { type: String, required: true },
