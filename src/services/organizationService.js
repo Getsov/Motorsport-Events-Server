@@ -37,6 +37,7 @@ async function registerOrganization(){
         manager: 'Ivan Ivanov',
         phone: '0899123123',
         //This event is copied hardcore event from eventService.js
+        //TODO: in created event array they key must be real event _id -> propertie must be the real event
         createdEvents: [{
             title: 'Race Fanatic!',
             shortDescription: 'ala bala',
