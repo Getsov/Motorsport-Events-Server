@@ -41,10 +41,6 @@ const eventSchema = new Schema({
                 }
                 
             }
-        }, { // Additional date and time (if needed)
-            date: { type: Date },
-            startTime: { type: String },
-            endTime: { type: String }
         }]
     },
     imageUrl: { type: String, required: true },
