@@ -23,6 +23,8 @@ async function registerUser() {
             role,
             city,
             address,
+            //TODO: fix likedEvents
+            likedEvents,
             hashedPassword: await bcrypt.hash(password, 10)
         });
         return createToken(user)
