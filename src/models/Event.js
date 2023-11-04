@@ -64,9 +64,13 @@ const eventSchema = new Schema({
         minlength: [2, "Category must be minimum 2 characters long!"],
         maxlength: [30, "Category must be maximum 30 characters long!"],
     }, // Event category
-    likedCount: { type: Number, default: 0 }, // Count of users who liked the event
-    creator: { type: ObjectId, ref: 'User', required: true }, // User who created the event (you can specify user properties here)
-    winners: [{ name: { type: String } }, { name: { type: String } }, { name: { type: String } }], // Array of event winners (you can specify winner properties here)
+    likedCount: { type: Number, default: 0 },
+    creator: { type: ObjectId, ref: 'User', required: true },
+    winners: [
+        { name: String, vehicle: String },
+        { name: String, vehicle: String },
+        { name: String, vehicle: String }
+    ],
     isDeleted: { type: Boolean, default: false }
 });
 
