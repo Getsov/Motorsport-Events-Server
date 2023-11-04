@@ -5,26 +5,30 @@ const Organization = require('../models/Organization');
 //TODO: use env and change secret
 const secret = 'q213fdfsddfasd231adfas12321kl';
 
-async function registerOrganization(){
+async function registerOrganization() {
 
-        /*
-    TODO: use next line for real app without hardcore the organization
+    /*
+TODO: use next line for real app without hardcore the organization
 
-    async function registerUser(username, email, firstName, lastName, password) {
+async function registerOrganization(name, email, address, manager,phone,createdEvents, password) {
 
-        const existing = await User.findOne({ email });
-        if (existing) {
-            throw new Error('Email is already taken!!!');
-        }
+    const existing = await User.findOne({ email });
+    if (existing) {
+        throw new Error('Email is already taken!!!');
+    }
 
-        const user = await User.create({
-            username,
-            email,
-            firstName,
-            lastName,
-            hashedPassword: await bcrypt.hash(password, 10)
-        });
-        return createToken(user)
+    const organization = await Organization.create({
+        name,
+        email,
+        address,
+        manager,
+        phone,
+        //TODO: fix properly to populate id from real events
+        createdEvents,
+        isDeleted
+        hashedPassword: await bcrypt.hash(password, 10)
+    });
+    return createToken(user)
 
 */
 
