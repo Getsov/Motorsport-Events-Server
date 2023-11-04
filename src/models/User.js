@@ -37,16 +37,27 @@ const userSchema = new Schema({
     type: String,
     require: true,
     /* TODO: Propper validation for role length
-    minlength: [2, "Last name must be minimum 2 characters long!"],
-    maxlength: [15, "Last name must be maximum 15 characters long!"],
+    minlength: [2, "Role must be minimum 2 characters long!"],
+    maxlength: [15, "Role must be maximum 15 characters long!"],
     */
   },
   city: { type: String, required: true },
-  //TODO:  minimum and maximum length address
-  address: { type: String, required: true },
+  /* TODO: Propper validation for city length
+    minlength: [2, "City must be minimum 2 characters long!"],
+    maxlength: [15, "City must be maximum 15 characters long!"],
+    */
+  address: {
+    type: String,
+    required: true,
+    /* TODO: Propper validation for city length
+    minlength: [2, "Adress must be minimum 2 characters long!"],
+    maxlength: [15, "Adress must be maximum 15 characters long!"],
+    */
+  },
+  //TODO: to take decision how we will take the likes
+  likedEvents: { type: ObjectId, ref: "Event", required: true, default:[] },
+  hashedPassword: { type: String, required: true },
   isDeleted: { type: Boolean, default: false },
-  //TODO: check the syntax
-  likedEvents: { type: ObjectId, ref: "Event", required: true },
 });
 
 /*
