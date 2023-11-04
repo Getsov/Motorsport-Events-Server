@@ -3,6 +3,7 @@ const { registerEvent, findOne, findAll } = require('../services/eventsService')
 
 // TODO: Change the request method! and validate iputs when client is ready..
 eventController.get('/register', async (req, res) => {
+    // TODO: check if the User has admin role.
     try {
         const event = await registerEvent();
         
