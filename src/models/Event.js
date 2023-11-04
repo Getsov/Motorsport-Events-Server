@@ -45,11 +45,14 @@ const eventSchema = new Schema({
     },
     imageUrl: {
         type: String,
-        required: true,
         validate: {
             validator: (value) => validString.test(value),
             message: "Invalid URL, must start with HTTP:///HTTPS://",
         },
+    },
+    imageData: {
+        data: Buffer,
+        connectType: String
     },
     contacts: {
         // TODO: Check later for unique COORDS..!
@@ -65,6 +68,7 @@ const eventSchema = new Schema({
         minlength: [2, "Category must be minimum 2 characters long!"],
         maxlength: [30, "Category must be maximum 30 characters long!"],
     },
+    // TODO: check if the User has admin role.
     likes: [{ type: ObjectId, ref: 'User' } || { type: ObjectId, ref: 'Organization' }],
     creator: { type: ObjectId, ref: 'User', required: true } || { type: ObjectId, ref: 'Organization', required: true },
     winners: [
