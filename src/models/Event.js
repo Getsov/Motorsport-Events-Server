@@ -65,7 +65,7 @@ const eventSchema = new Schema({
         minlength: [2, "Category must be minimum 2 characters long!"],
         maxlength: [30, "Category must be maximum 30 characters long!"],
     },
-    userLikes: [{ type: ObjectId, ref: 'User' } || { type: ObjectId, ref: 'Organization' }],
+    likes: [{ type: ObjectId, ref: 'User' } || { type: ObjectId, ref: 'Organization' }],
     creator: { type: ObjectId, ref: 'User', required: true } || { type: ObjectId, ref: 'Organization', required: true },
     winners: [
         { name: String, vehicle: String },
