@@ -9,7 +9,7 @@ async function registerOrganization() {
   /*
 TODO: use next line for real app without hardcore the organization
 
-async function registerOrganization(name, email, address, manager,phone,createdEvents, password) {
+async function registerOrganization(name, email, address, managerFirstName,managerLastName, phone,createdEvents, password) {
 
     const existing = await User.findOne({ email });
     if (existing) {
@@ -37,7 +37,8 @@ async function registerOrganization(name, email, address, manager,phone,createdE
     name: "Bardhal",
     email: "bardhal@gmail.com",
     address: "Sofiq",
-    manager: "Ivan Ivanov",
+    managerFirstName: "Ivan",
+    managerLastName: "Ivan",
     phone: "0899123123",
     //This event is copied hardcore event from eventService.js
     //TODO: in created event array they key must be real event _id -> propertie must be the real event
@@ -70,7 +71,7 @@ async function registerOrganization(name, email, address, manager,phone,createdE
         winners: [{ name: "Az", _id: "65463906dc185e1f50242d98" }],
         isDeleted: false,
         _id: "65463906dc185e1f50242d96",
-        __v:"0"
+        __v: "0",
       },
     ],
     isDeleted: false,
@@ -85,7 +86,6 @@ TODO:
 - parseToken (can be exported)
 
 */
-
 
 moduke.exports = {
   registerOrganization,
