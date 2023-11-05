@@ -24,8 +24,6 @@ async function registerEvent() {
         creator: '6542c24b6102c6f4e79108fc',
         winners: [
             { name: 'Pavel', vehicle: "Trabant" },
-            { name: 'Pavel', vehicle: "Trabant" },
-            { name: 'Pavel', vehicle: "Trabant" }
         ],
     });
 
