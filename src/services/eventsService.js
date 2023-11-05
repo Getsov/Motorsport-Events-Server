@@ -20,7 +20,7 @@ async function registerEvent() {
             email: 'peter@abv.bg'
         },
         category: 'Off Road',
-        likedCount: ['6542c24b6102c6f4e79108fc', '6542c24b6102c6f4e79108fc'],
+        likes: ['6542c24b6102c6f4e79108fc', '6542c24b6102c6f4e79108fc', '6542c24b6102c6f4e79108fc'],
         creator: '6542c24b6102c6f4e79108fc',
         winners: [
             { name: 'Pavel', vehicle: "Trabant" },
