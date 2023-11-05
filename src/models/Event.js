@@ -68,9 +68,10 @@ const eventSchema = new Schema({
         minlength: [2, "Category must be minimum 2 characters long!"],
         maxlength: [30, "Category must be maximum 30 characters long!"],
     },
-    // TODO: check if the User has admin role.
+    
     likes: [{ type: ObjectId, ref: 'User' } || { type: ObjectId, ref: 'Organization' }],
-    creator: { type: ObjectId, ref: 'User', required: true } || { type: ObjectId, ref: 'Organization', required: true },
+    // TODO: We must add Admin model later!
+    creator: { type: ObjectId, ref: 'Admin', required: true } || { type: ObjectId, ref: 'Organization', required: true },
     winners: [
         { name: String, vehicle: String },
         { name: String, vehicle: String },
