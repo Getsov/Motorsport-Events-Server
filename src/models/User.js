@@ -13,6 +13,7 @@ const userSchema = new Schema({
   email: {
     type: String,
     required: true,
+    //TODO: chech the "unique" property if will work in real environment
     unique: true,
     validate: {
       validator: (value) => emailRegex.test(value),
