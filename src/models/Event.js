@@ -56,16 +56,7 @@ const eventSchema = new Schema({
     },
     contacts: {
         // TODO: Check later for unique COORDS..!
-        coordinates: {
-            type: {
-                type: String,
-                default: 'Point'
-            },
-            coordinates: {
-                type: [Number],
-                required: true
-            }
-        },
+        coordinates: { lat: { type: String, required: true }, long: { type: String, required: true } },
         city: { type: String, required: true },
         address: { type: String, required: true },
         phone: { type: String, required: true },
