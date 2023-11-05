@@ -81,10 +81,10 @@ const eventSchema = new Schema({
         ],
         validate: {
             validator: function (array) {
-              return array.length <= 3;
+                return array.length <= 3;
             },
             message: 'Winners must be a maximum of 3 persons!',
-          },
+        },
     },
     isDeleted: { type: Boolean, default: false }
 });
