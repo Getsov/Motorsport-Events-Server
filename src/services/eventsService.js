@@ -22,12 +22,11 @@ async function registerEvent() {
         category: 'Off Road',
         likes: ['6542c24b6102c6f4e79108fc', '6542c24b6102c6f4e79108fc', '6542c24b6102c6f4e79108fc'],
         creator: '6542c24b6102c6f4e79108fc',
-        winners: {
-            firstPlace: { name: 'Pavel', vehicle: "Trabant" },
-            sePlace: { name: 'Pavel', vehicle: "Trabant" },
-            secondPlace: { name: 'Pavel', vehicle: "Trabant" },
-            thirdPlace: { name: 'Pavel', vehicle: "Trabant" },
-        },
+        winners: [
+            { name: 'Pavel', vehicle: "Trabant", place: '1st' },
+            { name: 'Ivan', vehicle: "Varburg", place: '2nd' },
+            { name: 'Dragan', vehicle: "Moskvich", place: '3rd' }
+        ],
     });
 
     return event;
