@@ -50,10 +50,11 @@ const eventSchema = new Schema({
             message: "Invalid URL, must start with HTTP:///HTTPS://",
         },
     },
-    imageFile: {
-        data: Buffer,
-        connectType: String
-    },
+    // TODO: To add some storage later!
+    // imageFile: {
+    //     data: Buffer,
+    //     connectType: String
+    // },
     contacts: {
         // TODO: Check later for unique COORDS..!
         coordinates: { lat: { type: String, required: true }, long: { type: String, required: true } },
@@ -68,15 +69,11 @@ const eventSchema = new Schema({
         minlength: [2, "Category must be minimum 2 characters long!"],
         maxlength: [30, "Category must be maximum 30 characters long!"],
     },
-    
+
     likes: [{ type: ObjectId, ref: 'User' } || { type: ObjectId, ref: 'Organization' }],
     // TODO: We must add Admin model later!
     creator: { type: ObjectId, ref: 'Admin', required: true } || { type: ObjectId, ref: 'Organization', required: true },
-    winners: [
-        { name: String, vehicle: String },
-        { name: String, vehicle: String },
-        { name: String, vehicle: String }
-    ],
+    winners: { firstPlace: { name: String, vehicle: String } },
     isDeleted: { type: Boolean, default: false }
 });
 
