@@ -22,9 +22,12 @@ async function registerEvent() {
         category: 'Off Road',
         likes: ['6542c24b6102c6f4e79108fc', '6542c24b6102c6f4e79108fc', '6542c24b6102c6f4e79108fc'],
         creator: '6542c24b6102c6f4e79108fc',
-        winners: [
-            { name: 'Pavel', vehicle: "Trabant" },
-        ],
+        winners: {
+            firstPlace: { name: 'Pavel', vehicle: "Trabant" },
+            sePlace: { name: 'Pavel', vehicle: "Trabant" },
+            secondPlace: { name: 'Pavel', vehicle: "Trabant" },
+            thirdPlace: { name: 'Pavel', vehicle: "Trabant" },
+        },
     });
 
     return event;
