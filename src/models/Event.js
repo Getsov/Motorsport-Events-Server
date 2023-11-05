@@ -50,7 +50,7 @@ const eventSchema = new Schema({
             message: "Invalid URL, must start with HTTP:///HTTPS://",
         },
     },
-    imageData: {
+    imageFile: {
         data: Buffer,
         connectType: String
     },
