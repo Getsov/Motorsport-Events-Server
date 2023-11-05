@@ -13,7 +13,7 @@ async function registerEvent() {
         }],
         imageUrl: 'https://cdn.akamai.steamstatic.com/steam/apps/1839940/capsule_616x353.jpg?t=1683123302',
         contacts: {
-            coordinates: { coordinates: [42.52911093579847, 24.707900125838766] },
+            coordinates: { lat: '42.52911093579847', long: '24.707900125838766' },
             city: 'Hisarya',
             address: 'Хайдут Генчо N1',
             phone: '0123456789',
