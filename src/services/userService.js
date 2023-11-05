@@ -39,7 +39,7 @@ async function registerUser() {
     role: "Racer",
     city: "Sofia",
     address: "Banishora 22",
-    likedEvents: [{ _id: "randomId" }],
+    likedEvents: [],
     hashedPassword: "123456789",
     isDeleted: false,
   });
