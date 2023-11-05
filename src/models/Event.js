@@ -73,7 +73,19 @@ const eventSchema = new Schema({
     likes: [{ type: ObjectId, ref: 'User' } || { type: ObjectId, ref: 'Organization' }],
     // TODO: We must add Admin model later!
     creator: { type: ObjectId, ref: 'Admin', required: true } || { type: ObjectId, ref: 'Organization', required: true },
-    winners: { firstPlace: { name: String, vehicle: String } },
+    winners: {
+        type: [
+            { name: String, vehicle: String, place: String },
+            { name: String, vehicle: String, place: String },
+            { name: String, vehicle: String, place: String }
+        ],
+        validate: {
+            validator: function (array) {
+              return array.length <= 3;
+            },
+            message: 'Winners must be a maximum of 3 persons!',
+          },
+    },
     isDeleted: { type: Boolean, default: false }
 });
 
