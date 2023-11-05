@@ -22,14 +22,14 @@ const userSchema = new Schema({
   //TODO:  minimum and maximum length firstName
   firstName: {
     type: String,
-    require: true,
+    required: true,
     minlength: [2, "First name must be minimum 2 characters long!"],
     maxlength: [15, "First name must be maximum 15 characters long!"],
   },
   //TODO:  minimum and maximum length lastName
   lastName: {
     type: String,
-    require: true,
+    required: true,
     minlength: [2, "Last name must be minimum 2 characters long!"],
     maxlength: [15, "Last name must be maximum 15 characters long!"],
   },
@@ -55,7 +55,8 @@ const userSchema = new Schema({
     */
   },
   //TODO: to take decision how we will take the likes
-  likedEvents: { type: ObjectId, ref: "Event", required: true, default:[] },
+  // likedEvents: { type: ObjectId, ref: "Event", required: true, default:[] },
+  likedEvents: [{ type: ObjectId, ref: "Event", required: true }],
   hashedPassword: { type: String, required: true },
   isDeleted: { type: Boolean, default: false },
 });
