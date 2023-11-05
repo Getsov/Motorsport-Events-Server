@@ -1,6 +1,8 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const { default: mongoose } = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 
 //TODO: use env and change secret
 const secret = "q213fdfsddfasd231adfas12321kl";
@@ -31,7 +33,11 @@ async function registerUser() {
 
 */
 
-  // TODO: remove hardcore user 
+  // TODO: remove hardcore user
+  // Sample ObjectId values that reference actual Event documents
+  const eventId1 = new ObjectId();
+  const eventId2 = new ObjectId();
+  const eventId3 = new ObjectId();
   const user = await User.create({
     email: "Shumaher@gmail.com",
     firstName: "Michael",
@@ -39,10 +45,11 @@ async function registerUser() {
     role: "Racer",
     city: "Sofia",
     address: "Banishora 22",
-    likedEvents: [],
+    likedEvents: [eventId1,eventId2,eventId3],
     hashedPassword: "123456789",
     isDeleted: false,
   });
+  console.log(eventId1);
 
   return user;
 }
