@@ -74,9 +74,21 @@ const eventSchema = new Schema({
     creator: { type: ObjectId, ref: 'Admin', required: true } || { type: ObjectId, ref: 'Organization', required: true },
     winners: {
         type: [
-            { name: String, vehicle: String, place: String },
-            { name: String, vehicle: String, place: String },
-            { name: String, vehicle: String, place: String }
+            {
+                name: { type: String, required: true },
+                vehicle: { type: String, required: true },
+                place: { type: String, required: true }
+            },
+            {
+                name: { type: String, required: true },
+                vehicle: { type: String, required: true },
+                place: { type: String, required: true }
+            },
+            {
+                name: { type: String, required: true },
+                vehicle: { type: String, required: true },
+                place: { type: String, required: true }
+            },
         ],
         validate: {
             validator: function (array) {
