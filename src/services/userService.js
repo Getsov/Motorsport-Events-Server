@@ -6,7 +6,7 @@ const ObjectId = mongoose.Types.ObjectId;
 
 //TODO: use env and change secret
 const secret = "q213fdfsddfasd231adfas12321kl";
-
+const password = "123";
 async function registerUser() {
   /*
     TODO: use next line for real app without hardcore the user
