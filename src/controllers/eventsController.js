@@ -1,5 +1,5 @@
 const eventController = require('express').Router();
-const { registerEvent, findOne, findAll } = require('../services/eventsService');
+const { registerEvent, findOneEvent, findAllEvents, updateEvent } = require('../services/eventsService');
 
 // TODO: Change the request method! and validate iputs when client is ready..
 eventController.get('/register', async (req, res) => {
@@ -17,7 +17,7 @@ eventController.get('/register', async (req, res) => {
 // Get ALL events!
 eventController.get('/', async (req, res) => {
     try {
-        const event = await findAll();
+        const event = await findAllEvents();
 
         res.status(200).json(event);
         res.end();
@@ -29,7 +29,7 @@ eventController.get('/', async (req, res) => {
 // Get event by ID!
 eventController.get('/:id', async (req, res) => {
     try {
-        const event = await findOne(req.params.id);
+        const event = await findOneEvent(req.params.id);
 
         res.status(200).json(event);
         res.end();
@@ -37,6 +37,22 @@ eventController.get('/:id', async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 });
+
+// Update event by ID!
+eventController.put('/:id', async (req, res) => {
+    try {
+        // TODO: Update according to some conditions later!
+        // const event = await findOneEvent(req.params.id);
+
+        const updatedEvent = await updateEvent();
+
+        res.status(200).json(event);
+        res.end();
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
 
 
 
