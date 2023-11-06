@@ -22,7 +22,7 @@ userController.get('/registerUser', async (req, res) => {
 userController.get('/loginUser', async (req, res) => {
     // TODO: Check for passwords and token..
     try {
-        const user = await loginUser();
+        const user = await loginUser(req.body.email, req.body.password);
         
         res.status(200).json(user);
         res.end();
