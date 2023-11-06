@@ -46,7 +46,7 @@ async function registerUser() {
     city: "Sofia",
     address: "Banishora 22",
     likedEvents: [eventId1,eventId2,eventId3],
-    hashedPassword: "123456789",
+    hashedPassword: await bcrypt.hash(password, 10),
     isDeleted: false,
   });
   console.log(eventId1);
