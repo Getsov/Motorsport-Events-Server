@@ -77,7 +77,7 @@ const eventSchema = new Schema({
             {
                 name: { type: String, required: true },
                 vehicle: { type: String, required: true },
-                place: { type: String, required: true }
+                place: { type: Number, required: true }
             }
         ],
         validate: {
