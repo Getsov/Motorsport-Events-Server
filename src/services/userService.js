@@ -59,7 +59,7 @@ async function loginUser(email, password) {
   const user = await User.findOne({ email });
   //TODO: check for isDeleted property
   if (!user) {
-    throw new Error("Invalid  email or password!!!");
+    throw new Error("Invalid email or password!!!");
   }
 
   const match = await bcrypt.compare(password, user.hashedPassword);
