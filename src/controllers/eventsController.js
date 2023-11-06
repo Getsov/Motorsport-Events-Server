@@ -42,11 +42,12 @@ eventController.get('/:id', async (req, res) => {
 eventController.put('/:id', async (req, res) => {
     try {
         // TODO: Update according to some conditions later!
-        // const event = await findOneEvent(req.params.id);
+        // const foundEvent = await findOneEvent(req.params.id);
 
+        // TODO: To pass the id of the foundEvent and the body of the request!
         const updatedEvent = await updateEvent();
 
-        res.status(200).json(event);
+        res.status(200).json(updatedEvent);
         res.end();
     } catch (error) {
         res.status(400).json({ error: error.message });
