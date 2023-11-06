@@ -32,22 +32,33 @@ async function registerEvent() {
     return event;
 };
 
-async function findOne(eventId) {
+async function findOneEvent(eventId) {
     // TODO: make more tests with different values!
     const event = await Event.findById(eventId);
 
     return event;
 };
 
-async function findAll(eventId) {
+async function findAllEvents(eventId) {
     // TODO: make more tests with different values!
     const event = await Event.find();
 
     return event;
 };
 
+async function updateEvent(id, listing) {
+    const existing = await Listing.findById(id);
+    existing.title = listing.title;
+    existing.category = listing.category;
+    existing.imageUrl = listing.imageUrl;
+    existing.price = listing.price;
+    existing.description = listing.description;
+    return existing.save()
+}
+
 module.exports = {
     registerEvent,
-    findOne,
-    findAll,
+    findOneEvent,
+    findAllEvents,
+    updateEvent
 }
