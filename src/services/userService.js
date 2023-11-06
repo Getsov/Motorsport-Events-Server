@@ -6,7 +6,7 @@ const ObjectId = mongoose.Types.ObjectId;
 
 //TODO: use env and change secret
 const secret = "q213fdfsddfasd231adfas12321kl";
-
+const password = "123";
 async function registerUser() {
   /*
     TODO: use next line for real app without hardcore the user
@@ -46,7 +46,7 @@ async function registerUser() {
     city: "Sofia",
     address: "Banishora 22",
     likedEvents: [eventId1,eventId2,eventId3],
-    hashedPassword: "123456789",
+    hashedPassword: await bcrypt.hash(password, 10),
     isDeleted: false,
   });
   console.log(eventId1);
@@ -59,7 +59,7 @@ async function loginUser(email, password) {
   const user = await User.findOne({ email });
   //TODO: check for isDeleted property
   if (!user) {
-    throw new Error("Invalid  email or password!!!");
+    throw new Error("Invalid email or password!!!");
   }
 
   const match = await bcrypt.compare(password, user.hashedPassword);

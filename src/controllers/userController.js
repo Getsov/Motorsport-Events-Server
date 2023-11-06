@@ -10,7 +10,6 @@ userController.get('/registerUser', async (req, res) => {
     // TODO: Check for passwords and token..
     try {
         const user = await registerUser();
-        
         res.status(200).json(user);
         res.end();
     } catch (error) {
@@ -18,12 +17,10 @@ userController.get('/registerUser', async (req, res) => {
     }
 });
 
-//TODO: Change request from get => post
-userController.get('/loginUser', async (req, res) => {
+userController.post('/loginUser', async (req, res) => {
     // TODO: Check for passwords and token..
     try {
-        const user = await loginUser();
-        
+        const user = await loginUser(req.body.email, req.body.password);
         res.status(200).json(user);
         res.end();
     } catch (error) {
