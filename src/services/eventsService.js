@@ -19,7 +19,7 @@ async function registerEvent() {
             phone: '0123456789',
             email: 'peter@abv.bg'
         },
-        category: 'Off Road',
+        category: 'Hill Climb',
         likes: ['6542c24b6102c6f4e79108fc', '6542c24b6102c6f4e79108fc', '6542c24b6102c6f4e79108fc'],
         creator: '6542c24b6102c6f4e79108fc',
         winners: [
@@ -46,14 +46,9 @@ async function findAllEvents(eventId) {
     return event;
 };
 
+// TODO: Update the event later!
 async function updateEvent(id, listing) {
-    const existing = await Listing.findById(id);
-    existing.title = listing.title;
-    existing.category = listing.category;
-    existing.imageUrl = listing.imageUrl;
-    existing.price = listing.price;
-    existing.description = listing.description;
-    return existing.save()
+   
 }
 
 module.exports = {
