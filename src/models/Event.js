@@ -1,5 +1,6 @@
 const { Schema, model, Types: { ObjectId }, } = require('mongoose');
 const validTime = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
+const validString = /https?:\/\/./i;
 
 const eventSchema = new Schema({
     title: {
@@ -39,27 +40,53 @@ const eventSchema = new Schema({
                     validator: (value) => validTime.test(value),
                     message: 'Invalid time format! Example: hh:mm (24h)'
                 }
-                
             }
-        }, { // Additional date and time (if needed)
-            date: { type: Date },
-            startTime: { type: String },
-            endTime: { type: String }
         }]
     },
-    imageUrl: { type: String, required: true },
+    imageUrl: {
+        type: String,
+        validate: {
+            validator: (value) => validString.test(value),
+            message: "Invalid URL, must start with HTTP:///HTTPS://",
+        },
+    },
+    // TODO: To add some storage later!
+    // imageFile: {
+    //     data: Buffer,
+    //     connectType: String
+    // },
     contacts: {
         // TODO: Check later for unique COORDS..!
-        coordinates: { lat: { type: String }, long: { type: String } },
+        coordinates: { lat: { type: String, required: true }, long: { type: String, required: true } },
         city: { type: String, required: true },
         address: { type: String, required: true },
-        phone: { type: String, required: true }, 
+        phone: { type: String, required: true },
         email: { type: String, required: true }
     },
-    category: { type: String, required: true }, // Event category
-    likedCount: { type: Number, default: 0 }, // Count of users who liked the event
-    creator: { type: ObjectId, ref: 'User', required: true }, // User who created the event (you can specify user properties here)
-    winners: [{ name: { type: String } }, { name: { type: String } }, { name: { type: String } }], // Array of event winners (you can specify winner properties here)
+    category: {
+        type: String,
+        required: true,
+        minlength: [2, "Category must be minimum 2 characters long!"],
+        maxlength: [30, "Category must be maximum 30 characters long!"],
+    },
+    likes: [{ type: ObjectId, ref: 'User' } || { type: ObjectId, ref: 'Organization' }],
+    // TODO: We must add Admin model later!
+    creator: { type: ObjectId, ref: 'Admin', required: true } || { type: ObjectId, ref: 'Organization', required: true },
+    winners: {
+        type: [
+            {
+                name: { type: String, required: true },
+                vehicle: { type: String, required: true },
+                place: { type: Number, required: true }
+            }
+        ],
+        validate: {
+            validator: function (array) {
+                return array.length <= 3;
+            },
+            message: 'Winners must be a maximum of 3 persons!',
+        },
+    },
     isDeleted: { type: Boolean, default: false }
 });
 
