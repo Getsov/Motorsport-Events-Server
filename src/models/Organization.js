@@ -27,9 +27,9 @@ OrgnaizationSchema = new Schema({
   city: { type: String, required: true },
   //TODO:  minimum and maximum length address
   address: { type: String, required: true },
-  createdEvents:  [{ type: ObjectId, ref: "Event", required: false }],
+  createdEvents:  [{ type: ObjectId, ref: "Event"}],
   //TODO: Will organization will like events
-  likedEvents: [{ type: ObjectId, ref: "Event", required: false }],
+  likedEvents: [{ type: ObjectId, ref: "Event"}],
   isDeleted: { type: Boolean, default: false },
 });
 
