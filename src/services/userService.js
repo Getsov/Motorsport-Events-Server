@@ -7,23 +7,22 @@ const ObjectId = mongoose.Types.ObjectId;
 //TODO: use env and change secret
 const secret = "q213fdfsddfasd231adfas12321kl";
 
-    async function registerUser(email, firstName, lastName, password) {
+async function registerUser(userData) {
+  const email = userData.email;
+  const existing = await User.findOne({ email });
+  if (existing) {
+    throw new Error("Email is already taken!!!");
+  }
 
-        const existing = await User.findOne({ email });
-        if (existing) {
-            throw new Error('Email is already taken!!!');
-        }
-
-        const user = await User.create({
-            email,
-            firstName,
-            lastName,
-            hashedPassword: await bcrypt.hash(password, 10)
-        });
-        return createToken(user)
-
+  const user = await User.create({
+    email: userData.email,
+    firstName: userData.firstName,
+    lastName: userData.lastName,
+    city: userData.city ? userData.city : "",
+    hashedPassword: await bcrypt.hash(userData.password, 10),
+  });
+  return createToken(user);
 }
-
 
 async function loginUser(email, password) {
   const user = await User.findOne({ email });
