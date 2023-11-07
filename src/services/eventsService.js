@@ -32,11 +32,18 @@ async function registerEvent() {
     return event;
 };
 
-async function findOneEvent(eventId) {
+async function findEventByID(eventId) {
     // TODO: make more tests with different values!
     const event = await Event.findById(eventId);
 
     return event;
+};
+
+async function findEventsByCategory(category) {
+    // TODO: make more tests with different values!
+    const events = await Event.find({ category: category });
+
+    return events;
 };
 
 async function findAllEvents(eventId) {
@@ -48,12 +55,13 @@ async function findAllEvents(eventId) {
 
 // TODO: Update the event later!
 async function updateEvent(id, listing) {
-   
+
 }
 
 module.exports = {
     registerEvent,
-    findOneEvent,
+    findEventByID,
     findAllEvents,
-    updateEvent
+    updateEvent,
+    findEventsByCategory
 }
