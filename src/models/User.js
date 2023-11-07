@@ -39,22 +39,24 @@ const userSchema = new Schema({
     require: true,
     enum: ["user", "admin"],
   },
-  city: { type: String, required: true },
-  /* TODO: Propper validation for city length
+  city: {
+    type: String,
+    required: true,
+    // TODO: Propper validation for city length
     minlength: [2, "City must be minimum 2 characters long!"],
     maxlength: [15, "City must be maximum 15 characters long!"],
-    */
+  },
   address: {
     type: String,
     required: true,
-    /* TODO: Propper validation for city length
+    //TODO: Propper validation for city length
     minlength: [2, "Adress must be minimum 2 characters long!"],
     maxlength: [15, "Adress must be maximum 15 characters long!"],
-    */
   },
   //TODO: to take decision how we will take the likes
   // likedEvents: { type: ObjectId, ref: "Event", required: true, default:[] },
-  likedEvents: [{ type: ObjectId, ref: "Event", required: true }],
+  likedEvents: [{ type: ObjectId, ref: "Event" }],
+  createdEvents: [{ type: ObjectId, ref: "Event" }],
   hashedPassword: { type: String, required: true },
   isDeleted: { type: Boolean, default: false },
 });
