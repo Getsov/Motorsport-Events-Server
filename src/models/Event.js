@@ -68,6 +68,11 @@ const eventSchema = new Schema({
         required: true,
         minlength: [2, "Category must be minimum 2 characters long!"],
         maxlength: [30, "Category must be maximum 30 characters long!"],
+        enum: [
+            "Drag", "Drift", "Time Attack", "Offroad", "Moto Race",
+            "Motocross", "Hill Climb", "Track", "Rally", "Rally Sprint",
+            "Rallycross", "Autocross", "Karting", "SIM Racing"
+        ]
     },
     likes: [{ type: ObjectId, ref: 'User' } || { type: ObjectId, ref: 'Organization' }],
     // TODO: We must add Admin model later!
@@ -87,6 +92,10 @@ const eventSchema = new Schema({
             message: 'Winners must be a maximum of 3 persons!',
         },
     },
+    // TODO: Prices should be discussed later on!
+    participantPrice: { type: Number },
+    visitorPrice: { type: Number },
+    // TODO: Prices should be discussed later on!
     isDeleted: { type: Boolean, default: false }
 });
 

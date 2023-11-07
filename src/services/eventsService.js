@@ -19,7 +19,7 @@ async function registerEvent() {
             phone: '0123456789',
             email: 'peter@abv.bg'
         },
-        category: 'Off Road',
+        category: 'Drag',
         likes: ['6542c24b6102c6f4e79108fc', '6542c24b6102c6f4e79108fc', '6542c24b6102c6f4e79108fc'],
         creator: '6542c24b6102c6f4e79108fc',
         winners: [
@@ -32,22 +32,34 @@ async function registerEvent() {
     return event;
 };
 
-async function findOne(eventId) {
+async function findEventByID(eventId) {
     // TODO: make more tests with different values!
     const event = await Event.findById(eventId);
 
     return event;
 };
 
-async function findAll(eventId) {
+async function findEventsByCategory(category) {
+    const events = await Event.find({ category: category });
+    return events;
+};
+
+async function findAllEvents(eventId) {
     // TODO: make more tests with different values!
     const event = await Event.find();
 
     return event;
 };
 
+// TODO: Update the event later!
+async function updateEvent(id, listing) {
+
+}
+
 module.exports = {
     registerEvent,
-    findOne,
-    findAll,
+    findEventByID,
+    findAllEvents,
+    updateEvent,
+    findEventsByCategory
 }
