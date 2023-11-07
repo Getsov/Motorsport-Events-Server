@@ -10,7 +10,7 @@ const secret = "q213fdfsddfasd231adfas12321kl";
 // async function registerUser() {
 
 
-    async function registerUser(email, firstName, lastName,role,city, address, password) {
+    async function registerUser(email, firstName, lastName,city, address, password) {
 
         const existing = await User.findOne({ email });
         if (existing) {
