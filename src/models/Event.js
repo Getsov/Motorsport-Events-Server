@@ -92,6 +92,8 @@ const eventSchema = new Schema({
             message: 'Winners must be a maximum of 3 persons!',
         },
     },
+    participantsPrice: {type: String},
+    spectatorsPrice: {type: String},
     isDeleted: { type: Boolean, default: false }
 });
 
