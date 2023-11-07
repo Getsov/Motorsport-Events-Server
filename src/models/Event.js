@@ -13,14 +13,14 @@ const eventSchema = new Schema({
     shortDescription: {
         type: String,
         required: true,
-        minlength: [5, "Description must be minimum 5 characters long!"],
-        maxlength: [40, "Description must be maximum 40 characters long!"],
+        minlength: [2, "Description must be minimum 2 characters long!"],
+        maxlength: [48, "Description must be maximum 40 characters long!"],
     },
     longDescription: {
         type: String,
         required: true,
-        minlength: [5, "Description must be minimum 5 characters long!"],
-        maxlength: [200, "Description must be maximum 200 characters long!"],
+        minlength: [10, "Description must be minimum 10 characters long!"],
+        maxlength: [250, "Description must be maximum 250 characters long!"],
     },
     dates: {
         type: [{
@@ -58,7 +58,7 @@ const eventSchema = new Schema({
     contacts: {
         // TODO: Check later for unique COORDS..!
         coordinates: { lat: { type: String, required: true }, long: { type: String, required: true } },
-        city: { type: String, required: true },
+        region: { type: String, required: true },
         address: { type: String, required: true },
         phone: { type: String, required: true },
         email: { type: String, required: true }
