@@ -71,7 +71,7 @@ const eventSchema = new Schema({
         enum: [
             "Drag", "Drift", "Time Attack", "Offroad", "Moto Race",
             "Motocross", "Hill Climb", "Track", "Rally", "Rally Sprint",
-            "Rallycross", "Autocross", "Karting", "SIM Racing"
+            "Rallycross", "Autocross", "Karting", "SIM Racing", "Събори"
         ]
     },
     likes: [{ type: ObjectId, ref: 'User' } || { type: ObjectId, ref: 'Organization' }],
