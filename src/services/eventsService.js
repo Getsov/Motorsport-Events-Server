@@ -40,9 +40,7 @@ async function findEventByID(eventId) {
 };
 
 async function findEventsByCategory(category) {
-    // TODO: make more tests with different values!
     const events = await Event.find({ category: category });
-
     return events;
 };
 
