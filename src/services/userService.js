@@ -18,7 +18,7 @@ async function registerUser(userData) {
     email: userData.email,
     firstName: userData.firstName,
     lastName: userData.lastName,
-    city: userData.city ? userData.city : "",
+    city: userData.city,
     hashedPassword: await bcrypt.hash(userData.password, 10),
   });
   return createToken(user);
