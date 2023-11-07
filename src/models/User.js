@@ -46,11 +46,17 @@ const userSchema = new Schema({
     maxlength: [15, "City must be maximum 15 characters long!"],
   },
   address: {
-    type: String,
+    type: Schema.Types.String,
     required: true,
-    //TODO: Propper validation for city length
-    minlength: [2, "Adress must be minimum 2 characters long!"],
-    maxlength: [15, "Adress must be maximum 15 characters long!"],
+    validate: {
+      validator: function(value) {
+        // Allow strings and numbers
+        return typeof value === 'string' || typeof value === 'number';
+      },
+      message: "Address must be a string or a number!",
+    },
+    minlength: [2, "Address must be minimum 2 characters long!"],
+    maxlength: [15, "Address must be maximum 15 characters long!"],
   },
   //TODO: to take decision how we will take the likes
   likedEvents: [{ type: ObjectId, ref: "Event" }],
