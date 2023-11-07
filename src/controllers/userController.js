@@ -5,13 +5,19 @@ const { registerUser, loginUser } = require('../services/userService');
 //TODO: In other words, if you turn on cors in index.js, no file will be returned on the client!
 
 userController.post('/registerUser', async (req, res) => {
+    // console.log(req.body.email);
     try {
-        const user = await registerUser(
-            req.body.email,
-            req.body.firstName,
-            req.body.lastName,
-            req.body.password,
-        );
+        const userData = {
+            email: req.body.email,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            password: req.body.password,
+        };
+
+        if (req.body.city) {
+            userData.city = req.body.city;
+        }
+        const user = await registerUser(userData);
         res.status(200).json(user);
         res.end();
     } catch (error) {
@@ -25,6 +31,7 @@ userController.post('/loginUser', async (req, res) => {
         res.status(200).json(user);
         res.end();
     } catch (error) {
+        console.log(error);
         res.status(400).json({ error: error.message });
     }
 });
