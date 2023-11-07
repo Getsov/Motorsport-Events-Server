@@ -7,13 +7,10 @@ const eventSchema = new Schema({
         type: String,
         required: true,
         // index: { unique: true },
-        minlength: [5, "Title must be minimum 5 characters long!"],
         maxlength: [24, "Title must be maximum 24 characters long!"],
     },
     longTitle: {
         type: String,
-        minlength: [5, "Title must be minimum 5 characters long!"],
-        // maxlength: [24, "Title must be maximum 24 characters long!"],
     },
     shortDescription: {
         type: String,
