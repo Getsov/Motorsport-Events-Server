@@ -10,8 +10,6 @@ userController.post('/registerUser', async (req, res) => {
             req.body.email,
             req.body.firstName,
             req.body.lastName,
-            req.body.city,
-            req.body.address,
             req.body.password,
         );
         res.status(200).json(user);

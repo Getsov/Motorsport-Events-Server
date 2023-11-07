@@ -7,7 +7,7 @@ const ObjectId = mongoose.Types.ObjectId;
 //TODO: use env and change secret
 const secret = "q213fdfsddfasd231adfas12321kl";
 
-    async function registerUser(email, firstName, lastName,city, address, password) {
+    async function registerUser(email, firstName, lastName, password) {
 
         const existing = await User.findOne({ email });
         if (existing) {
@@ -18,8 +18,6 @@ const secret = "q213fdfsddfasd231adfas12321kl";
             email,
             firstName,
             lastName,
-            city,
-            address,
             hashedPassword: await bcrypt.hash(password, 10)
         });
         return createToken(user)
@@ -45,13 +43,11 @@ async function loginUser(email, password) {
 function createToken(user) {
   const payload = {
     _id: user.id,
-    username: user.username,
     firstName: user.firstName,
     lastName: user.lastName,
   };
   return {
     _id: user.id,
-    username: user.username,
     firstName: user.firstName,
     lastName: user.lastName,
     accessToken: jwt.sign(payload, secret),
