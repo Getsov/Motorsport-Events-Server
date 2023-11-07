@@ -3,12 +3,17 @@ const validTime = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
 const validString = /https?:\/\/./i;
 
 const eventSchema = new Schema({
-    title: {
+    shortTitle: {
         type: String,
         required: true,
         // index: { unique: true },
         minlength: [5, "Title must be minimum 5 characters long!"],
-        maxlength: [30, "Title must be maximum 30 characters long!"],
+        maxlength: [24, "Title must be maximum 24 characters long!"],
+    },
+    longTitle: {
+        type: String,
+        minlength: [5, "Title must be minimum 5 characters long!"],
+        // maxlength: [24, "Title must be maximum 24 characters long!"],
     },
     shortDescription: {
         type: String,
