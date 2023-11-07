@@ -6,7 +6,7 @@ eventController.get('/register', async (req, res) => {
     // TODO: check if the User has admin role.
     try {
         const event = await registerEvent();
-        
+
         res.status(200).json(event);
         res.end();
     } catch (error) {
@@ -42,6 +42,9 @@ eventController.get('/:id', async (req, res) => {
 eventController.get('/category/:category', async (req, res) => {
     try {
         const events = await findEventsByCategory(req.params.category);
+        if (events.length === 0) {
+            throw new Error('There is no such category in the database!')
+        }
 
         res.status(200).json(events);
         res.end();
