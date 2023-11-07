@@ -7,7 +7,6 @@ const { registerUser, loginUser } = require('../services/userService');
 
 //TODO: Change request from get => post
 userController.post('/registerUser', async (req, res) => {
-    // TODO: Check for passwords and token..
     try {
         const user = await registerUser(
             req.body.email,
