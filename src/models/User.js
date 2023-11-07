@@ -37,10 +37,7 @@ const userSchema = new Schema({
   role: {
     type: String,
     require: true,
-    /* TODO: Propper validation for role length
-    minlength: [2, "Role must be minimum 2 characters long!"],
-    maxlength: [15, "Role must be maximum 15 characters long!"],
-    */
+    enum: ["user", "admin"],
   },
   city: { type: String, required: true },
   /* TODO: Propper validation for city length
