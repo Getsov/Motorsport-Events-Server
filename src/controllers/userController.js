@@ -6,10 +6,17 @@ const { registerUser, loginUser } = require('../services/userService');
 
 
 //TODO: Change request from get => post
-userController.get('/registerUser', async (req, res) => {
+userController.post('/registerUser', async (req, res) => {
     // TODO: Check for passwords and token..
     try {
-        const user = await registerUser();
+        const user = await registerUser(
+            req.body.email,
+            req.body.firstName,
+            req.body.lastName,
+            req.body.city,
+            req.body.address,
+            req.body.password,
+        );
         res.status(200).json(user);
         res.end();
     } catch (error) {
