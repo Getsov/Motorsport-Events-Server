@@ -49,7 +49,6 @@ async function registerUser() {
     hashedPassword: await bcrypt.hash(password, 10),
     isDeleted: false,
   });
-  console.log(eventId1);
 
   return user;
 }
