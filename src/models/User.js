@@ -8,7 +8,6 @@ const emailRegex = /^[a-zA-Z0-9._%+-]{3,}@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 // const emailRegex2 = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
 
 //TODO: add validation for fields in the schema
-//TODO: add city and likedEvents
 const userSchema = new Schema({
   email: {
     type: String,
@@ -36,37 +35,21 @@ const userSchema = new Schema({
   },
   role: {
     type: String,
-    require: true,
-    /* TODO: Propper validation for role length
-    minlength: [2, "Role must be minimum 2 characters long!"],
-    maxlength: [15, "Role must be maximum 15 characters long!"],
-    */
+    enum: ["user", "admin"],
+    default: "user"
   },
-  city: { type: String, required: true },
-  /* TODO: Propper validation for city length
-    minlength: [2, "City must be minimum 2 characters long!"],
-    maxlength: [15, "City must be maximum 15 characters long!"],
-    */
-  address: {
+  city: {
     type: String,
-    required: true,
-    /* TODO: Propper validation for city length
-    minlength: [2, "Adress must be minimum 2 characters long!"],
-    maxlength: [15, "Adress must be maximum 15 characters long!"],
-    */
+    default: "",
+    // TODO: Propper validation for city length
   },
   //TODO: to take decision how we will take the likes
-  // likedEvents: { type: ObjectId, ref: "Event", required: true, default:[] },
-  likedEvents: [{ type: ObjectId, ref: "Event", required: true }],
+  likedEvents: [{ type: ObjectId, ref: "Event" }],
+  createdEvents: [{ type: ObjectId, ref: "Event" }],
   hashedPassword: { type: String, required: true },
   isDeleted: { type: Boolean, default: false },
 });
 
-/*
-const user = {
-  likedEvents: [{ id: 'string' }] // Array of liked event IDs
-};
-*/
 
 userSchema.index(
   { email: 1 },

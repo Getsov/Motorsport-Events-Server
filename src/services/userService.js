@@ -6,55 +6,24 @@ const ObjectId = mongoose.Types.ObjectId;
 
 //TODO: use env and change secret
 const secret = "q213fdfsddfasd231adfas12321kl";
-const password = "123";
-async function registerUser() {
-  /*
-    TODO: use next line for real app without hardcore the user
 
-    async function registerUser(email, firstName, lastName,role,city, address, password) {
+async function registerUser(userData) {
+  const email = userData.email;
+  const existing = await User.findOne({ email });
+  if (existing) {
+    throw new Error("Email is already taken!!!");
+  }
 
-        const existing = await User.findOne({ email });
-        if (existing) {
-            throw new Error('Email is already taken!!!');
-        }
-
-        const user = await User.create({
-            email,
-            firstName,
-            lastName,
-            role,
-            city,
-            address,
-            //TODO: fix likedEvents
-            likedEvents,
-            hashedPassword: await bcrypt.hash(password, 10)
-        });
-        return createToken(user)
-
-*/
-
-  // TODO: remove hardcore user
-  // Sample ObjectId values that reference actual Event documents
-  const eventId1 = new ObjectId();
-  const eventId2 = new ObjectId();
-  const eventId3 = new ObjectId();
   const user = await User.create({
-    email: "Shumaher@gmail.com",
-    firstName: "Michael",
-    lastName: "Schumaher",
-    role: "Racer",
-    city: "Sofia",
-    address: "Banishora 22",
-    likedEvents: [eventId1,eventId2,eventId3],
-    hashedPassword: await bcrypt.hash(password, 10),
-    isDeleted: false,
+    email: userData.email,
+    firstName: userData.firstName,
+    lastName: userData.lastName,
+    city: userData.city,
+    hashedPassword: await bcrypt.hash(userData.password, 10),
   });
-  console.log(eventId1);
-
-  return user;
+  return createToken(user);
 }
 
-//TODO: With username or with email user will login into the app? Change appropriate
 async function loginUser(email, password) {
   const user = await User.findOne({ email });
   //TODO: check for isDeleted property
@@ -73,13 +42,11 @@ async function loginUser(email, password) {
 function createToken(user) {
   const payload = {
     _id: user.id,
-    username: user.username,
     firstName: user.firstName,
     lastName: user.lastName,
   };
   return {
     _id: user.id,
-    username: user.username,
     firstName: user.firstName,
     lastName: user.lastName,
     accessToken: jwt.sign(payload, secret),
