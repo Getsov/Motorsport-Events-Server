@@ -39,7 +39,7 @@ eventController.get('/:id', async (req, res) => {
 });
 
 // Get events by category!
-eventController.get('/:category', async (req, res) => {
+eventController.get('/category/:category', async (req, res) => {
     try {
         const events = await findEventsByCategory(req.params.category);
 

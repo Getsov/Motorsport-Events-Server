@@ -19,7 +19,7 @@ async function registerEvent() {
             phone: '0123456789',
             email: 'peter@abv.bg'
         },
-        category: 'Hill Climb',
+        category: 'Drag',
         likes: ['6542c24b6102c6f4e79108fc', '6542c24b6102c6f4e79108fc', '6542c24b6102c6f4e79108fc'],
         creator: '6542c24b6102c6f4e79108fc',
         winners: [
