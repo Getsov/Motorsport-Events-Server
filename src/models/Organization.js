@@ -10,7 +10,6 @@ OrgnaizationSchema = new Schema({
   name: {
     type: Schema.Types.String,
     required: true,
-
     validate: {
       validator: function (value) {
         // Allow strings and numbers
