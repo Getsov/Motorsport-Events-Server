@@ -62,6 +62,8 @@ function createToken(organization) {
     managerFirstName: organization.managerFirstName,
     managerLastName: organization.lastName,
     phone: organization.phone,
+    region: organization.region,
+    address: organization.address,
     accessToken: jwt.sign(payload, secret),
   };
 }
