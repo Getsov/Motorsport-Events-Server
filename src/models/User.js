@@ -45,7 +45,6 @@ const userSchema = new Schema({
   },
   //TODO: to take decision how we will take the likes
   likedEvents: [{ type: ObjectId, ref: "Event" }],
-  createdEvents: [{ type: ObjectId, ref: "Event" }],
   hashedPassword: { type: String, required: true },
   isDeleted: { type: Boolean, default: false },
 });
