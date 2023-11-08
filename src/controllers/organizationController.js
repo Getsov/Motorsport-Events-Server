@@ -11,6 +11,15 @@ const {registerOrganization} = require("../services/organizationService")
 organizationController.post('/registerOrganization', async (req, res) => {
     // TODO: Check for passwords and token.
     try {
+        const organizationData = {
+            name: req.body.name,
+            email: req.body.email,
+            firstName: req.body.managerFirstName,
+            lastName: req.body.managerLastName,
+            password: req.body.phone,
+            region: req.body.region,
+            address: req.body.address ? req.body.address : "",
+          };
         const organization = await registerOrganization();
         
         res.status(200).json(user);
