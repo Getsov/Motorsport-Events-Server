@@ -1,8 +1,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
-const { default: mongoose } = require("mongoose");
-const ObjectId = mongoose.Types.ObjectId;
 
 //TODO: use env and change secret
 const secret = "q213fdfsddfasd231adfas12321kl";
@@ -40,6 +38,7 @@ async function loginUser(email, password) {
 }
 
 function createToken(user) {
+  //TODO: ADD EMAIL IN RETURN VALUE
   const payload = {
     _id: user.id,
     firstName: user.firstName,
@@ -56,10 +55,7 @@ function createToken(user) {
 function parseToken(token) {
   try {
     return jwt.verify(token, secret);
-  } catch {
-    error;
-  }
-  {
+  } catch (error) {
     throw new Error("Invalid acces token!");
   }
 }
