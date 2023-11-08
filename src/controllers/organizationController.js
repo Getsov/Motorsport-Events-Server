@@ -12,10 +12,11 @@ organizationController.post('/registerOrganization', async (req, res) => {
         const organizationData = {
             name: req.body.name,
             email: req.body.email,
-            firstName: req.body.managerFirstName,
-            lastName: req.body.managerLastName,
-            password: req.body.phone,
+            managerFirstName: req.body.managerFirstName,
+            managerLastName: req.body.managerLastName,
+            phone: req.body.phone,
             region: req.body.region,
+            password: req.body.password,
             address: req.body.address ? req.body.address : "",
           };
         const organization = await registerOrganization(organizationData);
