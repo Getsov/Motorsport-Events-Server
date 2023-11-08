@@ -1,4 +1,5 @@
 const organizationController = require('express').Router();
+const {registerOrganization} = require("../services/organizationService")
 
 //TODO : add organizationService 
 // const { registerUser, loginUser } = require('../services/userService');
@@ -7,19 +8,16 @@ const organizationController = require('express').Router();
 //TODO: In other words, if you turn on cors in index.js, no file will be returned on the client!
 
 
-//TODO: Change request from get => post
-organizationController.get('/registerOrganization', async (req, res) => {
-    // TODO: Check for passwords and token..
-
-    //TODO: Fix propper registration of organization
-    // try {
-    //     const user = await registerUser();
+organizationController.post('/registerOrganization', async (req, res) => {
+    // TODO: Check for passwords and token.
+    try {
+        const organization = await registerOrganization();
         
-    //     res.status(200).json(user);
-    //     res.end();
-    // } catch (error) {
-    //     res.status(400).json({ error: error.message });
-    // }
+        res.status(200).json(user);
+        res.end();
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
 });
 
 //TODO: Change request from get => post
