@@ -30,6 +30,7 @@ OrgnaizationSchema = new Schema({
     maxlength: [15, "Manager last name be maximum 15 characters long!"],
   },
   //TODO: regex for phone, or minimum and maximum length
+  //TODO: checking with num
   phone: { type: String, required: true },
   region: {
     type: Schema.Types.String,
