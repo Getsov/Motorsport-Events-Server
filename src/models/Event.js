@@ -7,7 +7,7 @@ const eventSchema = new Schema({
         type: String,
         required: true,
         // index: { unique: true },
-        maxlength: [24, "Title must be maximum 24 characters long!"],
+        maxlength: [24, "Short title must be maximum 24 characters long!"],
     },
     longTitle: {
         type: String,
@@ -15,14 +15,14 @@ const eventSchema = new Schema({
     shortDescription: {
         type: String,
         required: true,
-        minlength: [2, "Description must be minimum 2 characters long!"],
-        maxlength: [48, "Description must be maximum 40 characters long!"],
+        minlength: [2, "Short description must be minimum 2 characters long!"],
+        maxlength: [48, "Short description must be maximum 40 characters long!"],
     },
     longDescription: {
         type: String,
         required: true,
-        minlength: [10, "Description must be minimum 10 characters long!"],
-        maxlength: [250, "Description must be maximum 250 characters long!"],
+        minlength: [10, "Long description must be minimum 10 characters long!"],
+        maxlength: [250, "Long description must be maximum 250 characters long!"],
     },
     dates: {
         type: [{
@@ -94,8 +94,8 @@ const eventSchema = new Schema({
             message: 'Winners must be a maximum of 3 persons!',
         },
     },
-    participantPrice: [{ price: { type: Number }, description: { type: String } }],
-    visitorPrice: [{ price: { type: Number }, description: { type: String } }],
+    participantPrices: [{ price: { type: Number }, description: { type: String } }],
+    visitorPrices: [{ price: { type: Number }, description: { type: String } }],
     isDeleted: { type: Boolean, default: false }
 });
 
