@@ -48,9 +48,6 @@ async function findEventsByCategory(category) {
 async function findAllEvents(page, limit) {
     // TODO: make more tests with different values!
     return await limitModels(Event, page, limit);
-    // const event = await Event.find();
-
-    return event;
 };
 
 // TODO: Update the event later!
