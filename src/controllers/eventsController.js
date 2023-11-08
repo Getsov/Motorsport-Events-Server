@@ -16,6 +16,12 @@ eventController.get('/register', async (req, res) => {
 
 // Get ALL events!
 eventController.get('/', async (req, res) => {
+    const page = req.query.page;
+    const limit = req.query.limit;
+    if (page && limit) {
+        console.log(req.query);
+    }
+    
     try {
         const event = await findAllEvents();
         
