@@ -1,5 +1,5 @@
 const organizationController = require('express').Router();
-const {registerOrganization} = require("../services/organizationService")
+const {registerOrganization, loginOrganization} = require("../services/organizationService")
 
 
 //TODO:  In Future Pavka! Check CORS for requests "req" authorization, in index.js wich is commented!!!
@@ -28,18 +28,14 @@ organizationController.post('/registerOrganization', async (req, res) => {
     }
 });
 
-//TODO: Change request from get => post
-organizationController.get('/loginOrganization', async (req, res) => {
-    // TODO: Check for passwords and token..
-    //TODO: Fix propper login of organization
-    // try {
-    //     const user = await loginUser();
-        
-    //     res.status(200).json(user);
-    //     res.end();
-    // } catch (error) {
-    //     res.status(400).json({ error: error.message });
-    // }
+organizationController.post('/loginOrganization', async (req, res) => {
+    try {
+        const organization = await loginOrganization(req.body.email, req.body.password);
+        res.status(200).json(organization);
+        res.end();
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
 });
 
 module.exports = {
