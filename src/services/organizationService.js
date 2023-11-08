@@ -21,10 +21,24 @@ async function registerOrganization(organizationData) {
     phone: organizationData.phone,
     region: organizationData.region,
     password: organizationData.phone,
-    address: organizationData.address ,
+    address: organizationData.address,
     hashedPassword: await bcrypt.hash(organizationData.password, 10),
   });
   return createToken(organization);
+}
+
+async function loginOrganization(email, password) {
+  const organization = await Organization.findOne({ email });
+  if (!organization) {
+    throw new Error("Invalid email or password!!!");
+  }
+
+  const match = await bcrypt.compare(password, organization.hashedPassword);
+
+  if (!match) {
+    throw new Error("Invalid email or password!!!");
+  }
+  return createToken(user);
 }
 
 /*
@@ -52,6 +66,16 @@ function createToken(organization) {
   };
 }
 
+function parseToken(token) {
+  try {
+    return jwt.verify(token, secret);
+  } catch (error) {
+    throw new Error("Invalid acces token!");
+  }
+}
+
 module.exports = {
   registerOrganization,
+  loginOrganization,
+  parseToken
 };
