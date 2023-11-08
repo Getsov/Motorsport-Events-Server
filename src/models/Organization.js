@@ -18,13 +18,13 @@ OrgnaizationSchema = new Schema({
     },
   },
   //TODO:  minimum and maximum length firstName
-   managerFirstName: { type: String, require: true },
+   managerFirstName: { type: String, required: true },
   //TODO:  minimum and maximum length lastName
-  managerLastName: { type: String, require: true },
+  managerLastName: { type: String, required: true },
   //TODO: regex for phone, or minimum and maximum length
-  phone: { type: String, require: true },
+  phone: { type: String, required: true },
   //TODO:  minimum and maximum length city
-  city: { type: String, required: true },
+  city: { type: String, requiredd: true },
   //TODO:  minimum and maximum length address
   address: { type: String, required: true },
   createdEvents:  [{ type: ObjectId, ref: "Event"}],
