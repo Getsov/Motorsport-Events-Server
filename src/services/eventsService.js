@@ -1,5 +1,5 @@
 const Event = require('../models/Event');
-const { default: limitModels } = require('../utils/limitModels');
+const { limitModels } = require('../utils/limitModels');
 
 async function registerEvent() {
     // TODO: make more tests with different values!
