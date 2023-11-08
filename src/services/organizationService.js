@@ -38,7 +38,7 @@ async function loginOrganization(email, password) {
   if (!match) {
     throw new Error("Invalid email or password!!!");
   }
-  return createToken(user);
+  return createToken(organization);
 }
 
 /*
