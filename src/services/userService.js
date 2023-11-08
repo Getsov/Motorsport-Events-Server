@@ -40,6 +40,7 @@ async function loginUser(email, password) {
 }
 
 function createToken(user) {
+  //TODO: ADD EMAIL IN RETURN VALUE
   const payload = {
     _id: user.id,
     firstName: user.firstName,
