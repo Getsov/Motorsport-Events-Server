@@ -14,7 +14,7 @@ router.use('/organization', organizationController);
 router.use('/events', eventController);
 
 
-// Error Page
+// Error Page (404).
 router.get('*', (req, res) => {
     res.status(404).json({ message: 'Page not found!' });
 });
