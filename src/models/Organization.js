@@ -7,7 +7,21 @@ const emailRegex = /^[a-zA-Z0-9._%+-]{3,}@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 // const emailRegex2 = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
 
 OrgnaizationSchema = new Schema({
-  name: { type: String, require: true },
+  name: {
+    type: Schema.Types.String,
+    required: true,
+
+    validate: {
+      validator: function (value) {
+        // Allow strings and numbers
+        //TODO: Test only without validator
+        return typeof value === "string" || typeof value === "number";
+      },
+      message: "Name must be a string or a number!",
+      minlength: [2, "Name must be minimum 2 characters long!"],
+      maxlength: [15, "Name must be maximum 15 characters long!"],
+    },
+  },
   email: {
     type: String,
     required: true,
@@ -35,8 +49,6 @@ OrgnaizationSchema = new Schema({
   region: {
     type: Schema.Types.String,
     required: true,
-    //TODO: Propper validation for city length
-
     validate: {
       validator: function (value) {
         // Allow strings and numbers
