@@ -5,7 +5,6 @@ async function limitModels(model, page, limit) {
     const endIndex = page * limit;
 
     const models = {};
-    console.log(page, limit);
 
     if (!page && !limit) {
         return await model.find();
