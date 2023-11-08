@@ -18,21 +18,25 @@ OrgnaizationSchema = new Schema({
     },
   },
   //TODO:  minimum and maximum length firstName
-   managerFirstName: { type: String, required: true },
+  managerFirstName: {
+    type: String,
+    required: true,
+    minlength: [2, "Manager first name must be minimum 3 characters long!"],
+    maxlength: [15, "Manager first name be maximum 15 characters long!"],
+  },
   //TODO:  minimum and maximum length lastName
   managerLastName: { type: String, required: true },
   //TODO: regex for phone, or minimum and maximum length
   phone: { type: String, required: true },
   //TODO:  minimum and maximum length city
-  city: { type: String, requiredd: true },
+  region: { type: String, requiredd: true },
   //TODO:  minimum and maximum length address
   address: { type: String, required: true },
-  createdEvents:  [{ type: ObjectId, ref: "Event"}],
+  createdEvents: [{ type: ObjectId, ref: "Event" }],
   //TODO: Will organization will like events
-  likedEvents: [{ type: ObjectId, ref: "Event"}],
+  likedEvents: [{ type: ObjectId, ref: "Event" }],
   isDeleted: { type: Boolean, default: false },
 });
-
 
 const Organization = model("Organization", OrgnaizationSchema);
 module.exports = Organization;
