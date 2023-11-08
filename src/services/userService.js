@@ -1,8 +1,7 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
-const { default: mongoose } = require("mongoose");
-const ObjectId = mongoose.Types.ObjectId;
+// const { default: mongoose } = require("mongoose");
 
 //TODO: use env and change secret
 const secret = "q213fdfsddfasd231adfas12321kl";
