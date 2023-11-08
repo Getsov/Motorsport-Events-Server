@@ -6,7 +6,7 @@ eventController.get('/register', async (req, res) => {
     // TODO: check if the User has admin role.
     try {
         const event = await registerEvent();
-        
+
         res.status(200).json(event);
         res.end();
     } catch (error) {
@@ -16,15 +16,9 @@ eventController.get('/register', async (req, res) => {
 
 // Get ALL events!
 eventController.get('/', async (req, res) => {
-    const page = req.query.page;
-    const limit = req.query.limit;
-    if (page && limit) {
-        console.log(req.query);
-    }
-    
     try {
-        const event = await findAllEvents();
-        
+        const event = await findAllEvents(req.query.page, req.query.limit);
+
         res.status(200).json(event);
         res.end();
     } catch (error) {
@@ -36,7 +30,7 @@ eventController.get('/', async (req, res) => {
 eventController.get('/category/:category', async (req, res) => {
     try {
         const events = await findEventsByCategory(req.params.category);
-        
+
         res.status(200).json(events);
         res.end();
     } catch (error) {
@@ -48,7 +42,7 @@ eventController.get('/category/:category', async (req, res) => {
 eventController.get('/:id', async (req, res) => {
     try {
         const event = await findEventByID(req.params.id);
-        
+
         res.status(200).json(event);
         res.end();
     } catch (error) {
@@ -61,10 +55,10 @@ eventController.put('/:id', async (req, res) => {
     try {
         // TODO: Update according to some conditions later!
         // const foundEvent = await findOneEvent(req.params.id);
-        
+
         // TODO: To pass the id of the foundEvent and the body of the request!
         const updatedEvent = await updateEvent();
-        
+
         res.status(200).json(updatedEvent);
         res.end();
     } catch (error) {
