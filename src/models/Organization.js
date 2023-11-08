@@ -25,13 +25,36 @@ OrgnaizationSchema = new Schema({
     maxlength: [15, "Manager first name be maximum 15 characters long!"],
   },
   //TODO:  minimum and maximum length lastName
-  managerLastName: { type: String, required: true },
+  managerLastName: {
+    type: String,
+    required: true,
+    minlength: [2, "Manager last name must be minimum 3 characters long!"],
+    maxlength: [15, "Manager last name be maximum 15 characters long!"],
+  },
   //TODO: regex for phone, or minimum and maximum length
   phone: { type: String, required: true },
   //TODO:  minimum and maximum length city
-  region: { type: String, requiredd: true },
+  region: {
+    type: Schema.Types.String,
+    required: true,
+    //TODO: Propper validation for city length
+
+    validate: {
+      validator: function (value) {
+        // Allow strings and numbers
+        return typeof value === "string" || typeof value === "number";
+      },
+      message: "Address must be a string or a number!",
+      minlength: [2, "Region must be minimum 2 characters long!"],
+      maxlength: [15, "Region must be maximum 15 characters long!"],
+    },
+  },
   //TODO:  minimum and maximum length address
-  address: { type: String, required: true },
+  address: {
+    type: String,
+    default: "",
+    // TODO: Propper validation for city length
+  },
   createdEvents: [{ type: ObjectId, ref: "Event" }],
   //TODO: Will organization will like events
   likedEvents: [{ type: ObjectId, ref: "Event" }],
