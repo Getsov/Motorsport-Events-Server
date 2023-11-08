@@ -88,6 +88,6 @@ TODO:
 
 */
 
-moduke.exports = {
+module.exports = {
   registerOrganization,
 };
