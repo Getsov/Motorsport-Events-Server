@@ -1,4 +1,5 @@
 const Event = require('../models/Event');
+const { limitModels } = require('../utils/limitModels');
 
 async function registerEvent() {
     // TODO: make more tests with different values!
@@ -44,17 +45,16 @@ async function findEventsByCategory(category) {
     return events;
 };
 
-async function findAllEvents(eventId) {
+async function findAllEvents(page, limit) {
     // TODO: make more tests with different values!
-    const event = await Event.find();
-
-    return event;
+    return await limitModels(Event, page, limit);
 };
 
 // TODO: Update the event later!
 async function updateEvent(id, listing) {
 
 }
+
 
 module.exports = {
     registerEvent,
