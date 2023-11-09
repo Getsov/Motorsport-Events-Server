@@ -52,7 +52,7 @@ function createToken(organization) {
   //TODO: What payload will contain!
   const payload = {
     _id: organization.id,
-    email: organization.email,
+    name: organization.name,
     email: organization.email,
     managerFirstName: organization.managerFirstName,
     managerLastName: organization.managerLastName,
