@@ -38,7 +38,7 @@ const userSchema = new Schema({
     enum: ["user", "admin"],
     default: "user"
   },
-  city: {
+  region: {
     type: String,
     default: "",
     // TODO: Propper validation for city length
