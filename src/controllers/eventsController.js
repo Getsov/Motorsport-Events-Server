@@ -3,7 +3,7 @@ const { registerEvent, findEventByID, findAllEvents, updateEvent, findEventsByCa
 
 // TODO: Change the request method! and validate iputs when client is ready..
 eventController.post('/register', async (req, res) => {
-    // TODO: check if the User has admin role.
+    // TODO: check if there is organization.
     try {
         if ((req.user && req.user.role !== 'admin')) {
             throw new Error('Only user with role "Admin" or Organization can register an Event!');
