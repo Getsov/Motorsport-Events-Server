@@ -3,6 +3,7 @@ const app = express();
 const cors = require('./src/middlewares/cors');
 const dbConnectionString = 'mongodb://127.0.0.1:27017/Race-Fanatic-DB';
 const { mongoose } = require("mongoose");
+const session = require('./src/middlewares/session');
 const router = require('./src/routes');
 
 
@@ -25,6 +26,7 @@ async function startServer() {
     app.use(express.json());
     app.use(express.urlencoded({ extended: false }));
     app.use(cors());
+    app.use(session());
     app.use(router);
     app.listen('3030', () => console.log('Server operational on port: 3030!'));
 };

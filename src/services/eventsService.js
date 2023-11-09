@@ -4,7 +4,8 @@ const { limitModels } = require('../utils/limitModels');
 async function registerEvent() {
     // TODO: make more tests with different values!
     const event = await Event.create({
-        title: 'Race Fanatic',
+        shortTitle: 'Race Fanatic',
+        longTitle: 'Race Fanatic Race',
         shortDescription: 'ala bala',
         longDescription: 'Lorem ipsum dolor sit amet.',
         dates: [{
@@ -15,7 +16,7 @@ async function registerEvent() {
         imageUrl: 'https://cdn.akamai.steamstatic.com/steam/apps/1839940/capsule_616x353.jpg?t=1683123302',
         contacts: {
             coordinates: { lat: '42.52911093579847', long: '24.707900125838766' },
-            city: 'Hisarya',
+            region: 'Hisarya',
             address: 'Хайдут Генчо N1',
             phone: '0123456789',
             email: 'peter@abv.bg'
@@ -28,6 +29,7 @@ async function registerEvent() {
             { name: 'Ivan', vehicle: "Wartburg", place: 2 },
             { name: 'Dragan', vehicle: "Moskvich", place: 3 }
         ],
+        visitorPrices:[{price: 15, description: 'Цена за зрители'}]
     });
 
     return event;
