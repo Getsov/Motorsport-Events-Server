@@ -44,7 +44,7 @@ function createToken(user) {
     firstName: user.firstName,
     lastName: user.lastName,
     role: user.role,
-    city: user.city,
+    region: user.region,
   };
   return {
     _id: user.id,
@@ -52,7 +52,7 @@ function createToken(user) {
     firstName: user.firstName,
     lastName: user.lastName,
     role: user.role,
-    city: user.city,
+    region: user.region,
     likedEvents: user.likedEvents,
     isDeleted: user.isDeleted,
     accessToken: jwt.sign(payload, secret),
