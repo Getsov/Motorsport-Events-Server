@@ -95,7 +95,17 @@ const eventSchema = new Schema({
         },
     },
     participantPrices: [{ price: { type: Number }, description: { type: String } }],
-    visitorPrices: [{ price: { type: Number }, description: { type: String } }],
+    visitorPrices: {
+        type: [
+            { price: { type: Number }, description: { type: String, required: true } }
+        ],
+        validate: {
+            validator: function (array) {
+                return array.length > 0;
+            },
+            message: 'VisitorPrices must contain at least 1 price!',
+        }
+    },
     isDeleted: { type: Boolean, default: false }
 });
 
