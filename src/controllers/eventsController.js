@@ -5,6 +5,10 @@ const { registerEvent, findEventByID, findAllEvents, updateEvent, findEventsByCa
 eventController.get('/register', async (req, res) => {
     // TODO: check if the User has admin role.
     try {
+        if ((req.user && req.user.role !== 'admin')) {
+            throw new Error('Only user with role "Admin" or Organization can register an Event!');
+        }
+
         const event = await registerEvent();
 
         res.status(200).json(event);
