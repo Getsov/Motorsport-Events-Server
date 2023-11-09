@@ -38,16 +38,23 @@ async function loginUser(email, password) {
 }
 
 function createToken(user) {
-  //TODO: ADD EMAIL IN RETURN VALUE
+  //TODO: What payload will contain!
   const payload = {
     _id: user.id,
     firstName: user.firstName,
     lastName: user.lastName,
+    role: user.role,
+    region: user.region,
   };
   return {
     _id: user.id,
+    email: user.email,
     firstName: user.firstName,
     lastName: user.lastName,
+    role: user.role,
+    region: user.region,
+    likedEvents: user.likedEvents,
+    isDeleted: user.isDeleted,
     accessToken: jwt.sign(payload, secret),
   };
 }

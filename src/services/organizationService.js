@@ -49,19 +49,27 @@ TODO:
 */
 
 function createToken(organization) {
+  //TODO: What payload will contain!
   const payload = {
     _id: organization.id,
+    name: organization.name,
     email: organization.email,
     managerFirstName: organization.managerFirstName,
-    managerLastName: organization.lastName,
+    managerLastName: organization.managerLastName,
     phone: organization.phone,
   };
   return {
     _id: organization.id,
     name: organization.name,
+    email: organization.email,
     managerFirstName: organization.managerFirstName,
-    managerLastName: organization.lastName,
+    managerLastName: organization.managerLastName,
     phone: organization.phone,
+    region: organization.region,
+    address: organization.address,
+    createdEvents: organization.createdEvents,
+    likedEvents: organization.likedEvents,
+    isDeleted: organization.isDeleted,
     accessToken: jwt.sign(payload, secret),
   };
 }

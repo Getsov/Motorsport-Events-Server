@@ -38,14 +38,13 @@ const userSchema = new Schema({
     enum: ["user", "admin"],
     default: "user"
   },
-  city: {
+  region: {
     type: String,
     default: "",
     // TODO: Propper validation for city length
   },
   //TODO: to take decision how we will take the likes
   likedEvents: [{ type: ObjectId, ref: "Event" }],
-  createdEvents: [{ type: ObjectId, ref: "Event" }],
   hashedPassword: { type: String, required: true },
   isDeleted: { type: Boolean, default: false },
 });
