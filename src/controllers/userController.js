@@ -12,7 +12,7 @@ userController.post("/registerUser", async (req, res) => {
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       password: req.body.password,
-      city: req.body.city ? req.body.city : "",
+      region: req.body.region ? req.body.region : "",
     };
 
     const user = await registerUser(userData);
