@@ -2,7 +2,7 @@ const eventController = require('express').Router();
 const { registerEvent, findEventByID, findAllEvents, updateEvent, findEventsByCategory } = require('../services/eventsService');
 
 // TODO: Change the request method! and validate iputs when client is ready..
-eventController.get('/register', async (req, res) => {
+eventController.post('/register', async (req, res) => {
     // TODO: check if the User has admin role.
     try {
         if ((req.user && req.user.role !== 'admin')) {
