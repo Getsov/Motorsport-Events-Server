@@ -58,9 +58,11 @@ eventController.get('/:id', async (req, res) => {
 // Update event by ID!
 eventController.put('/:id', async (req, res) => {
     try {
-        // TODO: Update according to some conditions later!
-        // const foundEvent = await findOneEvent(req.params.id);
-
+        const event = await findEventByID(req.params.id);
+        if (req.user._id === undefined || req.user._id != event.creator) {
+            throw new Error('You are not owner of this Event!');
+        }
+        // ТОДО: To call properly update function!
         // TODO: To pass the id of the foundEvent and the body of the request!
         const updatedEvent = await updateEvent();
 
