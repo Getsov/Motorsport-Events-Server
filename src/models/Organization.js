@@ -5,7 +5,7 @@ const {
 } = require("mongoose");
 const emailRegex = /^[a-zA-Z0-9._%+-]{3,}@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 // const emailRegex2 = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
-
+//TODO: BACKTICKS
 OrgnaizationSchema = new Schema({
   name: {
     type: Schema.Types.String,
@@ -61,7 +61,7 @@ OrgnaizationSchema = new Schema({
   },
   address: {
     type: String,
-    default: "",
+    default: ``,
   },
   createdEvents: [{ type: ObjectId, ref: "Event" }],
   likedEvents: [{ type: ObjectId, ref: "Event" }],

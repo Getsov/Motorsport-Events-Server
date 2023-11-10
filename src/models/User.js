@@ -12,22 +12,30 @@ const userSchema = new Schema({
   email: {
     type: String,
     required: true,
-    //TODO: check the "unique" property if will work in real environment
     unique: true,
     validate: {
       validator: (value) => emailRegex.test(value),
       message: "Invalid email",
     },
   },
-  firstName: { type: String },
-  lastName: { type: String },
+  firstName: {
+    type: String,
+    default: "",
+    maxlength: [15, "First name must be maximum 15 characters long!"],
+  },
+  lastName: {
+    type: String,
+    default: "",
+    maxlength: [15, "Last name must be maximum 15 characters long!"],
+  },
   role: {
     type: String,
     enum: ["user", "admin"],
-    default: "user"
+    default: "user",
   },
   region: {
     type: String,
+    maxlength: [15, "Region must be maximum 15 characters long!"],
     default: "",
     // TODO: Propper validation for city length
   },
@@ -36,7 +44,6 @@ const userSchema = new Schema({
   hashedPassword: { type: String, required: true },
   isDeleted: { type: Boolean, default: false },
 });
-
 
 userSchema.index(
   { email: 1 },

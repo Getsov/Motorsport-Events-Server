@@ -10,7 +10,11 @@ async function registerOrganization(organizationData) {
 
   const existing = await Organization.findOne({ email });
   if (existing) {
-    throw new Error("Email is already taken!!!");
+    if (existing.isDeleted == true) {
+      throw new Error("This account has been deleted, please contact support");
+    } else {
+      throw new Error("Email is already taken!!!");
+    }
   }
 
   const organization = await Organization.create({
@@ -32,6 +36,9 @@ async function loginOrganization(email, password) {
   if (!organization) {
     throw new Error("Invalid email or password!!!");
   }
+  if (organization.isDeleted == true) {
+    throw new Error("This account has been deleted, please contact support");
+  }
 
   const match = await bcrypt.compare(password, organization.hashedPassword);
 
@@ -43,9 +50,7 @@ async function loginOrganization(email, password) {
 
 /*
 TODO:
-- loginOrganization,
 - parseToken (can be exported)
-
 */
 
 function createToken(organization) {
@@ -85,5 +90,5 @@ function parseToken(token) {
 module.exports = {
   registerOrganization,
   loginOrganization,
-  parseToken
+  parseToken,
 };

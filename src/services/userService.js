@@ -9,14 +9,18 @@ async function registerUser(userData) {
   const email = userData.email;
   const existing = await User.findOne({ email });
   if (existing) {
-    throw new Error("Email is already taken!!!");
+    if (existing.isDeleted == true) {
+      throw new Error("This account has been deleted, please contact support");
+    } else {
+      throw new Error("Email is already taken!!!");
+    }
   }
 
   const user = await User.create({
     email: userData.email,
     firstName: userData.firstName,
     lastName: userData.lastName,
-    city: userData.city,
+    region: userData.region,
     hashedPassword: await bcrypt.hash(userData.password, 10),
   });
   return createToken(user);
@@ -24,9 +28,11 @@ async function registerUser(userData) {
 
 async function loginUser(email, password) {
   const user = await User.findOne({ email });
-  //TODO: check for isDeleted property
   if (!user) {
     throw new Error("Invalid email or password!!!");
+  }
+  if (user.isDeleted == true) {
+    throw new Error("This account has been deleted, please contact support");
   }
 
   const match = await bcrypt.compare(password, user.hashedPassword);
