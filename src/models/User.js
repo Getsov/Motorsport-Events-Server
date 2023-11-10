@@ -19,20 +19,8 @@ const userSchema = new Schema({
       message: "Invalid email",
     },
   },
-  //TODO:  minimum and maximum length firstName
-  firstName: {
-    type: String,
-    required: true,
-    minlength: [2, "First name must be minimum 2 characters long!"],
-    maxlength: [15, "First name must be maximum 15 characters long!"],
-  },
-  //TODO:  minimum and maximum length lastName
-  lastName: {
-    type: String,
-    required: true,
-    minlength: [2, "Last name must be minimum 2 characters long!"],
-    maxlength: [15, "Last name must be maximum 15 characters long!"],
-  },
+  firstName: { type: String },
+  lastName: { type: String },
   role: {
     type: String,
     enum: ["user", "admin"],
