@@ -3,10 +3,11 @@ const { registerEvent, findEventByID, findAllEvents, updateEvent, findEventsByCa
 
 // TODO: Change the request method! and validate iputs when client is ready..
 eventController.post('/register', async (req, res) => {
-    // TODO: check if there is organization.
     try {
-        if ((req.user && req.user.role !== 'admin')) {
-            throw new Error('Only user with role "Admin" or Organization can register an Event!');
+        // Checks if there is not user. Or if the user have admin role or if the user is organization. 
+        if (!req.user || !(req.user.role === 'admin' || req.user.managerFirstName !== undefined)) {
+            console.log(req.user);
+            throw new Error('Only user with role "Admin", or Organization can register an Event!');
         }
 
         const event = await registerEvent();
@@ -57,9 +58,11 @@ eventController.get('/:id', async (req, res) => {
 // Update event by ID!
 eventController.put('/:id', async (req, res) => {
     try {
-        // TODO: Update according to some conditions later!
-        // const foundEvent = await findOneEvent(req.params.id);
-
+        const event = await findEventByID(req.params.id);
+        if (req.user._id === undefined || req.user._id != event.creator) {
+            throw new Error('You are not owner of this Event!');
+        }
+        // ТОДО: To call properly update function!
         // TODO: To pass the id of the foundEvent and the body of the request!
         const updatedEvent = await updateEvent();
 

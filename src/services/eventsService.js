@@ -23,7 +23,7 @@ async function registerEvent() {
         },
         category: 'Drag',
         likes: ['6542c24b6102c6f4e79108fc', '6542c24b6102c6f4e79108fc', '6542c24b6102c6f4e79108fc'],
-        creator: '6542c24b6102c6f4e79108fc',
+        creator: '654cf9e3b9f71701e19215d1',
         winners: [
             { name: 'Pavel', vehicle: "Trabant", place: 1 },
             { name: 'Ivan', vehicle: "Wartburg", place: 2 },
@@ -54,7 +54,7 @@ async function findAllEvents(page, limit) {
 
 // TODO: Update the event later!
 async function updateEvent(id, listing) {
-
+ console.log("Update");
 }
 
 
