@@ -54,7 +54,7 @@ const eventSchema = new Schema({
   },
   imageUrl: {
     type: String,
-    default:``,
+    default: ``,
     validate: {
       validator: (value) => validString.test(value),
       message: "Invalid URL, must start with HTTP:///HTTPS://",
@@ -129,7 +129,7 @@ const eventSchema = new Schema({
   visitorPrices: {
     type: [
       {
-        price: { type: Number },
+        price: { type: Number, required: true },
         description: { type: String, required: true },
       },
     ],
