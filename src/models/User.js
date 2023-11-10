@@ -12,7 +12,6 @@ const userSchema = new Schema({
   email: {
     type: String,
     required: true,
-    //TODO: check the "unique" property if will work in real environment
     unique: true,
     validate: {
       validator: (value) => emailRegex.test(value),
@@ -34,6 +33,7 @@ const userSchema = new Schema({
   },
   region: {
     type: String,
+    maxlength: [15, "Name must be maximum 15 characters long!"],
     default: "",
     // TODO: Propper validation for city length
   },
