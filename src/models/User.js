@@ -33,7 +33,7 @@ const userSchema = new Schema({
   },
   region: {
     type: String,
-    maxlength: [15, "Name must be maximum 15 characters long!"],
+    maxlength: [15, "Region must be maximum 15 characters long!"],
     default: "",
     // TODO: Propper validation for city length
   },
