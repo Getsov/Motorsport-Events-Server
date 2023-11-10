@@ -1,122 +1,156 @@
-const { Schema, model, Types: { ObjectId }, } = require('mongoose');
+const {
+  Schema,
+  model,
+  Types: { ObjectId },
+} = require("mongoose");
 const validTime = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
 const validString = /https?:\/\/./i;
 
 const eventSchema = new Schema({
-    shortTitle: {
-        type: String,
-        required: true,
-        // index: { unique: true },
-        maxlength: [24, "Short title must be maximum 24 characters long!"],
-    },
-    longTitle: {
-        type: String,
-    },
-    shortDescription: {
-        type: String,
-        required: true,
-        minlength: [2, "Short description must be minimum 2 characters long!"],
-        maxlength: [48, "Short description must be maximum 40 characters long!"],
-    },
-    longDescription: {
-        type: String,
-        required: true,
-        minlength: [10, "Long description must be minimum 10 characters long!"],
-        maxlength: [250, "Long description must be maximum 250 characters long!"],
-    },
-    dates: {
-        type: [{
-            startDate: { type: Date, required: true },
-            startTime: {
-                type: String,
-                required: true,
-                validate: {
-                    validator: (value) => validTime.test(value),
-                    message: 'Invalid time format! Example: hh:mm (24h)'
-                },
-            },
-            endTime: {
-                type: String,
-                required: true,
-                validate: {
-                    validator: (value) => validTime.test(value),
-                    message: 'Invalid time format! Example: hh:mm (24h)'
-                }
-            }
-        }]
-    },
-    imageUrl: {
-        type: String,
-        validate: {
-            validator: (value) => validString.test(value),
-            message: "Invalid URL, must start with HTTP:///HTTPS://",
+  shortTitle: {
+    type: String,
+    required: true,
+    // index: { unique: true },
+    maxlength: [24, "Short title must be maximum 24 characters long!"],
+  },
+  longTitle: {
+    type: String,
+    default: ``,
+  },
+  shortDescription: {
+    type: String,
+    required: true,
+    minlength: [2, "Short description must be minimum 2 characters long!"],
+    maxlength: [48, "Short description must be maximum 40 characters long!"],
+  },
+  longDescription: {
+    type: String,
+    required: true,
+    minlength: [10, "Long description must be minimum 10 characters long!"],
+    maxlength: [250, "Long description must be maximum 250 characters long!"],
+  },
+  dates: {
+    type: [
+      {
+        startDate: { type: Date, required: true },
+        startTime: {
+          type: String,
+          required: true,
+          validate: {
+            validator: (value) => validTime.test(value),
+            message: "Invalid time format! Example: hh:mm (24h)",
+          },
         },
-    },
-    // TODO: To add some storage later!
-    // imageFile: {
-    //     data: Buffer,
-    //     connectType: String
-    // },
-    contacts: {
-        // TODO: Check later for unique COORDS..!
-        coordinates: { lat: { type: String, required: true }, long: { type: String, required: true } },
-        region: { type: String, required: true },
-        address: { type: String, required: true },
-        phone: { type: String, required: true },
-        email: { type: String, required: true }
-    },
-    category: {
-        type: String,
-        required: true,
-        minlength: [2, "Category must be minimum 2 characters long!"],
-        maxlength: [30, "Category must be maximum 30 characters long!"],
-        enum: [
-            "Drag", "Drift", "Time Attack", "Offroad", "Moto Race",
-            "Motocross", "Hill Climb", "Track", "Rally", "Rally Sprint",
-            "Rallycross", "Autocross", "Karting", "SIM Racing", "Събори"
-        ]
-    },
-    likes: [{ type: ObjectId, ref: 'User' } || { type: ObjectId, ref: 'Organization' }],
-    // TODO: We must add Admin model later!
-    creator: { type: ObjectId, ref: 'User', required: true } || { type: ObjectId, ref: 'Organization', required: true },
-    winners: {
-        type: [
-            {
-                name: { type: String, required: true },
-                vehicle: { type: String, required: true },
-                place: { type: Number, required: true }
-            }
-        ],
-        validate: {
-            validator: function (array) {
-                return array.length <= 3;
-            },
-            message: 'Winners must be a maximum of 3 persons!',
+        endTime: {
+          type: String,
+          required: true,
+          validate: {
+            validator: (value) => validTime.test(value),
+            message: "Invalid time format! Example: hh:mm (24h)",
+          },
         },
+      },
+    ],
+  },
+  imageUrl: {
+    type: String,
+    default:``,
+    validate: {
+      validator: (value) => validString.test(value),
+      message: "Invalid URL, must start with HTTP:///HTTPS://",
     },
-    participantPrices: [{ price: { type: Number }, description: { type: String } }],
-    visitorPrices: {
-        type: [
-            { price: { type: Number }, description: { type: String, required: true } }
-        ],
-        validate: {
-            validator: function (array) {
-                return array.length > 0;
-            },
-            message: 'VisitorPrices must contain at least 1 price!',
-        }
+  },
+  // TODO: To add some storage later!
+  // imageFile: {
+  //     data: Buffer,
+  //     connectType: String
+  // },
+  contacts: {
+    // TODO: Check later for unique COORDS..!
+    coordinates: {
+      lat: { type: String, required: true },
+      long: { type: String, required: true },
     },
-    isDeleted: { type: Boolean, default: false }
+    region: { type: String, required: true },
+    address: { type: String, required: true },
+    phone: { type: String, required: true },
+    email: { type: String, required: true },
+  },
+  category: {
+    type: String,
+    required: true,
+    minlength: [2, "Category must be minimum 2 characters long!"],
+    maxlength: [30, "Category must be maximum 30 characters long!"],
+    enum: [
+      "Drag",
+      "Drift",
+      "Time Attack",
+      "Offroad",
+      "Moto Race",
+      "Motocross",
+      "Hill Climb",
+      "Track",
+      "Rally",
+      "Rally Sprint",
+      "Rallycross",
+      "Autocross",
+      "Karting",
+      "SIM Racing",
+      "Събори",
+    ],
+  },
+  likes: [
+    { type: ObjectId, ref: "User" } || { type: ObjectId, ref: "Organization" },
+  ],
+  // TODO: We must add Admin model later!
+  creator: { type: ObjectId, ref: "User", required: true } || {
+    type: ObjectId,
+    ref: "Organization",
+    required: true,
+  },
+  winners: {
+    type: [
+      {
+        name: { type: String, required: true },
+        vehicle: { type: String, required: true },
+        place: { type: Number, required: true },
+      },
+    ],
+    validate: {
+      validator: function (array) {
+        return array.length <= 3;
+      },
+      message: "Winners must be a maximum of 3 persons!",
+    },
+  },
+  participantPrices: [
+    { price: { type: Number }, description: { type: String } },
+  ],
+  visitorPrices: {
+    type: [
+      {
+        price: { type: Number },
+        description: { type: String, required: true },
+      },
+    ],
+    validate: {
+      validator: function (array) {
+        return array.length > 0;
+      },
+      message: "VisitorPrices must contain at least 1 price!",
+    },
+  },
+  isDeleted: { type: Boolean, default: false },
 });
 
 eventSchema.index(
-    { title: 1 },
-    {
-        collation: {
-            locale: "en",
-            strength: 2,
-        },
-    }
+  { title: 1 },
+  {
+    collation: {
+      locale: "en",
+      strength: 2,
+    },
+  }
 );
 
 const Event = model("Event", eventSchema);
