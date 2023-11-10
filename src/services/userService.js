@@ -9,7 +9,11 @@ async function registerUser(userData) {
   const email = userData.email;
   const existing = await User.findOne({ email });
   if (existing) {
-    throw new Error("Email is already taken!!!");
+    if (existing.isDeleted == true) {
+      throw new Error("This account has been deleted, please contact support");
+    } else {
+      throw new Error("Email is already taken!!!");
+    }
   }
 
   const user = await User.create({
@@ -24,7 +28,10 @@ async function registerUser(userData) {
 
 async function loginUser(email, password) {
   const user = await User.findOne({ email });
-  //TODO: check for isDeleted property
+  if (user.isDeleted == true) {
+    throw new Error("This account has been deleted, please contact support");
+  }
+
   if (!user) {
     throw new Error("Invalid email or password!!!");
   }
