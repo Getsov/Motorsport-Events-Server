@@ -19,12 +19,18 @@ const userSchema = new Schema({
       message: "Invalid email",
     },
   },
-  firstName: { type: String },
-  lastName: { type: String },
+  firstName: {
+    type: String,
+    default: "",
+  },
+  lastName: {
+    type: String,
+    default: "",
+  },
   role: {
     type: String,
     enum: ["user", "admin"],
-    default: "user"
+    default: "user",
   },
   region: {
     type: String,
@@ -36,7 +42,6 @@ const userSchema = new Schema({
   hashedPassword: { type: String, required: true },
   isDeleted: { type: Boolean, default: false },
 });
-
 
 userSchema.index(
   { email: 1 },
