@@ -28,12 +28,11 @@ async function registerUser(userData) {
 
 async function loginUser(email, password) {
   const user = await User.findOne({ email });
-  if (user.isDeleted == true) {
-    throw new Error("This account has been deleted, please contact support");
-  }
-
   if (!user) {
     throw new Error("Invalid email or password!!!");
+  }
+  if (user.isDeleted == true) {
+    throw new Error("This account has been deleted, please contact support");
   }
 
   const match = await bcrypt.compare(password, user.hashedPassword);
