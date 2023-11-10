@@ -78,7 +78,7 @@ const eventSchema = new Schema({
     },
     likes: [{ type: ObjectId, ref: 'User' } || { type: ObjectId, ref: 'Organization' }],
     // TODO: We must add Admin model later!
-    creator: { type: ObjectId, ref: 'Admin', required: true } || { type: ObjectId, ref: 'Organization', required: true },
+    creator: { type: ObjectId, ref: 'User', required: true } || { type: ObjectId, ref: 'Organization', required: true },
     winners: {
         type: [
             {
