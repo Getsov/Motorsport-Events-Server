@@ -68,7 +68,6 @@ async function updateUser(tokenData, requestBody) {
   existingUser.region = requestBody.region
     ? requestBody.region
     : existingUser.region;
-  existingUser.hashedPassword = existingUser.hashedPassword;
   const newRecord = await existingUser.save();
   console.log(newRecord);
   return createToken(newRecord);
