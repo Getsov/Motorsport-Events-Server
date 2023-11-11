@@ -1,6 +1,7 @@
 const { userController } = require("./controllers/userController");
 const { eventController } = require("./controllers/eventsController");
 const { organizationController } = require("./controllers/organizationController");
+const { adminController } = require("./controllers/adminController");
 
 const router = require('express').Router();
 
@@ -11,6 +12,7 @@ router.get('/', (req, res) => {
 
 router.use('/user', userController);
 router.use('/organization', organizationController);
+router.use('/admin',adminController)
 router.use('/events', eventController);
 
 

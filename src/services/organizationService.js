@@ -48,6 +48,34 @@ async function loginOrganization(email, password) {
   return createToken(organization);
 }
 
+async function updateOrganization(id, requestBody) {
+  const existingOrganization = await Organization.findById(id);
+  existingOrganization.name = requestBody.name
+    ? requestBody.name
+    : existingOrganization.name;
+  existingOrganization.email = requestBody.email
+    ? requestBody.email
+    : existingOrganization.email;
+  existingOrganization.managerFirstName = requestBody.managerFirstName
+    ? requestBody.managerFirstName
+    : existingOrganization.managerFirstName;
+  existingOrganization.managerLastName = requestBody.managerLastName
+    ? requestBody.managerLastName
+    : existingOrganization.managerLastName;
+  existingOrganization.phone = requestBody.phone
+    ? requestBody.phone
+    : existingOrganization.phone;
+  existingOrganization.region = requestBody.region
+    ? requestBody.region
+    : existingOrganization.region;
+  existingOrganization.address = requestBody.address
+    ? requestBody.address
+    : existingOrganization.address;
+  const newRecord = await existingOrganization.save();
+  console.log(newRecord);
+  return createToken(newRecord);
+}
+
 /*
 TODO:
 - parseToken (can be exported)
@@ -62,6 +90,8 @@ function createToken(organization) {
     managerFirstName: organization.managerFirstName,
     managerLastName: organization.managerLastName,
     phone: organization.phone,
+    region: organization.region,
+    address: organization.address,
   };
   return {
     _id: organization.id,
@@ -91,4 +121,5 @@ module.exports = {
   registerOrganization,
   loginOrganization,
   parseToken,
+  updateOrganization,
 };
