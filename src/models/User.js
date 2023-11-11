@@ -20,13 +20,13 @@ const userSchema = new Schema({
   },
   firstName: {
     type: String,
-    default: "",
     maxlength: [15, "First name must be maximum 15 characters long!"],
+    default: "",
   },
   lastName: {
     type: String,
-    default: "",
     maxlength: [15, "Last name must be maximum 15 characters long!"],
+    default: "",
   },
   role: {
     type: String,
