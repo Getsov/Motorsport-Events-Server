@@ -8,9 +8,9 @@ const secret = "q213fdfsddfasd231adfas12321kl";
 
 async function registerUser(requestBody) {
   const email = requestBody.email;
-  const existing = await User.findOne({ email });
-  if (existing) {
-    if (existing.isDeleted == true) {
+  const existingUser = await User.findOne({ email });
+  if (existingUser) {
+    if (existingUser.isDeleted == true) {
       throw new Error("This account has been deleted, please contact support");
     } else {
       throw new Error("Email is already taken!!!");
@@ -49,25 +49,27 @@ async function getById(id) {
 }
 
 async function updateUser(tokenData, requestBody) {
-  const existing = await User.findById(tokenData._id);
+  const existingUser = await User.findById(tokenData._id);
   /*TODO
   if there is empty string in req.body- mongo
   will kept the old record. 
   Need one more check if field must be cleared
   */
- //TODO - check functionality with liked events
-  existing.email = requestBody.email ? requestBody.email : existing.email;
-  existing.firstName = requestBody.firstName
+  //TODO - check functionality with liked events
+  existingUser.email = requestBody.email
+    ? requestBody.email
+    : existingUser.email;
+  existingUser.firstName = requestBody.firstName
     ? requestBody.firstName
-    : existing.firstName;
-  existing.lastName = requestBody.lastName
+    : existingUser.firstName;
+  existingUser.lastName = requestBody.lastName
     ? requestBody.lastName
-    : existing.lastName;
-  existing.region = requestBody.region 
-    ? requestBody.region 
-    : existing.region;
-  existing.hashedPassword = existing.hashedPassword;
-  const newRecord = await existing.save();
+    : existingUser.lastName;
+  existingUser.region = requestBody.region
+    ? requestBody.region
+    : existingUser.region;
+  existingUser.hashedPassword = existingUser.hashedPassword;
+  const newRecord = await existingUser.save();
   console.log(newRecord);
   return createToken(newRecord);
 }
