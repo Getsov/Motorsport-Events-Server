@@ -42,7 +42,7 @@ userController.post("/loginUser", async (req, res) => {
 
 userController.put("/updateUser", async (req, res) => {
   try {
-    //TODO: user in useful in that case
+    //TODO: user is useful in that case
     // const user = await getById(req.requester.id);
     const result = await updateUser(req.requester, req.body);
     res.status(200).json(result);
