@@ -4,6 +4,7 @@ const { updateUser } = require("../services/userService");
 const adminController = require("express").Router();
 
 adminController.put("/updateOrganization", async (req, res) => {
+    //TODO - MAKE TEST
   const isAdmin = req.requester.role == "admin";
   if (isAdmin) {
     try {
@@ -20,6 +21,7 @@ adminController.put("/updateOrganization", async (req, res) => {
 });
 
 adminController.put("/updateUser", async (req, res) => {
+        //TODO - MAKE TEST
   const isAdmin = req.requester.role == "admin";
   if (isAdmin) {
     try {
