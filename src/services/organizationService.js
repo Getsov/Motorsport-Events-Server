@@ -48,9 +48,8 @@ async function loginOrganization(email, password) {
   return createToken(organization);
 }
 
-async function updateOrganization(tokenData, requestBody) {
-  const existingOrganization = await Organization.findById(tokenData._id);
-
+async function updateOrganization(id, requestBody) {
+  const existingOrganization = await Organization.findById(id);
   existingOrganization.name = requestBody.name
     ? requestBody.name
     : existingOrganization.name;
@@ -72,10 +71,9 @@ async function updateOrganization(tokenData, requestBody) {
   existingOrganization.address = requestBody.address
     ? requestBody.address
     : existingOrganization.address;
-
-    const newRecord = await existingOrganization.save();
-    console.log(newRecord);
-    return createToken(newRecord);
+  const newRecord = await existingOrganization.save();
+  console.log(newRecord);
+  return createToken(newRecord);
 }
 
 /*

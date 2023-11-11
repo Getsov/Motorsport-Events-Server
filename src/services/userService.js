@@ -48,8 +48,8 @@ async function getById(id) {
   return User.find(id);
 }
 
-async function updateUser(tokenData, requestBody) {
-  const existingUser = await User.findById(tokenData._id);
+async function updateUser(id, requestBody, isAdmin) {
+  const existingUser = await User.findById(id);
   /*TODO
   if there is empty string in req.body- mongo
   will kept the old record. 
@@ -68,8 +68,14 @@ async function updateUser(tokenData, requestBody) {
   existingUser.region = requestBody.region
     ? requestBody.region
     : existingUser.region;
+  if (isAdmin) {
+    existingUser.role = requestBody.role ? requestBody.role : existingUser.role;
+    existingUser.isDeleted = requestBody.isDeleted
+      ? requestBody.isDeleted
+      : existingUser.isDeleted;
+  }
   const newRecord = await existingUser.save();
-  console.log(newRecord);
+  // console.log(newRecord);
   return createToken(newRecord);
 }
 
