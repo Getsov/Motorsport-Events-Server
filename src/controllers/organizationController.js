@@ -45,7 +45,7 @@ organizationController.post("/loginOrganization", async (req, res) => {
 
 organizationController.put("/updateOrganization", async (req, res) => {
   try {
-    const result = await updateOrganization(req.requester, req.body);
+    const result = await updateOrganization(req.requester._id, req.body);
     res.status(200).json(result);
     res.end();
   } catch (error) {
