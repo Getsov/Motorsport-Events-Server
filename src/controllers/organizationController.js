@@ -1,18 +1,18 @@
-const organizationController = require("express").Router();
+const organizationController = require(`express`).Router();
 const {
   registerOrganization,
   loginOrganization,
   updateOrganization,
-} = require("../services/organizationService");
+} = require(`../services/organizationService`);
 
-//TODO:  In Future Pavka! Check CORS for requests "req" authorization, in index.js wich is commented!!!
+//TODO:  In Future Pavka! Check CORS for requests `req` authorization, in index.js wich is commented!!!
 //TODO: In other words, if you turn on cors in index.js, no file will be returned on the client!
 
-organizationController.post("/registerOrganization", async (req, res) => {
+organizationController.post(`/registerOrganization`, async (req, res) => {
   // TODO: Check for passwords and token.
   try {
     if (req.body.password !== req.body.repass) {
-      throw new Error("Password dismatch!");
+      throw new Error(`Password dismatch!`);
     }
     const organizationData = {
       name: req.body.name,
@@ -33,7 +33,7 @@ organizationController.post("/registerOrganization", async (req, res) => {
   }
 });
 
-organizationController.post("/loginOrganization", async (req, res) => {
+organizationController.post(`/loginOrganization`, async (req, res) => {
   try {
     const organization = await loginOrganization(
       req.body.email,
@@ -46,10 +46,10 @@ organizationController.post("/loginOrganization", async (req, res) => {
   }
 });
 
-organizationController.put("/updateOrganization", async (req, res) => {
+organizationController.put(`/updateOrganization`, async (req, res) => {
   try {
     if (req.body.password !== req.body.repass) {
-      throw new Error("Password dismatch!");
+      throw new Error(`Password dismatch!`);
     }
     const result = await updateOrganization(req.requester._id, req.body);
     res.status(200).json(result);
