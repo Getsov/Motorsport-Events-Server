@@ -1,3 +1,4 @@
+const { updateEvent, findEventByID } = require("../services/eventsService");
 const { updateOrganization } = require("../services/organizationService");
 const { updateUser } = require("../services/userService");
 
@@ -34,6 +35,27 @@ adminController.put("/updateUser", async (req, res) => {
     }
   } else {
     throw new Error("You do not have rights to these changes!");
+  }
+});
+
+// Update Event By Admin?
+adminController.put('/updateEvent', async (req, res) => {
+  try {
+      const event = await findEventByID(req.body.id);
+      if (event === null) {
+          throw new Error("Event doesn't exist!");
+      }
+      // IS not admin or undefined.
+      if (req.requester._id === undefined || req.requester.role != 'admin') {
+          throw new Error('You are not Admin to modify this Event!');
+      }
+
+      const updatedEvent = await updateEvent(req.body, event, req.requester.role === 'admin');
+
+      res.status(200).json(updatedEvent);
+      res.end();
+  } catch (error) {
+      res.status(400).json({ error: error.message });
   }
 });
 
