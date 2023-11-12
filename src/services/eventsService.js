@@ -55,7 +55,6 @@ async function findAllEvents(page, limit) {
 // TODO: Update the event later!
 async function updateEvent(requestBody, existingEvent, isAdmin) {
     for (let key in requestBody) {
-
         if (isAdmin && key === 'creator' || key === 'likes') {
             existingEvent[key] = requestBody[key];
         }
