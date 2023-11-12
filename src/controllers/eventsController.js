@@ -66,7 +66,7 @@ eventController.put('/:id', async (req, res) => {
             throw new Error('You are not owner or Admin to modify this Event!');
         }
 
-        const updatedEvent = await updateEvent(req.body, event);
+        const updatedEvent = await updateEvent(req.body, event, req.requester.role === 'admin');
 
         res.status(200).json(updatedEvent);
         res.end();
