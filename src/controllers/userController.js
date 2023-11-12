@@ -14,9 +14,8 @@ userController.post("/registerUser", async (req, res) => {
   try {
     const userData = {
       email: req.body.email,
-      //TODO = first and last names are optional
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
+      firstName: req.body.firstName ? req.body.firstName : "",
+      lastName: req.body.lastName ? req.body.lastName : "",
       password: req.body.password,
       region: req.body.region ? req.body.region : "",
     };
