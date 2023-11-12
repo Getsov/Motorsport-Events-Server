@@ -56,6 +56,7 @@ eventController.get('/:id', async (req, res) => {
 
 // Update event by ID!
 eventController.put('/:id', async (req, res) => {
+    //TODO: Later update the request acording to the admin controller!?
     try {
         const event = await findEventByID(req.params.id);
         if (event === null) {
