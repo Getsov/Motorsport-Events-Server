@@ -59,10 +59,12 @@ async function updateEvent(requestBody, existingEvent, isAdmin) {
     //         console.log(existingEvent.toString);
     //     }
     // }
+    
     existingEvent.shortTitle = requestBody.shortTitle ? requestBody.shortTitle : existingEvent.shortTitle;
     existingEvent.longTitle = requestBody.longTitle ? requestBody.longTitle : existingEvent.longTitle;
     existingEvent.shortDescription = requestBody.shortDescription ? requestBody.shortDescription : existingEvent.shortDescription;
     existingEvent.longDescription = requestBody.longDescription ? requestBody.longDescription : existingEvent.longDescription;
+    // Ask about dates property should be partial edit?!
     existingEvent.dates = requestBody.dates ? requestBody.dates : existingEvent.dates;
     existingEvent.imageUrl = requestBody.imageUrl ? requestBody.imageUrl : existingEvent.imageUrl;
     // Ask about contscts property should be partial edit?!
