@@ -54,7 +54,7 @@ const eventSchema = new Schema({
   },
   imageUrl: {
     type: String,
-    default: 'HTTPS://',
+    default: '',
     validate: {
       validator: (value) => validString.test(value),
       message: "Invalid URL, must start with HTTP:// or HTTPS://",
