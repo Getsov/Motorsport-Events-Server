@@ -23,13 +23,13 @@ async function registerEvent() {
         },
         category: 'Drag',
         likes: ['6542c24b6102c6f4e79108fc', '6542c24b6102c6f4e79108fc', '6542c24b6102c6f4e79108fc'],
-        creator: '654cf9e3b9f71701e19215d1',
+        creator: '6550b41ee542ffd1875e2d38',
         winners: [
             { name: 'Pavel', vehicle: "Trabant", place: 1 },
             { name: 'Ivan', vehicle: "Wartburg", place: 2 },
             { name: 'Dragan', vehicle: "Moskvich", place: 3 }
         ],
-        visitorPrices:[{price: 15, description: 'Цена за зрители'}]
+        visitorPrices: [{ price: 15, description: 'Цена за зрители' }]
     });
 
     return event;
@@ -53,8 +53,22 @@ async function findAllEvents(page, limit) {
 };
 
 // TODO: Update the event later!
-async function updateEvent(id, listing) {
- console.log("Update");
+async function updateEvent(requestBody, existingEvent, isAdmin) {
+    for (let key in requestBody) {
+
+        if (isAdmin && key === 'creator' || key === 'likes') {
+            existingEvent[key] = requestBody[key] ? requestBody[key] : existingEvent[key];
+        }
+        if (isAdmin && key === 'isDeleted') {
+            existingEvent[key] = requestBody[key];
+        }
+
+        if (key !== 'toString' && key !== 'creator' && key !== 'likes' && key !== 'isDeleted') {
+            existingEvent[key] = requestBody[key] ? requestBody[key] : existingEvent[key];
+        }
+    }
+
+    return await existingEvent.save();
 }
 
 

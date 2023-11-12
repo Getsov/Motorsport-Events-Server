@@ -15,7 +15,7 @@ const eventSchema = new Schema({
   },
   longTitle: {
     type: String,
-    default: ``,
+    default: '',
   },
   shortDescription: {
     type: String,
@@ -54,10 +54,10 @@ const eventSchema = new Schema({
   },
   imageUrl: {
     type: String,
-    default: ``,
+    default: '',
     validate: {
       validator: (value) => validString.test(value),
-      message: "Invalid URL, must start with HTTP:///HTTPS://",
+      message: "Invalid URL, must start with HTTP:// or HTTPS://",
     },
   },
   // TODO: To add some storage later!
