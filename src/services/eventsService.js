@@ -29,7 +29,7 @@ async function registerEvent() {
             { name: 'Ivan', vehicle: "Wartburg", place: 2 },
             { name: 'Dragan', vehicle: "Moskvich", place: 3 }
         ],
-        visitorPrices:[{price: 15, description: 'Цена за зрители'}]
+        visitorPrices: [{ price: 15, description: 'Цена за зрители' }]
     });
 
     return event;
@@ -54,21 +54,19 @@ async function findAllEvents(page, limit) {
 
 // TODO: Update the event later!
 async function updateEvent(requestBody, existingEvent, isAdmin) {
-    // Check for isAdmin property and decide how to handle it later!
+    for (let key in requestBody) {
 
-    for (let key in existingEvent) {
-        // Check for aditional constraints later like "_id" and etc..
+        if (isAdmin && key === 'creator' || 'likes') {
+            existingEvent[key] = requestBody[key] ? requestBody[key] : existingEvent[key];
+        }
+        if (isAdmin && key === 'isDeleted') {
+            existingEvent[key] = requestBody[key];
+        }
 
-        if (requestBody[key] && key !== 'toString') {
+        if (key !== 'toString' && key !== 'creator' && key !== 'likes' && key !== 'isDeleted') {
             existingEvent[key] = requestBody[key] ? requestBody[key] : existingEvent[key];
         }
     }
-
-    // Ask about dates property should be partial edit?!
-    // Ask about contscts property should be partial edit?!
-    // Ask about likes property sould be modified or not?
-    // Ask about creator property sould be modified or not?
-    // Ask about isDeleted Property who and how should change it!?
 
     return await existingEvent.save();
 }
