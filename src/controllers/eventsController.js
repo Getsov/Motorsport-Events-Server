@@ -58,11 +58,14 @@ eventController.get('/:id', async (req, res) => {
 eventController.put('/:id', async (req, res) => {
     try {
         const event = await findEventByID(req.params.id);
+        if (event === null) {
+            throw new Error("Event doesn't exist!");
+        }
         // Check if there is requester and this requester is Admin, or Organization which owns the event.
         if (req.requester._id === undefined || !(req.requester._id == event.creator || req.requester.role === 'admin')) {
             throw new Error('You are not owner or Admin to modify this Event!');
         }
-        
+
         const updatedEvent = await updateEvent(req.body, event);
 
         res.status(200).json(updatedEvent);
