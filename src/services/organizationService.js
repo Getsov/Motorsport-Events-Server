@@ -1,9 +1,9 @@
-const bcrypt = require(`bcryptjs`);
-const jwt = require(`jsonwebtoken`);
-const Organization = require(`../models/Organization`);
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const Organization = require('../models/Organization');
 
 //TODO: use env and change secret
-const secret = `q213fdfsddfasd231adfas12321kl`;
+const secret = 'q213fdfsddfasd231adfas12321kl';
 
 async function registerOrganization(organizationData) {
   const email = organizationData.email;
@@ -11,9 +11,9 @@ async function registerOrganization(organizationData) {
   const existing = await Organization.findOne({ email });
   if (existing) {
     if (existing.isDeleted == true) {
-      throw new Error(`This account has been deleted, please contact support`);
+      throw new Error('This account has been deleted, please contact support');
     } else {
-      throw new Error(`Email is already taken!!!`);
+      throw new Error('Email is already taken!!!');
     }
   }
 
@@ -34,16 +34,16 @@ async function registerOrganization(organizationData) {
 async function loginOrganization(email, password) {
   const organization = await Organization.findOne({ email });
   if (!organization) {
-    throw new Error(`Invalid email or password!`);
+    throw new Error('Invalid email or password!');
   }
   if (organization.isDeleted == true) {
-    throw new Error(`This account has been deleted, please contact support`);
+    throw new Error('This account has been deleted, please contact support');
   }
 
   const match = await bcrypt.compare(password, organization.hashedPassword);
 
   if (!match) {
-    throw new Error(`Invalid email or password!`);
+    throw new Error('Invalid email or password!');
   }
   return createToken(organization);
 }
@@ -51,10 +51,25 @@ async function loginOrganization(email, password) {
 async function updateOrganization(id, requestBody, isAdmin) {
   const existingOrganization = await Organization.findById(id);
   if (!existingOrganization) {
-    throw new Error(`Organization not found`);
+    throw new Error('Organization not found');
   }
 
-  let arrayOfKeys = [];
+  let arrayOfKeys = [
+    'name',
+    'email',
+    'managerFirstName',
+    'managerLastName',
+    'phone',
+    'region',
+    'address',
+    'isDeleted',
+  ];
+  //TODO TEST WITH EMPTY STRING
+  for (let key of arrayOfKeys) {
+    if (requestBody.hasOwnProperty(key)) {
+      existingOrganization[key] = requestBody[key];
+    }
+  }
   existingOrganization.name = requestBody.name
     ? requestBody.name
     : existingOrganization.name;
@@ -123,7 +138,7 @@ function parseToken(token) {
   try {
     return jwt.verify(token, secret);
   } catch (error) {
-    throw new Error(`Invalid acces token!`);
+    throw new Error('Invalid acces token!');
   }
 }
 
