@@ -11,6 +11,9 @@ const {
 
 userController.post("/registerUser", async (req, res) => {
   try {
+    if (req.body.password !== req.body.repass) {
+      throw new Error("Password dismatch!");
+    }
     const userData = {
       email: req.body.email,
       firstName: req.body.firstName ? req.body.firstName : "",
@@ -40,6 +43,9 @@ userController.post("/loginUser", async (req, res) => {
 
 userController.put("/updateUser", async (req, res) => {
   try {
+    if (req.body.password !== req.body.repass) {
+      throw new Error("Password dismatch!");
+    }
     const result = await updateUser(req.requester._id, req.body);
     res.status(200).json(result);
     res.end();
