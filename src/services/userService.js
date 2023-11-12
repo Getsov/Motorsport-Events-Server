@@ -1,9 +1,9 @@
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const User = require("../models/User");
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const User = require('../models/User');
 
 //TODO: use env and change secret
-const secret = "q213fdfsddfasd231adfas12321kl";
+const secret = 'q213fdfsddfasd231adfas12321kl';
 //TODO: Functionality for changing the password
 
 async function registerUser(requestBody) {
@@ -11,9 +11,9 @@ async function registerUser(requestBody) {
   const existingUser = await User.findOne({ email });
   if (existingUser) {
     if (existingUser.isDeleted == true) {
-      throw new Error("This account has been deleted, please contact support");
+      throw new Error('This account has been deleted, please contact support');
     } else {
-      throw new Error("Email is already taken!!!");
+      throw new Error('Email is already taken!!!');
     }
   }
 
@@ -30,16 +30,16 @@ async function registerUser(requestBody) {
 async function loginUser(email, password) {
   const user = await User.findOne({ email });
   if (!user) {
-    throw new Error("Invalid email or password!!!");
+    throw new Error('Invalid email or password!!!');
   }
   if (user.isDeleted == true) {
-    throw new Error("This account has been deleted, please contact support");
+    throw new Error('This account has been deleted, please contact support');
   }
 
   const match = await bcrypt.compare(password, user.hashedPassword);
 
   if (!match) {
-    throw new Error("Invalid email or password!!!");
+    throw new Error('Invalid email or password!!!');
   }
   return createToken(user);
 }
@@ -110,7 +110,7 @@ function parseToken(token) {
   try {
     return jwt.verify(token, secret);
   } catch (error) {
-    throw new Error("Invalid acces token!");
+    throw new Error('Invalid acces token!');
   }
 }
 
