@@ -54,30 +54,23 @@ async function findAllEvents(page, limit) {
 
 // TODO: Update the event later!
 async function updateEvent(requestBody, existingEvent, isAdmin) {
-    // for (let key in existingEvent) {
-    //     if (requestBody[key]) {
-    //         console.log(existingEvent.toString);
-    //     }
-    // }
-    
-    existingEvent.shortTitle = requestBody.shortTitle ? requestBody.shortTitle : existingEvent.shortTitle;
-    existingEvent.longTitle = requestBody.longTitle ? requestBody.longTitle : existingEvent.longTitle;
-    existingEvent.shortDescription = requestBody.shortDescription ? requestBody.shortDescription : existingEvent.shortDescription;
-    existingEvent.longDescription = requestBody.longDescription ? requestBody.longDescription : existingEvent.longDescription;
+    // Check for isAdmin property and decide how to handle it later!
+
+    for (let key in existingEvent) {
+        // Check for aditional constraints later like "_id" and etc..
+
+        if (requestBody[key] && key !== 'toString') {
+            existingEvent[key] = requestBody[key] ? requestBody[key] : existingEvent[key];
+        }
+    }
+
     // Ask about dates property should be partial edit?!
-    existingEvent.dates = requestBody.dates ? requestBody.dates : existingEvent.dates;
-    existingEvent.imageUrl = requestBody.imageUrl ? requestBody.imageUrl : existingEvent.imageUrl;
     // Ask about contscts property should be partial edit?!
-    existingEvent.contacts = requestBody.contacts ? requestBody.contacts : existingEvent.contacts;
-    existingEvent.category = requestBody.category ? requestBody.category : existingEvent.category;
     // Ask about likes property sould be modified or not?
     // Ask about creator property sould be modified or not?
-    existingEvent.winners = requestBody.winners ? requestBody.winners : existingEvent.winners;
-    existingEvent.participantPrices = requestBody.participantPrices ? requestBody.participantPrices : existingEvent.participantPrices;
-    existingEvent.visitorPrices = requestBody.visitorPrices ? requestBody.visitorPrices : existingEvent.visitorPrices;
     // Ask about isDeleted Property who and how should change it!?
 
-    return newRecord = await existingEvent.save();
+    return await existingEvent.save();
 }
 
 
