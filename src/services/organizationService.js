@@ -48,13 +48,13 @@ async function loginOrganization(email, password) {
   return createToken(organization);
 }
 
-async function updateOrganization(id, requestBody) {
+async function updateOrganization(id, requestBody, isAdmin) {
   const existingOrganization = await Organization.findById(id);
-  if(!existingOrganization){
+  if (!existingOrganization) {
     throw new Error(`Organization not found`);
   }
 
-  let arrayOfKeys = []
+  let arrayOfKeys = [];
   existingOrganization.name = requestBody.name
     ? requestBody.name
     : existingOrganization.name;
@@ -76,6 +76,11 @@ async function updateOrganization(id, requestBody) {
   existingOrganization.address = requestBody.address
     ? requestBody.address
     : existingOrganization.address;
+  if (isAdmin) {
+    existingOrganization.isDeleted = requestBody.isDeleted
+      ? requestBody.isDeleted
+      : existingOrganization.isDeleted;
+  }
   const newRecord = await existingOrganization.save();
   console.log(newRecord);
   return createToken(newRecord);
