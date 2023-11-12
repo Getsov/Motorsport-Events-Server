@@ -10,7 +10,6 @@ const {
 //TODO: In other words, if you turn on cors in index.js, no file will be returned on the client!
 
 userController.post("/registerUser", async (req, res) => {
-  // console.log(req.body.email);
   try {
     const userData = {
       email: req.body.email,
@@ -41,8 +40,6 @@ userController.post("/loginUser", async (req, res) => {
 
 userController.put("/updateUser", async (req, res) => {
   try {
-    //TODO: user is useful in that case
-    // const user = await getById(req.requester.id);
     const result = await updateUser(req.requester._id, req.body);
     res.status(200).json(result);
     res.end();
