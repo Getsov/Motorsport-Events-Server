@@ -11,6 +11,9 @@ const {
 organizationController.post("/registerOrganization", async (req, res) => {
   // TODO: Check for passwords and token.
   try {
+    if (req.body.password !== req.body.repass) {
+      throw new Error("Password dismatch!");
+    }
     const organizationData = {
       name: req.body.name,
       email: req.body.email,
@@ -45,6 +48,9 @@ organizationController.post("/loginOrganization", async (req, res) => {
 
 organizationController.put("/updateOrganization", async (req, res) => {
   try {
+    if (req.body.password !== req.body.repass) {
+      throw new Error("Password dismatch!");
+    }
     const result = await updateOrganization(req.requester._id, req.body);
     res.status(200).json(result);
     res.end();
