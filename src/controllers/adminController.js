@@ -9,7 +9,7 @@ adminController.put("/updateOrganization", async (req, res) => {
   const isAdmin = req.requester.role == "admin";
   if (isAdmin) {
     try {
-      const result = await updateOrganization(req.body.id, req.body);
+      const result = await updateOrganization(req.body.id, req.body, isAdmin);
       res.status(200).json(result);
       res.end();
     } catch (error) {
