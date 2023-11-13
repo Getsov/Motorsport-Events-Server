@@ -62,7 +62,6 @@ async function updateOrganization(id, requestBody, isAdmin) {
     'phone',
     'region',
     'address',
-    'password',
   ];
   
   for (let key of arrayOfKeys) {
