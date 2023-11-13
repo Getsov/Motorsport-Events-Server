@@ -70,11 +70,24 @@ async function updateEvent(requestBody, existingEvent, isAdmin) {
     return await existingEvent.save();
 }
 
+// Like/Unlike event.
+async function likeUnlikeEvent(existingEvent, id, isUnlike) {
+    if (isUnlike) {
+        let filteredLikes = await existingEvent.likes.filter(x => x != id);
+        existingEvent.likes = filteredLikes;
+        return await existingEvent.save();
+    }
+
+    existingEvent.likes.push(id);
+    return await existingEvent.save();
+}
+
 
 module.exports = {
     registerEvent,
     findEventByID,
     findAllEvents,
     updateEvent,
-    findEventsByCategory
+    findEventsByCategory,
+    likeUnlikeEvent
 }
