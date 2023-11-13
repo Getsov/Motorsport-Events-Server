@@ -1,7 +1,6 @@
 const eventController = require('express').Router();
 const { registerEvent, findEventByID, findAllEvents, updateEvent, findEventsByCategory, likeUnlikeEvent } = require('../services/eventsService');
 
-// TODO: Change the request method! and validate iputs when client is ready..
 eventController.post('/register', async (req, res) => {
     try {
         // Checks if there is not user. Or if the user have admin role or if the user is organization.
@@ -96,7 +95,7 @@ eventController.post('/like/:id', async (req, res) => {
         
         const likedEvent = await likeUnlikeEvent(existing, req.requester._id, isUnlike);
         
-        res.status(200).json(isUnlike ? 'Event Unliked!': 'Event Liked!');
+        res.status(200).json(isUnlike ? 'Event UnLiked!': 'Event Liked!');
         res.end();
     } catch (error) {
         res.status(400).json(error.message);
