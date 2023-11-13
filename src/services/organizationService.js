@@ -62,42 +62,25 @@ async function updateOrganization(id, requestBody, isAdmin) {
     'phone',
     'region',
     'address',
-    'isDeleted',
+    'password',
   ];
-  //TODO TEST WITH EMPTY STRING
+  
   for (let key of arrayOfKeys) {
-    if (requestBody.hasOwnProperty(key)) {
+    if (requestBody[key]) {
       existingOrganization[key] = requestBody[key];
+    } else {
+      existingOrganization[key] = '';
     }
   }
-  existingOrganization.name = requestBody.name
-    ? requestBody.name
-    : existingOrganization.name;
-  existingOrganization.email = requestBody.email
-    ? requestBody.email
-    : existingOrganization.email;
-  existingOrganization.managerFirstName = requestBody.managerFirstName
-    ? requestBody.managerFirstName
-    : existingOrganization.managerFirstName;
-  existingOrganization.managerLastName = requestBody.managerLastName
-    ? requestBody.managerLastName
-    : existingOrganization.managerLastName;
-  existingOrganization.phone = requestBody.phone
-    ? requestBody.phone
-    : existingOrganization.phone;
-  existingOrganization.region = requestBody.region
-    ? requestBody.region
-    : existingOrganization.region;
-  existingOrganization.address = requestBody.address
-    ? requestBody.address
-    : existingOrganization.address;
+
   if (isAdmin) {
+    //TODO - HOW WE MANAGE WITH REPASS?
     existingOrganization.isDeleted = requestBody.isDeleted
       ? requestBody.isDeleted
       : existingOrganization.isDeleted;
   }
   const newRecord = await existingOrganization.save();
-  console.log(newRecord);
+  // console.log(newRecord);
   return createToken(newRecord);
 }
 
