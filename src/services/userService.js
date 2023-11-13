@@ -65,9 +65,6 @@ async function updateUser(id, requestBody, isAdmin) {
 
   let arrayOfKeys = ['email', 'firstName', 'lastName', 'region', 'address'];
   for (let key of arrayOfKeys) {
-    console.log(key);
-    console.log(requestBody.hasOwnProperty(key));
-    console.log(requestBody[key]);
     if (requestBody.hasOwnProperty(key)) {
       if (key == 'email' && requestBody[key] == '') {
         continue;
