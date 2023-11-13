@@ -55,16 +55,15 @@ async function findAllEvents(page, limit) {
 // TODO: Update the event later!
 async function updateEvent(requestBody, existingEvent, isAdmin) {
     for (let key in requestBody) {
-
         if (isAdmin && key === 'creator' || key === 'likes') {
-            existingEvent[key] = requestBody[key] ? requestBody[key] : existingEvent[key];
+            existingEvent[key] = requestBody[key];
         }
         if (isAdmin && key === 'isDeleted') {
             existingEvent[key] = requestBody[key];
         }
 
         if (key !== 'toString' && key !== 'creator' && key !== 'likes' && key !== 'isDeleted') {
-            existingEvent[key] = requestBody[key] ? requestBody[key] : existingEvent[key];
+            existingEvent[key] = requestBody[key];
         }
     }
 
