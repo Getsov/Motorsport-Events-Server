@@ -82,20 +82,20 @@ eventController.post('/like/:id', async (req, res) => {
         }
 
         const existing = await findEventByID(req.params.id);
-
+        // TODO: Add like ref to user and organization Models.
         if (existing === null) {
             throw new Error('The Event doesn\'t exist!');
         }
-        
+
         let isUnlike = false;
 
         if (existing.likes.includes(req.requester._id)) {
             isUnlike = true;
         }
-        
+
         const likedEvent = await likeUnlikeEvent(existing, req.requester._id, isUnlike);
-        
-        res.status(200).json(isUnlike ? 'Event UnLiked!': 'Event Liked!');
+
+        res.status(200).json(isUnlike ? 'Event UnLiked!' : 'Event Liked!');
         res.end();
     } catch (error) {
         res.status(400).json(error.message);
