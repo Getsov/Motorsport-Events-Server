@@ -48,31 +48,32 @@ async function getById(id) {
   return User.find(id);
 }
 
-
 //updateUser can be invoked by adminController and userController
 //accept id of user which will be updated, new data and isAdmin property
 //isAdmin property can change yser role and delte value of user record
 async function updateUser(id, requestBody, isAdmin) {
   const existingUser = await User.findById(id);
+  if (!existingUser) {
+    throw new Error('User not found');
+  }
   /*TODO
   if there is empty string in req.body- mongo
   will kept the old record. 
   Need one more check if field must be cleared
   */
   //TODO - check functionality with liked events
-  existingUser.email = requestBody.email
-    ? requestBody.email
-    : existingUser.email;
-  existingUser.firstName = requestBody.firstName
-    ? requestBody.firstName
-    : existingUser.firstName;
-  existingUser.lastName = requestBody.lastName
-    ? requestBody.lastName
-    : existingUser.lastName;
-  existingUser.region = requestBody.region
-    ? requestBody.region
-    : existingUser.region;
+
+  let arrayOfKeys = ['email', 'firstName', 'lastName', 'region', 'address'];
+  for (let key of arrayOfKeys) {
+    if (requestBody[key]) {
+      existingUser[key] = requestBody[key];
+    } else {
+      existingUser[key] = '';
+    }
+  }
+
   if (isAdmin) {
+    //TODO - HOW WE MANAGE WITH REPASS? and changing pasword from admin
     existingUser.role = requestBody.role ? requestBody.role : existingUser.role;
     existingUser.isDeleted = requestBody.isDeleted
       ? requestBody.isDeleted
