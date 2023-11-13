@@ -1,7 +1,6 @@
 const eventController = require('express').Router();
-const { registerEvent, findEventByID, findAllEvents, updateEvent, findEventsByCategory } = require('../services/eventsService');
+const { registerEvent, findEventByID, findAllEvents, updateEvent, findEventsByCategory, likeUnlikeEvent } = require('../services/eventsService');
 
-// TODO: Change the request method! and validate iputs when client is ready..
 eventController.post('/register', async (req, res) => {
     try {
         // Checks if there is not user. Or if the user have admin role or if the user is organization.
@@ -72,6 +71,35 @@ eventController.put('/:id', async (req, res) => {
         res.end();
     } catch (error) {
         res.status(400).json({ error: error.message });
+    }
+});
+
+// Like/Unlike Event!
+eventController.post('/like/:id', async (req, res) => {
+    try {
+        if (!req.requester) {
+            throw new Error('You must log-in to like this Event!');
+        }
+
+        const existing = await findEventByID(req.params.id);
+        // TODO: Add like ref to user and organization Models.
+        if (existing === null) {
+            throw new Error('The Event doesn\'t exist!');
+        }
+
+        let isUnlike = false;
+
+        if (existing.likes.includes(req.requester._id)) {
+            isUnlike = true;
+        }
+
+        const likedEvent = await likeUnlikeEvent(existing, req.requester._id, isUnlike);
+
+        res.status(200).json(isUnlike ? 'Event UnLiked!' : 'Event Liked!');
+        res.end();
+    } catch (error) {
+        res.status(400).json(error.message);
+        res.end();
     }
 });
 
