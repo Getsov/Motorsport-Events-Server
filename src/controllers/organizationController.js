@@ -48,9 +48,10 @@ organizationController.post('/loginOrganization', async (req, res) => {
 
 organizationController.put('/updateOrganization', async (req, res) => {
   try {
-    if (req.body.password !== req.body.repass) {
-      throw new Error('Password dismatch!');
-    }
+    //TODO - HOW WE MANAGE WITH REPASS?
+    // if (req.body.password !== req.body.repass) {
+    //   throw new Error('Password dismatch!');
+    // }
     const result = await updateOrganization(req.requester._id, req.body);
     res.status(200).json(result);
     res.end();
