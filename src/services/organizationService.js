@@ -63,13 +63,13 @@ async function updateOrganization(id, requestBody, isAdmin) {
     'region',
     'address',
   ];
-  
+
   for (let key of arrayOfKeys) {
     if (requestBody.hasOwnProperty(key)) {
       if (key == 'email' && requestBody[key] == '') {
         continue;
       }
-      existingUser[key] = requestBody[key];
+      existingOrganization[key] = requestBody[key];
     }
   }
 
