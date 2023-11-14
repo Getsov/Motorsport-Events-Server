@@ -56,21 +56,13 @@ async function updateUser(id, requestBody, isAdmin) {
   if (!existingUser) {
     throw new Error('User not found');
   }
-  /*TODO
-  if there is empty string in req.body- mongo
-  will kept the old record. 
-  Need one more check if field must be cleared
-  */
-  //TODO - check functionality with liked events
 
-  let arrayOfKeys = ['email', 'firstName', 'lastName', 'region', 'address'];
-  for (let key of arrayOfKeys) {
-    if (requestBody.hasOwnProperty(key)) {
-      if (key == 'email' && requestBody[key] == '') {
-        continue;
-      }
-      existingUser[key] = requestBody[key];
+  //TODO - check functionality with liked events
+  for (let key of Object.keys(requestBody)) {
+    if (key == 'email' && requestBody[key] == '') {
+      continue;
     }
+    existingUser[key] = requestBody[key];
   }
 
   if (isAdmin) {
