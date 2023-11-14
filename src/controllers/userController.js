@@ -2,7 +2,6 @@ const userController = require('express').Router();
 const {
   registerUser,
   loginUser,
-  getById,
   updateUser,
 } = require('../services/userService');
 
