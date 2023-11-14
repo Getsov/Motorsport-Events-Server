@@ -55,7 +55,7 @@ async function updateOrganization(id, requestBody, isAdmin) {
   }
 
   for (let key of Object.keys(requestBody)) {
-    if (key == 'email' && requestBody[key] == '') {
+    if ((key == 'email' && requestBody[key] == '') || key == 'isDeleted') {
       continue;
     }
     existingOrganization[key] = requestBody[key];
