@@ -59,7 +59,7 @@ async function updateUser(id, requestBody, isAdmin) {
 
   //TODO - check functionality with liked events
   for (let key of Object.keys(requestBody)) {
-    if (key == 'email' && requestBody[key] == '') {
+    if ((key == 'email' && requestBody[key] == '') || key == 'isDeleted') {
       continue;
     }
     existingUser[key] = requestBody[key];
