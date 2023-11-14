@@ -1,9 +1,9 @@
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const Organization = require("../models/Organization");
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const Organization = require('../models/Organization');
 
 //TODO: use env and change secret
-const secret = "q213fdfsddfasd231adfas12321kl";
+const secret = 'q213fdfsddfasd231adfas12321kl';
 
 async function registerOrganization(organizationData) {
   const email = organizationData.email;
@@ -11,9 +11,9 @@ async function registerOrganization(organizationData) {
   const existing = await Organization.findOne({ email });
   if (existing) {
     if (existing.isDeleted == true) {
-      throw new Error("This account has been deleted, please contact support");
+      throw new Error('This account has been deleted, please contact support');
     } else {
-      throw new Error("Email is already taken!!!");
+      throw new Error('Email is already taken!!!');
     }
   }
 
@@ -34,45 +34,42 @@ async function registerOrganization(organizationData) {
 async function loginOrganization(email, password) {
   const organization = await Organization.findOne({ email });
   if (!organization) {
-    throw new Error("Invalid email or password!!!");
+    throw new Error('Invalid email or password!');
   }
   if (organization.isDeleted == true) {
-    throw new Error("This account has been deleted, please contact support");
+    throw new Error('This account has been deleted, please contact support');
   }
 
   const match = await bcrypt.compare(password, organization.hashedPassword);
 
   if (!match) {
-    throw new Error("Invalid email or password!!!");
+    throw new Error('Invalid email or password!');
   }
   return createToken(organization);
 }
 
-async function updateOrganization(id, requestBody) {
+async function updateOrganization(id, requestBody, isAdmin) {
   const existingOrganization = await Organization.findById(id);
-  existingOrganization.name = requestBody.name
-    ? requestBody.name
-    : existingOrganization.name;
-  existingOrganization.email = requestBody.email
-    ? requestBody.email
-    : existingOrganization.email;
-  existingOrganization.managerFirstName = requestBody.managerFirstName
-    ? requestBody.managerFirstName
-    : existingOrganization.managerFirstName;
-  existingOrganization.managerLastName = requestBody.managerLastName
-    ? requestBody.managerLastName
-    : existingOrganization.managerLastName;
-  existingOrganization.phone = requestBody.phone
-    ? requestBody.phone
-    : existingOrganization.phone;
-  existingOrganization.region = requestBody.region
-    ? requestBody.region
-    : existingOrganization.region;
-  existingOrganization.address = requestBody.address
-    ? requestBody.address
-    : existingOrganization.address;
+  if (!existingOrganization) {
+    throw new Error('Organization not found');
+  }
+
+  for (let key of Object.keys(requestBody)) {
+    if ((key == 'email' && requestBody[key] == '') || key == 'isDeleted') {
+      continue;
+    }
+    existingOrganization[key] = requestBody[key];
+  }
+
+  if (isAdmin) {
+    //TODO - HOW WE MANAGE WITH REPASS and Password?
+    //isDeleted must be sent as string
+    existingOrganization.isDeleted = requestBody.isDeleted
+      ? requestBody.isDeleted
+      : existingOrganization.isDeleted;
+  }
   const newRecord = await existingOrganization.save();
-  console.log(newRecord);
+  // console.log(newRecord);
   return createToken(newRecord);
 }
 
@@ -113,7 +110,7 @@ function parseToken(token) {
   try {
     return jwt.verify(token, secret);
   } catch (error) {
-    throw new Error("Invalid acces token!");
+    throw new Error('Invalid acces token!');
   }
 }
 

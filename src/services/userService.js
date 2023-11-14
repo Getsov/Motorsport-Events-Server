@@ -1,9 +1,9 @@
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const User = require("../models/User");
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const User = require('../models/User');
 
 //TODO: use env and change secret
-const secret = "q213fdfsddfasd231adfas12321kl";
+const secret = 'q213fdfsddfasd231adfas12321kl';
 //TODO: Functionality for changing the password
 
 async function registerUser(requestBody) {
@@ -11,9 +11,9 @@ async function registerUser(requestBody) {
   const existingUser = await User.findOne({ email });
   if (existingUser) {
     if (existingUser.isDeleted == true) {
-      throw new Error("This account has been deleted, please contact support");
+      throw new Error('This account has been deleted, please contact support');
     } else {
-      throw new Error("Email is already taken!!!");
+      throw new Error('Email is already taken!!!');
     }
   }
 
@@ -30,16 +30,16 @@ async function registerUser(requestBody) {
 async function loginUser(email, password) {
   const user = await User.findOne({ email });
   if (!user) {
-    throw new Error("Invalid email or password!!!");
+    throw new Error('Invalid email or password!!!');
   }
   if (user.isDeleted == true) {
-    throw new Error("This account has been deleted, please contact support");
+    throw new Error('This account has been deleted, please contact support');
   }
 
   const match = await bcrypt.compare(password, user.hashedPassword);
 
   if (!match) {
-    throw new Error("Invalid email or password!!!");
+    throw new Error('Invalid email or password!!!');
   }
   return createToken(user);
 }
@@ -48,28 +48,27 @@ async function getById(id) {
   return User.find(id);
 }
 
+//updateUser can be invoked by adminController and userController
+//accept id of user which will be updated, new data and isAdmin property
+//isAdmin property can change yser role and delte value of user record
 async function updateUser(id, requestBody, isAdmin) {
   const existingUser = await User.findById(id);
-  /*TODO
-  if there is empty string in req.body- mongo
-  will kept the old record. 
-  Need one more check if field must be cleared
-  */
+  if (!existingUser) {
+    throw new Error('User not found');
+  }
+
   //TODO - check functionality with liked events
-  existingUser.email = requestBody.email
-    ? requestBody.email
-    : existingUser.email;
-  existingUser.firstName = requestBody.firstName
-    ? requestBody.firstName
-    : existingUser.firstName;
-  existingUser.lastName = requestBody.lastName
-    ? requestBody.lastName
-    : existingUser.lastName;
-  existingUser.region = requestBody.region
-    ? requestBody.region
-    : existingUser.region;
+  for (let key of Object.keys(requestBody)) {
+    if ((key == 'email' && requestBody[key] == '') || key == 'isDeleted') {
+      continue;
+    }
+    existingUser[key] = requestBody[key];
+  }
+
   if (isAdmin) {
+    //TODO - HOW WE MANAGE WITH REPASS? and changing pasword from admin
     existingUser.role = requestBody.role ? requestBody.role : existingUser.role;
+    //isDeleted must be sent as string
     existingUser.isDeleted = requestBody.isDeleted
       ? requestBody.isDeleted
       : existingUser.isDeleted;
@@ -106,7 +105,7 @@ function parseToken(token) {
   try {
     return jwt.verify(token, secret);
   } catch (error) {
-    throw new Error("Invalid acces token!");
+    throw new Error('Invalid acces token!');
   }
 }
 
