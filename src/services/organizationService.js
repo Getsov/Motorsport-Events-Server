@@ -54,27 +54,15 @@ async function updateOrganization(id, requestBody, isAdmin) {
     throw new Error('Organization not found');
   }
 
-  let arrayOfKeys = [
-    'name',
-    'email',
-    'managerFirstName',
-    'managerLastName',
-    'phone',
-    'region',
-    'address',
-  ];
-
-  for (let key of arrayOfKeys) {
-    if (requestBody.hasOwnProperty(key)) {
-      if (key == 'email' && requestBody[key] == '') {
-        continue;
-      }
-      existingOrganization[key] = requestBody[key];
+  for (let key of Object.keys(requestBody)) {
+    if (key == 'email' && requestBody[key] == '') {
+      continue;
     }
+    existingOrganization[key] = requestBody[key];
   }
 
   if (isAdmin) {
-    //TODO - HOW WE MANAGE WITH REPASS?
+    //TODO - HOW WE MANAGE WITH REPASS and Password?
     //isDeleted must be sent as string
     existingOrganization.isDeleted = requestBody.isDeleted
       ? requestBody.isDeleted
