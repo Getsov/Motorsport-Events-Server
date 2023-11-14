@@ -65,10 +65,11 @@ async function updateOrganization(id, requestBody, isAdmin) {
   ];
   
   for (let key of arrayOfKeys) {
-    if (requestBody[key]) {
-      existingOrganization[key] = requestBody[key];
-    } else {
-      existingOrganization[key] = '';
+    if (requestBody.hasOwnProperty(key)) {
+      if (key == 'email' && requestBody[key] == '') {
+        continue;
+      }
+      existingUser[key] = requestBody[key];
     }
   }
 
