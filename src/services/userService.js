@@ -76,6 +76,7 @@ async function updateUser(id, requestBody, isAdmin) {
   if (isAdmin) {
     //TODO - HOW WE MANAGE WITH REPASS? and changing pasword from admin
     existingUser.role = requestBody.role ? requestBody.role : existingUser.role;
+    //isDeleted must be sent as string
     existingUser.isDeleted = requestBody.isDeleted
       ? requestBody.isDeleted
       : existingUser.isDeleted;

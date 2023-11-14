@@ -75,6 +75,7 @@ async function updateOrganization(id, requestBody, isAdmin) {
 
   if (isAdmin) {
     //TODO - HOW WE MANAGE WITH REPASS?
+    //isDeleted must be sent as string
     existingOrganization.isDeleted = requestBody.isDeleted
       ? requestBody.isDeleted
       : existingOrganization.isDeleted;
