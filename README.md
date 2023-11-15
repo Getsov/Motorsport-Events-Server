@@ -11,7 +11,7 @@ npm start
 The service are using authentication, not everything is accessible trough the DB, you need to pass credentials! Only read requests are accessible without authentication. The server is dynamicly load collections from the mongoDB if any.
 
 ## CRUD Operations:
-All requestsa re send to: `http://localhost:3030`: /events/,  /user/, /organization/. Supported requests are `GET`, `POST`, `PUT`, `DELETE`. Only user with role `admin` can delete!
+All requestsa re send to: `http://localhost:3030`: /event/, /user/, /organization/. Supported requests are `GET`, `POST`, `PUT`, `DELETE`. Only user with role `admin` can delete!
 
 ## Authentication:
 The service is not initialized with any data. You need to create it by yourself. To register an event you must register yourself as `organization`! If you register as `user`, you wil only able to read data and edit your profile.
@@ -31,7 +31,7 @@ To make an authorized request, add the following header, where {token} is the `a
 
 ### Read:
 Send a `GET` request to the endpoint. The response will be in JSON format.
-Examples:  `http://localhost:3030` +
+Examples:  `http://localhost:3030` + `/event`
 Retrieve everything inside the `events` collection:
 - **Method:** `GET`
 - **Endpont:** `/event`
@@ -55,13 +55,13 @@ Send a `POST` request to the endpoint. The shape of the body is restricted. The 
 Examples: `http://localhost:3030/event` +
 Create a new entry inside the `events` collection:
 - **Method:** `POST`
-- **Endpont:** `/event/`
+- **Endpont:** `/event`
 Headers: Content-Type: application/json
 `X-Authorization: {token}`
 Body: JSON-formatted data
 
 ### Update:
-This request requires authorization and content-type: `application/json`. Only owner of the resource and `Admin` can edit it. Admin can change `isDeleted`, `creator`and `likes` properties, while owner can change them.
+This request requires authorization and content-type: `application/json`. Only owner of the resource and `admin` can edit it. Admin can change `isDeleted`, `creator`and `likes` properties, while owner can't change them.
 Send a PUT request to the endpoint, appending the Id or any appropriate property name. The existing resource will be fully replaced! The service will respond with the updated object.
 
 Examples:
