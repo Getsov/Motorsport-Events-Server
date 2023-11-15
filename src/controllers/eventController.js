@@ -7,7 +7,7 @@ eventController.post('/register', async (req, res) => {
         if (!req.requester || !(req.requester.role === 'admin' || req.requester.managerFirstName !== undefined)) {
             throw new Error('Only user with role "Admin", or Organization can register an Event!');
         }
-        console.log(req.requester);
+        
         const event = await registerEvent();
 
         res.status(200).json(event);
@@ -45,6 +45,10 @@ eventController.get('/category/:category', async (req, res) => {
 eventController.get('/:id', async (req, res) => {
     try {
         const event = await findEventByID(req.params.id);
+        
+        if (event && event.isDeleted === true && req.requester.role != 'admin') {
+            throw new Error("Event is deleated, or doesn't exist!");
+        }
 
         res.status(200).json(event);
         res.end();

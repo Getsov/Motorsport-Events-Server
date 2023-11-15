@@ -43,7 +43,7 @@ async function findEventByID(eventId) {
 };
 
 async function findEventsByCategory(category) {
-    const events = await Event.find({ category: category });
+    const events = await Event.find({ category: category, isDeleted: false });
     return events;
 };
 
