@@ -1,5 +1,5 @@
 const eventController = require('express').Router();
-const { registerEvent, findEventByID, findAllEvents, updateEvent, findEventsByCategory, likeUnlikeEvent } = require('../services/eventsService');
+const { registerEvent, findEventByID, findAllEvents, updateEvent, findEventsByCategory, likeUnlikeEvent } = require('../services/eventService');
 
 eventController.post('/register', async (req, res) => {
     try {
