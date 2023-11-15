@@ -1,4 +1,4 @@
-# 'Race Fanatic'-App Documentation!
+# 'Race Fanatic' Server-Documentation!
 
 ## Usage: 
 This is a REST service, created for 'Race Fanatic' APP. To properly work the server need installed mongoDB on local machine for database. Add the connection string in the `index.js` file.
