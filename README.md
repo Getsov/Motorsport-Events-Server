@@ -14,7 +14,7 @@ The service are using authentication, not everything is accessible trough the DB
 All requestsa re send to: `http://localhost:3030`: /events/,  /user/, /organization/. Supported requests are `GET`, `POST`, `PUT`, `DELETE`. Only user with role `admin` can delete!
 
 ## Authentication:
-The service is not initialized with any data. You need to create it by yourself.
+The service is not initialized with any data. You need to create it by yourself. To register an event you must register yourself as `organization`! If you register as `user`, you wil only able to read data and edint your profile.
 
 ### Register:
 Create a new `user` by sending a POST request to `http://localhost:3030`: + `/user/registerUser` with properties: `email` and `password`. The service automatically creates a session and returns object with `accessToken` inside, that can be used for authorized requests. You can also register `Organization` by sending a POST request to `http://localhost:3030:` + `/organization/registerOrganization` with properties: `name`, `email`, `managerFirstName`, `managerLastName`, `phone`, `region`, `password`. The service automatically creates a session and returns object with `accessToken` inside, that can be used for authorized requests.
