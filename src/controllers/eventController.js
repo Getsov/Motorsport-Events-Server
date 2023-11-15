@@ -63,7 +63,7 @@ eventController.put('/:id', async (req, res) => {
         const event = await findEventByID(req.params.id);
 
         if (event === null || (req.requester.role !== 'admin' && event.isDeleted !== false)) {
-            throw new Error("Event is deleted, or doesn't exist!");
+            throw new Error('Event is deleted, or doesn\'t exist!');
         }        
 
         if (req.requester._id === undefined || (req.requester._id != event.creator && req.requester.role !== 'admin')) {
@@ -86,19 +86,19 @@ eventController.post('/like/:id', async (req, res) => {
             throw new Error('You must log-in to like this Event!');
         }
 
-        const existing = await findEventByID(req.params.id);
+        const event = await findEventByID(req.params.id);
         // TODO: Add like ref to user and organization Models.
-        if (existing === null) {
-            throw new Error('The Event doesn\'t exist!');
+        if (event === null || event.isDeleted) {
+            throw new Error('Event is deleted, or doesn\'t exist!');
         }
 
         let isUnlike = false;
 
-        if (existing.likes.includes(req.requester._id)) {
+        if (event.likes.includes(req.requester._id)) {
             isUnlike = true;
         }
 
-        const likedEvent = await likeUnlikeEvent(existing, req.requester._id, isUnlike);
+        const likedEvent = await likeUnlikeEvent(event, req.requester._id, isUnlike);
 
         res.status(200).json(isUnlike ? 'Event UnLiked!' : 'Event Liked!');
         res.end();
