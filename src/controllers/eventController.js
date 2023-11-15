@@ -45,8 +45,8 @@ eventController.get('/category/:category', async (req, res) => {
 eventController.get('/:id', async (req, res) => {
     try {
         const event = await findEventByID(req.params.id);
-        
-        if (event && event.isDeleted === true && req.requester.role != 'admin') {
+
+        if (!event || event.isDeleted === true && req.requester.role != 'admin') {
             throw new Error("Event is deleted, or doesn't exist!");
         }
 
