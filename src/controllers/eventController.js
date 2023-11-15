@@ -7,7 +7,7 @@ eventController.post('/register', async (req, res) => {
         if (!req.requester || !(req.requester.role === 'admin' || req.requester.managerFirstName !== undefined)) {
             throw new Error('Only user with role "Admin", or Organization can register an Event!');
         }
-        
+
         const event = await registerEvent();
 
         res.status(200).json(event);
@@ -45,7 +45,9 @@ eventController.get('/category/:category', async (req, res) => {
 eventController.get('/:id', async (req, res) => {
     try {
         const event = await findEventByID(req.params.id);
-
+        if (event === null) {
+            throw new Error("Event is deleted, or doesn't exist!");
+        }
         if (event && event.isDeleted === true && req.requester.role != 'admin') {
             throw new Error("Event is deleted, or doesn't exist!");
         }
@@ -64,7 +66,7 @@ eventController.put('/:id', async (req, res) => {
 
         if (event === null || (req.requester.role !== 'admin' && event.isDeleted !== false)) {
             throw new Error('Event is deleted, or doesn\'t exist!');
-        }        
+        }
 
         if (req.requester._id === undefined || (req.requester._id != event.creator && req.requester.role !== 'admin')) {
             throw new Error('You are not owner or Admin to modify this Event!');
