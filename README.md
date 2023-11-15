@@ -26,4 +26,4 @@ Login by sending a POST request with "`email`" and "`password`" to `http://local
 TODO: Add info about `logout` when is done on the Back-End!
 
 Authorized Requests:
-To make an authorized request, add the following header, where {token} is the "`accessToken`", returned by the service upon successful login or registration: `"X-Authorization: {token}"`
+To make an authorized request, add the following header, where {token} is the "`accessToken`", returned by the service upon successful login or registration: `"`X-Authorization: {token}`"`
