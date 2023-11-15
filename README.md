@@ -65,7 +65,7 @@ This request requires authorization and content-type: `application/json`. Only o
 Send a PUT request to the endpoint, appending the Id or any appropriate property name. The existing resource will be fully replaced! The service will respond with the updated object.
 
 Examples:
-Update entry with ID `654651caf696083cab72ab1c` in the books collection:
+Update entry with ID `654651caf696083cab72ab1c` in the events collection:
 - **Method:** `PUT`
 - **Endpont:** `/event/654651caf696083cab72ab1c`
 Headers: `Content-Type: application/json`
