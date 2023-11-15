@@ -11,7 +11,7 @@ router.get('/', (req, res) => {
 
 router.use('/user', userController);
 router.use('/organization', organizationController);
-router.use('/events', eventController);
+router.use('/event', eventController);
 
 
 // Error Page (404).
