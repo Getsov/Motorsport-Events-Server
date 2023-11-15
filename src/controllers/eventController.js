@@ -64,11 +64,11 @@ eventController.put('/:id', async (req, res) => {
     try {
         const event = await findEventByID(req.params.id);
 
-        if (event === null || (req.requester?.role !== 'admin' && event.isDeleted !== false)) {
-            throw new Error('Event is deleted, or doesn\'t exist!');
-        }
         if (req.requester?._id === undefined || (req.requester._id != event.creator && req.requester.role !== 'admin')) {
             throw new Error('You are not owner or Admin to modify this Event!');
+        }
+        if (event === null || (req.requester?.role !== 'admin' && event.isDeleted !== false)) {
+            throw new Error('Event is deleted, or doesn\'t exist!');
         }
 
         const updatedEvent = await updateEvent(req.body, event, req.requester.role === 'admin');
