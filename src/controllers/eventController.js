@@ -8,7 +8,7 @@ eventController.post('/register', async (req, res) => {
             throw new Error('Only user with role "Admin", or Organization can register an Event!');
         }
 
-        const event = await registerEvent();
+        const event = await registerEvent(req.body);
 
         res.status(200).json(event);
         res.end();
