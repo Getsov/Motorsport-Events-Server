@@ -96,7 +96,7 @@ Update entries with ID `:id` in the `users` collection:
 -   **Endpont:** `/editUserInfo/:id`
     Headers: `Content-Type: application/json`
     Body: JSON-formatted data
-    Changes: Only optional data of User(firstName, lastName, region). Admin can change "isDeleted" and "role" propery.
+    Changes: Only optional data of User(firstName, lastName, region). Admin can change "isDeleted" and "role" property.
 
 -   **Endpont:** `/editUserEmail/:id`
     Headers: `Content-Type: application/json`
