@@ -40,7 +40,43 @@ userController.post('/loginUser', async (req, res) => {
   }
 });
 
-userController.put('/:id', async (req, res) => {
+userController.put('/editInfo/:id', async (req, res) => {
+  const id = req.params.id;
+  const isAdmin = req.requester.role == 'admin';
+  try {
+    if (req.requester._id == id || isAdmin) {
+      const result = await updateUser(id, req.body, isAdmin);
+      res.status(200).json(result);
+      res.end();
+    } else {
+      throw new Error('You do not have rights to modify the record!');
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: error.message });
+  }
+});
+userController.put('/editEmail/:id', async (req, res) => {
+  const id = req.params.id;
+  const isAdmin = req.requester.role == 'admin';
+  try {
+    //TODO - HOW WE MANAGE WITH REPASS?
+    // if (req.body.password !== req.body.repass) {
+    //   throw new Error('Password dismatch!');
+    // }
+    if (req.requester._id == id || isAdmin) {
+      const result = await updateUser(id, req.body, isAdmin);
+      res.status(200).json(result);
+      res.end();
+    } else {
+      throw new Error('You do not have rights to modify the record!');
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: error.message });
+  }
+});
+userController.put('/editPassword/:id', async (req, res) => {
   const id = req.params.id;
   const isAdmin = req.requester.role == 'admin';
   try {
