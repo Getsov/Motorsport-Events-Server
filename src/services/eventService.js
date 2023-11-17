@@ -62,8 +62,8 @@ async function updateEvent(requestBody, existingEvent, isAdmin) {
         }
         if (isAdmin && key === 'isDeleted') {
             existingEvent[key] = requestBody[key];
-        } else if (!isAdmin && key === 'isDeleted') {
-            throw new Error('Only Admin can modify this property!');
+        } else if (!isAdmin && key === 'isDeleted' && requestBody[key] === true) {
+            existingEvent[key] = requestBody[key];
         }
 
         if (key !== 'toString' && key !== 'creator' && key !== 'likes' && key !== 'isDeleted') {
