@@ -115,7 +115,7 @@ async function updateUserPassword(userId, requestBody, isAdmin) {
             existingUser.hashedPassword
         );
         if (!match) {
-            throw new Error("Email field can't be empty!");
+            throw new Error('Password dismatch!');
         }
     }
 
