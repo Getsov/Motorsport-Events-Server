@@ -65,9 +65,10 @@ async function updateUserInfo(userId, requestBody, isAdmin) {
     for (let key of Object.keys(requestBody)) {
         if (
             key == 'email' ||
-            key == 'isDeleted' ||
-            key == 'password' ||
-            key == 'role'
+            key == 'role' ||
+            key == 'likedEvents' ||
+            key == 'hashedPassword' ||
+            key == 'isDeleted'
         ) {
             continue;
         }
@@ -83,6 +84,20 @@ async function updateUserInfo(userId, requestBody, isAdmin) {
             ? requestBody.isDeleted
             : existingUser.isDeleted;
     }
+    const newRecord = await existingUser.save();
+    return createToken(newRecord);
+}
+async function updateUserEmail(userId, requestBody) {
+    const existingUser = await User.findById(userId);
+    if (!existingUser) {
+        throw new Error('User not found!');
+    }
+
+    if (requestBody.email == '') {
+        throw new Error("Email field can't be empty!");
+    }
+
+    existingUser.email = requestBody.email;
     const newRecord = await existingUser.save();
     return createToken(newRecord);
 }
@@ -125,4 +140,5 @@ module.exports = {
     parseToken,
     getById,
     updateUserInfo,
+    updateUserEmail,
 };
