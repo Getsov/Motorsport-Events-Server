@@ -87,6 +87,7 @@ async function updateUserInfo(userId, requestBody, isAdmin) {
     const newRecord = await existingUser.save();
     return createToken(newRecord);
 }
+
 async function updateUserEmail(userId, requestBody) {
     const existingUser = await User.findById(userId);
     if (!existingUser) {
@@ -98,6 +99,28 @@ async function updateUserEmail(userId, requestBody) {
     }
 
     existingUser.email = requestBody.email;
+    const newRecord = await existingUser.save();
+    return createToken(newRecord);
+}
+
+async function updateUserPassword(userId, requestBody, isAdmin) {
+    const existingUser = await User.findById(userId);
+
+    if (!existingUser) {
+        throw new Error('User not found!');
+    }
+
+    if (!isAdmin) {
+        const match = await bcrypt.compare(
+            requestBody.oldPassword,
+            existingUser.hashedPassword
+        );
+        if (!match) {
+            throw new Error("Email field can't be empty!");
+        }
+    }
+
+    existingUser.hashedPassword = await bcrypt.hash(requestBody.newRepass, 10);
     const newRecord = await existingUser.save();
     return createToken(newRecord);
 }
@@ -141,4 +164,5 @@ module.exports = {
     getById,
     updateUserInfo,
     updateUserEmail,
+    updateUserPassword,
 };
