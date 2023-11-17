@@ -55,10 +55,10 @@ const eventSchema = new Schema({
   imageUrl: {
     type: String,
     default: '',
-    validate: {
-      validator: (value) => validString.test(value),
-      message: "Invalid URL, must start with HTTP:// or HTTPS://",
-    },
+    // validate: {
+    //   validator: (value) => validString.test(value),
+    //   message: "Invalid URL, must start with HTTP:// or HTTPS://",
+    // },
   },
   // TODO: To add some storage later!
   // imageFile: {
@@ -82,21 +82,8 @@ const eventSchema = new Schema({
     minlength: [2, "Category must be minimum 2 characters long!"],
     maxlength: [30, "Category must be maximum 30 characters long!"],
     enum: [
-      "Drag",
-      "Drift",
-      "Time Attack",
-      "Offroad",
-      "Moto Race",
-      "Motocross",
-      "Hill Climb",
-      "Track",
-      "Rally",
-      "Rally Sprint",
-      "Rallycross",
-      "Autocross",
-      "Karting",
-      "SIM Racing",
-      "Събори",
+      "Drag", "Drift", "Time Attack", "Offroad", "Moto Race", "Motocross", "Hill Climb", "Track",
+      "Rally", "Rally Sprint", "Rallycross", "Autocross", "Karting", "SIM Racing", "Събори",
     ],
   },
   likes: [
