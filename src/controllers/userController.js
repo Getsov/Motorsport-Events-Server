@@ -1,102 +1,103 @@
 const userController = require('express').Router();
 const {
-  registerUser,
-  loginUser,
-  updateUser,
+    registerUser,
+    loginUser,
+    updateUserInfo,
 } = require('../services/userService');
 
 //TODO:  In Future Pavka! Check CORS for requests 'req' authorization, in index.js wich is commented!!!
 //TODO: In other words, if you turn on cors in index.js, no file will be returned on the client!
 
 userController.post('/registerUser', async (req, res) => {
-  try {
-    if (req.body.password !== req.body.repass) {
-      throw new Error('Password dismatch!');
-    }
-    const userData = {
-      email: req.body.email,
-      firstName: req.body.firstName ? req.body.firstName : '',
-      lastName: req.body.lastName ? req.body.lastName : '',
-      password: req.body.password,
-      region: req.body.region ? req.body.region : '',
-    };
+    try {
+        if (req.body.password !== req.body.repass) {
+            throw new Error('Password dismatch!');
+        }
+        const userData = {
+            email: req.body.email,
+            firstName: req.body.firstName ? req.body.firstName : '',
+            lastName: req.body.lastName ? req.body.lastName : '',
+            password: req.body.password,
+            region: req.body.region ? req.body.region : '',
+        };
 
-    const user = await registerUser(userData);
-    res.status(200).json(user);
-    res.end();
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
+        const user = await registerUser(userData);
+        res.status(200).json(user);
+        res.end();
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
 });
 
 userController.post('/loginUser', async (req, res) => {
-  try {
-    const user = await loginUser(req.body.email, req.body.password);
-    res.status(200).json(user);
-    res.end();
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({ error: error.message });
-  }
+    try {
+        const user = await loginUser(req.body.email, req.body.password);
+        res.status(200).json(user);
+        res.end();
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ error: error.message });
+    }
 });
 
 userController.put('/editInfo/:id', async (req, res) => {
-  const id = req.params.id;
-  const isAdmin = req.requester.role == 'admin';
-  try {
-    if (req.requester._id == id || isAdmin) {
-      const result = await updateUser(id, req.body, isAdmin);
-      res.status(200).json(result);
-      res.end();
-    } else {
-      throw new Error('You do not have rights to modify the record!');
+    const userId = req.params.id;
+    const isAdmin = req.requester.role == 'admin';
+    // console.log(isAdmin);
+    try {
+        if (req.requester._id == userId || isAdmin) {
+            const result = await updateUserInfo(userId, req.body, isAdmin);
+            res.status(200).json(result);
+            res.end();
+        } else {
+            throw new Error('You do not have rights to modify the record!');
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ error: error.message });
     }
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({ error: error.message });
-  }
 });
 userController.put('/editEmail/:id', async (req, res) => {
-  const id = req.params.id;
-  const isAdmin = req.requester.role == 'admin';
-  try {
-    //TODO - HOW WE MANAGE WITH REPASS?
-    // if (req.body.password !== req.body.repass) {
-    //   throw new Error('Password dismatch!');
-    // }
-    if (req.requester._id == id || isAdmin) {
-      const result = await updateUser(id, req.body, isAdmin);
-      res.status(200).json(result);
-      res.end();
-    } else {
-      throw new Error('You do not have rights to modify the record!');
+    const id = req.params.id;
+    const isAdmin = req.requester.role == 'admin';
+    try {
+        //TODO - HOW WE MANAGE WITH REPASS?
+        // if (req.body.password !== req.body.repass) {
+        //   throw new Error('Password dismatch!');
+        // }
+        if (req.requester._id == id || isAdmin) {
+            const result = await updateUser(id, req.body, isAdmin);
+            res.status(200).json(result);
+            res.end();
+        } else {
+            throw new Error('You do not have rights to modify the record!');
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ error: error.message });
     }
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({ error: error.message });
-  }
 });
 userController.put('/editPassword/:id', async (req, res) => {
-  const id = req.params.id;
-  const isAdmin = req.requester.role == 'admin';
-  try {
-    //TODO - HOW WE MANAGE WITH REPASS?
-    // if (req.body.password !== req.body.repass) {
-    //   throw new Error('Password dismatch!');
-    // }
-    if (req.requester._id == id || isAdmin) {
-      const result = await updateUser(id, req.body, isAdmin);
-      res.status(200).json(result);
-      res.end();
-    } else {
-      throw new Error('You do not have rights to modify the record!');
+    const id = req.params.id;
+    const isAdmin = req.requester.role == 'admin';
+    try {
+        //TODO - HOW WE MANAGE WITH REPASS?
+        // if (req.body.password !== req.body.repass) {
+        //   throw new Error('Password dismatch!');
+        // }
+        if (req.requester._id == id || isAdmin) {
+            const result = await updateUser(id, req.body, isAdmin);
+            res.status(200).json(result);
+            res.end();
+        } else {
+            throw new Error('You do not have rights to modify the record!');
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ error: error.message });
     }
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({ error: error.message });
-  }
 });
 
 module.exports = {
-  userController,
+    userController,
 };
