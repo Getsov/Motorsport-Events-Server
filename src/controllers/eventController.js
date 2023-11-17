@@ -1,11 +1,26 @@
 const eventController = require('express').Router();
-const { registerEvent, findEventByID, findAllEvents, updateEvent, findEventsByCategory, likeUnlikeEvent } = require('../services/eventService');
+const {
+    registerEvent,
+    findEventByID,
+    findAllEvents,
+    updateEvent,
+    findEventsByCategory,
+    likeUnlikeEvent,
+} = require('../services/eventService');
 
 eventController.post('/register', async (req, res) => {
     try {
         // Checks if there is not user. Or if the user have admin role or if the user is organization.
-        if (!req.requester || !(req.requester.role === 'admin' || req.requester.managerFirstName !== undefined)) {
-            throw new Error('Only user with role "Admin", or Organization can register an Event!');
+        if (
+            !req.requester ||
+            !(
+                req.requester.role === 'admin' ||
+                req.requester.managerFirstName !== undefined
+            )
+        ) {
+            throw new Error(
+                'Only user with role "Admin", or Organization can register an Event!'
+            );
         }
 
         const event = await registerEvent(req.body);
@@ -48,7 +63,11 @@ eventController.get('/:id', async (req, res) => {
         if (event === null) {
             throw new Error("Event is deleted, or doesn't exist!");
         }
-        if (event && event.isDeleted === true && req.requester.role != 'admin') {
+        if (
+            event &&
+            event.isDeleted === true &&
+            req.requester.role != 'admin'
+        ) {
             throw new Error("Event is deleted, or doesn't exist!");
         }
 
@@ -64,14 +83,25 @@ eventController.put('/:id', async (req, res) => {
     try {
         const event = await findEventByID(req.params.id);
 
-        if (req.requester?._id === undefined || (req.requester._id != event?.creator && req.requester.role !== 'admin')) {
+        if (
+            req.requester?._id === undefined ||
+            (req.requester._id != event?.creator &&
+                req.requester.role !== 'admin')
+        ) {
             throw new Error('You are not owner or Admin to modify this Event!');
         }
-        if (event === null || (req.requester?.role !== 'admin' && event.isDeleted !== false)) {
-            throw new Error('Event is deleted, or doesn\'t exist!');
+        if (
+            event === null ||
+            (req.requester?.role !== 'admin' && event.isDeleted !== false)
+        ) {
+            throw new Error("Event is deleted, or doesn't exist!");
         }
 
-        const updatedEvent = await updateEvent(req.body, event, req.requester.role === 'admin');
+        const updatedEvent = await updateEvent(
+            req.body,
+            event,
+            req.requester.role === 'admin'
+        );
 
         res.status(200).json(updatedEvent);
         res.end();
@@ -90,7 +120,7 @@ eventController.post('/like/:id', async (req, res) => {
         const event = await findEventByID(req.params.id);
         // TODO: Add like ref to user and organization Models.
         if (event === null || event.isDeleted) {
-            throw new Error('Event is deleted, or doesn\'t exist!');
+            throw new Error("Event is deleted, or doesn't exist!");
         }
 
         let isUnlike = false;
@@ -99,7 +129,11 @@ eventController.post('/like/:id', async (req, res) => {
             isUnlike = true;
         }
 
-        const likedEvent = await likeUnlikeEvent(event, req.requester._id, isUnlike);
+        const likedEvent = await likeUnlikeEvent(
+            event,
+            req.requester._id,
+            isUnlike
+        );
 
         res.status(200).json(isUnlike ? 'Event UnLiked!' : 'Event Liked!');
         res.end();
@@ -109,8 +143,6 @@ eventController.post('/like/:id', async (req, res) => {
     }
 });
 
-
-
 module.exports = {
-    eventController
-}
+    eventController,
+};
