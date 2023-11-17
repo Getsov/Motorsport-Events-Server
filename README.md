@@ -110,7 +110,7 @@ Update entries with ID `:id` in the `users` collection:
     To fulfill the request, the user must send the old password, a new password and a repetition of the new password. The administrator must send a new password and repeat the new password.
 
 Examples:
-Update entry with ID `:id` in the `organizations` collection:
+Update entry with ID `654651caf696083cab72ab1c` in the `organizations` collection:
 
 -   **Method:** `PUT`
 -   **Endpont:** `/organization/654651caf696083cab72ab1c`
