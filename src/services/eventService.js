@@ -43,7 +43,7 @@ async function findEventByID(eventId) {
 };
 
 async function findEventsByCategory(category) {
-    const events = await Event.find({ category: category });
+    const events = await Event.find({ category: category, isDeleted: false });
     return events;
 };
 
@@ -55,10 +55,14 @@ async function findAllEvents(page, limit) {
 // TODO: Update the event later!
 async function updateEvent(requestBody, existingEvent, isAdmin) {
     for (let key in requestBody) {
-        if (isAdmin && key === 'creator' || key === 'likes') {
+        if (isAdmin && (key === 'creator' || key === 'likes')) {
             existingEvent[key] = requestBody[key];
+        } else if (!isAdmin && (key === 'creator' || key === 'likes')) {
+            throw new Error('Only Admin can modify this property!');
         }
         if (isAdmin && key === 'isDeleted') {
+            existingEvent[key] = requestBody[key];
+        } else if (!isAdmin && key === 'isDeleted' && requestBody[key] === true) {
             existingEvent[key] = requestBody[key];
         }
 

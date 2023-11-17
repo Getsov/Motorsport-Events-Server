@@ -11,7 +11,7 @@ npm start
 The service are using authentication, not everything is accessible trough the DB, you need to pass credentials! Only read requests are accessible without authentication. The server is dynamicly load collections from the mongoDB if any.
 
 ## CRUD Operations:
-All requests are send to: `http://localhost:3030`: /event/, /user/, /organization/. Supported requests are `GET`, `POST`, `PUT`, `DELETE`. Only user with role `admin` can delete!
+All requests are send to: `http://localhost:3030`: /event/, /user/, /organization/. Supported requests are `GET`, `POST`, `PUT`!
 
 ## Authentication:
 The service is not initialized with any data. You need to create it by yourself. To register an event you must register yourself as `organization`! If you register as `user`, you wil only able to read data and edit your profile.
@@ -65,13 +65,23 @@ This request requires authorization and content-type: `application/json`. Only o
 Send a PUT request to the endpoint, appending the Id or any appropriate property name. The existing resource will be fully replaced! The service will respond with the updated object.
 
 Examples:
-Update entry with ID `654651caf696083cab72ab1c` in the events collection:
+Update entry with ID `654651caf696083cab72ab1c` in the `events` collection:
 - **Method:** `PUT`
 - **Endpont:** `/event/654651caf696083cab72ab1c`
 Headers: `Content-Type: application/json`
 Body: JSON-formatted data
 
-### Delete:
-TODO: Add info about `delete` request when its done!
-This request requires authorization with Admin. Only the `admin` can delete it.
-Send DELETE request to /event/:id to delete a single entry.
+`Users` and `Organizations` also can update ther properties.
+Examples:
+Update entry with ID `654651caf696083cab72ab1c` in the `users` collection:
+- **Method:** `PUT`
+- **Endpont:** `/user/654651caf696083cab72ab1c`
+Headers: `Content-Type: application/json`
+Body: JSON-formatted data
+
+Examples:
+Update entry with ID `654651caf696083cab72ab1c` in the `organizations` collection:
+- **Method:** `PUT`
+- **Endpont:** `/organization/654651caf696083cab72ab1c`
+Headers: `Content-Type: application/json`
+Body: JSON-formatted data
