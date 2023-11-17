@@ -4,7 +4,6 @@ const User = require('../models/User');
 
 //TODO: use env and change secret
 const secret = 'q213fdfsddfasd231adfas12321kl';
-//TODO: Functionality for changing the password
 
 async function registerUser(requestBody) {
     const email = requestBody.email;
@@ -126,7 +125,6 @@ async function updateUserPassword(userId, requestBody, isAdmin) {
 }
 
 function createToken(user) {
-    //TODO: What payload will contain!
     const payload = {
         _id: user.id,
         email: user.email,
@@ -156,7 +154,6 @@ function parseToken(token) {
     }
 }
 
-//TODO: parseToken can be exported
 module.exports = {
     registerUser,
     loginUser,

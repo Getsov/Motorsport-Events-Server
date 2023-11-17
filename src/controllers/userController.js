@@ -7,9 +7,6 @@ const {
     updateUserPassword,
 } = require('../services/userService');
 
-//TODO:  In Future Pavka! Check CORS for requests 'req' authorization, in index.js wich is commented!!!
-//TODO: In other words, if you turn on cors in index.js, no file will be returned on the client!
-
 userController.post('/registerUser', async (req, res) => {
     try {
         if (req.body.password !== req.body.repass) {

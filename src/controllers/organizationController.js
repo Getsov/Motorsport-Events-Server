@@ -5,11 +5,8 @@ const {
     updateOrganization,
 } = require('../services/organizationService');
 
-//TODO:  In Future Pavka! Check CORS for requests 'req' authorization, in index.js wich is commented!!!
-//TODO: In other words, if you turn on cors in index.js, no file will be returned on the client!
 
 organizationController.post('/registerOrganization', async (req, res) => {
-    // TODO: Check for passwords and token.
     try {
         if (req.body.password !== req.body.repass) {
             throw new Error('Password dismatch!');

@@ -14,7 +14,7 @@ router.use('/user', userController);
 router.use('/organization', organizationController);
 router.use('/event', eventController);
 
-// Error Page (404).
+//TODO: Error Page (404).
 router.get('*', (req, res) => {
     res.status(404).json({ message: 'Page not found!' });
 });

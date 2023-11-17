@@ -5,9 +5,6 @@ const dbConnectionString = 'mongodb://127.0.0.1:27017/Race-Fanatic-DB';
 const { mongoose } = require('mongoose');
 const session = require('./src/middlewares/session');
 const router = require('./src/routes');
-
-// TODO: Add aditional libraties, middlewares!
-
 mongoose.set('strictQuery', true);
 
 const initializeDatabase = () =>
@@ -22,11 +19,11 @@ const initializeDatabase = () =>
 
 async function startServer() {
     initializeDatabase();
-    // TODO: USE aditional libraties, middlewares!
     app.use(express.json());
     app.use(express.urlencoded({ extended: false }));
     app.use(cors());
     app.use(session());
+    //TODO: Add trim body
     app.use(router);
     app.listen('3030', () => console.log('Server operational on port: 3030!'));
 }
