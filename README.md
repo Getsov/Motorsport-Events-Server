@@ -89,14 +89,14 @@ Update entry with ID `654651caf696083cab72ab1c` in the `events` collection:
 `Users` and `Organizations` also can update ther properties.
 
 Examples on `Users` collection:
-Update entries with ID `:id` in the `users` collection:
+Update entries with ID `:id` in the `Users` collection:
 
 -   **Method:** `PUT`
 
 -   **Endpont:** `/editUserInfo/:id`
     Headers: `Content-Type: application/json`
     Body: JSON-formatted data
-    Changes: Only optional data of User(firstName, lastName, region). Admin can change "isDeleted" and "role" property.
+    Changes: Only optional data of User(firstName, lastName, region). Admin can change also "isDeleted" and "role" property.
 
 -   **Endpont:** `/editUserEmail/:id`
     Headers: `Content-Type: application/json`
@@ -107,12 +107,25 @@ Update entries with ID `:id` in the `users` collection:
     Headers: `Content-Type: application/json`
     Body: JSON-formatted data
     Changes: Admin and User itself can change password.
-    To fulfill the request, the user must send the old password, a new password and a repetition of the new password. The administrator must send a new password and repeat the new password.
+    To fulfill the request, the user must send the old password, a new password and a repetition of the new password. The administrator must send a new password and repetition the new password.
 
-Examples:
-Update entry with ID `654651caf696083cab72ab1c` in the `organizations` collection:
+Examples on `Organizations` collection:
+Update entry with ID `:id` in the `Organizations` collection:
 
 -   **Method:** `PUT`
--   **Endpont:** `/organization/654651caf696083cab72ab1c`
+
+-   **Endpont:** `/editOrganizationInfo/:id`
     Headers: `Content-Type: application/json`
     Body: JSON-formatted data
+    Changes: Only optional data of Organization(name, managerFirstName, managerLastName, phone,region, address). Admin can change also "isDeleted" property.
+
+-   **Endpont:** `/editOrganizationEmail/:id`
+    Headers: `Content-Type: application/json`
+    Body: JSON-formatted data
+    Changes: Admin and Organization itself can change the email.
+
+-   **Endpont:** `/editOrganizationPassword/:id`
+    Headers: `Content-Type: application/json`
+    Body: JSON-formatted data
+    Changes: Admin and Organization itself can change password.
+    To fulfill the request, the Organization must send the old password, a new password and a repetition of the new password. The administrator must send a new password and repetition the new password.

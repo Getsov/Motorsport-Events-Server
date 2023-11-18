@@ -2,9 +2,10 @@ const organizationController = require('express').Router();
 const {
     registerOrganization,
     loginOrganization,
-    updateOrganization,
+    updateOrganizationInfo,
+    updateOrganizationEmail,
+    updateOrganizationPassword,
 } = require('../services/organizationService');
-
 
 organizationController.post('/registerOrganization', async (req, res) => {
     try {
@@ -43,17 +44,16 @@ organizationController.post('/loginOrganization', async (req, res) => {
     }
 });
 
-organizationController.put('/:id', async (req, res) => {
-    const id = req.params.id;
+organizationController.put('/editOrganizationInfo/:id', async (req, res) => {
+    const organizationId = req.params.id;
     const isAdmin = req.requester.role == 'admin';
     try {
-        //TODO - HOW WE MANAGE WITH REPASS?
-        // if (req.body.password !== req.body.repass) {
-        //   throw new Error('Password dismatch!');
-        // }
-        //if not the same organization or not admin cannot
-        if (req.requester._id == id || isAdmin) {
-            const result = await updateOrganization(id, req.body, isAdmin);
+        if (req.requester._id == organizationId || isAdmin) {
+            const result = await updateOrganizationInfo(
+                organizationId,
+                req.body,
+                isAdmin
+            );
             res.status(200).json(result);
             res.end();
         } else {
@@ -64,6 +64,54 @@ organizationController.put('/:id', async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 });
+
+organizationController.put('/editOrganizationEmail/:id', async (req, res) => {
+    const organizationId = req.params.id;
+    const isAdmin = req.requester.role == 'admin';
+    try {
+        if (req.requester._id == organizationId || isAdmin) {
+            const result = await updateOrganizationEmail(
+                organizationId,
+                req.body
+            );
+            res.status(200).json(result);
+            res.end();
+        } else {
+            throw new Error('You do not have rights to modify the record!');
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ error: error.message });
+    }
+});
+
+organizationController.put(
+    '/editOrganizationPassword/:id',
+    async (req, res) => {
+        const organizationId = req.params.id;
+        const isAdmin = req.requester.role == 'admin';
+        try {
+            if (req.body.newPassword !== req.body.newRepass) {
+                throw new Error('Password dismatch!');
+            }
+
+            if (req.requester._id == organizationId || isAdmin) {
+                const result = await updateOrganizationPassword(
+                    organizationId,
+                    req.body,
+                    isAdmin
+                );
+                res.status(200).json(result);
+                res.end();
+            } else {
+                throw new Error('You do not have rights to modify the record!');
+            }
+        } catch (error) {
+            console.log(error);
+            res.status(400).json({ error: error.message });
+        }
+    }
+);
 
 module.exports = {
     organizationController,

@@ -57,12 +57,12 @@ userController.put('/editUserInfo/:id', async (req, res) => {
 });
 
 userController.put('/editUserEmail/:id', async (req, res) => {
-    const id = req.params.id;
+    const userId = req.params.id;
     const isAdmin = req.requester.role == 'admin';
 
     try {
-        if (req.requester._id == id || isAdmin) {
-            const result = await updateUserEmail(id, req.body);
+        if (req.requester._id == userId || isAdmin) {
+            const result = await updateUserEmail(userId, req.body);
             res.status(200).json(result);
             res.end();
         } else {
@@ -75,7 +75,7 @@ userController.put('/editUserEmail/:id', async (req, res) => {
 });
 
 userController.put('/editUserPassword/:id', async (req, res) => {
-    const id = req.params.id;
+    const userId = req.params.id;
     const isAdmin = req.requester.role == 'admin';
     //TODO: Is admin can change user password?
     try {
@@ -83,8 +83,8 @@ userController.put('/editUserPassword/:id', async (req, res) => {
             throw new Error('Password dismatch!');
         }
 
-        if (req.requester._id == id || isAdmin) {
-            const result = await updateUserPassword(id, req.body, isAdmin);
+        if (req.requester._id == userId || isAdmin) {
+            const result = await updateUserPassword(userId, req.body, isAdmin);
             res.status(200).json(result);
             res.end();
         } else {

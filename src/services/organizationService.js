@@ -1,9 +1,8 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Organization = require('../models/Organization');
+const { secret } = require('../utils/parseToken');
 
-//TODO: use env and change secret
-const secret = 'q213fdfsddfasd231adfas12321kl';
 
 async function registerOrganization(organizationData) {
     const email = organizationData.email;
@@ -45,45 +44,85 @@ async function loginOrganization(email, password) {
     }
 
     const match = await bcrypt.compare(password, organization.hashedPassword);
-
     if (!match) {
         throw new Error('Invalid email or password!');
     }
     return createToken(organization);
 }
 
-async function updateOrganization(id, requestBody, isAdmin) {
-    const existingOrganization = await Organization.findById(id);
+async function updateOrganizationInfo(organizationId, requestBody, isAdmin) {
+    const existingOrganization = await Organization.findById(organizationId);
     if (!existingOrganization) {
         throw new Error('Organization not found');
     }
 
     for (let key of Object.keys(requestBody)) {
-        if ((key == 'email' && requestBody[key] == '') || key == 'isDeleted') {
+        if (
+            key == 'email' ||
+            key == 'createdEvents' ||
+            key == 'likedEvents' ||
+            key == 'hashedPassword' ||
+            key == 'isDeleted'
+        ) {
             continue;
         }
         existingOrganization[key] = requestBody[key];
     }
 
     if (isAdmin) {
-        //TODO - HOW WE MANAGE WITH REPASS and Password?
+        //TODO - HOW we manage likedEvents and created events
         //isDeleted must be sent as string
         existingOrganization.isDeleted = requestBody.isDeleted
             ? requestBody.isDeleted
             : existingOrganization.isDeleted;
     }
     const newRecord = await existingOrganization.save();
-    // console.log(newRecord);
     return createToken(newRecord);
 }
 
-/*
-TODO:
-- parseToken (can be exported)
-*/
+async function updateOrganizationEmail(organizationId, requestBody) {
+    const existingOrganization = await Organization.findById(organizationId);
+    if (!existingOrganization) {
+        throw new Error('Organization not found');
+    }
+
+    if (requestBody.email == '') {
+        throw new Error("Email field can't be empty!");
+    }
+
+    existingOrganization.email = requestBody.email;
+    const newRecord = await existingOrganization.save();
+    return createToken(newRecord);
+}
+async function updateOrganizationPassword(
+    organizationId,
+    requestBody,
+    isAdmin
+) {
+    const existingOrganization = await Organization.findById(organizationId);
+    if (!existingOrganization) {
+        throw new Error('Organization not found');
+    }
+
+    if (!isAdmin) {
+        const match = await bcrypt.compare(
+            requestBody.oldPassword,
+            existingOrganization.hashedPassword
+        );
+        if (!match) {
+            throw new Error('Password dismatch!');
+        }
+    }
+
+    existingOrganization.hashedPassword = await bcrypt.hash(
+        requestBody.newPassword,
+        10
+    );
+    const newRecord = await existingOrganization.save();
+    return createToken(newRecord);
+}
 
 function createToken(organization) {
-    //TODO: What payload will contain!
     const payload = {
         _id: organization.id,
         name: organization.name,
@@ -110,17 +149,10 @@ function createToken(organization) {
     };
 }
 
-function parseToken(token) {
-    try {
-        return jwt.verify(token, secret);
-    } catch (error) {
-        throw new Error('Invalid acces token!');
-    }
-}
-
 module.exports = {
     registerOrganization,
     loginOrganization,
-    parseToken,
-    updateOrganization,
+    updateOrganizationInfo,
+    updateOrganizationEmail,
+    updateOrganizationPassword,
 };
