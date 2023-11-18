@@ -146,18 +146,9 @@ function createToken(user) {
     };
 }
 
-function parseToken(token) {
-    try {
-        return jwt.verify(token, secret);
-    } catch (error) {
-        throw new Error('Invalid acces token!');
-    }
-}
-
 module.exports = {
     registerUser,
     loginUser,
-    parseToken,
     getById,
     updateUserInfo,
     updateUserEmail,

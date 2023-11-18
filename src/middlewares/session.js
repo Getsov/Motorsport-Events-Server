@@ -1,4 +1,4 @@
-const { parseToken } = require('../services/userService');
+const { parseToken } = require('../utils/parseToken');
 //TODO - add session as middleware because 
 //organization and user use the same session function
 module.exports = () => (req, res, next) => {

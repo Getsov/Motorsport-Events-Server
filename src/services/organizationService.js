@@ -98,10 +98,6 @@ async function updateOrganizationEmail(organizationId, requestBody) {
     return createToken(newRecord);
 }
 
-/*
-TODO:
-- parseToken (can be exported)
-*/
 
 function createToken(organization) {
     //TODO: What payload will contain!
@@ -131,18 +127,10 @@ function createToken(organization) {
     };
 }
 
-function parseToken(token) {
-    try {
-        return jwt.verify(token, secret);
-    } catch (error) {
-        throw new Error('Invalid acces token!');
-    }
-}
 
 module.exports = {
     registerOrganization,
     loginOrganization,
-    parseToken,
     updateOrganizationInfo,
     updateOrganizationEmail,
 };
