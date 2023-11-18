@@ -1,9 +1,8 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const { secret } = require('../utils/parseToken');
 
-//TODO: use env and change secret
-const secret = 'q213fdfsddfasd231adfas12321kl';
 
 async function registerUser(requestBody) {
     const email = requestBody.email;
@@ -119,7 +118,10 @@ async function updateUserPassword(userId, requestBody, isAdmin) {
         }
     }
 
-    existingUser.hashedPassword = await bcrypt.hash(requestBody.newRepass, 10);
+    existingUser.hashedPassword = await bcrypt.hash(
+        requestBody.newPassword,
+        10
+    );
     const newRecord = await existingUser.save();
     return createToken(newRecord);
 }
