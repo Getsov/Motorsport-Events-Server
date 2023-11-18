@@ -1,9 +1,8 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Organization = require('../models/Organization');
+const { secret } = require('../utils/parseToken');
 
-//TODO: use env and change secret
-const secret = 'q213fdfsddfasd231adfas12321kl';
 
 async function registerOrganization(organizationData) {
     const email = organizationData.email;
@@ -97,7 +96,33 @@ async function updateOrganizationEmail(organizationId, requestBody) {
     const newRecord = await existingOrganization.save();
     return createToken(newRecord);
 }
+async function updateOrganizationPassword(
+    organizationId,
+    requestBody,
+    isAdmin
+) {
+    const existingOrganization = await Organization.findById(organizationId);
+    if (!existingOrganization) {
+        throw new Error('Organization not found');
+    }
 
+    if (!isAdmin) {
+        const match = await bcrypt.compare(
+            requestBody.oldPassword,
+            existingOrganization.hashedPassword
+        );
+        if (!match) {
+            throw new Error('Password dismatch!');
+        }
+    }
+
+    existingOrganization.hashedPassword = await bcrypt.hash(
+        requestBody.newPassword,
+        10
+    );
+    const newRecord = await existingOrganization.save();
+    return createToken(newRecord);
+}
 
 function createToken(organization) {
     //TODO: What payload will contain!
@@ -127,10 +152,10 @@ function createToken(organization) {
     };
 }
 
-
 module.exports = {
     registerOrganization,
     loginOrganization,
     updateOrganizationInfo,
     updateOrganizationEmail,
+    updateOrganizationPassword,
 };
