@@ -52,7 +52,7 @@ async function loginOrganization(email, password) {
     return createToken(organization);
 }
 
-async function updateOrganization(id, requestBody, isAdmin) {
+async function updateOrganizationInfo(id, requestBody, isAdmin) {
     const existingOrganization = await Organization.findById(id);
     if (!existingOrganization) {
         throw new Error('Organization not found');
@@ -122,5 +122,5 @@ module.exports = {
     registerOrganization,
     loginOrganization,
     parseToken,
-    updateOrganization,
+    updateOrganizationInfo,
 };
