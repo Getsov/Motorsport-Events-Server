@@ -83,35 +83,18 @@ async function updateOrganizationInfo(organizationId, requestBody, isAdmin) {
     return createToken(newRecord);
 }
 
-async function updateOrganizationEmail(organizationId, requestBody, isAdmin) {
+async function updateOrganizationEmail(organizationId, requestBody) {
     const existingOrganization = await Organization.findById(organizationId);
     if (!existingOrganization) {
         throw new Error('Organization not found');
     }
 
-    for (let key of Object.keys(requestBody)) {
-        if (
-            key == 'email' ||
-            key == 'createdEvents' ||
-            key == 'likedEvents' ||
-            key == 'hashedPassword' ||
-            key == 'isDeleted'
-        ) {
-            continue;
-        }
-        existingOrganization[key] = requestBody[key];
+    if (requestBody.email == '') {
+        throw new Error("Email field can't be empty!");
     }
 
-    if (isAdmin) {
-        //TODO - HOW we manage likedEvents and created events
-        //TODO - HOW WE MANAGE WITH REPASS and Password?
-        //isDeleted must be sent as string
-        existingOrganization.isDeleted = requestBody.isDeleted
-            ? requestBody.isDeleted
-            : existingOrganization.isDeleted;
-    }
+    existingOrganization.email = requestBody.email;
     const newRecord = await existingOrganization.save();
-    // console.log(newRecord);
     return createToken(newRecord);
 }
 
@@ -161,4 +144,5 @@ module.exports = {
     loginOrganization,
     parseToken,
     updateOrganizationInfo,
+    updateOrganizationEmail,
 };
