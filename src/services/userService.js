@@ -52,7 +52,6 @@ async function getById(id) {
 
 //updateUser can be invoked by adminController and userController
 //accept id of user which will be updated, new data and isAdmin property
-//isAdmin property can change yser role and delte value of user record
 async function updateUserInfo(userId, requestBody, isAdmin) {
     const existingUser = await User.findById(userId);
     if (!existingUser) {

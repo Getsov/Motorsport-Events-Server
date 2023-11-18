@@ -71,14 +71,12 @@ async function updateOrganizationInfo(organizationId, requestBody, isAdmin) {
 
     if (isAdmin) {
         //TODO - HOW we manage likedEvents and created events
-        //TODO - HOW WE MANAGE WITH REPASS and Password?
         //isDeleted must be sent as string
         existingOrganization.isDeleted = requestBody.isDeleted
             ? requestBody.isDeleted
             : existingOrganization.isDeleted;
     }
     const newRecord = await existingOrganization.save();
-    // console.log(newRecord);
     return createToken(newRecord);
 }
 
@@ -125,7 +123,6 @@ async function updateOrganizationPassword(
 }
 
 function createToken(organization) {
-    //TODO: What payload will contain!
     const payload = {
         _id: organization.id,
         name: organization.name,
