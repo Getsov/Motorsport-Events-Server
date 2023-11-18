@@ -44,11 +44,11 @@ organizationController.post('/loginOrganization', async (req, res) => {
 });
 
 organizationController.put('/editOrganizationInfo/:id', async (req, res) => {
-    const id = req.params.id;
+    const organizationId = req.params.id;
     const isAdmin = req.requester.role == 'admin';
     try {
-        if (req.requester._id == id || isAdmin) {
-            const result = await updateOrganizationInfo(id, req.body, isAdmin);
+        if (req.requester._id == organizationId || isAdmin) {
+            const result = await updateOrganizationInfo(organizationId, req.body, isAdmin);
             res.status(200).json(result);
             res.end();
         } else {
@@ -61,7 +61,7 @@ organizationController.put('/editOrganizationInfo/:id', async (req, res) => {
 });
 
 // organizationController.put('/editOrganizationEmail/:id', async (req, res) => {
-//     const id = req.params.id;
+//     const organizationId = req.params.id;
 //     const isAdmin = req.requester.role == 'admin';
 //     try {
 //         //TODO - HOW WE MANAGE WITH REPASS?
@@ -70,7 +70,7 @@ organizationController.put('/editOrganizationInfo/:id', async (req, res) => {
 //         // }
 //         //if not the same organization or not admin cannot
 //         if (req.requester._id == id || isAdmin) {
-//             const result = await updateOrganization(id, req.body, isAdmin);
+//             const result = await updateOrganization(organizationId, req.body, isAdmin);
 //             res.status(200).json(result);
 //             res.end();
 //         } else {
@@ -83,7 +83,7 @@ organizationController.put('/editOrganizationInfo/:id', async (req, res) => {
 // });
 
 // organizationController.put('/editOrganizationPassword/:id', async (req, res) => {
-//     const id = req.params.id;
+//     const organizationId = req.params.id;
 //     const isAdmin = req.requester.role == 'admin';
 //     try {
 //         //TODO - HOW WE MANAGE WITH REPASS?
@@ -92,7 +92,7 @@ organizationController.put('/editOrganizationInfo/:id', async (req, res) => {
 //         // }
 //         //if not the same organization or not admin cannot
 //         if (req.requester._id == id || isAdmin) {
-//             const result = await updateOrganization(id, req.body, isAdmin);
+//             const result = await updateOrganization(organizationId, req.body, isAdmin);
 //             res.status(200).json(result);
 //             res.end();
 //         } else {

@@ -45,27 +45,33 @@ async function loginOrganization(email, password) {
     }
 
     const match = await bcrypt.compare(password, organization.hashedPassword);
-
     if (!match) {
         throw new Error('Invalid email or password!');
     }
     return createToken(organization);
 }
 
-async function updateOrganizationInfo(id, requestBody, isAdmin) {
-    const existingOrganization = await Organization.findById(id);
+async function updateOrganizationInfo(organizationId, requestBody, isAdmin) {
+    const existingOrganization = await Organization.findById(organizationId);
     if (!existingOrganization) {
         throw new Error('Organization not found');
     }
 
     for (let key of Object.keys(requestBody)) {
-        if ((key == 'email' && requestBody[key] == '') || key == 'isDeleted') {
+        if (
+            key == 'email' ||
+            key == 'createdEvents' ||
+            key == 'likedEvents' ||
+            key == 'hashedPassword' ||
+            key == 'isDeleted'
+        ) {
             continue;
         }
         existingOrganization[key] = requestBody[key];
     }
 
     if (isAdmin) {
+        //TODO - HOW we manage likedEvents and created events
         //TODO - HOW WE MANAGE WITH REPASS and Password?
         //isDeleted must be sent as string
         existingOrganization.isDeleted = requestBody.isDeleted
