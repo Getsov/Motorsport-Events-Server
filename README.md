@@ -89,7 +89,7 @@ Update entry with ID `654651caf696083cab72ab1c` in the `events` collection:
 `Users` and `Organizations` also can update ther properties.
 
 Examples on `Users` collection:
-Update entries with ID `:id` in the `users` collection:
+Update entries with ID `:id` in the `Users` collection:
 
 -   **Method:** `PUT`
 
@@ -109,8 +109,8 @@ Update entries with ID `:id` in the `users` collection:
     Changes: Admin and User itself can change password.
     To fulfill the request, the user must send the old password, a new password and a repetition of the new password. The administrator must send a new password and repetition the new password.
 
-Examples:
-Update entry with ID `:id` in the `organizations` collection:
+Examples on `Organizations` collection:
+Update entry with ID `:id` in the `Organizations` collection:
 
 -   **Method:** `PUT`
 
