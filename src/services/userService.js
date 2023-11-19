@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const { secret } = require('../utils/parseToken');
 
-
 async function registerUser(requestBody) {
     const email = requestBody.email;
     const existingUser = await User.findOne({ email });
@@ -125,8 +124,23 @@ async function updateUserPassword(userId, requestBody, isAdmin) {
     return createToken(newRecord);
 }
 
-async function addEventToLikedEvents(eventId, userId){
-
+async function addEventToLikedEvents(eventId, userId, isUnlike) {
+    const existingUser = await User.findById(userId);
+    if (!existingUser) {
+        throw new Error('User not found!');
+    }
+    if (existingUser.likedEvents.includes(eventId) && isUnlike) {
+        let filteredLikes = await existingUser.likedEvents.filter(
+            (x) => x != eventId
+        );
+        existingUser.likedEvents = filteredLikes;
+        return await existingUser.save();
+    } else if (!existingUser.likedEvents.includes(eventId) && !isUnlike) {
+        existingUser.likedEvents.push(eventId);
+    } else {
+        //TODO: not sure for this check
+        throw new Error('User already liked this event!');
+    }
 }
 
 function createToken(user) {
@@ -159,4 +173,5 @@ module.exports = {
     updateUserInfo,
     updateUserEmail,
     updateUserPassword,
+    addEventToLikedEvents,
 };
