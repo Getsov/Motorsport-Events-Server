@@ -131,6 +131,7 @@ function createToken(organization) {
         phone: organization.phone,
         region: organization.region,
         address: organization.address,
+        type: organization.type,
     };
     return {
         _id: organization.id,
