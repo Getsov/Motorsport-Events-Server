@@ -7,6 +7,7 @@ const {
     findEventsByCategory,
     likeUnlikeEvent,
 } = require('../services/eventService');
+const { addEventToLikedEvents } = require('../services/userService');
 
 eventController.post('/register', async (req, res) => {
     try {
@@ -134,6 +135,14 @@ eventController.post('/like/:id', async (req, res) => {
             req.requester._id,
             isUnlike
         );
+
+        if (req.requester.type == 'User') {
+            await addEventToLikedEvents(
+                req.params.id,
+                req.requester._id,
+                isUnlike
+            );
+        } 
 
         res.status(200).json(isUnlike ? 'Event UnLiked!' : 'Event Liked!');
         res.end();
