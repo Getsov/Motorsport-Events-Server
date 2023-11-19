@@ -129,3 +129,6 @@ Update entry with ID `:id` in the `Organizations` collection:
     Body: JSON-formatted data
     Changes: Admin and Organization itself can change password.
     To fulfill the request, the Organization must send the old password, a new password and a repetition of the new password. The administrator must send a new password and repetition the new password.
+
+<!-- ### Update: -->
+<!-- TODO: add documentation for like functionality -->
