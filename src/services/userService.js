@@ -125,6 +125,10 @@ async function updateUserPassword(userId, requestBody, isAdmin) {
     return createToken(newRecord);
 }
 
+async function addEventToLikedEvents(eventId, userId){
+
+}
+
 function createToken(user) {
     const payload = {
         _id: user.id,
@@ -143,6 +147,7 @@ function createToken(user) {
         region: user.region,
         likedEvents: user.likedEvents,
         isDeleted: user.isDeleted,
+        type: user.type,
         accessToken: jwt.sign(payload, secret),
     };
 }

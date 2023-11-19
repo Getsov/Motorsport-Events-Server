@@ -46,8 +46,8 @@ const userSchema = new Schema({
     type: {
         type: String,
         enum: ['User'],
-        default: 'TypeTwo'
-      }
+        default: 'User',
+    },
 });
 
 userSchema.index(
