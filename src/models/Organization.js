@@ -67,6 +67,11 @@ OrgnaizationSchema = new Schema({
     likedEvents: [{ type: ObjectId, ref: 'Event' }],
     hashedPassword: { type: String, required: true },
     isDeleted: { type: Boolean, default: false },
+    type: {
+        type: String,
+        enum: ['Organization'],
+        default: 'Organization',
+    },
 });
 
 const Organization = model('Organization', OrgnaizationSchema);

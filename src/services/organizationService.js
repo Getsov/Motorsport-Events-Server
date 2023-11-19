@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 const Organization = require('../models/Organization');
 const { secret } = require('../utils/parseToken');
 
-
 async function registerOrganization(organizationData) {
     const email = organizationData.email;
 
@@ -145,6 +144,7 @@ function createToken(organization) {
         createdEvents: organization.createdEvents,
         likedEvents: organization.likedEvents,
         isDeleted: organization.isDeleted,
+        type: organization.type,
         accessToken: jwt.sign(payload, secret),
     };
 }
