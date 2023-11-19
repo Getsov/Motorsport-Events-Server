@@ -129,6 +129,7 @@ async function addEventToLikedEvents(eventId, userId, isUnlike) {
     if (!existingUser) {
         throw new Error('User not found!');
     }
+
     if (existingUser.likedEvents.includes(eventId) && isUnlike) {
         let filteredLikes = await existingUser.likedEvents.filter(
             (x) => x != eventId
@@ -137,6 +138,7 @@ async function addEventToLikedEvents(eventId, userId, isUnlike) {
         return await existingUser.save();
     } else if (!existingUser.likedEvents.includes(eventId) && !isUnlike) {
         existingUser.likedEvents.push(eventId);
+        return await existingUser.save();
     } else {
         //TODO: not sure for this check
         throw new Error('User already liked this event!');
@@ -151,6 +153,7 @@ function createToken(user) {
         lastName: user.lastName,
         role: user.role,
         region: user.region,
+        type: user.type,
     };
     return {
         _id: user.id,
