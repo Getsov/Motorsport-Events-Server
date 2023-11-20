@@ -43,6 +43,11 @@ const userSchema = new Schema({
     likedEvents: [{ type: ObjectId, ref: 'Event' }],
     hashedPassword: { type: String, required: true },
     isDeleted: { type: Boolean, default: false },
+    type: {
+        type: String,
+        enum: ['User'],
+        default: 'User',
+    },
 });
 
 userSchema.index(

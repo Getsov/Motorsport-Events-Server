@@ -120,6 +120,7 @@ const eventSchema = new Schema({
     winners: {
         type: [
             {
+                //TODO: Is it requred true (winners) when creating event
                 name: { type: String, required: true },
                 vehicle: { type: String, required: true },
                 place: { type: Number, required: true },
