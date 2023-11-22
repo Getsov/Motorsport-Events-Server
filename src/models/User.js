@@ -31,6 +31,7 @@ const userSchema = new Schema({
             minlength: [2, 'Name must be minimum 2 characters long!'],
             maxlength: [15, 'Name must be maximum 15 characters long!'],
         },
+        default:'',
     },
     firstName: {
         type: String,
@@ -57,7 +58,7 @@ const userSchema = new Schema({
         type: String,
         default: '',
     },
-    phone: { type: String },
+    phone: { type: String, default: '' },
     //TODO: to take decision how we will take the likes
     createdEvents: [{ type: ObjectId, ref: 'Event' }],
     likedEvents: [{ type: ObjectId, ref: 'Event' }],
