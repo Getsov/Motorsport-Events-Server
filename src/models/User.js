@@ -18,20 +18,10 @@ const userSchema = new Schema({
             message: 'Invalid email',
         },
     },
-    organizator: {
-        type: Schema.Types.String,
-        required: true,
-        validate: {
-            validator: function (value) {
-                // Allow strings and numbers
-                //TODO: Test without validator
-                return typeof value === 'string' || typeof value === 'number';
-            },
-            message: 'Name must be a string or a number!',
-            minlength: [2, 'Name must be minimum 2 characters long!'],
-            maxlength: [15, 'Name must be maximum 15 characters long!'],
-        },
-        default:'',
+    organizer: {
+        type: String,
+        maxlength: [15, 'Organization name must be maximum 15 characters long!'],
+        default: '',
     },
     firstName: {
         type: String,
@@ -45,7 +35,7 @@ const userSchema = new Schema({
     },
     role: {
         type: String,
-        enum: ['regular', 'admin', 'organizator'],
+        enum: ['regular', 'admin', 'organizer'],
         default: 'regular',
     },
     region: {
