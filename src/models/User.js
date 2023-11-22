@@ -18,7 +18,7 @@ const userSchema = new Schema({
             message: 'Invalid email',
         },
     },
-    organizer: {
+    organizatorName: {
         type: String,
         maxlength: [15, 'Organizator name must be maximum 40 characters long!'],
         default: '',
