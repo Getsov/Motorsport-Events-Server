@@ -20,7 +20,7 @@ const userSchema = new Schema({
     },
     organizer: {
         type: String,
-        maxlength: [15, 'Organization name must be maximum 15 characters long!'],
+        maxlength: [15, 'Organizator name must be maximum 40 characters long!'],
         default: '',
     },
     firstName: {
