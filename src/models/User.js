@@ -18,6 +18,20 @@ const userSchema = new Schema({
             message: 'Invalid email',
         },
     },
+    organizator: {
+        type: Schema.Types.String,
+        required: true,
+        validate: {
+            validator: function (value) {
+                // Allow strings and numbers
+                //TODO: Test without validator
+                return typeof value === 'string' || typeof value === 'number';
+            },
+            message: 'Name must be a string or a number!',
+            minlength: [2, 'Name must be minimum 2 characters long!'],
+            maxlength: [15, 'Name must be maximum 15 characters long!'],
+        },
+    },
     firstName: {
         type: String,
         maxlength: [15, 'First name must be maximum 15 characters long!'],
@@ -30,8 +44,8 @@ const userSchema = new Schema({
     },
     role: {
         type: String,
-        enum: ['user', 'admin'],
-        default: 'user',
+        enum: ['regular', 'admin', 'organizator'],
+        default: 'regular',
     },
     region: {
         type: String,
@@ -39,15 +53,16 @@ const userSchema = new Schema({
         default: '',
         // TODO: Propper validation for city length
     },
+    address: {
+        type: String,
+        default: '',
+    },
+    phone: { type: String },
     //TODO: to take decision how we will take the likes
+    createdEvents: [{ type: ObjectId, ref: 'Event' }],
     likedEvents: [{ type: ObjectId, ref: 'Event' }],
     hashedPassword: { type: String, required: true },
     isDeleted: { type: Boolean, default: false },
-    type: {
-        type: String,
-        enum: ['User'],
-        default: 'User',
-    },
 });
 
 userSchema.index(
