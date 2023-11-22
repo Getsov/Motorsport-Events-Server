@@ -18,6 +18,11 @@ const userSchema = new Schema({
             message: 'Invalid email',
         },
     },
+    organizatorName: {
+        type: String,
+        maxlength: [40, 'Organizator name must be maximum 40 characters long!'],
+        default: '',
+    },
     firstName: {
         type: String,
         maxlength: [15, 'First name must be maximum 15 characters long!'],
@@ -30,24 +35,26 @@ const userSchema = new Schema({
     },
     role: {
         type: String,
-        enum: ['user', 'admin'],
-        default: 'user',
+        enum: ['regular', 'admin', 'organizer'],
+        default: 'regular',
     },
     region: {
+        // TODO - enum like in the front end
         type: String,
         maxlength: [15, 'Region must be maximum 15 characters long!'],
         default: '',
         // TODO: Propper validation for city length
     },
+    address: {
+        type: String,
+        default: '',
+    },
+    phone: { type: String, default: '' },
     //TODO: to take decision how we will take the likes
+    createdEvents: [{ type: ObjectId, ref: 'Event' }],
     likedEvents: [{ type: ObjectId, ref: 'Event' }],
     hashedPassword: { type: String, required: true },
     isDeleted: { type: Boolean, default: false },
-    type: {
-        type: String,
-        enum: ['User'],
-        default: 'User',
-    },
 });
 
 userSchema.index(

@@ -18,9 +18,12 @@ async function registerUser(requestBody) {
 
     const user = await User.create({
         email: requestBody.email,
+        organizator: req.body.organizator,
         firstName: requestBody.firstName,
         lastName: requestBody.lastName,
         region: requestBody.region,
+        address: requestBody.address,
+        phone: requestBody.phone,
         hashedPassword: await bcrypt.hash(requestBody.password, 10),
     });
     return createToken(user);
@@ -45,9 +48,6 @@ async function loginUser(email, password) {
     return createToken(user);
 }
 
-async function getById(id) {
-    return User.find(id);
-}
 
 //updateUser can be invoked by adminController and userController
 //accept id of user which will be updated, new data and isAdmin property
@@ -149,22 +149,25 @@ function createToken(user) {
     const payload = {
         _id: user.id,
         email: user.email,
+        organizator:user.organizator,
         firstName: user.firstName,
         lastName: user.lastName,
         role: user.role,
         region: user.region,
-        type: user.type,
+        address: user.address,
+        phone:user.phone,
     };
     return {
         _id: user.id,
         email: user.email,
+        organizator:user.organizator,
         firstName: user.firstName,
         lastName: user.lastName,
         role: user.role,
         region: user.region,
-        likedEvents: user.likedEvents,
+        address: user.address,
+        phone:user.phone,
         isDeleted: user.isDeleted,
-        type: user.type,
         accessToken: jwt.sign(payload, secret),
     };
 }
@@ -172,7 +175,6 @@ function createToken(user) {
 module.exports = {
     registerUser,
     loginUser,
-    getById,
     updateUserInfo,
     updateUserEmail,
     updateUserPassword,

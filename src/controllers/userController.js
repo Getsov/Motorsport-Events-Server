@@ -13,11 +13,16 @@ userController.post('/registerUser', async (req, res) => {
             throw new Error('Password dismatch!');
         }
         const userData = {
+            //TODO: TEST if this check is needed
             email: req.body.email,
+            organizator: req.body.organizator ? req.body.organizator : '',
             firstName: req.body.firstName ? req.body.firstName : '',
             lastName: req.body.lastName ? req.body.lastName : '',
-            password: req.body.password,
             region: req.body.region ? req.body.region : '',
+            address: req.body.address ? req.body.address : '',
+            phone: req.body.phone ? req.body.phone : '',
+            password: req.body.password,
+
         };
 
         const user = await registerUser(userData);
