@@ -39,6 +39,7 @@ const userSchema = new Schema({
         default: 'regular',
     },
     region: {
+        // TODO - enum like in the front end
         type: String,
         maxlength: [15, 'Region must be maximum 15 characters long!'],
         default: '',
