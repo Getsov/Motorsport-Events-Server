@@ -48,9 +48,6 @@ async function loginUser(email, password) {
     return createToken(user);
 }
 
-async function getById(id) {
-    return User.find(id);
-}
 
 //updateUser can be invoked by adminController and userController
 //accept id of user which will be updated, new data and isAdmin property
@@ -178,7 +175,6 @@ function createToken(user) {
 module.exports = {
     registerUser,
     loginUser,
-    getById,
     updateUserInfo,
     updateUserEmail,
     updateUserPassword,
