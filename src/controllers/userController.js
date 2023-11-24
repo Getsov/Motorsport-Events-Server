@@ -60,7 +60,6 @@ userController.post('/loginUser', async (req, res) => {
 });
 
 userController.put('/editUserInfo/:id', async (req, res) => {
-    console.log(req.body);
     const userId = req.params.id;
     const isAdmin = req.requester.role == 'admin';
     try {
