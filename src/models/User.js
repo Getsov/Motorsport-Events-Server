@@ -43,14 +43,12 @@ const userSchema = new Schema({
         type: String,
         maxlength: [15, 'Region must be maximum 15 characters long!'],
         default: '',
-        // TODO: Propper validation for city length
     },
     address: {
         type: String,
         default: '',
     },
     phone: { type: String, default: '' },
-    //TODO: to take decision how we will take the likes
     createdEvents: [{ type: ObjectId, ref: 'Event' }],
     likedEvents: [{ type: ObjectId, ref: 'Event' }],
     hashedPassword: { type: String, required: true },
