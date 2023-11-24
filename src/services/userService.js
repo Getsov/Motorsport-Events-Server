@@ -72,18 +72,24 @@ async function updateUserInfo(userId, requestBody, isAdmin) {
         existingUser[key] = requestBody[key];
     }
 
-    if ((requestBody.role == 'organizer' || requestBody.role == 'regular')) {
-        existingUser.role = requestBody.role;
-    }
+    /*
+    // if (requestBody.role == 'organizer' || requestBody.role == 'regular') {
+    //     existingUser.role = requestBody.role;
+    // }
+     */
+
     if (isAdmin) {
-        existingUser.role = requestBody.role
-            ? requestBody.role
-            : existingUser.role;
         'isDleted' in requestBody
             ? requestBody.isDeleted
             : existingUser.isDeleted;
 
+        /*
+        existingUser.role = requestBody.role
+            ? requestBody.role
+            : existingUser.role;
+        */
     }
+
     const newRecord = await existingUser.save();
     return createToken(newRecord);
 }
