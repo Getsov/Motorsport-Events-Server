@@ -12,17 +12,27 @@ userController.post('/registerUser', async (req, res) => {
         if (req.body.password !== req.body.repass) {
             throw new Error('Password dismatch!');
         }
+        if (!req.body.email || req.body.email == '') {
+            throw new Error('Email is necessary!');
+        }
+        if (req.body.role == 'admin') {
+            throw new Error('You do not have admin rights!');
+        }
+        console.log(req.body.role);
         const userData = {
             //TODO: TEST if this check is needed
             email: req.body.email,
-            organizator: req.body.organizator ? req.body.organizator : '',
+            organizatorName: req.body.organizatorName
+                ? req.body.organizatorName
+                : '',
             firstName: req.body.firstName ? req.body.firstName : '',
             lastName: req.body.lastName ? req.body.lastName : '',
+            role: req.body.role ? req.body.role : 'regular',
+            //TODO: region - as enum from FE
             region: req.body.region ? req.body.region : '',
             address: req.body.address ? req.body.address : '',
             phone: req.body.phone ? req.body.phone : '',
             password: req.body.password,
-
         };
 
         const user = await registerUser(userData);
