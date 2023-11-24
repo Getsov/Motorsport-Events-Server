@@ -25,7 +25,6 @@ async function registerUser(requestBody) {
         region: requestBody.region,
         address: requestBody.address,
         phone: requestBody.phone,
-        isDeleted: false,
         hashedPassword: await bcrypt.hash(requestBody.password, 10),
     });
     return createToken(user);
