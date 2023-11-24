@@ -115,6 +115,7 @@ userController.put('/editUserPassword/:id', async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 });
+//TODO: EDIT USER ROLE ONLY FOR ADMIN
 
 module.exports = {
     userController,
