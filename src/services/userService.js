@@ -63,6 +63,7 @@ async function updateUserInfo(userId, requestBody, isAdmin) {
             key == 'email' ||
             key == 'role' ||
             key == 'likedEvents' ||
+            key == 'createdEvents' ||
             key == 'hashedPassword' ||
             key == 'isDeleted'
         ) {
