@@ -72,14 +72,17 @@ async function updateUserInfo(userId, requestBody, isAdmin) {
         existingUser[key] = requestBody[key];
     }
 
+    if ((requestBody.role == 'organizer', requestBody.role == 'regular')) {
+        existingUser.role = requestBody.role;
+    }
     if (isAdmin) {
         existingUser.role = requestBody.role
             ? requestBody.role
             : existingUser.role;
-        //isDeleted must be sent as string
-        existingUser.isDeleted = requestBody.isDeleted
+        'isDleted' in requestBody
             ? requestBody.isDeleted
             : existingUser.isDeleted;
+
     }
     const newRecord = await existingUser.save();
     return createToken(newRecord);
