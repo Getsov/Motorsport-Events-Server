@@ -18,9 +18,10 @@ async function registerUser(requestBody) {
 
     const user = await User.create({
         email: requestBody.email,
-        organizator: req.body.organizator,
+        organizatorName: requestBody.organizatorName,
         firstName: requestBody.firstName,
         lastName: requestBody.lastName,
+        role: requestBody.role,
         region: requestBody.region,
         address: requestBody.address,
         phone: requestBody.phone,
@@ -47,7 +48,6 @@ async function loginUser(email, password) {
     }
     return createToken(user);
 }
-
 
 //updateUser can be invoked by adminController and userController
 //accept id of user which will be updated, new data and isAdmin property
@@ -149,24 +149,24 @@ function createToken(user) {
     const payload = {
         _id: user.id,
         email: user.email,
-        organizator:user.organizator,
+        organizator: user.organizator,
         firstName: user.firstName,
         lastName: user.lastName,
         role: user.role,
         region: user.region,
         address: user.address,
-        phone:user.phone,
+        phone: user.phone,
     };
     return {
         _id: user.id,
         email: user.email,
-        organizator:user.organizator,
+        organizator: user.organizator,
         firstName: user.firstName,
         lastName: user.lastName,
         role: user.role,
         region: user.region,
         address: user.address,
-        phone:user.phone,
+        phone: user.phone,
         isDeleted: user.isDeleted,
         accessToken: jwt.sign(payload, secret),
     };
