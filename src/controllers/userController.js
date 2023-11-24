@@ -60,6 +60,7 @@ userController.post('/loginUser', async (req, res) => {
 });
 
 userController.put('/editUserInfo/:id', async (req, res) => {
+    console.log(req.body);
     const userId = req.params.id;
     const isAdmin = req.requester.role == 'admin';
     try {
@@ -119,3 +120,18 @@ userController.put('/editUserPassword/:id', async (req, res) => {
 module.exports = {
     userController,
 };
+
+
+
+/*
+Ready user for register
+    "email": "pavel@abv.bg",
+    "organizatorName": "Suzuki Burgas",
+    "firstName": "Pavel",
+    "lastName": "Dimitrov",
+    "region": "Бургас",
+    "address": "Някъде в Бургас!",
+    "phone": "0888888888",
+    "password": "123",
+    "repass": "123",
+*/
