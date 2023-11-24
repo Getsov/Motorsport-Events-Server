@@ -25,6 +25,7 @@ async function registerUser(requestBody) {
         region: requestBody.region,
         address: requestBody.address,
         phone: requestBody.phone,
+        isDeleted: false,
         hashedPassword: await bcrypt.hash(requestBody.password, 10),
     });
     return createToken(user);
@@ -149,18 +150,20 @@ function createToken(user) {
     const payload = {
         _id: user.id,
         email: user.email,
-        organizator: user.organizator,
+        organizatorName: user.organizatorName,
         firstName: user.firstName,
         lastName: user.lastName,
         role: user.role,
         region: user.region,
         address: user.address,
         phone: user.phone,
+        isDeleted: user.isDeleted,
     };
+
     return {
         _id: user.id,
         email: user.email,
-        organizator: user.organizator,
+        organizatorName: user.organizatorName,
         firstName: user.firstName,
         lastName: user.lastName,
         role: user.role,
