@@ -15,10 +15,15 @@ userController.post('/registerUser', async (req, res) => {
         if (!req.body.email || req.body.email == '') {
             throw new Error('Email is necessary!');
         }
+        /*
+        TODO: When someone try to register as admin:
+        throw an Error 
+        or save record as regular?
+        */
         if (req.body.role == 'admin') {
             throw new Error('You do not have admin rights!');
         }
-        console.log(req.body.role);
+
         const userData = {
             //TODO: TEST if this check is needed
             email: req.body.email,
