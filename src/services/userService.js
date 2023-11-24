@@ -72,7 +72,7 @@ async function updateUserInfo(userId, requestBody, isAdmin) {
         existingUser[key] = requestBody[key];
     }
 
-    if ((requestBody.role == 'organizer', requestBody.role == 'regular')) {
+    if ((requestBody.role == 'organizer' || requestBody.role == 'regular')) {
         existingUser.role = requestBody.role;
     }
     if (isAdmin) {
