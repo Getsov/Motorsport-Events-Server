@@ -42,7 +42,7 @@ userController.post('/registerUser', async (req, res) => {
                 !req.body.firstName ||
                 !req.body.lastName ||
                 !req.body.phone ||
-                !req.body.address
+                !req.body.region
             ) {
                 throw new Error('Fill all required fields!');
             }
@@ -141,6 +141,6 @@ Ready user for register:
     "address": "Някъде в Бургас!",
     "phone": "0888888888",
     "password": "123",
-    "repass": "123",
+    "repass": "123"
     
 */
