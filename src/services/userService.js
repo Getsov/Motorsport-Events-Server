@@ -79,8 +79,8 @@ async function updateUserInfo(userId, requestBody, isAdmin) {
      */
 
     if (isAdmin) {
-        'isDeleted' in requestBody
-            ? existingUser.isDeleted = requestBody.isDeleted
+        'isDleted' in requestBody
+            ? requestBody.isDeleted
             : existingUser.isDeleted;
 
         /*
