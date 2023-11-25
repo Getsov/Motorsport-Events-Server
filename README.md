@@ -64,11 +64,11 @@ Example: To take the third page from the events collection, assuming 5 entries p
 ### Create:
 
 Send a `POST` request to the endpoint. The shape of the body is restricted. The service will respond with the object, created in the DB, which will have an added ` _id` property, that is automatically generated.
-Examples: `http://localhost:3030/event` +
+Examples: `http://localhost:3030/events`
 Create a new entry inside the `events` collection:
 
 -   **Method:** `POST`
--   **Endpont:** `/event`
+-   **Endpont:** `/events`
     Headers: Content-Type: application/json
     `X-Authorization: {token}`
     Body: JSON-formatted data
