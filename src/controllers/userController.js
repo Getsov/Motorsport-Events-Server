@@ -25,7 +25,6 @@ userController.post('/registerUser', async (req, res) => {
         }
 
         const userData = {
-            //TODO: TEST if this check is needed
             email: req.body.email,
             firstName: req.body.firstName ? req.body.firstName : '',
             lastName: req.body.lastName ? req.body.lastName : '',
@@ -36,6 +35,7 @@ userController.post('/registerUser', async (req, res) => {
             phone: req.body.phone ? req.body.phone : '',
             password: req.body.password,
         };
+        
         if ('organizatorName' in req.body) {
             if (
                 !req.body.organizatorName ||
