@@ -126,7 +126,6 @@ module.exports = {
 /*
 Ready user for register
     "email": "pavel@abv.bg",
-    "organizatorName": "Suzuki Burgas",
     "firstName": "Pavel",
     "lastName": "Dimitrov",
     "region": "Бургас",
