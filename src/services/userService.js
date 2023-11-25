@@ -19,7 +19,9 @@ async function registerUser(requestBody) {
     const user = await User.create({
         email: requestBody.email,
         //TODO - ask on meeting if is neseccery to make check for field organizatorName
-        organizatorName: requestBody.organizatorName,
+        organizatorName: requestBody.organizatorName
+            ? requestBody.organizatorName
+            : null,
         firstName: requestBody.firstName,
         lastName: requestBody.lastName,
         role: requestBody.role,
@@ -81,8 +83,8 @@ async function updateUserInfo(userId, requestBody, isAdmin) {
 
     if (isAdmin) {
         'isDeleted' in requestBody
-            ? existingUser.isDeleted = requestBody.isDeleted
-            : existingUser.isDeleted = existingUser.isDeleted;
+            ? (existingUser.isDeleted = requestBody.isDeleted)
+            : (existingUser.isDeleted = existingUser.isDeleted);
 
         /*
         existingUser.role = requestBody.role
