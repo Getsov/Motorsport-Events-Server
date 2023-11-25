@@ -27,9 +27,6 @@ userController.post('/registerUser', async (req, res) => {
         const userData = {
             //TODO: TEST if this check is needed
             email: req.body.email,
-            organizatorName: req.body.organizatorName
-                ? req.body.organizatorName
-                : '',
             firstName: req.body.firstName ? req.body.firstName : '',
             lastName: req.body.lastName ? req.body.lastName : '',
             role: req.body.role ? req.body.role : 'regular',
@@ -39,6 +36,18 @@ userController.post('/registerUser', async (req, res) => {
             phone: req.body.phone ? req.body.phone : '',
             password: req.body.password,
         };
+        if ('organizatorName' in req.body) {
+            if (
+                !req.body.organizatorName ||
+                !req.body.firstName ||
+                !req.body.lastName ||
+                !req.body.phone ||
+                !req.body.address
+            ) {
+                throw new Error('Fill all required fields!');
+            }
+            userData.organizatorName = req.body.organizatorName;
+        }
 
         const user = await registerUser(userData);
         res.status(200).json(user);
@@ -121,12 +130,11 @@ module.exports = {
     userController,
 };
 
-
-
 /*
-Ready user for register
+Ready user for register: 
+    -   "regular":
+
     "email": "pavel@abv.bg",
-    "organizatorName": "Suzuki Burgas",
     "firstName": "Pavel",
     "lastName": "Dimitrov",
     "region": "Бургас",
@@ -134,4 +142,5 @@ Ready user for register
     "phone": "0888888888",
     "password": "123",
     "repass": "123",
+    
 */
