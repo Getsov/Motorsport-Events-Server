@@ -33,33 +33,33 @@ TODO: Add info about `logout` when is done on the Back-End!
 
 ### Authorized Requests:
 
-To make an authorized request, add the following header, where {token} is the `accessToken`, returned by the service upon successful login or registration: `X-Authorization: {token}`
+To make an authorized request, add the following header, where {token} is the `accessToken`, returned by the service upon successful login or registration: `X-Authorization: {token}`.
 
 ### Read:
 
 Send a `GET` request to the endpoint. The response will be in JSON format.
-Examples: `http://localhost:3030` + `/event`
+Examples: `http://localhost:3030` + `/events`
 Retrieve everything inside the `events` collection:
 
 -   **Method:** `GET`
--   **Endpont:** `/event`
+-   **Endpont:** `/events`
 
 Retrieve entry with ID: `654651caf696083cab72ab1c` from the events collection:
 
 -   **Method:** `GET`
--   **Endpont:** `/event/654651caf696083cab72ab1c`
+-   **Endpont:** `/events/654651caf696083cab72ab1c`
 
 Retrieve entries by `category` from the events collection:
 
 -   **Method:** `GET`
--   **Endpont:** `/event/:category`
+-   **Endpont:** `/events/:category`
 
 If you want to use pagination provide `page` and `limit` options to the queryString, the service automatically limits the result based on `limit` entries.
 Append `page={n}&limit={n}` to the query parameters, where {page} is the number of entries to skip and {limit} is the number of entries to return.
 Example: To take the third page from the events collection, assuming 5 entries per page (entries 11 to 15):
 
 -   **Method:** GET
--   **Endpoint:** `/event/?page=3&limit=5`
+-   **Endpoint:** `/events/?page=3&limit=5`
 
 ### Create:
 
