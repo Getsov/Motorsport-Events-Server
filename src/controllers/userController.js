@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs');
 const userController = require('express').Router();
 const {
     registerUser,
@@ -33,11 +34,10 @@ userController.post('/registerUser', async (req, res) => {
             region: req.body.region ? req.body.region : '',
             address: req.body.address ? req.body.address : '',
             phone: req.body.phone ? req.body.phone : '',
-            password: req.body.password,
+            hashedPassword: await bcrypt.hash(req.body.password, 10),
         };
-        console.log('organizatorName' in req.body);
-        console.log(req.body.role == 'organizer');
-        if ('organizatorName' in req.body || req.body.role == 'organizer') {
+
+        if (req.body.role == 'organizer') {
             if (
                 !req.body.organizatorName ||
                 !req.body.firstName ||
