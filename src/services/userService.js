@@ -18,6 +18,7 @@ async function registerUser(requestBody) {
 
     const user = await User.create({
         email: requestBody.email,
+        //TODO - ask on meeting if is neseccery to make check for field organizatorName
         organizatorName: requestBody.organizatorName,
         firstName: requestBody.firstName,
         lastName: requestBody.lastName,
