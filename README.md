@@ -21,11 +21,11 @@ The service is not initialized with any data. You need to create it by yourself.
 
 ### Register:
 
-Create a new `user` by sending a POST request to `http://localhost:3030`: + `/user/registerUser` with properties: `email` and `password`. The service automatically creates a session and returns object with `accessToken` inside, that can be used for authorized requests. You can also register `Organization` by sending a POST request to `http://localhost:3030:` + `/organization/registerOrganization` with properties: `name`, `email`, `managerFirstName`, `managerLastName`, `phone`, `region`, `password`. The service automatically creates a session and returns object with `accessToken` inside, that can be used for authorized requests.
+Create a new `user` by sending a POST request to `http://localhost:3030`: + `/user/registerUser` with properties: `email`, `password` and `repass`. The service automatically creates a session and returns object with `accessToken` inside, that can be used for authorized requests.
 
 ### Login:
 
-Login by sending a POST request with `email` and `password` to `http://localhost:3030` + `/user/loginUser` or `/organization/loginOrganization`. The service will respond with object with details containing a standard `accessToken`, that can be used for authorized requests.
+Login by sending a POST request with `email` and `password` to `http://localhost:3030` + `/user/loginUser`.
 
 ### Logout:
 
