@@ -17,7 +17,7 @@ All requests are send to: `http://localhost:3030`: /event/, /user/. Supported re
 
 ## Authentication:
 
-The service is not initialized with any data. You need to create it by yourself. To register an event you must register yourself as `organization`! If you register as `user`, you wil only able to read data and edit your profile.
+The service is not initialized with any data. You need to create it by yourself. To register an event you must register yourself as `user` with `role`: `organizer`! If you register as `regular` role, you wil only able to read data and partially edit your profile.
 
 ### Register:
 
