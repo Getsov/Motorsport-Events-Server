@@ -16,17 +16,9 @@ async function registerUser(requestBody) {
         }
     }
 
-    const user = await User.create({
-        email: requestBody.email,
-        organizator: req.body.organizator,
-        firstName: requestBody.firstName,
-        lastName: requestBody.lastName,
-        region: requestBody.region,
-        address: requestBody.address,
-        phone: requestBody.phone,
-        hashedPassword: await bcrypt.hash(requestBody.password, 10),
-    });
-    return createToken(user);
+ 
+    await User.create(requestBody);
+    return createToken(requestBody);
 }
 
 async function loginUser(email, password) {
@@ -48,7 +40,6 @@ async function loginUser(email, password) {
     return createToken(user);
 }
 
-
 //updateUser can be invoked by adminController and userController
 //accept id of user which will be updated, new data and isAdmin property
 async function updateUserInfo(userId, requestBody, isAdmin) {
@@ -63,6 +54,7 @@ async function updateUserInfo(userId, requestBody, isAdmin) {
             key == 'email' ||
             key == 'role' ||
             key == 'likedEvents' ||
+            key == 'createdEvents' ||
             key == 'hashedPassword' ||
             key == 'isDeleted'
         ) {
@@ -71,15 +63,24 @@ async function updateUserInfo(userId, requestBody, isAdmin) {
         existingUser[key] = requestBody[key];
     }
 
+    /*
+    // if (requestBody.role == 'organizer' || requestBody.role == 'regular') {
+    //     existingUser.role = requestBody.role;
+    // }
+     */
+
     if (isAdmin) {
+        'isDeleted' in requestBody
+            ? (existingUser.isDeleted = requestBody.isDeleted)
+            : (existingUser.isDeleted = existingUser.isDeleted);
+
+        /*
         existingUser.role = requestBody.role
             ? requestBody.role
             : existingUser.role;
-        //isDeleted must be sent as string
-        existingUser.isDeleted = requestBody.isDeleted
-            ? requestBody.isDeleted
-            : existingUser.isDeleted;
+        */
     }
+
     const newRecord = await existingUser.save();
     return createToken(newRecord);
 }
@@ -149,24 +150,26 @@ function createToken(user) {
     const payload = {
         _id: user.id,
         email: user.email,
-        organizator:user.organizator,
+        organizatorName: user.organizatorName,
         firstName: user.firstName,
         lastName: user.lastName,
         role: user.role,
         region: user.region,
         address: user.address,
-        phone:user.phone,
+        phone: user.phone,
+        isDeleted: user.isDeleted,
     };
+
     return {
         _id: user.id,
         email: user.email,
-        organizator:user.organizator,
+        organizatorName: user.organizatorName,
         firstName: user.firstName,
         lastName: user.lastName,
         role: user.role,
         region: user.region,
         address: user.address,
-        phone:user.phone,
+        phone: user.phone,
         isDeleted: user.isDeleted,
         accessToken: jwt.sign(payload, secret),
     };

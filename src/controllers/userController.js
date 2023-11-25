@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs');
 const userController = require('express').Router();
 const {
     registerUser,
@@ -12,18 +13,42 @@ userController.post('/registerUser', async (req, res) => {
         if (req.body.password !== req.body.repass) {
             throw new Error('Password dismatch!');
         }
+        if (!req.body.email || req.body.email == '') {
+            throw new Error('Email is necessary!');
+        }
+        /*
+        TODO: When someone try to register as admin:
+        throw an Error 
+        or save record as regular?
+        */
+        if (req.body.role == 'admin') {
+            throw new Error('You do not have admin rights!');
+        }
+
         const userData = {
-            //TODO: TEST if this check is needed
             email: req.body.email,
-            organizator: req.body.organizator ? req.body.organizator : '',
             firstName: req.body.firstName ? req.body.firstName : '',
             lastName: req.body.lastName ? req.body.lastName : '',
+            role: req.body.role ? req.body.role : 'regular',
+            //TODO: region - as enum from FE
             region: req.body.region ? req.body.region : '',
             address: req.body.address ? req.body.address : '',
             phone: req.body.phone ? req.body.phone : '',
-            password: req.body.password,
-
+            hashedPassword: await bcrypt.hash(req.body.password, 10),
         };
+
+        if (req.body.role == 'organizer') {
+            if (
+                !req.body.organizatorName ||
+                !req.body.firstName ||
+                !req.body.lastName ||
+                !req.body.phone ||
+                !req.body.region
+            ) {
+                throw new Error('Fill all required fields!');
+            }
+            userData.organizatorName = req.body.organizatorName;
+        }
 
         const user = await registerUser(userData);
         res.status(200).json(user);
@@ -100,7 +125,23 @@ userController.put('/editUserPassword/:id', async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 });
+//TODO: EDIT USER ROLE ONLY FOR ADMIN
 
 module.exports = {
     userController,
 };
+
+/*
+Ready user for register: 
+    -   "regular":
+
+    "email": "pavel@abv.bg",
+    "firstName": "Pavel",
+    "lastName": "Dimitrov",
+    "region": "Бургас",
+    "address": "Някъде в Бургас!",
+    "phone": "0888888888",
+    "password": "123",
+    "repass": "123"
+    
+*/
