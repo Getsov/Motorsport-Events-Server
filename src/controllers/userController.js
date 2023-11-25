@@ -35,8 +35,9 @@ userController.post('/registerUser', async (req, res) => {
             phone: req.body.phone ? req.body.phone : '',
             password: req.body.password,
         };
-
-        if ('organizatorName' in req.body && req.body.role == 'organizer') {
+        console.log('organizatorName' in req.body);
+        console.log(req.body.role == 'organizer');
+        if ('organizatorName' in req.body || req.body.role == 'organizer') {
             if (
                 !req.body.organizatorName ||
                 !req.body.firstName ||
