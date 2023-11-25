@@ -13,7 +13,7 @@ The service are using authentication, not everything is accessible trough the DB
 
 ## CRUD Operations:
 
-All requests are send to: `http://localhost:3030`: /event/, /user/, /organization/. Supported requests are `GET`, `POST`, `PUT`!
+All requests are send to: `http://localhost:3030`: /event/, /user/. Supported requests are `GET`, `POST`, `PUT`!
 
 ## Authentication:
 
