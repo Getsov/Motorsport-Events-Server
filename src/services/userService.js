@@ -16,19 +16,9 @@ async function registerUser(requestBody) {
         }
     }
 
-    const user = await User.create({
-        email: requestBody.email,
-        //TODO - ask on meeting if is neseccery to make check for field organizatorName
-        organizatorName: requestBody.organizatorName,
-        firstName: requestBody.firstName,
-        lastName: requestBody.lastName,
-        role: requestBody.role,
-        region: requestBody.region,
-        address: requestBody.address,
-        phone: requestBody.phone,
-        hashedPassword: await bcrypt.hash(requestBody.password, 10),
-    });
-    return createToken(user);
+ 
+    await User.create(requestBody);
+    return createToken(requestBody);
 }
 
 async function loginUser(email, password) {
