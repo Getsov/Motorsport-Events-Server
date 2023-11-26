@@ -29,20 +29,27 @@ async function findEventByID(eventId) {
     return event;
 }
 
-async function findEventsByCriteria(query) {
+// async function findEventsByCriteria(query) {
+//     const criteria = {
+//         isDeleted: false
+//     }
+//     if (query.category) criteria.category = query.category;
+//     if (query.region) criteria['contacts.region'] = query.region;
+    
+//     const events = await Event.find(criteria);
+//     return events;
+// }
+
+async function findAllEvents(query) {
+    const page = query.page
+    const limit = query.limit
     const criteria = {
         isDeleted: false
     }
     if (query.category) criteria.category = query.category;
     if (query.region) criteria['contacts.region'] = query.region;
-    
-    const events = await Event.find(criteria);
-    return events;
-}
-
-async function findAllEvents(page, limit) {
     // TODO: make more tests with different values!
-    return await limitModels(Event, page, limit);
+    return await limitModels(Event, page, limit, criteria);
 }
 
 // TODO: Update the event later!
@@ -93,7 +100,7 @@ module.exports = {
     findEventByID,
     findAllEvents,
     updateEvent,
-    findEventsByCriteria,
+    // findEventsByCriteria,
     likeUnlikeEvent,
 };
 
