@@ -45,9 +45,8 @@ eventController.get('/', async (req, res) => {
     }
 });
 
-// Get events by category!
+// Filter events by category and region!
 eventController.get('/filter', async (req, res) => {
-    console.log(req.query);
     try {
         const events = await findEventsByCriteria(req.query);
 
