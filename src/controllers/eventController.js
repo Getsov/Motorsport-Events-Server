@@ -38,19 +38,7 @@ eventController.post('/register', async (req, res) => {
 // Get ALL events!
 eventController.get('/', async (req, res) => {
     try {
-        const event = await findAllEvents(req.query.page, req.query.limit);
-
-        res.status(200).json(event);
-        res.end();
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
-});
-
-// Filter events by category and region!
-eventController.get('/filter', async (req, res) => {
-    try {
-        const events = await findEventsByCriteria(req.query);
+        const events = await findAllEvents(req.query);
 
         res.status(200).json(events);
         res.end();
@@ -58,6 +46,18 @@ eventController.get('/filter', async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 });
+
+// Filter events by category and region!
+// eventController.get('/filter', async (req, res) => {
+//     try {
+//         const events = await findEventsByCriteria(req.query);
+
+//         res.status(200).json(events);
+//         res.end();
+//     } catch (error) {
+//         res.status(400).json({ error: error.message });
+//     }
+// });
 
 // Get event by ID!
 eventController.get('/:id', async (req, res) => {
