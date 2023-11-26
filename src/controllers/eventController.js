@@ -4,8 +4,8 @@ const {
     findEventByID,
     findAllEvents,
     updateEvent,
-    findEventsByCategory,
     likeUnlikeEvent,
+    findEventsByCriteria,
 } = require('../services/eventService');
 const { addEventToLikedEvents } = require('../services/userService');
 
@@ -46,9 +46,10 @@ eventController.get('/', async (req, res) => {
 });
 
 // Get events by category!
-eventController.get('/category/:category', async (req, res) => {
+eventController.get('/filter', async (req, res) => {
+    console.log(req.query);
     try {
-        const events = await findEventsByCategory(req.params.category);
+        const events = await findEventsByCriteria(req.query);
 
         res.status(200).json(events);
         res.end();
