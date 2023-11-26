@@ -1,7 +1,7 @@
 const Event = require('../models/Event');
 const { limitModels } = require('../utils/limitModels');
 
-async function registerEvent(requestBody) {
+async function registerEvent(requestBody, requesterId) {
     // TODO: make more tests with different values!
     const event = await Event.create({
         shortTitle: requestBody.shortTitle,
@@ -13,7 +13,7 @@ async function registerEvent(requestBody) {
         contacts: requestBody.contacts,
         category: requestBody.category,
         likes: requestBody.likes,
-        creator: requestBody.creator,
+        creator: requesterId,
         winners: requestBody.winners,
         participantPrices: requestBody.participantPrices,
         visitorPrices: requestBody.visitorPrices,
