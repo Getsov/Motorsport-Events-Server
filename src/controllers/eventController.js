@@ -10,6 +10,7 @@ const {
 const { addEventToLikedEvents } = require('../services/userService');
 
 eventController.post('/register', async (req, res) => {
+    console.log(req.requester);
     try {
         // Checks if there is not user. Or if the user have admin role or if the user is organization.
         if (
@@ -24,7 +25,7 @@ eventController.post('/register', async (req, res) => {
             );
         }
 
-        const event = await registerEvent(req.body);
+        const event = await registerEvent(req.body, req.requester._id);
 
         res.status(200).json(event);
         res.end();
