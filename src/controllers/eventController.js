@@ -16,11 +16,11 @@ eventController.post('/register', async (req, res) => {
             !req.requester ||
             !(
                 req.requester.role === 'admin' ||
-                req.requester.managerFirstName !== undefined
+                req.requester.role === 'organizer'
             )
         ) {
             throw new Error(
-                'Only user with role "Admin", or Organization can register an Event!'
+                'Only user with role "organizer" or "admin" can register an Event!'
             );
         }
 
