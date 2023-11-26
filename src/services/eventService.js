@@ -29,17 +29,6 @@ async function findEventByID(eventId) {
     return event;
 }
 
-// async function findEventsByCriteria(query) {
-//     const criteria = {
-//         isDeleted: false
-//     }
-//     if (query.category) criteria.category = query.category;
-//     if (query.region) criteria['contacts.region'] = query.region;
-    
-//     const events = await Event.find(criteria);
-//     return events;
-// }
-
 async function findAllEvents(query) {
     const page = query.page
     const limit = query.limit
@@ -100,7 +89,6 @@ module.exports = {
     findEventByID,
     findAllEvents,
     updateEvent,
-    // findEventsByCriteria,
     likeUnlikeEvent,
 };
 
@@ -135,7 +123,6 @@ module.exports = {
 //         "6542c24b6102c6f4e79108fc",
 //         "6542c24b6102c6f4e79108fc"
 //     ],
-//     "creator": "6550b41ee542ffd1875e2d38",
 //     "winners": [
 //         {
 //             "name": "Pavel",
