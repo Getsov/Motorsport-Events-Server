@@ -5,12 +5,10 @@ const {
     findAllEvents,
     updateEvent,
     likeUnlikeEvent,
-    findEventsByCriteria,
 } = require('../services/eventService');
 const { addEventToLikedEvents } = require('../services/userService');
 
 eventController.post('/register', async (req, res) => {
-    console.log(req.requester);
     try {
         // Checks if there is not user. Or if the user have admin role or if the user is organization.
         if (
@@ -46,18 +44,6 @@ eventController.get('/', async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 });
-
-// Filter events by category and region!
-// eventController.get('/filter', async (req, res) => {
-//     try {
-//         const events = await findEventsByCriteria(req.query);
-
-//         res.status(200).json(events);
-//         res.end();
-//     } catch (error) {
-//         res.status(400).json({ error: error.message });
-//     }
-// });
 
 // Get event by ID!
 eventController.get('/:id', async (req, res) => {
