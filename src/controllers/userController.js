@@ -32,7 +32,7 @@ userController.post('/registerUser', async (req, res) => {
             role: req.body.role ? req.body.role : 'regular',
             //TODO: region - as enum from FE
             region: req.body.region ? req.body.region : '',
-            address: req.body.address ? req.body.address : '',
+            // address: req.body.address ? req.body.address : '',
             phone: req.body.phone ? req.body.phone : '',
             hashedPassword: await bcrypt.hash(req.body.password, 10),
         };
