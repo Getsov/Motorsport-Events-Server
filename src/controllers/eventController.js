@@ -32,7 +32,6 @@ eventController.post('/register', async (req, res) => {
     }
 });
 
-// TODO: Refactor to filter + pagination on all events!
 // Get ALL events!
 eventController.get('/', async (req, res) => {
     try {
