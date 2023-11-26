@@ -30,7 +30,13 @@ async function findEventByID(eventId) {
 }
 
 async function findEventsByCriteria(query) {
-    const events = await Event.find({ category: query.category, isDeleted: false });
+    const criteria = {
+        isDeleted: false
+    }
+    if (query.category) criteria.category = query.category;
+    if (query.region) criteria['contacts.region'] = query.region;
+    
+    const events = await Event.find(criteria);
     return events;
 }
 
