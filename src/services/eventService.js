@@ -29,8 +29,8 @@ async function findEventByID(eventId) {
     return event;
 }
 
-async function findEventsByCategory(category) {
-    const events = await Event.find({ category: category, isDeleted: false });
+async function findEventsByCriteria(query) {
+    const events = await Event.find({ category: query.category, isDeleted: false });
     return events;
 }
 
@@ -87,7 +87,7 @@ module.exports = {
     findEventByID,
     findAllEvents,
     updateEvent,
-    findEventsByCategory,
+    findEventsByCriteria,
     likeUnlikeEvent,
 };
 
