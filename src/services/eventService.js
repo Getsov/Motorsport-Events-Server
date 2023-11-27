@@ -59,7 +59,7 @@ async function findAllEvents(query) {
             { longTitle: { $regex: query.search.toLowerCase(), $options: 'i' } },
             { shortDescription: { $regex: query.search.toLowerCase(), $options: 'i' } },
             { longDescription: { $regex: query.search.toLowerCase(), $options: 'i' } },
-            // TODO: Discuss following Event properties!
+            // TODO: Discuss searching about following Event properties!
             { category: { $regex: query.search.toLowerCase(), $options: 'i' } },
             { ['contacts.region']: { $regex: query.search.toLowerCase(), $options: 'i' } },
         ];
