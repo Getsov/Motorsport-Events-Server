@@ -1,4 +1,5 @@
 const Event = require('../models/Event');
+const { categories } = require('../shared/categories');
 const { regions } = require('../shared/regions');
 const { limitModels } = require('../utils/limitModels');
 
@@ -35,14 +36,18 @@ async function findAllEvents(query) {
     const limit = query.limit
     const criteria = {
         isDeleted: false,
-        'contacts.region': { $in: Array.isArray(query.region)
-            ? query.region.map(key => regions[key])
-            : [regions[query.region]] },
-        category: { $in: Array.isArray(query.category) ? query.category : [query.category] },
+        'contacts.region': {
+            $in: Array.isArray(query.region)
+                ? query.region.map(key => regions[key])
+                : [regions[query.region]]
+        },
+        category: {
+            $in: Array.isArray(query.category)
+                ? query.category.map(key => categories[key])
+                : [categories[query.category]]
+        },
     }
-    // if (query.category) criteria.category = [query.category];
-    // if (query.region) criteria['contacts.region'] = [query.region];
-    // TODO: make more tests with different values!
+
     return await limitModels(Event, page, limit, criteria);
 }
 
