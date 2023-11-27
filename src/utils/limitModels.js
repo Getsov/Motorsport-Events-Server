@@ -1,4 +1,5 @@
 async function limitModels(model, page, limit, criteria) {
+    console.log(criteria);
     page = Number(page);
     limit = Number(limit);
     const startIndex = (page - 1) * limit;
