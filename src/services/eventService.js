@@ -32,20 +32,37 @@ async function findEventByID(eventId) {
 }
 
 async function findAllEvents(query) {
+    // TODO: In later stage we mmay want to search by Organizer Name?
     const page = query.page
     const limit = query.limit
     const criteria = {
-        isDeleted: false,
-        'contacts.region': {
-            $in: Array.isArray(query.region)
-                ? query.region.map(key => regions[key])
-                : [regions[query.region]]
-        },
-        category: {
+        isDeleted: false
+    }
+
+    if (query.category) {
+        criteria.category = {
             $in: Array.isArray(query.category)
                 ? query.category.map(key => categories[key])
                 : [categories[query.category]]
-        },
+        }
+    }
+    if (query.region) {
+        criteria['contacts.region'] = {
+            $in: Array.isArray(query.region)
+                ? query.region.map(key => regions[key])
+                : [regions[query.region]]
+        }
+    }
+    if (query.search) {
+        criteria.$or = [
+            { shortTitle: { $regex: query.search.toLowerCase(), $options: 'i' } },
+            { longTitle: { $regex: query.search.toLowerCase(), $options: 'i' } },
+            { shortDescription: { $regex: query.search.toLowerCase(), $options: 'i' } },
+            { longDescription: { $regex: query.search.toLowerCase(), $options: 'i' } },
+            // TODO: Discuss following Event properties!
+            { category: { $regex: query.search.toLowerCase(), $options: 'i' } },
+            { ['contacts.region']: { $regex: query.search.toLowerCase(), $options: 'i' } },
+        ];
     }
 
     return await limitModels(Event, page, limit, criteria);
