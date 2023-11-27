@@ -34,10 +34,14 @@ async function findAllEvents(query) {
     const page = query.page
     const limit = query.limit
     const criteria = {
-        isDeleted: false
+        isDeleted: false,
+        'contacts.region': { $in: Array.isArray(query.region)
+            ? query.region.map(key => regions[key])
+            : [regions[query.region]] },
+        category: { $in: Array.isArray(query.category) ? query.category : [query.category] },
     }
-    if (query.category) criteria.category = query.category;
-    if (query.region) criteria['contacts.region'] = regions[query.region];
+    // if (query.category) criteria.category = [query.category];
+    // if (query.region) criteria['contacts.region'] = [query.region];
     // TODO: make more tests with different values!
     return await limitModels(Event, page, limit, criteria);
 }
