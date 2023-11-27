@@ -1,4 +1,5 @@
-async function limitModels(model, page, limit) {
+async function limitModels(model, page, limit, criteria) {
+    console.log(criteria);
     page = Number(page);
     limit = Number(limit);
     const startIndex = (page - 1) * limit;
@@ -7,10 +8,10 @@ async function limitModels(model, page, limit) {
     const models = {};
 
     if (!page && !limit) {
-        return await model.find({ isDeleted: false });
+        return await model.find(criteria);
     }
 
-    if (endIndex < (await model.countDocuments({ isDeleted: false }).exec())) {
+    if (endIndex < (await model.countDocuments(criteria).exec())) {
         models.nextPage = {
             page: page + 1,
             limit: limit,
@@ -25,7 +26,7 @@ async function limitModels(model, page, limit) {
     }
 
     models.results = await model
-        .find({ isDeleted: false })
+        .find(criteria)
         .limit(limit)
         .skip(startIndex)
         .exec();

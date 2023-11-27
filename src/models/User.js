@@ -44,10 +44,10 @@ const userSchema = new Schema({
         maxlength: [15, 'Region must be maximum 15 characters long!'],
         default: '',
     },
-    address: {
-        type: String,
-        default: '',
-    },
+    // address: {
+    //     type: String,
+    //     default: '',
+    // },
     phone: { type: String, default: '' },
     createdEvents: [{ type: ObjectId, ref: 'Event' }],
     likedEvents: [{ type: ObjectId, ref: 'Event' }],

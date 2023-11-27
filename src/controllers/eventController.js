@@ -4,7 +4,6 @@ const {
     findEventByID,
     findAllEvents,
     updateEvent,
-    findEventsByCategory,
     likeUnlikeEvent,
 } = require('../services/eventService');
 const { addEventToLikedEvents } = require('../services/userService');
@@ -16,15 +15,15 @@ eventController.post('/register', async (req, res) => {
             !req.requester ||
             !(
                 req.requester.role === 'admin' ||
-                req.requester.managerFirstName !== undefined
+                req.requester.role === 'organizer'
             )
         ) {
             throw new Error(
-                'Only user with role "Admin", or Organization can register an Event!'
+                'Only user with role "organizer" or "admin" can register an Event!'
             );
         }
 
-        const event = await registerEvent(req.body);
+        const event = await registerEvent(req.body, req.requester._id);
 
         res.status(200).json(event);
         res.end();
@@ -36,19 +35,7 @@ eventController.post('/register', async (req, res) => {
 // Get ALL events!
 eventController.get('/', async (req, res) => {
     try {
-        const event = await findAllEvents(req.query.page, req.query.limit);
-
-        res.status(200).json(event);
-        res.end();
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
-});
-
-// Get events by category!
-eventController.get('/category/:category', async (req, res) => {
-    try {
-        const events = await findEventsByCategory(req.params.category);
+        const events = await findAllEvents(req.query);
 
         res.status(200).json(events);
         res.end();

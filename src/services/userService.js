@@ -155,7 +155,7 @@ function createToken(user) {
         lastName: user.lastName,
         role: user.role,
         region: user.region,
-        address: user.address,
+        // address: user.address,
         phone: user.phone,
         isDeleted: user.isDeleted,
     };
@@ -168,7 +168,7 @@ function createToken(user) {
         lastName: user.lastName,
         role: user.role,
         region: user.region,
-        address: user.address,
+        // address: user.address,
         phone: user.phone,
         isDeleted: user.isDeleted,
         accessToken: jwt.sign(payload, secret),

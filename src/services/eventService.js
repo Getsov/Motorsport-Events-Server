@@ -1,7 +1,9 @@
 const Event = require('../models/Event');
+const { categories } = require('../shared/categories');
+const { regions } = require('../shared/regions');
 const { limitModels } = require('../utils/limitModels');
 
-async function registerEvent(requestBody) {
+async function registerEvent(requestBody, requesterId) {
     // TODO: make more tests with different values!
     const event = await Event.create({
         shortTitle: requestBody.shortTitle,
@@ -13,7 +15,7 @@ async function registerEvent(requestBody) {
         contacts: requestBody.contacts,
         category: requestBody.category,
         likes: requestBody.likes,
-        creator: requestBody.creator,
+        creator: requesterId,
         winners: requestBody.winners,
         participantPrices: requestBody.participantPrices,
         visitorPrices: requestBody.visitorPrices,
@@ -29,14 +31,41 @@ async function findEventByID(eventId) {
     return event;
 }
 
-async function findEventsByCategory(category) {
-    const events = await Event.find({ category: category, isDeleted: false });
-    return events;
-}
+async function findAllEvents(query) {
+    // TODO: In later stage we mmay want to search by Organizer Name?
+    const page = query.page
+    const limit = query.limit
+    const criteria = {
+        isDeleted: false
+    }
 
-async function findAllEvents(page, limit) {
-    // TODO: make more tests with different values!
-    return await limitModels(Event, page, limit);
+    if (query.category) {
+        criteria.category = {
+            $in: Array.isArray(query.category)
+                ? query.category.map(key => categories[key])
+                : [categories[query.category]]
+        }
+    }
+    if (query.region) {
+        criteria['contacts.region'] = {
+            $in: Array.isArray(query.region)
+                ? query.region.map(key => regions[key])
+                : [regions[query.region]]
+        }
+    }
+    if (query.search) {
+        criteria.$or = [
+            { shortTitle: { $regex: query.search.toLowerCase(), $options: 'i' } },
+            { longTitle: { $regex: query.search.toLowerCase(), $options: 'i' } },
+            { shortDescription: { $regex: query.search.toLowerCase(), $options: 'i' } },
+            { longDescription: { $regex: query.search.toLowerCase(), $options: 'i' } },
+            // TODO: Discuss searching about following Event properties!
+            { category: { $regex: query.search.toLowerCase(), $options: 'i' } },
+            { ['contacts.region']: { $regex: query.search.toLowerCase(), $options: 'i' } },
+        ];
+    }
+
+    return await limitModels(Event, page, limit, criteria);
 }
 
 // TODO: Update the event later!
@@ -87,7 +116,6 @@ module.exports = {
     findEventByID,
     findAllEvents,
     updateEvent,
-    findEventsByCategory,
     likeUnlikeEvent,
 };
 
@@ -122,7 +150,6 @@ module.exports = {
 //         "6542c24b6102c6f4e79108fc",
 //         "6542c24b6102c6f4e79108fc"
 //     ],
-//     "creator": "6550b41ee542ffd1875e2d38",
 //     "winners": [
 //         {
 //             "name": "Pavel",
