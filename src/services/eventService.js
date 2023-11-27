@@ -1,4 +1,5 @@
 const Event = require('../models/Event');
+const { regions } = require('../shared/regions');
 const { limitModels } = require('../utils/limitModels');
 
 async function registerEvent(requestBody, requesterId) {
@@ -36,7 +37,7 @@ async function findAllEvents(query) {
         isDeleted: false
     }
     if (query.category) criteria.category = query.category;
-    if (query.region) criteria['contacts.region'] = query.region;
+    if (query.region) criteria['contacts.region'] = regions[query.region];
     // TODO: make more tests with different values!
     return await limitModels(Event, page, limit, criteria);
 }
