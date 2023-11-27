@@ -62,9 +62,9 @@ Example: To take the third page from the events collection, assuming 5 entries p
 -   **Method:** GET
 -   **Endpoint:** `/events?page=3&limit=5`
 
-IMPORTANT: You can use both filtering and pagination with multiple passed values and always use `page` and `limit` properties!
+IMPORTANT: You can use search filtering and pagination with multiple passed values, when using pagination always use `page` and `limit` properties!
 -   **Method:** GET
--   **Endpoint:** `/events?page=3&limit=5&category=Rally&region=16&category=Drag&region=1`
+-   **Endpoint:** `/events?page=1&limit=2&category=1&region=16&category=9&search=2`
 
 ### Create:
 
