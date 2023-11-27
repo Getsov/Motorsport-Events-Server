@@ -49,11 +49,11 @@ Retrieve entry with ID: `654651caf696083cab72ab1c` from the events collection:
 -   **Method:** `GET`
 -   **Endpont:** `/events/654651caf696083cab72ab1c`
 
-Filterin entries by `category` and `region` from the events collection:
+Filtering entries by `category` and `region` from the events collection:
 If you want to use filtering you must provide a query string with `category`, `region` or both properties to filter entries.
 
 -   **Method:** `GET`
--   **Endpont:** `/events?category=Rally&region=Пловдив`
+-   **Endpont:** `/events?category=Rally&region=16`
 
 If you want to use pagination provide `page` and `limit` options to the queryString, the service automatically limits the result based on `limit` entries.
 Append `page={n}&limit={n}` to the query parameters, where {page} is the number of entries to skip and {limit} is the number of entries to return.
@@ -64,7 +64,7 @@ Example: To take the third page from the events collection, assuming 5 entries p
 
 IMPORTANT: You can use both filtering and pagination!
 -   **Method:** GET
--   **Endpoint:** `/events?page=3&limit=5&category=Rally&region=Пловдив`
+-   **Endpoint:** `/events?page=3&limit=5&category=Rally&region=16`
 
 ### Create:
 
