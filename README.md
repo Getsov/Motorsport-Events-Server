@@ -91,7 +91,7 @@ Update entry with ID `654651caf696083cab72ab1c` in the `events` collection:
     Headers: `Content-Type: application/json`
     Body: JSON-formatted data
 
-`Users` also can update ther properties.
+`Users` also can update their properties.
 
 Examples on `Users` collection:
 Update entries with ID `:id` in the `Users` collection:
