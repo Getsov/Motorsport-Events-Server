@@ -49,7 +49,6 @@ const userSchema = new Schema({
     //     type: String,
     //     default: '',
     // },
-    //TODO: Validation for phone without chars and special symbols except"+"" 
     phone: { type: String, default: '' },
     createdEvents: [{ type: ObjectId, ref: 'Event' }],
     likedEvents: [{ type: ObjectId, ref: 'Event' }],
