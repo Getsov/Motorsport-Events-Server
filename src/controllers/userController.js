@@ -11,7 +11,7 @@ const phoneRegex = /^[\d+()-\s]+$/;
 const testRegex = (phoneRegex, phone) => {
     const regexObj = new RegExp(phoneRegex);
     return regexObj.test(phone);
-  };
+};
 
 userController.post('/registerUser', async (req, res) => {
     try {
@@ -35,11 +35,9 @@ userController.post('/registerUser', async (req, res) => {
         if (req.body.role == 'admin') {
             throw new Error('You do not have admin rights!');
         }
-        if(!testRegex(phoneRegex,req.body.phone)){
+        if (!testRegex(phoneRegex, req.body.phone)) {
             throw new Error('Add accurate phone number!');
-            
         }
-
 
         const userData = {
             email: req.body.email,
