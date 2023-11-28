@@ -104,33 +104,32 @@ eventController.post('/like/:id', async (req, res) => {
         if (!req.requester) {
             throw new Error('You must log-in to like this Event!');
         }
-
         const event = await findEventByID(req.params.id);
         // TODO: Add like ref to user and organization Models.
         if (event === null || event.isDeleted) {
             throw new Error("Event is deleted, or doesn't exist!");
         }
 
-        let isUnlike = false;
+        let isAlreadyLikd = false;
 
         if (event.likes.includes(req.requester._id)) {
-            isUnlike = true;
+            isAlreadyLikd = true;
         }
 
         const likedEvent = await likeUnlikeEvent(
             event,
             req.requester._id,
-            isUnlike
+            isAlreadyLikd
         );
-        
-            await addEventToLikedEvents(
-                req.params.id,
-                req.requester._id,
-                isUnlike
-            );
-        
 
-        res.status(200).json(isUnlike ? 'Event UnLiked!' : 'Event Liked!');
+        await addEventToLikedEvents(
+            req.params.id,
+            req.requester._id,
+            isAlreadyLikd
+        );
+
+
+        res.status(200).json(isAlreadyLikd ? 'Event UnLiked!' : 'Event Liked!');
         res.end();
     } catch (error) {
         res.status(400).json(error.message);
