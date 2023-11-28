@@ -100,8 +100,8 @@ async function updateEvent(requestBody, existingEvent, isAdmin) {
 }
 
 // Like/Unlike event.
-async function likeUnlikeEvent(existingEvent, id, isAlreadyLikd) {
-    if (isAlreadyLikd) {
+async function likeUnlikeEvent(existingEvent, id, isAlreadyLiked) {
+    if (isAlreadyLiked) {
         let filteredLikes = await existingEvent.likes.filter((x) => x != id);
         existingEvent.likes = filteredLikes;
         return await existingEvent.save();
