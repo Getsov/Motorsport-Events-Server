@@ -127,6 +127,10 @@ userController.put('/editUserPassword/:id', async (req, res) => {
 });
 //TODO: EDIT USER ROLE ONLY FOR ADMIN
 
+userController.get('/my-likes', async (req, res) => {
+    
+});
+
 module.exports = {
     userController,
 };
