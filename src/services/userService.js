@@ -125,13 +125,13 @@ async function updateUserPassword(userId, requestBody, isAdmin) {
     return createToken(newRecord);
 }
 
-async function addEventToLikedEvents(eventId, userId, isAlreadyLikd) {
+async function addEventToLikedEvents(eventId, userId, isAlreadyLiked) {
     const existingUser = await User.findById(userId);
     if (!existingUser) {
         throw new Error('User not found!');
     }
 
-    if (existingUser.likedEvents.includes(eventId) && isAlreadyLikd) {
+    if (existingUser.likedEvents.includes(eventId) && isAlreadyLiked) {
         let filteredLikes = await existingUser.likedEvents.filter(
             (x) => x != eventId
         );
