@@ -110,26 +110,26 @@ eventController.post('/like/:id', async (req, res) => {
             throw new Error("Event is deleted, or doesn't exist!");
         }
 
-        let isAlreadyLikd = false;
+        let isAlreadyLiked = false;
 
         if (event.likes.includes(req.requester._id)) {
-            isAlreadyLikd = true;
+            isAlreadyLiked = true;
         }
 
         const likedEvent = await likeUnlikeEvent(
             event,
             req.requester._id,
-            isAlreadyLikd
+            isAlreadyLiked
         );
 
         await addEventToLikedEvents(
             req.params.id,
             req.requester._id,
-            isAlreadyLikd
+            isAlreadyLiked
         );
 
 
-        res.status(200).json(isAlreadyLikd ? 'Event UnLiked!' : 'Event Liked!');
+        res.status(200).json(isAlreadyLiked ? 'Event UnLiked!' : 'Event Liked!');
         res.end();
     } catch (error) {
         res.status(400).json(error.message);
