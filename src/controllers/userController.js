@@ -10,11 +10,17 @@ const {
 
 userController.post('/registerUser', async (req, res) => {
     try {
+        if (!req.body.password) {
+            throw new Error('Password is required!');
+        }
+        if (req.body.password.length < 8) {
+            throw new Error('Password must be at least 8 characters long!');
+        }
         if (req.body.password !== req.body.repass) {
             throw new Error('Password dismatch!');
         }
         if (!req.body.email || req.body.email == '') {
-            throw new Error('Email is necessary!');
+            throw new Error('Email is required!');
         }
         /*
         TODO: When someone try to register as admin:
@@ -126,7 +132,6 @@ userController.put('/editUserPassword/:id', async (req, res) => {
     }
 });
 //TODO: EDIT USER ROLE ONLY FOR ADMIN
-
 
 module.exports = {
     userController,
