@@ -16,7 +16,7 @@ async function registerUser(requestBody) {
         }
     }
 
- 
+
     await User.create(requestBody);
     return createToken(requestBody);
 }
@@ -125,25 +125,22 @@ async function updateUserPassword(userId, requestBody, isAdmin) {
     return createToken(newRecord);
 }
 
-async function addEventToLikedEvents(eventId, userId, isUnlike) {
+async function addEventToLikedEvents(eventId, userId, isAlreadyLikd) {
     const existingUser = await User.findById(userId);
     if (!existingUser) {
         throw new Error('User not found!');
     }
 
-    if (existingUser.likedEvents.includes(eventId) && isUnlike) {
+    if (existingUser.likedEvents.includes(eventId) && isAlreadyLikd) {
         let filteredLikes = await existingUser.likedEvents.filter(
             (x) => x != eventId
         );
         existingUser.likedEvents = filteredLikes;
         return await existingUser.save();
-    } else if (!existingUser.likedEvents.includes(eventId) && !isUnlike) {
-        existingUser.likedEvents.push(eventId);
-        return await existingUser.save();
-    } else {
-        //TODO: not sure for this check
-        throw new Error('User already liked this event!');
     }
+
+    existingUser.likedEvents.push(eventId);
+    return await existingUser.save();
 }
 
 function createToken(user) {
