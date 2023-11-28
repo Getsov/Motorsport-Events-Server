@@ -91,7 +91,7 @@ Update entry with ID `654651caf696083cab72ab1c` in the `events` collection:
     Headers: `Content-Type: application/json`
     Body: JSON-formatted data
 
-`Users` and `Organizations` also can update ther properties.
+`Users` also can update their properties.
 
 Examples on `Users` collection:
 Update entries with ID `:id` in the `Users` collection:
@@ -114,26 +114,8 @@ Update entries with ID `:id` in the `Users` collection:
     Changes: Admin and User itself can change password.
     To fulfill the request, the user must send the old password, a new password and a repetition of the new password. The administrator must send a new password and repetition the new password.
 
-Examples on `Organizations` collection:
-Update entry with ID `:id` in the `Organizations` collection:
 
--   **Method:** `PUT`
-
--   **Endpont:** `/editOrganizationInfo/:id`
-    Headers: `Content-Type: application/json`
-    Body: JSON-formatted data
-    Changes: Only optional data of Organization(name, managerFirstName, managerLastName, phone,region, address). Admin can change also "isDeleted" property.
-
--   **Endpont:** `/editOrganizationEmail/:id`
-    Headers: `Content-Type: application/json`
-    Body: JSON-formatted data
-    Changes: Admin and Organization itself can change the email.
-
--   **Endpont:** `/editOrganizationPassword/:id`
-    Headers: `Content-Type: application/json`
-    Body: JSON-formatted data
-    Changes: Admin and Organization itself can change password.
-    To fulfill the request, the Organization must send the old password, a new password and a repetition of the new password. The administrator must send a new password and repetition the new password.
-
-<!-- ### Update: -->
-<!-- TODO: add documentation for like functionality -->
+Every user can like an Event. To do it, 'authorized' user must send a `POST` request with event `id`.
+Example: `/events/like/:id`
+-   **Method:** `POST`
+-   **Endpont:** `/events/like/6563804d62f4145aefcc2e01`

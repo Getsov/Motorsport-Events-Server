@@ -59,7 +59,7 @@ async function findAllEvents(query) {
             { longTitle: { $regex: query.search.toLowerCase(), $options: 'i' } },
             { shortDescription: { $regex: query.search.toLowerCase(), $options: 'i' } },
             { longDescription: { $regex: query.search.toLowerCase(), $options: 'i' } },
-            // TODO: Discuss searching about following Event properties!
+            // TODO: Discuss searching about following Event properties, look for a good practices about search and sort at one time together!
             { category: { $regex: query.search.toLowerCase(), $options: 'i' } },
             { ['contacts.region']: { $regex: query.search.toLowerCase(), $options: 'i' } },
         ];
@@ -100,8 +100,8 @@ async function updateEvent(requestBody, existingEvent, isAdmin) {
 }
 
 // Like/Unlike event.
-async function likeUnlikeEvent(existingEvent, id, isUnlike) {
-    if (isUnlike) {
+async function likeUnlikeEvent(existingEvent, id, isAlreadyLiked) {
+    if (isAlreadyLiked) {
         let filteredLikes = await existingEvent.likes.filter((x) => x != id);
         existingEvent.likes = filteredLikes;
         return await existingEvent.save();
