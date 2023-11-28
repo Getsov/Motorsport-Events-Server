@@ -6,6 +6,7 @@ const {
 
 const emailRegex = /^[a-zA-Z0-9._%+-]{3,}@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 // const emailRegex2 = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
+const emailRegexBest = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 //TODO: add validation for fields in the schema
 const userSchema = new Schema({
@@ -14,7 +15,7 @@ const userSchema = new Schema({
         required: true,
         unique: true,
         validate: {
-            validator: (value) => emailRegex.test(value),
+            validator: (value) => emailRegexBest.test(value),
             message: 'Invalid email',
         },
     },
