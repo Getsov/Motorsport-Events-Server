@@ -6,7 +6,6 @@ const {
 
 const { emailRegex } = require('../utils/sharedRegex');
 
-
 //TODO: add validation for fields in the schema
 const userSchema = new Schema({
     email: {
