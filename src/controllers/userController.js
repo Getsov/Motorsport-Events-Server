@@ -9,7 +9,6 @@ const {
 } = require('../services/userService');
 const { testRegex } = require('../utils/sharedRegex');
 
-
 userController.post('/registerUser', async (req, res) => {
     try {
         if (!req.body.password) {
