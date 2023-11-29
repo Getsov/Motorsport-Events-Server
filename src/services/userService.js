@@ -16,7 +16,6 @@ async function registerUser(requestBody) {
         }
     }
 
-
     await User.create(requestBody);
     return createToken(requestBody);
 }

@@ -7,14 +7,21 @@ const {
     updateUserEmail,
     updateUserPassword,
 } = require('../services/userService');
+const { checkPhoneNumber } = require('../utils/sharedRegex');
 
 userController.post('/registerUser', async (req, res) => {
     try {
+        if (!req.body.password) {
+            throw new Error('Password is required!');
+        }
+        if (req.body.password.length < 8) {
+            throw new Error('Password must be at least 8 characters long!');
+        }
         if (req.body.password !== req.body.repass) {
             throw new Error('Password dismatch!');
         }
         if (!req.body.email || req.body.email == '') {
-            throw new Error('Email is necessary!');
+            throw new Error('Email is required!');
         }
         /*
         TODO: When someone try to register as admin:
@@ -23,6 +30,11 @@ userController.post('/registerUser', async (req, res) => {
         */
         if (req.body.role == 'admin') {
             throw new Error('You do not have admin rights!');
+        }
+        if (req.body.phone) {
+            if (!checkPhoneNumber(req.body.phone)) {
+                throw new Error('Add accurate phone number!');
+            }
         }
 
         const userData = {
@@ -47,6 +59,7 @@ userController.post('/registerUser', async (req, res) => {
             ) {
                 throw new Error('Fill all required fields!');
             }
+
             userData.organizatorName = req.body.organizatorName;
         }
 
