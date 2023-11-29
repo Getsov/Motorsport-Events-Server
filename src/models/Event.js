@@ -77,7 +77,16 @@ const eventSchema = new Schema({
             lat: { type: String, required: true },
             long: { type: String, required: true },
         },
-        region: { type: String, required: true },
+        region: {
+            type: String, required: true, enum: [
+                'Бургас', 'Благоевград', 'Варна', 'Велико Търново',
+                'Видин', 'Враца', 'Габрово', 'Добрич', 'Кърджали',
+                'Кюстендил', 'Ловеч', 'Монтана', 'Пазарджик', 'Перник',
+                'Плевен', 'Пловдив', 'Разград', 'Русе', 'Силистра', 'Сливен',
+                'София', 'София (град)', 'Стара Загора', 'Търговище',
+                'Хасково', 'Шумен', 'Ямбол',
+            ]
+        },
         address: { type: String, required: true },
         phone: { type: String, required: true },
         email: { type: String, required: true },
@@ -85,8 +94,6 @@ const eventSchema = new Schema({
     category: {
         type: String,
         required: true,
-        minlength: [2, 'Category must be minimum 2 characters long!'],
-        maxlength: [30, 'Category must be maximum 30 characters long!'],
         enum: [
             'Drag',
             'Drift',
