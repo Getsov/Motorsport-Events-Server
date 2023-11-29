@@ -4,7 +4,8 @@ const {
     Types: { ObjectId },
 } = require('mongoose');
 
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const { emailRegex } = require('../utils/sharedRegex');
+
 
 //TODO: add validation for fields in the schema
 const userSchema = new Schema({

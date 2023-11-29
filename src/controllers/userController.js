@@ -7,11 +7,8 @@ const {
     updateUserEmail,
     updateUserPassword,
 } = require('../services/userService');
-const phoneRegex = /^[\d+()-\s]+$/;
-const testRegex = (phoneRegex, phone) => {
-    const regexObj = new RegExp(phoneRegex);
-    return regexObj.test(phone);
-};
+const { testRegex } = require('../utils/sharedRegex');
+
 
 userController.post('/registerUser', async (req, res) => {
     try {
@@ -35,7 +32,7 @@ userController.post('/registerUser', async (req, res) => {
         if (req.body.role == 'admin') {
             throw new Error('You do not have admin rights!');
         }
-        if (!testRegex(phoneRegex, req.body.phone)) {
+        if (!testRegex(req.body.phone)) {
             throw new Error('Add accurate phone number!');
         }
 
