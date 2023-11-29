@@ -7,7 +7,7 @@ const {
     updateUserEmail,
     updateUserPassword,
 } = require('../services/userService');
-const { testRegex } = require('../utils/sharedRegex');
+const { checkPhoneNumber } = require('../utils/sharedRegex');
 
 userController.post('/registerUser', async (req, res) => {
     try {
@@ -31,8 +31,10 @@ userController.post('/registerUser', async (req, res) => {
         if (req.body.role == 'admin') {
             throw new Error('You do not have admin rights!');
         }
-        if (!testRegex(req.body.phone)) {
-            throw new Error('Add accurate phone number!');
+        if (req.body.phone) {
+            if (!checkPhoneNumber(req.body.phone)) {
+                throw new Error('Add accurate phone number!');
+            }
         }
 
         const userData = {
@@ -57,6 +59,7 @@ userController.post('/registerUser', async (req, res) => {
             ) {
                 throw new Error('Fill all required fields!');
             }
+
             userData.organizatorName = req.body.organizatorName;
         }
 

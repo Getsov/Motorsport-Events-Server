@@ -1,7 +1,7 @@
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const phoneRegex = /^[\d+()-\s]+$/;
 
-const testRegex = (phoneNumber) => {
+const checkPhoneNumber = (phoneNumber) => {
     const regexObj = new RegExp(phoneRegex);
     return regexObj.test(phoneNumber);
 };
@@ -9,5 +9,5 @@ const testRegex = (phoneNumber) => {
 module.exports = {
     emailRegex,
     phoneRegex,
-    testRegex,
+    checkPhoneNumber,
 };
