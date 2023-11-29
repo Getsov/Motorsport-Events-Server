@@ -4,7 +4,7 @@ const {
     Types: { ObjectId },
 } = require('mongoose');
 const validTime = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
-const validString = /https?:\/\/./i;
+const validUrl = /https?:\/\/./i;
 
 const eventSchema = new Schema({
     shortTitle: {
@@ -38,7 +38,16 @@ const eventSchema = new Schema({
     dates: {
         type: [
             {
-                startDate: { type: Date, required: true },
+                startDate: {
+                    type: Date,
+                    required: true,
+                    validate: {
+                        validator: function (date) {
+                            return date >= new Date(new Date().setHours(0, 0, 0, 0));
+                        },
+                        message: 'Start date cannot be in the past!'
+                    }
+                },
                 startTime: {
                     type: String,
                     required: true,
@@ -54,6 +63,16 @@ const eventSchema = new Schema({
                         validator: (value) => validTime.test(value),
                         message: 'Invalid time format! Example: hh:mm (24h)',
                     },
+                },
+                endDate: {
+                    type: Date,
+                    // required: true,
+                    validate: {
+                        validator: function (date) {
+                            return date >= this.startDate;
+                        },
+                        message: 'End date must be equal or greater than start date!'
+                    }
                 },
             },
         ],
