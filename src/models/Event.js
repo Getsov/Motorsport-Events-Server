@@ -3,8 +3,10 @@ const {
     model,
     Types: { ObjectId },
 } = require('mongoose');
+const { phoneRegex } = require('../utils/sharedRegex');
 const validTime = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
 const validUrl = /https?:\/\/./i;
+
 
 const eventSchema = new Schema({
     shortTitle: {
@@ -107,7 +109,17 @@ const eventSchema = new Schema({
             ]
         },
         address: { type: String, required: true },
-        phone: { type: String, required: true },
+        phone: {
+            type: String,
+            default: '',
+            validate: {
+                validator: function (value) {
+                    // Allow empty strings or validate against the regex
+                    return value === '' || phoneRegex.test(value);
+                },
+                message: 'Invalid phone number!',
+            },
+        },
         email: { type: String, required: true },
     },
     category: {
