@@ -16,8 +16,9 @@ async function registerUser(requestBody) {
         }
     }
 
-    await User.create(requestBody);
-    return createToken(requestBody);
+    
+    const user = await User.create(requestBody);
+    return createToken(user);
 }
 
 async function loginUser(email, password) {
@@ -144,7 +145,7 @@ async function addEventToLikedEvents(eventId, userId, isAlreadyLiked) {
 
 function createToken(user) {
     const payload = {
-        _id: user.id,
+        _id: user._id,
         email: user.email,
         organizatorName: user.organizatorName,
         firstName: user.firstName,
@@ -157,7 +158,7 @@ function createToken(user) {
     };
 
     return {
-        _id: user.id,
+        _id: user._id,
         email: user.email,
         organizatorName: user.organizatorName,
         firstName: user.firstName,

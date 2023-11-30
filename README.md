@@ -13,19 +13,19 @@ The service are using authentication, not everything is accessible trough the DB
 
 ## CRUD Operations:
 
-All requests are send to: `http://localhost:3030`: /event/, /user/, /organization/. Supported requests are `GET`, `POST`, `PUT`!
+All requests are send to: `http://localhost:3030`: /event/, /user/. Supported requests are `GET`, `POST`, `PUT`!
 
 ## Authentication:
 
-The service is not initialized with any data. You need to create it by yourself. To register an event you must register yourself as `organization`! If you register as `user`, you wil only able to read data and edit your profile.
+The service is not initialized with any data. You need to create it by yourself. To register an event you must register yourself as `user` with `role`: `organizer`! If you register as `role`: `regular`, you will only able to read data and edit your profile.
 
 ### Register:
 
-Create a new `user` by sending a POST request to `http://localhost:3030`: + `/user/registerUser` with properties: `email` and `password`. The service automatically creates a session and returns object with `accessToken` inside, that can be used for authorized requests. You can also register `Organization` by sending a POST request to `http://localhost:3030:` + `/organization/registerOrganization` with properties: `name`, `email`, `managerFirstName`, `managerLastName`, `phone`, `region`, `password`. The service automatically creates a session and returns object with `accessToken` inside, that can be used for authorized requests.
+Create a new `user` by sending a POST request to `http://localhost:3030`: + `/user/registerUser` with properties: `email`, `password`, `repass`. If you register as organizator you need to pass `email`, `password`, `repass`, `role`, `organizatorName`, `firstName`, `lastName`, `phone`. The service automatically creates a session and returns object with `accessToken` inside, that can be used for authorized requests.
 
 ### Login:
 
-Login by sending a POST request with `email` and `password` to `http://localhost:3030` + `/user/loginUser` or `/organization/loginOrganization`. The service will respond with object with details containing a standard `accessToken`, that can be used for authorized requests.
+Login by sending a POST request with `email` and `password` to `http://localhost:3030` + `/user/loginUser`. The service will respond with object with details containing a standard `accessToken`, that can be used for authorized requests.
 
 ### Logout:
 
@@ -69,11 +69,11 @@ IMPORTANT: You can use search filtering and pagination with multiple passed valu
 ### Create:
 
 Send a `POST` request to the endpoint. The shape of the body is restricted. The service will respond with the object, created in the DB, which will have an added ` _id` property, that is automatically generated.
-Examples: `http://localhost:3030/events` +
+Examples: `http://localhost:3030/events/register` +
 Create a new entry inside the `events` collection:
 
 -   **Method:** `POST`
--   **Endpont:** `/events`
+-   **Endpont:** `/events/register`
     Headers: Content-Type: application/json
     `X-Authorization: {token}`
     Body: JSON-formatted data

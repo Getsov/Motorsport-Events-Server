@@ -54,8 +54,7 @@ userController.post('/registerUser', async (req, res) => {
                 !req.body.organizatorName ||
                 !req.body.firstName ||
                 !req.body.lastName ||
-                !req.body.phone ||
-                !req.body.region
+                !req.body.phone
             ) {
                 throw new Error('Fill all required fields!');
             }
