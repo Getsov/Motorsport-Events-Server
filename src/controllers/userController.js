@@ -7,7 +7,6 @@ const {
     updateUserEmail,
     updateUserPassword,
 } = require('../services/userService');
-const { checkPhoneNumber } = require('../utils/sharedRegex');
 
 userController.post('/registerUser', async (req, res) => {
     try {
@@ -23,18 +22,8 @@ userController.post('/registerUser', async (req, res) => {
         if (!req.body.email || req.body.email == '') {
             throw new Error('Email is required!');
         }
-        /*
-        TODO: When someone try to register as admin:
-        throw an Error 
-        or save record as regular?
-        */
         if (req.body.role == 'admin') {
             throw new Error('You do not have admin rights!');
-        }
-        if (req.body.phone) {
-            if (!checkPhoneNumber(req.body.phone)) {
-                throw new Error('Add accurate phone number!');
-            }
         }
 
         const userData = {
