@@ -21,7 +21,7 @@ The service is not initialized with any data. You need to create it by yourself.
 
 ### Register:
 
-Create a new `user` by sending a POST request to `http://localhost:3030`: + `/user/registerUser` with properties: `email`, `password`, `repass`. If you register as organizator you need to pass `email`, `password`, `repass`, `role`, `organizatorName`, `firstName`, `lastName`, `region`, `phone`. The service automatically creates a session and returns object with `accessToken` inside, that can be used for authorized requests.
+Create a new `user` by sending a POST request to `http://localhost:3030`: + `/user/registerUser` with properties: `email`, `password`, `repass`. If you register as organizator you need to pass `email`, `password`, `repass`, `role`, `organizatorName`, `firstName`, `lastName`, `phone`. The service automatically creates a session and returns object with `accessToken` inside, that can be used for authorized requests.
 
 ### Login:
 
