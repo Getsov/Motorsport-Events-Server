@@ -69,11 +69,11 @@ IMPORTANT: You can use search filtering and pagination with multiple passed valu
 ### Create:
 
 Send a `POST` request to the endpoint. The shape of the body is restricted. The service will respond with the object, created in the DB, which will have an added ` _id` property, that is automatically generated.
-Examples: `http://localhost:3030/events` +
+Examples: `http://localhost:3030/events/register` +
 Create a new entry inside the `events` collection:
 
 -   **Method:** `POST`
--   **Endpont:** `/events`
+-   **Endpont:** `/events/register`
     Headers: Content-Type: application/json
     `X-Authorization: {token}`
     Body: JSON-formatted data
