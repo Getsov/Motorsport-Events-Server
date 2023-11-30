@@ -158,7 +158,7 @@ function createToken(user) {
     };
 
     return {
-        _id: user.id,
+        _id: user._id,
         email: user.email,
         organizatorName: user.organizatorName,
         firstName: user.firstName,
