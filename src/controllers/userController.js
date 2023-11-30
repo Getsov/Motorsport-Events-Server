@@ -7,7 +7,6 @@ const {
     updateUserEmail,
     updateUserPassword,
 } = require('../services/userService');
-const { checkPhoneNumber } = require('../utils/sharedRegex');
 
 userController.post('/registerUser', async (req, res) => {
     try {

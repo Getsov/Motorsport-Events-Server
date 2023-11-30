@@ -5,15 +5,15 @@ const validUrl = /https?:\/\/./i;
 // const phoneNumberRegex = /^(\+\d{1,2}\s?)?(\(\d{1,4}\)\s?)?[\d\s.-]{5,}$/;
 
 
-const checkPhoneNumber = (phoneNumber) => {
-    const regexObj = new RegExp(phoneRegex);
-    return regexObj.test(phoneNumber);
-};
+// const checkPhoneNumber = (phoneNumber) => {
+//     const regexObj = new RegExp(phoneRegex);
+//     return regexObj.test(phoneNumber);
+// };
 
 module.exports = {
     emailRegex,
     phoneRegex,
     validTime,
     validUrl,
-    checkPhoneNumber,
+    // checkPhoneNumber,
 };
