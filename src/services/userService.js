@@ -16,6 +16,9 @@ async function registerUser(requestBody) {
         }
     }
 
+    // TODO: Return id of the created user to the body!
+    // And then pass it to the parse token, cause when we register,
+    // there is no id in the returned payload!
     await User.create(requestBody);
     return createToken(requestBody);
 }
