@@ -17,11 +17,11 @@ All requests are send to: `http://localhost:3030`: /event/, /user/. Supported re
 
 ## Authentication:
 
-The service is not initialized with any data. You need to create it by yourself. To register an event you must register yourself as `user` with `role`: `organizer`! If you register as `role`: `regular`, you wil only able to read data and edit your profile.
+The service is not initialized with any data. You need to create it by yourself. To register an event you must register yourself as `user` with `role`: `organizer`! If you register as `role`: `regular`, you will only able to read data and edit your profile.
 
 ### Register:
 
-Create a new `user` by sending a POST request to `http://localhost:3030`: + `/user/registerUser` with properties: `email`, `password`, `repass` and `role`, if the role is `regular`. If the `role` is `organizer` you need to pass `email`, `password`, `repass`, `role`, `organizationName`, `firstName`, `lastName`, `region`, `phone`. The service automatically creates a session and returns object with `accessToken` inside, that can be used for authorized requests.
+Create a new `user` by sending a POST request to `http://localhost:3030`: + `/user/registerUser` with properties: `email`, `password`, `repass`. If you register as organizator you need to pass `email`, `password`, `repass`, `role`, `organizatorName`, `firstName`, `lastName`, `region`, `phone`. The service automatically creates a session and returns object with `accessToken` inside, that can be used for authorized requests.
 
 ### Login:
 
