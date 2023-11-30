@@ -4,7 +4,7 @@ const {
     Types: { ObjectId },
 } = require('mongoose');
 
-const { emailRegex } = require('../utils/sharedRegex');
+const { emailRegex, phoneRegex } = require('../utils/sharedRegex');
 
 //TODO: add validation for fields in the schema
 const userSchema = new Schema({
@@ -47,7 +47,17 @@ const userSchema = new Schema({
     //     type: String,
     //     default: '',
     // },
-    phone: { type: String, default: '' },
+    phone: {
+        type: String,
+        default: '',
+        validate: {
+            validator: function (value) {
+                // Allow empty strings or validate against the regex
+                return value === '' || phoneRegex.test(value);
+            },
+            message: 'Invalid phone number!',
+        },
+    },
     createdEvents: [{ type: ObjectId, ref: 'Event' }],
     likedEvents: [{ type: ObjectId, ref: 'Event' }],
     hashedPassword: { type: String, required: true },
