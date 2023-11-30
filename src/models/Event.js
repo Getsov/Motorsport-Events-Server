@@ -5,7 +5,6 @@ const {
 } = require('mongoose');
 const { phoneRegex, validTime } = require('../utils/sharedRegex');
 
-
 const eventSchema = new Schema({
     shortTitle: {
         type: String,
