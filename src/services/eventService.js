@@ -128,7 +128,7 @@ module.exports = {
 //     "longDescription": "Lorem ipsum dolor sit amet miimet.",
 //     "dates": [
 //         {
-//             "startDate": "2023-11-17",
+//             "date": "2023-11-17",
 //             "startTime": "23:59",
 //             "endTime": "06:40"
 //         }
