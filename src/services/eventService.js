@@ -92,8 +92,8 @@ async function updateEvent(requestBody, existingEvent, isAdmin) {
             key !== 'likes' &&
             key !== 'isDeleted'
         ) {
+            key === 'dates' ? requestBody[key].sort((a, b) =>  new Date(a.date) - new Date(b.date)) : null;
             existingEvent[key] = requestBody[key];
-            // TODO: Check for sorting dates when edit the event!
         }
     }
 
