@@ -10,7 +10,7 @@ async function registerEvent(requestBody, requesterId) {
         longTitle: requestBody.longTitle,
         shortDescription: requestBody.shortDescription,
         longDescription: requestBody.longDescription,
-        dates: requestBody.dates,
+        dates: requestBody.dates.sort((a, b) =>  new Date(a.date) - new Date(b.date)),
         imageUrl: requestBody.imageUrl,
         contacts: requestBody.contacts,
         category: requestBody.category,
@@ -93,6 +93,7 @@ async function updateEvent(requestBody, existingEvent, isAdmin) {
             key !== 'isDeleted'
         ) {
             existingEvent[key] = requestBody[key];
+            // TODO: Check for sorting dates when edit the event!
         }
     }
 
