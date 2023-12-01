@@ -10,7 +10,7 @@ async function registerEvent(requestBody, requesterId) {
         longTitle: requestBody.longTitle,
         shortDescription: requestBody.shortDescription,
         longDescription: requestBody.longDescription,
-        dates: requestBody.dates,
+        dates: requestBody.dates.sort((a, b) =>  new Date(a.date) - new Date(b.date)),
         imageUrl: requestBody.imageUrl,
         contacts: requestBody.contacts,
         category: requestBody.category,
@@ -92,6 +92,7 @@ async function updateEvent(requestBody, existingEvent, isAdmin) {
             key !== 'likes' &&
             key !== 'isDeleted'
         ) {
+            key === 'dates' ? requestBody[key].sort((a, b) =>  new Date(a.date) - new Date(b.date)) : null;
             existingEvent[key] = requestBody[key];
         }
     }
@@ -128,7 +129,7 @@ module.exports = {
 //     "longDescription": "Lorem ipsum dolor sit amet miimet.",
 //     "dates": [
 //         {
-//             "startDate": "2023-11-17",
+//             "date": "2023-11-17",
 //             "startTime": "23:59",
 //             "endTime": "06:40"
 //         }

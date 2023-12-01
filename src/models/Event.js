@@ -37,7 +37,7 @@ const eventSchema = new Schema({
     dates: {
         type: [
             {
-                startDate: {
+                date: {
                     type: Date,
                     required: true,
                     validate: {
@@ -65,18 +65,7 @@ const eventSchema = new Schema({
                         validator: (value) => validTime.test(value),
                         message: 'Invalid time format! Example: hh:mm (24h)',
                     },
-                },
-                endDate: {
-                    type: Date,
-                    // required: true,
-                    validate: {
-                        validator: function (date) {
-                            return date >= this.startDate;
-                        },
-                        message:
-                            'End date must be equal or greater than start date!',
-                    },
-                },
+                }
             },
         ],
     },
@@ -103,8 +92,8 @@ const eventSchema = new Schema({
             type: String,
             required: true,
             enum: [
-                'Бургас',
                 'Благоевград',
+                'Бургас',
                 'Варна',
                 'Велико Търново',
                 'Видин',
@@ -123,8 +112,9 @@ const eventSchema = new Schema({
                 'Русе',
                 'Силистра',
                 'Сливен',
-                'София (област)',
+                'Смолян',
                 'София (град)',
+                'София (област)',
                 'Стара Загора',
                 'Търговище',
                 'Хасково',
