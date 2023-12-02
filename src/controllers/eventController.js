@@ -6,7 +6,10 @@ const {
     updateEvent,
     likeUnlikeEvent,
 } = require('../services/eventService');
-const { addEventToLikedEvents } = require('../services/userService');
+const {
+    addEventToLikedEvents,
+    addEventToCreatedEvents,
+} = require('../services/userService');
 
 eventController.post('/register', async (req, res) => {
     try {
@@ -24,6 +27,8 @@ eventController.post('/register', async (req, res) => {
         }
 
         const event = await registerEvent(req.body, req.requester._id);
+
+        await addEventToCreatedEvents(event._id, req.requester._id);
 
         res.status(200).json(event);
         res.end();
