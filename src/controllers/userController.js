@@ -6,15 +6,25 @@ const {
     updateUserInfo,
     updateUserEmail,
     updateUserPassword,
+    returnAllCreatedEvents,
+    returnAllFavouriteEvents,
 } = require('../services/userService');
+const { validPassword } = require('../shared/sharedRegex');
 
 userController.post('/registerUser', async (req, res) => {
     try {
+        const passwordTest = validPassword.test(req.body.password);
+        if (!passwordTest) {
+            throw new Error("Password cannot contain spaces!");
+        }
         if (!req.body.password) {
             throw new Error('Password is required!');
         }
-        if (req.body.password.length < 8) {
-            throw new Error('Password must be at least 8 characters long!');
+        if (req.body.password.length < 6) {
+            throw new Error('Password must be at least 6 characters long!');
+        }
+        if (req.body.password.length > 24) {
+            throw new Error('Password must be maximum 24 characters long!');
         }
         if (req.body.password !== req.body.repass) {
             throw new Error('Password dismatch!');
@@ -39,12 +49,7 @@ userController.post('/registerUser', async (req, res) => {
         };
 
         if (req.body.role == 'organizer') {
-            if (
-                !req.body.organizatorName ||
-                !req.body.firstName ||
-                !req.body.lastName ||
-                !req.body.phone
-            ) {
+            if (!req.body.organizatorName || !req.body.phone) {
                 throw new Error('Fill all required fields!');
             }
 
@@ -121,6 +126,32 @@ userController.put('/editUserPassword/:id', async (req, res) => {
         } else {
             throw new Error('You do not have rights to modify the record!');
         }
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ error: error.message });
+    }
+});
+
+userController.get('/getMyEvents', async (req, res) => {
+    const userId = req.requester._id;
+
+    try {
+        const result = await returnAllCreatedEvents(userId);
+        res.status(200).json(result);
+        res.end();
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ error: error.message });
+    }
+});
+
+userController.get('/getMyFavourites', async (req, res) => {
+    const userId = req.requester._id;
+
+    try {
+        const result = await returnAllFavouriteEvents(userId);
+        res.status(200).json(result);
+        res.end();
     } catch (error) {
         console.log(error);
         res.status(400).json({ error: error.message });

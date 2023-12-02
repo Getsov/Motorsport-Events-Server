@@ -68,9 +68,9 @@ const userSchema = new Schema({
             'Хасково',
             'Шумен',
             'Ямбол',
-            ''
+            '',
         ],
-        default:""
+        default: '',
     },
     // address: {
     //     type: String,

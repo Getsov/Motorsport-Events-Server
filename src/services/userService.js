@@ -158,6 +158,35 @@ async function addEventToCreatedEvents(eventId, userId) {
     existingUser.createdEvents.push(eventId);
     return await existingUser.save();
 }
+async function returnAllCreatedEvents(userId) {
+    const existingUser = await User.findById(userId);
+    if (!existingUser) {
+        throw new Error('User not found!');
+    }
+    const userWithEvents = await existingUser.populate('createdEvents');
+    const allCreatedEvents = userWithEvents.createdEvents;
+    //return empty array if there is no createdEvents by current user
+    if (allCreatedEvents.length === 0) {
+        return allCreatedEvents;
+    } else {
+        return allCreatedEvents;
+    }
+}
+
+async function returnAllFavouriteEvents(userId) {
+    const existingUser = await User.findById(userId);
+    if (!existingUser) {
+        throw new Error('User not found!');
+    }
+    const userWithEvents = await existingUser.populate('likedEvents');
+    const allFavouriteEvents = userWithEvents.likedEvents;
+    //return empty array if there is no createdEvents by current user
+    if (allFavouriteEvents.length === 0) {
+        return allFavouriteEvents;
+    } else {
+        return allFavouriteEvents;
+    }
+}
 
 function createToken(user) {
     const payload = {
@@ -196,4 +225,6 @@ module.exports = {
     updateUserPassword,
     addEventToLikedEvents,
     addEventToCreatedEvents,
+    returnAllCreatedEvents,
+    returnAllFavouriteEvents,
 };
