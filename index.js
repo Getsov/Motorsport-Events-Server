@@ -24,6 +24,7 @@ async function startServer() {
     app.use(express.urlencoded({ extended: false }));
     app.use(cors());
     app.use(session());
+    // TODO: Check about trim Body is viable solution?
     app.use(trimBoddy());
     app.use(router);
     app.listen('3030', () => console.log('Server operational on port: 3030!'));
