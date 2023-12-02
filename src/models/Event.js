@@ -168,12 +168,10 @@ const eventSchema = new Schema({
         ],
     },
     likes: [{ type: ObjectId, ref: 'User' }],
-    // TODO: We must add Admin model later!
     creator: { type: ObjectId, ref: 'User', required: true },
     winners: {
         type: [
             {
-                //TODO: Is it requred true (winners) when creating event
                 name: { type: String, required: true, trim: true },
                 vehicle: { type: String, required: true, trim: true },
                 place: { type: Number, required: true },
