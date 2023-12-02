@@ -4,7 +4,7 @@ const {
     Types: { ObjectId },
 } = require('mongoose');
 
-const { emailRegex, phoneRegex } = require('../utils/sharedRegex');
+const { emailRegex, phoneRegex } = require('../shared/sharedRegex');
 
 //TODO: add validation for fields in the schema
 const userSchema = new Schema({
@@ -68,9 +68,9 @@ const userSchema = new Schema({
             'Хасково',
             'Шумен',
             'Ямбол',
-            ''
+            '',
         ],
-        default:""
+        default: '',
     },
     // address: {
     //     type: String,

@@ -3,7 +3,7 @@ const {
     model,
     Types: { ObjectId },
 } = require('mongoose');
-const { phoneRegex, validTime } = require('../utils/sharedRegex');
+const { phoneRegex, validTime } = require('../shared/sharedRegex');
 
 const eventSchema = new Schema({
     shortTitle: {
