@@ -7,6 +7,7 @@ const {
     updateUserEmail,
     updateUserPassword,
     returnAllCreatedEvents,
+    returnAllFavouriteEvents,
 } = require('../services/userService');
 
 userController.post('/registerUser', async (req, res) => {
@@ -133,6 +134,19 @@ userController.get('/getMyEvents', async (req, res) => {
 
     try {
         const result = await returnAllCreatedEvents(userId);
+        res.status(200).json(result);
+        res.end();
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ error: error.message });
+    }
+});
+
+userController.get('/getMyFavourites', async (req, res) => {
+    const userId = req.requester._id;
+
+    try {
+        const result = await returnAllFavouriteEvents(userId);
         res.status(200).json(result);
         res.end();
     } catch (error) {
