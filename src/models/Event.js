@@ -3,7 +3,7 @@ const {
     model,
     Types: { ObjectId },
 } = require('mongoose');
-const { phoneRegex, validTime } = require('../utils/sharedRegex');
+const { phoneRegex, validTime, emailRegex } = require('../shared/sharedRegex');
 
 const eventSchema = new Schema({
     shortTitle: {
@@ -71,7 +71,7 @@ const eventSchema = new Schema({
     },
     imageUrl: {
         type: String,
-        default: '',
+        default: ''
         // validate: {
         //   validator: (value) => validString.test(value),
         //   message: "Invalid URL, must start with HTTP:// or HTTPS://",
@@ -85,8 +85,8 @@ const eventSchema = new Schema({
     contacts: {
         // TODO: Check later for unique COORDS..!
         coordinates: {
-            lat: { type: String, required: true },
-            long: { type: String, required: true },
+            lat: { type: String, required: true, trim: true },
+            long: { type: String, required: true, trim: true },
         },
         region: {
             type: String,
@@ -122,10 +122,11 @@ const eventSchema = new Schema({
                 'Ямбол',
             ],
         },
-        address: { type: String, required: true },
+        address: { type: String, required: true, trim: true },
         phone: {
             type: String,
             default: '',
+            trim: true,
             validate: {
                 validator: function (value) {
                     // Allow empty strings or validate against the regex
@@ -134,7 +135,15 @@ const eventSchema = new Schema({
                 message: 'Invalid phone number!',
             },
         },
-        email: { type: String, required: true },
+        email: {
+            type: String,
+            required: true,
+            trim: true,
+            validate: {
+                validator: (value) => emailRegex.test(value),
+                message: 'Invalid email',
+            },
+        },
     },
     category: {
         type: String,
@@ -165,8 +174,8 @@ const eventSchema = new Schema({
         type: [
             {
                 //TODO: Is it requred true (winners) when creating event
-                name: { type: String, required: true },
-                vehicle: { type: String, required: true },
+                name: { type: String, required: true, trim: true },
+                vehicle: { type: String, required: true, trim: true },
                 place: { type: Number, required: true },
             },
         ],
@@ -178,13 +187,13 @@ const eventSchema = new Schema({
         },
     },
     participantPrices: [
-        { price: { type: Number }, description: { type: String } },
+        { price: { type: Number }, description: { type: String, trim: true } },
     ],
     visitorPrices: {
         type: [
             {
                 price: { type: Number, required: true },
-                description: { type: String, required: true },
+                description: { type: String, required: true, trim: true, },
             },
         ],
         validate: {
