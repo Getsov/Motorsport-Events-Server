@@ -4,7 +4,7 @@ const {
     Types: { ObjectId },
 } = require('mongoose');
 
-const { emailRegex, phoneRegex } = require('../utils/sharedRegex');
+const { emailRegex, phoneRegex } = require('../shared/sharedRegex');
 
 //TODO: add validation for fields in the schema
 const userSchema = new Schema({
@@ -38,9 +38,38 @@ const userSchema = new Schema({
         default: 'regular',
     },
     region: {
-        // TODO - enum like in the front end
         type: String,
-        maxlength: [15, 'Region must be maximum 15 characters long!'],
+        enum: [
+            'Благоевград',
+            'Бургас',
+            'Варна',
+            'Велико Търново',
+            'Видин',
+            'Враца',
+            'Габрово',
+            'Добрич',
+            'Кърджали',
+            'Кюстендил',
+            'Ловеч',
+            'Монтана',
+            'Пазарджик',
+            'Перник',
+            'Плевен',
+            'Пловдив',
+            'Разград',
+            'Русе',
+            'Силистра',
+            'Сливен',
+            'Смолян',
+            'София (град)',
+            'София (област)',
+            'Стара Загора',
+            'Търговище',
+            'Хасково',
+            'Шумен',
+            'Ямбол',
+            '',
+        ],
         default: '',
     },
     // address: {
