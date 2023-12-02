@@ -15,8 +15,12 @@ userController.post('/registerUser', async (req, res) => {
         if (!req.body.password) {
             throw new Error('Password is required!');
         }
-        if (req.body.password.length < 8) {
-            throw new Error('Password must be at least 8 characters long!');
+        if (req.body.password.length < 6) {
+            throw new Error('Password must be at least 6 characters long!');
+        }
+
+        if (req.body.password.length > 24) {
+            throw new Error('Password must be maximum 24 characters long!');
         }
         if (req.body.password !== req.body.repass) {
             throw new Error('Password dismatch!');
