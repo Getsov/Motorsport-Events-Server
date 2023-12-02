@@ -12,6 +12,7 @@ const userSchema = new Schema({
         type: String,
         required: true,
         unique: true,
+        trim: true,
         validate: {
             validator: (value) => emailRegex.test(value),
             message: 'Invalid email',
@@ -19,16 +20,19 @@ const userSchema = new Schema({
     },
     organizatorName: {
         type: String,
+        trim: true,
         maxlength: [40, 'Organizator name must be maximum 40 characters long!'],
         // default: '',
     },
     firstName: {
         type: String,
+        trim: true,
         maxlength: [15, 'First name must be maximum 15 characters long!'],
         default: '',
     },
     lastName: {
         type: String,
+        trim: true,
         maxlength: [15, 'Last name must be maximum 15 characters long!'],
         default: '',
     },
@@ -78,6 +82,7 @@ const userSchema = new Schema({
     // },
     phone: {
         type: String,
+        trim: true,
         default: '',
         validate: {
             validator: function (value) {
