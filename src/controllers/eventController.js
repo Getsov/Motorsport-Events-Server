@@ -128,8 +128,9 @@ eventController.post('/like/:id', async (req, res) => {
             isAlreadyLiked
         );
 
-
-        res.status(200).json(isAlreadyLiked ? 'Event UnLiked!' : 'Event Liked!');
+        res.status(200).json(
+            isAlreadyLiked ? 'Event UnLiked!' : 'Event Liked!'
+        );
         res.end();
     } catch (error) {
         res.status(400).json(error.message);
