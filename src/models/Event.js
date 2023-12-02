@@ -10,16 +10,19 @@ const eventSchema = new Schema({
     shortTitle: {
         type: String,
         required: true,
+        trim: true,
         // index: { unique: true },
         maxlength: [24, 'Short title must be maximum 24 characters long!'],
     },
     longTitle: {
         type: String,
+        trim: true,
         default: '',
     },
     shortDescription: {
         type: String,
         required: true,
+        trim: true,
         minlength: [2, 'Short description must be minimum 2 characters long!'],
         maxlength: [
             48,
@@ -29,6 +32,7 @@ const eventSchema = new Schema({
     longDescription: {
         type: String,
         required: true,
+        trim: true,
         minlength: [10, 'Long description must be minimum 10 characters long!'],
         maxlength: [
             250,
@@ -72,6 +76,7 @@ const eventSchema = new Schema({
     },
     imageUrl: {
         type: String,
+        trim: true,
         default: ''
         // validate: {
         //   validator: (value) => validString.test(value),
