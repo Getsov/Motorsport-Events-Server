@@ -9,16 +9,20 @@ const {
     returnAllCreatedEvents,
     returnAllFavouriteEvents,
 } = require('../services/userService');
+const { validPassword } = require('../shared/sharedRegex');
 
 userController.post('/registerUser', async (req, res) => {
     try {
+        const passwordTest = validPassword.test(req.body.password);
+        if (!passwordTest) {
+            throw new Error("Password cannot contain spaces!");
+        }
         if (!req.body.password) {
             throw new Error('Password is required!');
         }
         if (req.body.password.length < 6) {
             throw new Error('Password must be at least 6 characters long!');
         }
-
         if (req.body.password.length > 24) {
             throw new Error('Password must be maximum 24 characters long!');
         }
