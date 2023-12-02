@@ -226,5 +226,5 @@ module.exports = {
     addEventToLikedEvents,
     addEventToCreatedEvents,
     returnAllCreatedEvents,
-    returnAllFavouriteEvents
+    returnAllFavouriteEvents,
 };
