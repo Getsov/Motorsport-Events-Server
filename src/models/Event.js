@@ -3,22 +3,26 @@ const {
     model,
     Types: { ObjectId },
 } = require('mongoose');
-const { phoneRegex, validTime } = require('../shared/sharedRegex');
+
+const { phoneRegex, validTime, emailRegex } = require('../shared/sharedRegex');
 
 const eventSchema = new Schema({
     shortTitle: {
         type: String,
         required: true,
+        trim: true,
         // index: { unique: true },
         maxlength: [24, 'Short title must be maximum 24 characters long!'],
     },
     longTitle: {
         type: String,
+        trim: true,
         default: '',
     },
     shortDescription: {
         type: String,
         required: true,
+        trim: true,
         minlength: [2, 'Short description must be minimum 2 characters long!'],
         maxlength: [
             48,
@@ -28,6 +32,7 @@ const eventSchema = new Schema({
     longDescription: {
         type: String,
         required: true,
+        trim: true,
         minlength: [10, 'Long description must be minimum 10 characters long!'],
         maxlength: [
             250,
@@ -71,7 +76,8 @@ const eventSchema = new Schema({
     },
     imageUrl: {
         type: String,
-        default: '',
+        trim: true,
+        default: ''
         // validate: {
         //   validator: (value) => validString.test(value),
         //   message: "Invalid URL, must start with HTTP:// or HTTPS://",
@@ -85,8 +91,8 @@ const eventSchema = new Schema({
     contacts: {
         // TODO: Check later for unique COORDS..!
         coordinates: {
-            lat: { type: String, required: true },
-            long: { type: String, required: true },
+            lat: { type: String, required: true, trim: true },
+            long: { type: String, required: true, trim: true },
         },
         region: {
             type: String,
@@ -122,10 +128,11 @@ const eventSchema = new Schema({
                 'Ямбол',
             ],
         },
-        address: { type: String, required: true },
+        address: { type: String, required: true, trim: true },
         phone: {
             type: String,
             default: '',
+            trim: true,
             validate: {
                 validator: function (value) {
                     // Allow empty strings or validate against the regex
@@ -134,7 +141,15 @@ const eventSchema = new Schema({
                 message: 'Invalid phone number!',
             },
         },
-        email: { type: String, required: true },
+        email: {
+            type: String,
+            required: true,
+            trim: true,
+            validate: {
+                validator: (value) => emailRegex.test(value),
+                message: 'Invalid email',
+            },
+        },
     },
     category: {
         type: String,
@@ -159,14 +174,12 @@ const eventSchema = new Schema({
         ],
     },
     likes: [{ type: ObjectId, ref: 'User' }],
-    // TODO: We must add Admin model later!
     creator: { type: ObjectId, ref: 'User', required: true },
     winners: {
         type: [
             {
-                //TODO: Is it requred true (winners) when creating event
-                name: { type: String, required: true },
-                vehicle: { type: String, required: true },
+                name: { type: String, required: true, trim: true },
+                vehicle: { type: String, required: true, trim: true },
                 place: { type: Number, required: true },
             },
         ],
@@ -178,13 +191,13 @@ const eventSchema = new Schema({
         },
     },
     participantPrices: [
-        { price: { type: Number }, description: { type: String } },
+        { price: { type: Number }, description: { type: String, trim: true } },
     ],
     visitorPrices: {
         type: [
             {
                 price: { type: Number, required: true },
-                description: { type: String, required: true },
+                description: { type: String, required: true, trim: true, },
             },
         ],
         validate: {
