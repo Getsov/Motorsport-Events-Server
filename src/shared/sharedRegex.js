@@ -16,5 +16,6 @@ module.exports = {
     phoneRegex,
     validTime,
     validUrl,
+    validPassword
     // checkPhoneNumber,
 };
