@@ -169,7 +169,7 @@ module.exports = {
 };
 
 const getMonthRange = (year, month) => {
-    if (month < 1 || month > 12) {
+    if (month < 0 || month > 12) {
         throw new Error('Invalid month value. Month should be in the range 1-12.');
     }
 
