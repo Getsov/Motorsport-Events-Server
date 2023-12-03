@@ -5,6 +5,7 @@ const {
     findAllEvents,
     updateEvent,
     likeUnlikeEvent,
+    getByMonth,
 } = require('../services/eventService');
 const {
     addEventToLikedEvents,
@@ -138,6 +139,26 @@ eventController.post('/like/:id', async (req, res) => {
         );
         res.end();
     } catch (error) {
+        res.status(400).json(error.message);
+        res.end();
+    }
+});
+
+// Get by Month.
+eventController.get('/month/:year/:month', async (req, res) => {
+    // TODO: add error.
+    try {
+        const year = req.params.year;
+        const month = req.params.month;
+        
+        console.log(year, month);
+
+        const events = await getByMonth();
+
+        res.status(200).json(events);
+        res.end();
+    } catch (error) {
+        console.log('events');
         res.status(400).json(error.message);
         res.end();
     }
