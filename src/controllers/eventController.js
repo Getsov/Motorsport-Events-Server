@@ -146,12 +146,12 @@ eventController.post('/like/:id', async (req, res) => {
 
 // Get by Month.
 eventController.get('/month/:year/:month', async (req, res) => {
-    // TODO: add error.
+    // TODO: Later add errors for wrong parameters.
     try {
-        const year = req.params.year;
-        const month = req.params.month;
-        
-        console.log(year, month);
+        const { year, month } = req.params;
+        const { startDate, endDate } = getMonthRange(parseInt(year), parseInt(month) - 1);
+
+        console.log(startDate, endDate);
 
         const events = await getByMonth();
 
@@ -167,3 +167,17 @@ eventController.get('/month/:year/:month', async (req, res) => {
 module.exports = {
     eventController,
 };
+
+const getMonthRange = (year, month) => {
+    if (month < 1 || month > 12) {
+        throw new Error('Invalid month value. Month should be in the range 1-12.');
+    }
+
+    const startDate = new Date(year, month, 1);
+    startDate.setHours(0, 0, 0, 0);
+
+    const endDate = new Date(year, month + 1, 0);
+    endDate.setHours(23, 59, 59, 999);
+
+    return { startDate, endDate };
+}
