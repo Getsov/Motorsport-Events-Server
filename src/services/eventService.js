@@ -112,12 +112,19 @@ async function likeUnlikeEvent(existingEvent, id, isAlreadyLiked) {
     return await existingEvent.save();
 }
 
+// Find by month.
+async function getByMonth(year, month) {
+    const events = await Event.find();
+    return events;
+}
+
 module.exports = {
     registerEvent,
     findEventByID,
     findAllEvents,
     updateEvent,
     likeUnlikeEvent,
+    getByMonth
 };
 
 // Commented code below is for postman tests!
