@@ -10,7 +10,7 @@ async function registerEvent(requestBody, requesterId) {
         longTitle: requestBody.longTitle,
         shortDescription: requestBody.shortDescription,
         longDescription: requestBody.longDescription,
-        dates: requestBody.dates.sort((a, b) =>  new Date(a.date) - new Date(b.date)),
+        dates: requestBody.dates.sort((a, b) => new Date(a.date) - new Date(b.date)),
         imageUrl: requestBody.imageUrl,
         contacts: requestBody.contacts,
         category: requestBody.category,
@@ -26,6 +26,7 @@ async function registerEvent(requestBody, requesterId) {
 
 async function findEventByID(eventId) {
     // TODO: make more tests with different values!
+    // TODO: Check if even is deleted?
     const event = await Event.findById(eventId);
 
     return event;
@@ -92,7 +93,7 @@ async function updateEvent(requestBody, existingEvent, isAdmin) {
             key !== 'likes' &&
             key !== 'isDeleted'
         ) {
-            key === 'dates' ? requestBody[key].sort((a, b) =>  new Date(a.date) - new Date(b.date)) : null;
+            key === 'dates' ? requestBody[key].sort((a, b) => new Date(a.date) - new Date(b.date)) : null;
             existingEvent[key] = requestBody[key];
         }
     }
@@ -113,8 +114,18 @@ async function likeUnlikeEvent(existingEvent, id, isAlreadyLiked) {
 }
 
 // Find by month.
-async function getByMonth(year, month) {
-    const events = await Event.find();
+async function getByMonth(startDate, endDate) {
+    const events = await Event.find({
+        isDeleted: false,
+        'dates': {
+            $elemMatch: {
+                date: {
+                    $gte: startDate,
+                    $lte: endDate,
+                }
+            }
+        }
+    });
     return events;
 }
 
