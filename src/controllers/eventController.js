@@ -157,7 +157,6 @@ eventController.get('/month/:year/:month', async (req, res) => {
         res.status(200).json(events);
         res.end();
     } catch (error) {
-        console.log('events');
         res.status(400).json(error.message);
         res.end();
     }
@@ -182,6 +181,5 @@ const getMonthRange = (year, month) => {
     const localStartDate = startDate.toLocaleString();
     const localEndDate = endDate.toLocaleString();
 
-    console.log(localStartDate, localEndDate);
     return { startDate, endDate };
 }
