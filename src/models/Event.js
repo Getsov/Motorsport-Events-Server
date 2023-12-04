@@ -171,7 +171,7 @@ const eventSchema = new Schema({
             'СИМ Рейс',
             'Тайм Атак',
             'Други',
-            // 'Събори',
+            'Събори',
         ],
     },
     likes: [{ type: ObjectId, ref: 'User' }],
