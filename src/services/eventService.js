@@ -115,6 +115,7 @@ async function likeUnlikeEvent(existingEvent, id, isAlreadyLiked) {
 
 // Find by month.
 async function getByMonth(startDate, endDate) {
+    // Return documents where their dates.date[] have the date from the given month.
     const events = await Event.find({
         isDeleted: false,
         'dates': {
