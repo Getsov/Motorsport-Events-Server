@@ -166,6 +166,7 @@ module.exports = {
     eventController,
 };
 
+// TODO: Add it in utils later!
 const getMonthRange = (year, month) => {
     if (month < 0 || month > 11) {
         throw new Error('Invalid month value. Month should be in the range 1-12.');
