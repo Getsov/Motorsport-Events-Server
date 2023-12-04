@@ -152,7 +152,7 @@ eventController.get('/month/:year/:month', async (req, res) => {
         const { startDate, endDate } = getMonthRange(parseInt(year), parseInt(month) - 1);
 
 
-        const events = await getByMonth();
+        const events = await getByMonth(startDate, endDate);
 
         res.status(200).json(events);
         res.end();
@@ -178,6 +178,7 @@ const getMonthRange = (year, month) => {
     const endDate = new Date(year, month + 1, 0);
     endDate.setHours(23, 59, 59, 999);
     
+    // Check who need to know about local time, and then pass this variables?
     const localStartDate = startDate.toLocaleString();
     const localEndDate = endDate.toLocaleString();
 
