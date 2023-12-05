@@ -113,7 +113,6 @@ userController.put('/editUserEmail/:id', async (req, res) => {
 userController.put('/editUserPassword/:id', async (req, res) => {
     const userId = req.params.id;
     const isAdmin = req.requester.role == 'admin';
-    //TODO: Is admin can change user password?
     try {
         if (req.body.newPassword !== req.body.newRepass) {
             throw new Error('Password dismatch!');

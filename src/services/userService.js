@@ -47,7 +47,6 @@ async function updateUserInfo(userId, requestBody, isAdmin) {
         throw new Error('User not found');
     }
 
-    //TODO - check functionality with liked events
     for (let key of Object.keys(requestBody)) {
         if (
             key == 'email' ||

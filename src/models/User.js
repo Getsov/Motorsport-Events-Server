@@ -76,10 +76,6 @@ const userSchema = new Schema({
         ],
         default: '',
     },
-    // address: {
-    //     type: String,
-    //     default: '',
-    // },
     phone: {
         type: String,
         trim: true,
