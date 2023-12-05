@@ -31,6 +31,12 @@ async function loginUser(email, password) {
         );
     }
 
+    // Validate user when login
+    const validateUser = user.validateSync();
+    if (validateUser) {
+        throw new Error('User data validation failed!');
+    }
+
     const match = await bcrypt.compare(password, user.hashedPassword);
 
     if (!match) {

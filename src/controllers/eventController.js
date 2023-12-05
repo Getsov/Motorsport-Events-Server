@@ -28,7 +28,7 @@ eventController.post('/register', async (req, res) => {
         }
         
         //Check if all required data in "organizer" are accurate
-        await updateUserInfo(req.requester._id,{}, false)
+        // await updateUserInfo(req.requester._id,{}, false)
 
         const event = await registerEvent(req.body, req.requester._id);
         
