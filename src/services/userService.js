@@ -36,6 +36,7 @@ async function loginUser(email, password) {
     if (validateUser) {
         throw new Error('User data validation failed!');
     }
+    //TODO: ADD VALIDATION IF USR IS ORGANIZER
 
     const match = await bcrypt.compare(password, user.hashedPassword);
 
