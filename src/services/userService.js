@@ -46,6 +46,14 @@ async function updateUserInfo(userId, requestBody, isAdmin) {
     if (!existingUser) {
         throw new Error('User not found');
     }
+    if (existingUser.role == 'organizer') {
+        if (existingUser.organizatorName == '') {
+            throw new Error('Name of organization is required');
+        }
+        if (existingUser.phone == '') {
+            throw new Error('Phone is required');
+        }
+    }
 
     for (let key of Object.keys(requestBody)) {
         if (
@@ -61,22 +69,10 @@ async function updateUserInfo(userId, requestBody, isAdmin) {
         existingUser[key] = requestBody[key];
     }
 
-    /*
-    // if (requestBody.role == 'organizer' || requestBody.role == 'regular') {
-    //     existingUser.role = requestBody.role;
-    // }
-     */
-
     if (isAdmin) {
         'isDeleted' in requestBody
             ? (existingUser.isDeleted = requestBody.isDeleted)
             : (existingUser.isDeleted = existingUser.isDeleted);
-
-        /*
-        existingUser.role = requestBody.role
-            ? requestBody.role
-            : existingUser.role;
-        */
     }
 
     const newRecord = await existingUser.save();

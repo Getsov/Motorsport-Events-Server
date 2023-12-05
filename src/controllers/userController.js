@@ -15,7 +15,7 @@ userController.post('/registerUser', async (req, res) => {
     try {
         const passwordTest = validPassword.test(req.body.password);
         if (!passwordTest) {
-            throw new Error("Password cannot contain spaces!");
+            throw new Error('Password cannot contain spaces!');
         }
         if (!req.body.password) {
             throw new Error('Password is required!');
