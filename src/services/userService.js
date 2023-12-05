@@ -119,6 +119,44 @@ async function updateUserPassword(userId, requestBody, isAdmin) {
     return createToken(newRecord);
 }
 
+async function updateUserRole(userId, requestBody) {
+    const existingUser = await User.findById(userId);
+    if (!existingUser) {
+        throw new Error('User not found');
+    }
+    if (existingUser.role == 'organizer') {
+        if (existingUser.organizatorName == '') {
+            throw new Error('Name of organization is required');
+        }
+        if (existingUser.phone == '') {
+            throw new Error('Phone is required');
+        }
+    }
+
+    for (let key of Object.keys(requestBody)) {
+        if (
+            key == 'email' ||
+            key == 'role' ||
+            key == 'likedEvents' ||
+            key == 'createdEvents' ||
+            key == 'hashedPassword' ||
+            key == 'isDeleted'
+        ) {
+            continue;
+        }
+        existingUser[key] = requestBody[key];
+    }
+
+    if (isAdmin) {
+        'isDeleted' in requestBody
+            ? (existingUser.isDeleted = requestBody.isDeleted)
+            : (existingUser.isDeleted = existingUser.isDeleted);
+    }
+
+    const newRecord = await existingUser.save();
+    return createToken(newRecord);
+}
+
 async function addEventToLikedEvents(eventId, userId, isAlreadyLiked) {
     const existingUser = await User.findById(userId);
     if (!existingUser) {
@@ -218,6 +256,7 @@ module.exports = {
     updateUserInfo,
     updateUserEmail,
     updateUserPassword,
+    updateUserRole,
     addEventToLikedEvents,
     addEventToCreatedEvents,
     returnAllCreatedEvents,
