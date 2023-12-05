@@ -31,6 +31,13 @@ async function loginUser(email, password) {
         );
     }
 
+    // Validate user when login
+    const validateUser = user.validateSync();
+    if (validateUser) {
+        throw new Error('User data validation failed!');
+    }
+    //TODO: ADD VALIDATION IF USR IS ORGANIZER
+
     const match = await bcrypt.compare(password, user.hashedPassword);
 
     if (!match) {
@@ -46,8 +53,15 @@ async function updateUserInfo(userId, requestBody, isAdmin) {
     if (!existingUser) {
         throw new Error('User not found');
     }
+    if (existingUser.role == 'organizer') {
+        if (existingUser.organizatorName == '') {
+            throw new Error('Name of organization is required');
+        }
+        if (existingUser.phone == '') {
+            throw new Error('Phone is required');
+        }
+    }
 
-    //TODO - check functionality with liked events
     for (let key of Object.keys(requestBody)) {
         if (
             key == 'email' ||
@@ -62,22 +76,10 @@ async function updateUserInfo(userId, requestBody, isAdmin) {
         existingUser[key] = requestBody[key];
     }
 
-    /*
-    // if (requestBody.role == 'organizer' || requestBody.role == 'regular') {
-    //     existingUser.role = requestBody.role;
-    // }
-     */
-
     if (isAdmin) {
         'isDeleted' in requestBody
             ? (existingUser.isDeleted = requestBody.isDeleted)
             : (existingUser.isDeleted = existingUser.isDeleted);
-
-        /*
-        existingUser.role = requestBody.role
-            ? requestBody.role
-            : existingUser.role;
-        */
     }
 
     const newRecord = await existingUser.save();
@@ -120,6 +122,26 @@ async function updateUserPassword(userId, requestBody, isAdmin) {
         requestBody.newPassword,
         10
     );
+    const newRecord = await existingUser.save();
+    return createToken(newRecord);
+}
+
+async function updateUserRole(userId, requestBody) {
+    const existingUser = await User.findById(userId);
+    if (!existingUser) {
+        throw new Error('User not found');
+    }
+    if (requestBody.role == 'organizer') {
+        if (existingUser.organizatorName == '' && existingUser.phone == '') {
+            if (!requestBody.organizatorName || !requestBody.phone) {
+                throw new Error('Fill all required fields!');
+            }
+            existingUser.organizatorName = requestBody.organizatorName;
+            existingUser.phone = requestBody.phone;
+        }
+    }
+    existingUser.role = requestBody.role;
+
     const newRecord = await existingUser.save();
     return createToken(newRecord);
 }
@@ -223,6 +245,7 @@ module.exports = {
     updateUserInfo,
     updateUserEmail,
     updateUserPassword,
+    updateUserRole,
     addEventToLikedEvents,
     addEventToCreatedEvents,
     returnAllCreatedEvents,

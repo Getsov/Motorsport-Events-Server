@@ -9,6 +9,7 @@ const {
 const {
     addEventToLikedEvents,
     addEventToCreatedEvents,
+    updateUserInfo,
 } = require('../services/userService');
 
 eventController.post('/register', async (req, res) => {
@@ -25,9 +26,12 @@ eventController.post('/register', async (req, res) => {
                 'Only user with role "organizer" or "admin" can register an Event!'
             );
         }
+        
+        //Check if all required data in "organizer" are accurate
+        // await updateUserInfo(req.requester._id,{}, false)
 
         const event = await registerEvent(req.body, req.requester._id);
-
+        
         await addEventToCreatedEvents(event._id, req.requester._id);
 
         res.status(200).json(event);
@@ -103,14 +107,12 @@ eventController.put('/:id', async (req, res) => {
     }
 });
 
-// Like/Unlike Event!
 eventController.post('/like/:id', async (req, res) => {
     try {
         if (!req.requester) {
             throw new Error('You must log-in to like this Event!');
         }
         const event = await findEventByID(req.params.id);
-        // TODO: Add like ref to user and organization Models.
         if (event === null || event.isDeleted) {
             throw new Error("Event is deleted, or doesn't exist!");
         }

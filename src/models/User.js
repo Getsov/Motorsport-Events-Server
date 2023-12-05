@@ -22,7 +22,7 @@ const userSchema = new Schema({
         type: String,
         trim: true,
         maxlength: [40, 'Organizator name must be maximum 40 characters long!'],
-        // default: '',
+        default: '',
     },
     firstName: {
         type: String,
@@ -76,10 +76,6 @@ const userSchema = new Schema({
         ],
         default: '',
     },
-    // address: {
-    //     type: String,
-    //     default: '',
-    // },
     phone: {
         type: String,
         trim: true,

@@ -8,6 +8,7 @@ const {
     updateUserPassword,
     returnAllCreatedEvents,
     returnAllFavouriteEvents,
+    updateUserRole,
 } = require('../services/userService');
 const { validPassword } = require('../shared/sharedRegex');
 
@@ -15,7 +16,7 @@ userController.post('/registerUser', async (req, res) => {
     try {
         const passwordTest = validPassword.test(req.body.password);
         if (!passwordTest) {
-            throw new Error("Password cannot contain spaces!");
+            throw new Error('Password cannot contain spaces!');
         }
         if (!req.body.password) {
             throw new Error('Password is required!');
@@ -113,7 +114,6 @@ userController.put('/editUserEmail/:id', async (req, res) => {
 userController.put('/editUserPassword/:id', async (req, res) => {
     const userId = req.params.id;
     const isAdmin = req.requester.role == 'admin';
-    //TODO: Is admin can change user password?
     try {
         if (req.body.newPassword !== req.body.newRepass) {
             throw new Error('Password dismatch!');
@@ -157,7 +157,22 @@ userController.get('/getMyFavourites', async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 });
-//TODO: EDIT USER ROLE ONLY FOR ADMIN
+userController.put('/editUserRole/:id', async (req, res) => {
+    const userId = req.params.id;
+    const isAdmin = req.requester.role == 'admin';
+    try {
+        if (isAdmin) {
+            const result = await updateUserRole(userId, req.body);
+            res.status(200).json(result);
+            res.end();
+        } else {
+            throw new Error('You do not have rights to modify the record!');
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ error: error.message });
+    }
+});
 
 module.exports = {
     userController,
