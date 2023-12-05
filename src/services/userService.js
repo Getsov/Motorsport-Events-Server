@@ -124,34 +124,16 @@ async function updateUserRole(userId, requestBody) {
     if (!existingUser) {
         throw new Error('User not found');
     }
-    if (existingUser.role == 'organizer') {
-        if (existingUser.organizatorName == '') {
-            throw new Error('Name of organization is required');
-        }
-        if (existingUser.phone == '') {
-            throw new Error('Phone is required');
+    if (requestBody.role == 'organizer') {
+        if (existingUser.organizatorName == '' && existingUser.phone == '') {
+            if (!requestBody.organizatorName || !requestBody.phone) {
+                throw new Error('Fill all required fields!');
+            }
+            existingUser.organizatorName = requestBody.organizatorName;
+            existingUser.phone = requestBody.phone;
         }
     }
-
-    for (let key of Object.keys(requestBody)) {
-        if (
-            key == 'email' ||
-            key == 'role' ||
-            key == 'likedEvents' ||
-            key == 'createdEvents' ||
-            key == 'hashedPassword' ||
-            key == 'isDeleted'
-        ) {
-            continue;
-        }
-        existingUser[key] = requestBody[key];
-    }
-
-    if (isAdmin) {
-        'isDeleted' in requestBody
-            ? (existingUser.isDeleted = requestBody.isDeleted)
-            : (existingUser.isDeleted = existingUser.isDeleted);
-    }
+    existingUser.role = requestBody.role;
 
     const newRecord = await existingUser.save();
     return createToken(newRecord);
