@@ -12,7 +12,7 @@ async function registerUser(requestBody) {
                 'This account has been deleted, please contact support'
             );
         } else {
-            throw new Error('Email is already taken!!!');
+            throw new Error('Email is already taken!');
         }
     }
 
@@ -23,7 +23,7 @@ async function registerUser(requestBody) {
 async function loginUser(email, password) {
     const user = await User.findOne({ email });
     if (!user) {
-        throw new Error('Invalid email or password!!!');
+        throw new Error('Invalid email or password!');
     }
     if (user.isDeleted == true) {
         throw new Error(
@@ -41,7 +41,7 @@ async function loginUser(email, password) {
     const match = await bcrypt.compare(password, user.hashedPassword);
 
     if (!match) {
-        throw new Error('Invalid email or password!!!');
+        throw new Error('Invalid email or password!');
     }
     return createToken(user);
 }

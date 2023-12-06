@@ -66,6 +66,8 @@ IMPORTANT: You can use search filtering and pagination with multiple passed valu
 -   **Method:** GET
 -   **Endpoint:** `/events?page=1&limit=2&category=1&region=16&category=9&search=2`
 
+<!-- TODO: To add information about calendar requests! -->
+
 ### Create:
 
 Send a `POST` request to the endpoint. The shape of the body is restricted. The service will respond with the object, created in the DB, which will have an added ` _id` property, that is automatically generated.

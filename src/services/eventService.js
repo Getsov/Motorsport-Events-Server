@@ -10,7 +10,7 @@ async function registerEvent(requestBody, requesterId) {
         longTitle: requestBody.longTitle,
         shortDescription: requestBody.shortDescription,
         longDescription: requestBody.longDescription,
-        dates: requestBody.dates.sort((a, b) =>  new Date(a.date) - new Date(b.date)),
+        dates: requestBody.dates.sort((a, b) => new Date(a.date) - new Date(b.date)),
         imageUrl: requestBody.imageUrl,
         contacts: requestBody.contacts,
         category: requestBody.category,
@@ -25,8 +25,8 @@ async function registerEvent(requestBody, requesterId) {
 }
 
 async function findEventByID(eventId) {
-    // TODO: make more tests with different values!
     const event = await Event.findById(eventId);
+    if (event.isDeleted === true) throw new Error('This event is deleted!');
 
     return event;
 }
@@ -92,7 +92,7 @@ async function updateEvent(requestBody, existingEvent, isAdmin) {
             key !== 'likes' &&
             key !== 'isDeleted'
         ) {
-            key === 'dates' ? requestBody[key].sort((a, b) =>  new Date(a.date) - new Date(b.date)) : null;
+            key === 'dates' ? requestBody[key].sort((a, b) => new Date(a.date) - new Date(b.date)) : null;
             existingEvent[key] = requestBody[key];
         }
     }
@@ -112,12 +112,30 @@ async function likeUnlikeEvent(existingEvent, id, isAlreadyLiked) {
     return await existingEvent.save();
 }
 
+// Find by month.
+async function getByMonth(startDate, endDate) {
+    // Return documents where their 'dates.date[]' have the date from the given month.
+    const events = await Event.find({
+        isDeleted: false,
+        'dates': {
+            $elemMatch: {
+                date: {
+                    $gte: startDate,
+                    $lte: endDate,
+                }
+            }
+        }
+    });
+    return events;
+}
+
 module.exports = {
     registerEvent,
     findEventByID,
     findAllEvents,
     updateEvent,
     likeUnlikeEvent,
+    getByMonth
 };
 
 // Commented code below is for postman tests!
