@@ -137,6 +137,23 @@ userController.put('/editUserPassword/:id', async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 });
+userController.put('/editUserRole/:id', async (req, res) => {
+    const userId = req.params.id;
+    const isAdmin = req.requester.role == 'admin';
+    try {
+        checkRequestData(req.body);
+        if (isAdmin) {
+            const result = await updateUserRole(userId, req.body);
+            res.status(200).json(result);
+            res.end();
+        } else {
+            throw new Error('You do not have rights to modify the record!');
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ error: error.message });
+    }
+});
 
 userController.get('/getMyEvents', async (req, res) => {
     const userId = req.requester._id;
@@ -158,23 +175,6 @@ userController.get('/getMyFavourites', async (req, res) => {
         const result = await returnAllFavouriteEvents(userId);
         res.status(200).json(result);
         res.end();
-    } catch (error) {
-        console.log(error);
-        res.status(400).json({ error: error.message });
-    }
-});
-userController.put('/editUserRole/:id', async (req, res) => {
-    const userId = req.params.id;
-    const isAdmin = req.requester.role == 'admin';
-    try {
-        checkRequestData(req.body);
-        if (isAdmin) {
-            const result = await updateUserRole(userId, req.body);
-            res.status(200).json(result);
-            res.end();
-        } else {
-            throw new Error('You do not have rights to modify the record!');
-        }
     } catch (error) {
         console.log(error);
         res.status(400).json({ error: error.message });
