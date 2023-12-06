@@ -139,8 +139,9 @@ Update entry with ID `654651caf696083cab72ab1c` in the `events` collection:
     Changes: Admin only can change the role of single user.
     To fulfill the request, the admin must send role. If new role is 'organizer', the fields 'organizatorName' and 'phone' also should be fulfilled if there was empty before update.
 
-Every user can like an Event. To do it, 'authorized' user must send a `POST` request with event `id`.
+Every user can like an Event. To do it, 'authorized' user must send a `POST` request with event `id`. When user liked some event, the event itself keep information about liked users and also every user keep information about events which he liked.
 Example: `/events/like/:id`
 
 -   **Method:** `POST`
 -   **Endpont:** `/events/like/6563804d62f4145aefcc2e01`
+
