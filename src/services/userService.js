@@ -36,7 +36,11 @@ async function loginUser(email, password) {
     if (validateUser) {
         throw new Error('User data validation failed!');
     }
-    //TODO: ADD VALIDATION IF USR IS ORGANIZER
+    if (user.role == 'organizer') {
+        if (user.organizatorName == '' || user.phone == '') {
+            throw new Error('User data validation failed!');
+        }
+    }
 
     const match = await bcrypt.compare(password, user.hashedPassword);
 
