@@ -26,8 +26,7 @@ eventController.post('/register', async (req, res) => {
                 'Only user with role "organizer" or "admin" can register an Event!'
             );
         }
-        
-        
+
         await addEventToCreatedEvents(event._id, req.requester._id);
 
         res.status(200).json(event);
@@ -146,8 +145,10 @@ eventController.get('/month/:year/:month', async (req, res) => {
     // TODO: Later add errors for wrong parameters.
     try {
         const { year, month } = req.params;
-        const { startDate, endDate } = getMonthRange(parseInt(year), parseInt(month));
-
+        const { startDate, endDate } = getMonthRange(
+            parseInt(year),
+            parseInt(month)
+        );
 
         const events = await getByMonth(startDate, endDate);
 
@@ -166,7 +167,9 @@ module.exports = {
 // TODO: Add it in utils later!
 const getMonthRange = (year, month) => {
     if (month < 1 || month > 12) {
-        throw new Error('Invalid month value. Month should be in the range 1-12.');
+        throw new Error(
+            'Invalid month value. Month should be in the range 1-12.'
+        );
     }
 
     const startDate = new Date(year, month - 1, 1);
@@ -180,4 +183,4 @@ const getMonthRange = (year, month) => {
     const localEndDate = endDate.toLocaleString();
 
     return { startDate, endDate };
-}
+};
