@@ -25,9 +25,8 @@ async function registerEvent(requestBody, requesterId) {
 }
 
 async function findEventByID(eventId) {
-    // TODO: make more tests with different values!
-    // TODO: Check if even is deleted?
     const event = await Event.findById(eventId);
+    if (event.isDeleted === true) throw new Error('This event is deleted!');
 
     return event;
 }
