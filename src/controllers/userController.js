@@ -11,10 +11,12 @@ const {
     updateUserRole,
 } = require('../services/userService');
 const { validPassword } = require('../shared/sharedRegex');
+const { checkRequestData } = require('../utils/ckeckData');
 
 userController.post('/registerUser', async (req, res) => {
     try {
         const passwordTest = validPassword.test(req.body.password);
+        checkRequestData(req.body);
         if (!passwordTest) {
             throw new Error('Password cannot contain spaces!');
         }
@@ -67,6 +69,7 @@ userController.post('/registerUser', async (req, res) => {
 
 userController.post('/loginUser', async (req, res) => {
     try {
+        checkRequestData(req.body);
         const user = await loginUser(req.body.email, req.body.password);
         res.status(200).json(user);
         res.end();
@@ -80,6 +83,7 @@ userController.put('/editUserInfo/:id', async (req, res) => {
     const userId = req.params.id;
     const isAdmin = req.requester.role == 'admin';
     try {
+        checkRequestData(req.body);
         if (req.requester._id == userId || isAdmin) {
             const result = await updateUserInfo(userId, req.body, isAdmin);
             res.status(200).json(result);
@@ -98,6 +102,7 @@ userController.put('/editUserEmail/:id', async (req, res) => {
     const isAdmin = req.requester.role == 'admin';
 
     try {
+        checkRequestData(req.body);
         if (req.requester._id == userId || isAdmin) {
             const result = await updateUserEmail(userId, req.body);
             res.status(200).json(result);
@@ -115,6 +120,7 @@ userController.put('/editUserPassword/:id', async (req, res) => {
     const userId = req.params.id;
     const isAdmin = req.requester.role == 'admin';
     try {
+        checkRequestData(req.body);
         if (req.body.newPassword !== req.body.newRepass) {
             throw new Error('Password dismatch!');
         }
@@ -161,6 +167,7 @@ userController.put('/editUserRole/:id', async (req, res) => {
     const userId = req.params.id;
     const isAdmin = req.requester.role == 'admin';
     try {
+        checkRequestData(req.body);
         if (isAdmin) {
             const result = await updateUserRole(userId, req.body);
             res.status(200).json(result);

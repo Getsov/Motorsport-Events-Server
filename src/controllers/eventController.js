@@ -11,9 +11,11 @@ const {
     addEventToLikedEvents,
     addEventToCreatedEvents,
 } = require('../services/userService');
+const { checkRequestData } = require('../utils/ckeckData');
 
 eventController.post('/register', async (req, res) => {
     try {
+        checkRequestData(req.body);
         // Checks if there is not user. Or if the user have admin role or if the user is organization.
         if (
             !req.requester ||
@@ -74,6 +76,7 @@ eventController.get('/:id', async (req, res) => {
 // Update event by ID!
 eventController.put('/:id', async (req, res) => {
     try {
+        checkRequestData(req.body);
         const event = await findEventByID(req.params.id);
 
         if (
@@ -105,6 +108,7 @@ eventController.put('/:id', async (req, res) => {
 
 eventController.post('/like/:id', async (req, res) => {
     try {
+        checkRequestData(req.body);
         if (!req.requester) {
             throw new Error('You must log-in to like this Event!');
         }
