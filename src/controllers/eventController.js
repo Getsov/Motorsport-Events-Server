@@ -10,11 +10,12 @@ const {
 const {
     addEventToLikedEvents,
     addEventToCreatedEvents,
-    updateUserInfo,
 } = require('../services/userService');
+const { checkRequestData } = require('../utils/ckeckData');
 
 eventController.post('/register', async (req, res) => {
     try {
+        checkRequestData(req.body);
         // Checks if there is not user. Or if the user have admin role or if the user is organization.
         if (
             !req.requester ||
@@ -27,12 +28,8 @@ eventController.post('/register', async (req, res) => {
                 'Only user with role "organizer" or "admin" can register an Event!'
             );
         }
-        
-        //Check if all required data in "organizer" are accurate
-        // await updateUserInfo(req.requester._id,{}, false)
 
         const event = await registerEvent(req.body, req.requester._id);
-        
         await addEventToCreatedEvents(event._id, req.requester._id);
 
         res.status(200).json(event);
