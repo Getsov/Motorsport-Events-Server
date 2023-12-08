@@ -9,22 +9,21 @@ resetPasswordController.post('/', async (req, res) => {
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                // It is a sensitive information use .env variable later!
-                user: 'racefanatictest@gmail.com',
-                pass: 'racefanatic123',
+                user: 'hristopturs@gmail.com',
+                pass: 'tkru yptn wijp ivly',
             },
         });
 
         const mailOptions = {
-            from: 'racefanatictest@gmail.com',
+            from: 'hristopturs@gmail.com',
             to,
             subject,
             text,
         };
 
         const info = await transporter.sendMail(mailOptions);
-        console.log('Email sent: ' + info.response);
 
+        console.log('Email sent: ' + info.response);
         res.status(200).send('Email sent successfully');
         res.end();
     } catch (error) {
