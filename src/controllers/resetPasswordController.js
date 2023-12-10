@@ -18,7 +18,7 @@ resetPasswordController.post('/', async (req, res) => {
             from: 'hristopturs@gmail.com',
             to,
             subject,
-            text,
+            text
         };
 
         const info = await transporter.sendMail(mailOptions);
