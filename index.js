@@ -1,4 +1,3 @@
-require("dotenv").config();
 const express = require('express');
 const app = express();
 const cors = require('./src/middlewares/cors');
@@ -8,6 +7,7 @@ const session = require('./src/middlewares/session');
 const router = require('./src/routes');
 const trimBoddy = require('./src/middlewares/trimBoddy');
 mongoose.set('strictQuery', true);
+require("dotenv").config();
 
 const initializeDatabase = () =>
     mongoose

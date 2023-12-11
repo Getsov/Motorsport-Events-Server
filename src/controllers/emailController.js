@@ -32,7 +32,7 @@ emailController.post('/reset-password', async (req, res) => {
 });
 
 emailController.use((req, res) => {
-    res.status(404).json({ message: 'Route not found!' });
+    res.status(404).json({ message: 'Route not found or request is not right!' });
 });
 
 module.exports = {

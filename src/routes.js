@@ -14,7 +14,7 @@ router.use('/email', emailController);
 
 // Error Page (404).
 router.use((req, res) => {
-    res.status(404).json({ message: 'Route not found!' });
+    res.status(404).json({ message: 'Route not found or request is not right!' });
 });
 
 module.exports = router;
