@@ -12,6 +12,7 @@ const {
 } = require('../services/userService');
 const { validPassword } = require('../shared/sharedRegex');
 const { checkRequestData } = require('../utils/ckeckData');
+const { resetPassword } = require('../services/emailService');
 
 userController.post('/registerUser', async (req, res) => {
     try {
@@ -169,7 +170,7 @@ userController.get('/getMyEvents', async (req, res) => {
 });
 
 userController.get('/getMyFavourites', async (req, res) => {
-    const userId = req.requester._id;
+    const userId = req.requester?._id;
 
     try {
         const result = await returnAllFavouriteEvents(userId);
@@ -179,6 +180,25 @@ userController.get('/getMyFavourites', async (req, res) => {
         console.log(error);
         res.status(400).json({ error: error.message });
     }
+});
+
+// Reset password.
+userController.post('/reset-password', async (req, res) => {
+    const reqBody = req.body ? req.body : null;
+
+    try {
+        const result = await resetPassword(reqBody);
+        res.status(200).json({ message: 'Email sent successfully' });
+        res.end();
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ error: error.message });
+    }
+});
+
+// Unmatched route
+userController.use((req, res) => {
+    res.status(404).json({ message: 'Route not found or request is not right!' });
 });
 
 module.exports = {
