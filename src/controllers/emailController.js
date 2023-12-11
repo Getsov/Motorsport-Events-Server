@@ -2,7 +2,7 @@ const emailController = require('express').Router();
 const nodemailer = require('nodemailer');
 
 
-emailController.post('/', async (req, res) => {
+emailController.post('/reset-password', async (req, res) => {
     try {
         const { to, subject, text } = req.body;
 
@@ -29,6 +29,10 @@ emailController.post('/', async (req, res) => {
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
+});
+
+emailController.use((req, res) => {
+    res.status(404).json({ message: 'Route not found!' });
 });
 
 module.exports = {
