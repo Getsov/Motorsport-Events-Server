@@ -10,7 +10,7 @@ emailController.post('/', async (req, res) => {
             service: 'gmail',
             auth: {
                 user: 'hristopturs@gmail.com',
-                pass: 'tkru yptn wijp ivly',
+                pass: process.env.SENDER_EMAIL_PASSWORD,
             },
         });
 
