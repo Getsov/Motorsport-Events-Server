@@ -1,8 +1,8 @@
-const resetPasswordController = require('express').Router();
+const emailController = require('express').Router();
 const nodemailer = require('nodemailer');
 
 
-resetPasswordController.post('/', async (req, res) => {
+emailController.post('/', async (req, res) => {
     try {
         const { to, subject, text } = req.body;
 
@@ -23,7 +23,7 @@ resetPasswordController.post('/', async (req, res) => {
 
         const info = await transporter.sendMail(mailOptions);
 
-        console.log('Email sent: ' + info.response);
+        // console.log('Email sent: ' + info.response);
         res.status(200).send('Email sent successfully');
         res.end();
     } catch (error) {
@@ -32,5 +32,5 @@ resetPasswordController.post('/', async (req, res) => {
 });
 
 module.exports = {
-    resetPasswordController,
+    emailController,
 };
