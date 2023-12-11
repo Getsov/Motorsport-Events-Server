@@ -1,34 +1,31 @@
 const nodemailer = require('nodemailer');
 
+async function resetPassword(requestBody) {
+    // TODO: Try to update the function later, with expired password or magic link..
 
-async function resetPassword() {
-    try {
-        const { to, subject, text } = req.body;
+    const { to, subject, text } = requestBody;
+    console.log(to, subject, text);
 
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: 'hristopturs@gmail.com',
-                pass: process.env.SENDER_EMAIL_PASSWORD,
-            },
-        });
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'hristopturs@gmail.com',
+            pass: process.env.SENDER_EMAIL_PASSWORD,
+        },
+    });
 
-        const mailOptions = {
-            from: 'hristopturs@gmail.com',
-            to,
-            subject,
-            text
-        };
+    const mailOptions = {
+        from: 'hristopturs@gmail.com',
+        to,
+        subject,
+        text
+    };
 
-        const info = await transporter.sendMail(mailOptions);
+    const info = await transporter.sendMail(mailOptions);
 
-        // console.log('Email sent: ' + info.response);
-        res.status(200).send('Email sent successfully');
-        res.end();
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
-};
+    // console.log('Email sent: ' + info.response);
+    return info;
+}
 
 module.exports = {
     resetPassword,
