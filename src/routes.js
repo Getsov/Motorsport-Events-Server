@@ -13,7 +13,7 @@ router.use('/events', eventController);
 router.use('/email', emailController);
 
 //TODO: Error Page (404).
-router.get('*', (req, res) => {
+router.use((req, res) => {
     res.status(404).json({ message: 'Route not found!' });
 });
 
