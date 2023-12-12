@@ -1,8 +1,9 @@
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const jwt = require('jsonwebtoken');
 const { secret } = require('../utils/parseToken');
+const { generatePassword } = require('../utils/generatePassword');
 
 async function resetPassword(requestBody) {
     // TODO: Try to update the function later, with expired password or magic link..
@@ -11,8 +12,16 @@ async function resetPassword(requestBody) {
     if (!existingUser) {
         throw new Error('User-Email not found!');
     }
+
+    const newPassword =  generatePassword();
     
-    const { to, subject, text } = requestBody;
+    existingUser.hashedPassword = await bcrypt.hash(
+        newPassword,
+        10
+    );
+    const newRecord = await existingUser.save();
+    
+    const { to } = requestBody;
 
     const transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -25,8 +34,8 @@ async function resetPassword(requestBody) {
     const mailOptions = {
         from: 'hristopturs@gmail.com',
         to,
-        subject,
-        text
+        subject: 'Password Reset',
+        text: `Here is your new password for Race Fanatic app: ${newPassword}`
     };
 
     const info = await transporter.sendMail(mailOptions);
