@@ -148,4 +148,4 @@ Example: `/events/like/:id`
 -   **Method:** `POST`
 -   **Endpont:** `/user/reset-password`
     Body: JSON-formatted data
-    Every user can recover his/her password. To fulfill the request, the `user` must provide `email`. A new `password` will be send to the given emai address. 
+    Every user can recover their password. To fulfill the request, the `user` must provide `email`. A new `password` will be send to the given email address. 
