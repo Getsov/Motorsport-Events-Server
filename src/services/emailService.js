@@ -20,9 +20,10 @@ async function resetPassword(requestBody) {
         10
     );
     const newRecord = await existingUser.save();
-    
+
     const { to } = requestBody;
 
+    //TODO: Check if provided emails is actual email!
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
