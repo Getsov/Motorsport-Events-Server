@@ -114,26 +114,26 @@ Update entry with ID `654651caf696083cab72ab1c` in the `events` collection:
 -   **_User_**:
 
 -   **Method:** `PUT`
--   **Endpont:** `/editUserInfo/:id`
+-   **Endpont:** `/user/editUserInfo/:id`
     Headers: `Content-Type: application/json`
     Body: JSON-formatted data
     Changes: Only optional data of User(firstName, lastName, region, organizationName, phone). Admin can change also "isDeleted" and "role" property.
 
 -   **Method:** `PUT`
--   **Endpont:** `/editUserEmail/:id`
+-   **Endpont:** `/user/editUserEmail/:id`
     Headers: `Content-Type: application/json`
     Body: JSON-formatted data
     Changes: Admin and User itself can change the email.
 
 -   **Method:** `PUT`
--   **Endpont:** `/editUserPassword/:id`
+-   **Endpont:** `/user/editUserPassword/:id`
     Headers: `Content-Type: application/json`
     Body: JSON-formatted data
     Changes: Admin and User itself can change password.
     To fulfill the request, the user must send the old password, a new password and a repetition of the new password. The administrator must send a new password and repetition the new password.
 
 -   **Method:** `PUT`
--   **Endpont:** `/editUserRole/:id`
+-   **Endpont:** `/user/editUserRole/:id`
     Headers: `Content-Type: application/json`
     Body: JSON-formatted data
     Changes: Admin only can change the role of single user.
@@ -145,3 +145,7 @@ Example: `/events/like/:id`
 -   **Method:** `POST`
 -   **Endpont:** `/events/like/6563804d62f4145aefcc2e01`
 
+-   **Method:** `POST`
+-   **Endpont:** `/user/reset-password`
+    Body: JSON-formatted data
+    Every user can recover their password. To fulfill the request, the `user` must provide `email`. A new `password` will be send to the given email address. 

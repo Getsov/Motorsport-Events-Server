@@ -10,9 +10,9 @@ router.get('/', (req, res) => {
 router.use('/user', userController);
 router.use('/events', eventController);
 
-//TODO: Error Page (404).
-router.get('*', (req, res) => {
-    res.status(404).json({ message: 'Page not found!' });
+// Error Page (404).
+router.use((req, res) => {
+    res.status(404).json({ message: 'Route not found or request is not right!' });
 });
 
 module.exports = router;

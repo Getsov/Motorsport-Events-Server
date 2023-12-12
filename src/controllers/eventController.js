@@ -161,6 +161,11 @@ eventController.get('/month/:year/:month', async (req, res) => {
     }
 });
 
+// Unmatched route
+eventController.use((req, res) => {
+    res.status(404).json({ message: 'Route not found or request is not right!' });
+});
+
 module.exports = {
     eventController,
 };

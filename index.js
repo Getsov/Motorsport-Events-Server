@@ -7,6 +7,7 @@ const session = require('./src/middlewares/session');
 const router = require('./src/routes');
 const trimBoddy = require('./src/middlewares/trimBoddy');
 mongoose.set('strictQuery', true);
+require("dotenv").config();
 
 const initializeDatabase = () =>
     mongoose
