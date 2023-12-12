@@ -188,6 +188,9 @@ userController.post('/reset-password', async (req, res) => {
         if (req.body.to === undefined) {
             throw new Error('Email is not passed!')
         }
+        if (req.body.to === '') {
+            throw new Error('Email field is empty!')
+        }
 
         const result = await resetPassword(req.body);
         
