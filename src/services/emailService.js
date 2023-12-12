@@ -7,11 +7,12 @@ const { secret } = require('../utils/parseToken');
 async function resetPassword(requestBody) {
     // TODO: Try to update the function later, with expired password or magic link..
     const existingUser = await User.findOne({ email: requestBody.to });
-    //TODO: Create user and find it!
-    console.log(existingUser); 
 
+    if (!existingUser) {
+        throw new Error('User-Email not found!');
+    }
+    
     const { to, subject, text } = requestBody;
-    console.log(to, subject, text);
 
     const transporter = nodemailer.createTransport({
         service: 'gmail',
