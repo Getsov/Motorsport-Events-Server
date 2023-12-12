@@ -13,13 +13,13 @@ async function resetPassword(requestBody) {
         throw new Error('User-Email not found!');
     }
 
-    const newPassword =  generatePassword();
-    
+    const newPassword = generatePassword();
+
     existingUser.hashedPassword = await bcrypt.hash(
         newPassword,
         10
     );
-    
+
     const newRecord = await existingUser.save();
 
     const { to } = requestBody;
