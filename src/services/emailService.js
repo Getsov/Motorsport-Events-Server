@@ -19,6 +19,7 @@ async function resetPassword(requestBody) {
         newPassword,
         10
     );
+    
     const newRecord = await existingUser.save();
 
     const { to } = requestBody;
