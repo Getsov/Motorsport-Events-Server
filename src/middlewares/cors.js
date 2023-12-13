@@ -8,5 +8,16 @@ module.exports = () => (req, res, next) => {
         'Access-Control-Allow-Headers',
         'Content-Type, X-Authorization'
     );
-    next();
+
+    if (req.method === 'OPTIONS') {
+        res.status(200).end();
+    } else {
+        next();
+    }
+
+    // if (req.method === 'OPTIONS') {
+    //     res.status(200).end();
+    // } 
+
+    // next();
 };
