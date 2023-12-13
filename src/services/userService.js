@@ -262,7 +262,7 @@ async function allUsers() {
 }
 
 function createToken(user) {
-    // As a rule, seconds are set for the duration of tokens
+    // As a rule, seconds are set for the duration of tokens.
     const expiresInTenDays = 10 * 24 * 60 * 60;
 
     const payload = {
