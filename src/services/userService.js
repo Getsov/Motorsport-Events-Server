@@ -226,6 +226,18 @@ async function approvedUser(userId, requestBody) {
     return createToken(newRecord);
 }
 
+async function organizersAwaitingForApproval() {
+    const allUsers = await User.find();
+    let awaitingUsers = []
+
+    allUsers.map(x => {
+        if(x.isApproved === false){
+            awaitingUsers.push(x)
+        }
+    })
+    return awaitingUsers;
+}
+
 function createToken(user) {
     const payload = {
         _id: user._id,
@@ -269,4 +281,5 @@ module.exports = {
     returnAllCreatedEvents,
     returnAllFavouriteEvents,
     approvedUser,
+    organizersAwaitingForApproval
 };
