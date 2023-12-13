@@ -239,7 +239,7 @@ function createToken(user) {
         // address: user.address,
         phone: user.phone,
         isDeleted: user.isDeleted,
-        accessToken: jwt.sign(payload, secret),
+        accessToken: jwt.sign(payload, secret, { expiresIn: '24h' }),
     };
 }
 
