@@ -9,11 +9,12 @@ const {
     returnAllCreatedEvents,
     returnAllFavouriteEvents,
     updateUserRole,
-    approvedUser,
-    organizersAwaitingForApproval,
+    organizersAwaitingApproval,
     allOrginzerUsers,
     allRegularUsers,
     allAdmins,
+    approveOrganizer,
+    allUsers,
 } = require('../services/userService');
 const { validPassword } = require('../shared/sharedRegex');
 const { checkRequestData } = require('../utils/ckeckData');
@@ -205,13 +206,13 @@ userController.post('/reset-password', async (req, res) => {
 });
 
 // Approving / Unapproving user
-userController.put('/approve/:id', async (req, res) => {
+userController.put('/approveOrganizer/:id', async (req, res) => {
     try {
         const userId = req.params.id;
         const isAdmin = req.requester.role == 'admin';
         checkRequestData(req.body);
         if (isAdmin) {
-            const result = await approvedUser(userId, req.body);
+            const result = await approveOrganizer(userId, req.body);
             res.status(200).json(result);
             res.end();
         } else {
@@ -229,7 +230,7 @@ userController.get('/organizersForApprove', async (req, res) => {
         if (!isAdmin) {
             throw new Error('You do not have access to these record!');
         }
-        const result = await organizersAwaitingForApproval();
+        const result = await organizersAwaitingApproval();
         res.status(200).json(result);
         res.end();
     } catch (error) {
@@ -276,6 +277,21 @@ userController.get('/allAdmins', async (req, res) => {
             throw new Error('You do not have access to these record!');
         }
         const result = await allAdmins();
+        res.status(200).json(result);
+        res.end();
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ error: error.message });
+    }
+});
+
+userController.get('/allUsers', async (req, res) => {
+    try {
+        const isAdmin = req.requester.role == 'admin';
+        if (!isAdmin) {
+            throw new Error('You do not have access to these record!');
+        }
+        const result = await allUsers();
         res.status(200).json(result);
         res.end();
     } catch (error) {

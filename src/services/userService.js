@@ -215,24 +215,34 @@ async function returnAllFavouriteEvents(userId) {
     }
 }
 
-async function approvedUser(userId, requestBody) {
+async function approveOrganizer(userId, requestBody) {
     const existingUser = await User.findById(userId);
+    if (existingUser.isDeleted == true) {
+        throw new Error('User is deleted!');
+    }
     if (!existingUser) {
-        throw new Error('User not found');
+        throw new Error('User not found!');
     }
     existingUser.isApproved = requestBody.isApproved;
 
     const newRecord = await existingUser.save();
     return createToken(newRecord);
 }
-
-async function organizersAwaitingForApproval() {
-    const allUsers = await User.find({ isApproved: false });
-    return allUsers;
+//TODO -
+async function organizersAwaitingApproval() {
+    const activeUsers = await User.find({
+        isApproved: false,
+        isDeleted: false,
+        role: 'organizer',
+    });
+    return activeUsers;
 }
 
 async function allOrginzerUsers() {
-    const allOrganizer = await User.find({ role: 'organizer' });
+    const allOrganizer = await User.find({
+        role: 'organizer',
+        isDeleted: false,
+    });
     return allOrganizer;
 }
 
@@ -244,6 +254,11 @@ async function allRegularUsers() {
 async function allAdmins() {
     const allRegular = await User.find({ role: 'admin' });
     return allRegular;
+}
+
+async function allUsers() {
+    const allUsers = await User.find();
+    return allUsers;
 }
 
 function createToken(user) {
@@ -288,9 +303,10 @@ module.exports = {
     addEventToCreatedEvents,
     returnAllCreatedEvents,
     returnAllFavouriteEvents,
-    approvedUser,
-    organizersAwaitingForApproval,
+    approveOrganizer,
+    organizersAwaitingApproval,
     allOrginzerUsers,
     allRegularUsers,
     allAdmins,
+    allUsers,
 };
