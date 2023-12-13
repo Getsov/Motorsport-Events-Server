@@ -226,6 +226,7 @@ function createToken(user) {
         // address: user.address,
         phone: user.phone,
         isDeleted: user.isDeleted,
+        isApproved: user.isApproved,
     };
 
     return {
@@ -239,6 +240,7 @@ function createToken(user) {
         // address: user.address,
         phone: user.phone,
         isDeleted: user.isDeleted,
+        isApproved: user.isApproved,
         accessToken: jwt.sign(payload, secret, { expiresIn: '24h' }),
     };
 }
