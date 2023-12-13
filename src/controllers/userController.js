@@ -204,7 +204,7 @@ userController.post('/reset-password', async (req, res) => {
     }
 });
 
-//Approving/ Unapproving user
+// Approving / Unapproving user
 userController.put('/approve/:id', async (req, res) => {
     try {
         const userId = req.params.id;
@@ -223,7 +223,7 @@ userController.put('/approve/:id', async (req, res) => {
     }
 });
 
-userController.get('/organizerForApprove', async (req, res) => {
+userController.get('/organizersForApprove', async (req, res) => {
     try {
         const isAdmin = req.requester.role == 'admin';
         if (!isAdmin) {
