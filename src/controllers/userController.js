@@ -11,6 +11,9 @@ const {
     updateUserRole,
     approvedUser,
     organizersAwaitingForApproval,
+    allOrginzerUser,
+    allRegularUsers,
+    allAdmins,
 } = require('../services/userService');
 const { validPassword } = require('../shared/sharedRegex');
 const { checkRequestData } = require('../utils/ckeckData');
@@ -234,6 +237,52 @@ userController.get('/organizerForApprove', async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 });
+
+userController.get('/allOrganizerUsers', async (req, res) => {
+    try {
+        const isAdmin = req.requester.role == 'admin';
+        if (!isAdmin) {
+            throw new Error('You do not have access to these record!');
+        }
+        const result = await allOrginzerUser();
+        res.status(200).json(result);
+        res.end();
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ error: error.message });
+    }
+});
+
+userController.get('/allRegularUsers', async (req, res) => {
+    try {
+        const isAdmin = req.requester.role == 'admin';
+        if (!isAdmin) {
+            throw new Error('You do not have access to these record!');
+        }
+        const result = await allRegularUsers();
+        res.status(200).json(result);
+        res.end();
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ error: error.message });
+    }
+}); 
+
+userController.get('/allAdmins', async (req, res) => {
+    try {
+        const isAdmin = req.requester.role == 'admin';
+        if (!isAdmin) {
+            throw new Error('You do not have access to these record!');
+        }
+        const result = await allAdmins();
+        res.status(200).json(result);
+        res.end();
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ error: error.message });
+    }
+});
+
 // Unmatched route
 userController.use((req, res) => {
     res.status(404).json({

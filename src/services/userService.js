@@ -227,15 +227,23 @@ async function approvedUser(userId, requestBody) {
 }
 
 async function organizersAwaitingForApproval() {
-    const allUsers = await User.find();
-    let awaitingUsers = []
+    const allUsers = await User.find({ isApproved: false });
+    return allUsers;
+}
 
-    allUsers.map(x => {
-        if(x.isApproved === false){
-            awaitingUsers.push(x)
-        }
-    })
-    return awaitingUsers;
+async function allOrginzerUser() {
+    const allOrganizer = await User.find({ role: 'organizer' });
+    return allOrganizer;
+}
+
+async function allRegularUsers() {
+    const allRegular = await User.find({ role: 'regular' });
+    return allRegular;
+}
+
+async function allAdmins() {
+    const allRegular = await User.find({ role: 'admin' });
+    return allRegular;
 }
 
 function createToken(user) {
@@ -281,5 +289,8 @@ module.exports = {
     returnAllCreatedEvents,
     returnAllFavouriteEvents,
     approvedUser,
-    organizersAwaitingForApproval
+    organizersAwaitingForApproval,
+    allOrginzerUser,
+    allRegularUsers,
+    allAdmins,
 };
