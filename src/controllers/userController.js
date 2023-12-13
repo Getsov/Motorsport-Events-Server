@@ -267,7 +267,7 @@ userController.get('/allRegularUsers', async (req, res) => {
         console.log(error);
         res.status(400).json({ error: error.message });
     }
-}); 
+});
 
 userController.get('/allAdmins', async (req, res) => {
     try {
