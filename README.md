@@ -68,7 +68,10 @@ IMPORTANT: You can use search filtering and pagination with multiple passed valu
 -   **Method:** `GET`
 -   **Endpoint:** `/events?page=1&limit=2&category=1&region=16&category=9&search=2`
 
-<!-- TODO: To add information about calendar requests! -->
+Calendar: If you want to retrieve the data for the calendar, you must send a `GET` request.
+Response will be All events according to provided year and month: `2024/1`
+-   **Method:** `GET`
+-   **Endpoint:** `/events/month/2024/1`
 
 -   **_User_**:
 
