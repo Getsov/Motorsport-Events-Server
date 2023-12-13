@@ -231,7 +231,7 @@ async function organizersAwaitingForApproval() {
     return allUsers;
 }
 
-async function allOrginzerUser() {
+async function allOrginzerUsers() {
     const allOrganizer = await User.find({ role: 'organizer' });
     return allOrganizer;
 }
@@ -290,7 +290,7 @@ module.exports = {
     returnAllFavouriteEvents,
     approvedUser,
     organizersAwaitingForApproval,
-    allOrginzerUser,
+    allOrginzerUsers,
     allRegularUsers,
     allAdmins,
 };

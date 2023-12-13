@@ -11,7 +11,7 @@ const {
     updateUserRole,
     approvedUser,
     organizersAwaitingForApproval,
-    allOrginzerUser,
+    allOrginzerUsers,
     allRegularUsers,
     allAdmins,
 } = require('../services/userService');
@@ -245,7 +245,7 @@ userController.get('/allOrganizerUsers', async (req, res) => {
         if (!isAdmin) {
             throw new Error('You do not have access to these record!');
         }
-        const result = await allOrginzerUser();
+        const result = await allOrginzerUsers();
         res.status(200).json(result);
         res.end();
     } catch (error) {
