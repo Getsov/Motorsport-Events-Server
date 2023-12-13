@@ -82,9 +82,9 @@ userController.post('/loginUser', async (req, res) => {
 });
 
 userController.put('/editUserInfo/:id', async (req, res) => {
-    const userId = req.params.id;
-    const isAdmin = req.requester.role == 'admin';
     try {
+        const userId = req.params.id;
+        const isAdmin = req.requester.role == 'admin';
         checkRequestData(req.body);
         if (req.requester._id == userId || isAdmin) {
             const result = await updateUserInfo(userId, req.body, isAdmin);
@@ -100,10 +100,9 @@ userController.put('/editUserInfo/:id', async (req, res) => {
 });
 
 userController.put('/editUserEmail/:id', async (req, res) => {
-    const userId = req.params.id;
-    const isAdmin = req.requester.role == 'admin';
-
     try {
+        const userId = req.params.id;
+        const isAdmin = req.requester.role == 'admin';
         checkRequestData(req.body);
         if (req.requester._id == userId || isAdmin) {
             const result = await updateUserEmail(userId, req.body);
@@ -158,9 +157,8 @@ userController.put('/editUserRole/:id', async (req, res) => {
 });
 
 userController.get('/getMyEvents', async (req, res) => {
-    const userId = req.requester._id;
-
     try {
+        const userId = req.requester._id;
         const result = await returnAllCreatedEvents(userId);
         res.status(200).json(result);
         res.end();
@@ -171,9 +169,8 @@ userController.get('/getMyEvents', async (req, res) => {
 });
 
 userController.get('/getMyFavourites', async (req, res) => {
-    const userId = req.requester?._id;
-
     try {
+        const userId = req.requester?._id;
         const result = await returnAllFavouriteEvents(userId);
         res.status(200).json(result);
         res.end();
@@ -202,7 +199,6 @@ userController.post('/reset-password', async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 });
-
 
 //Approving/ Unapproving user
 userController.put('/approve/:id', async (req, res) => {
