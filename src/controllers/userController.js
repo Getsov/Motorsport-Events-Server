@@ -47,7 +47,7 @@ userController.post('/registerUser', async (req, res) => {
             role: req.body.role ? req.body.role : 'regular',
             //TODO: region - as enum from FE
             region: req.body.region ? req.body.region : '',
-            // address: req.body.address ? req.body.address : '',
+            // address: req.body.address ? req.body.address : '',q
             phone: req.body.phone ? req.body.phone : '',
             hashedPassword: await bcrypt.hash(req.body.password, 10),
         };
@@ -56,7 +56,7 @@ userController.post('/registerUser', async (req, res) => {
             if (!req.body.organizatorName || !req.body.phone) {
                 throw new Error('Fill all required fields!');
             }
-
+            userData.isApproved = false;
             userData.organizatorName = req.body.organizatorName;
         }
 
@@ -186,14 +186,14 @@ userController.get('/getMyFavourites', async (req, res) => {
 userController.post('/reset-password', async (req, res) => {
     try {
         if (req.body.to === undefined) {
-            throw new Error('Email is not passed!')
+            throw new Error('Email is not passed!');
         }
         if (req.body.to === '') {
-            throw new Error('Email field is empty!')
+            throw new Error('Email field is empty!');
         }
 
         const result = await resetPassword(req.body);
-        
+
         res.status(200).json({ message: 'Email sent successfully' });
         res.end();
     } catch (error) {
@@ -204,7 +204,9 @@ userController.post('/reset-password', async (req, res) => {
 
 // Unmatched route
 userController.use((req, res) => {
-    res.status(404).json({ message: 'Route not found or request is not right!' });
+    res.status(404).json({
+        message: 'Route not found or request is not right!',
+    });
 });
 
 module.exports = {
