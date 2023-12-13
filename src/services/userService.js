@@ -220,7 +220,7 @@ async function approvedUser(userId, requestBody) {
     if (!existingUser) {
         throw new Error('User not found');
     }
-    existingUser.isApproved = true;
+    existingUser.isApproved = requestBody.isApproved;
 
     const newRecord = await existingUser.save();
     return createToken(newRecord);
