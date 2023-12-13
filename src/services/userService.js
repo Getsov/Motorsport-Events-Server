@@ -73,7 +73,8 @@ async function updateUserInfo(userId, requestBody, isAdmin) {
             key == 'likedEvents' ||
             key == 'createdEvents' ||
             key == 'hashedPassword' ||
-            key == 'isDeleted'
+            key == 'isDeleted' ||
+            key == 'isApproved'
         ) {
             continue;
         }
@@ -214,6 +215,17 @@ async function returnAllFavouriteEvents(userId) {
     }
 }
 
+async function approvedUser(userId, requestBody) {
+    const existingUser = await User.findById(userId);
+    if (!existingUser) {
+        throw new Error('User not found');
+    }
+    existingUser.isApproved = true;
+
+    const newRecord = await existingUser.save();
+    return createToken(newRecord);
+}
+
 function createToken(user) {
     const payload = {
         _id: user._id,
@@ -256,4 +268,5 @@ module.exports = {
     addEventToCreatedEvents,
     returnAllCreatedEvents,
     returnAllFavouriteEvents,
+    approvedUser,
 };
