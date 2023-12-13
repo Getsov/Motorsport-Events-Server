@@ -92,6 +92,7 @@ const userSchema = new Schema({
     likedEvents: [{ type: ObjectId, ref: 'Event' }],
     hashedPassword: { type: String, required: true },
     isDeleted: { type: Boolean, default: false },
+    isApproved:{ type: Boolean, default: false },
 });
 
 userSchema.index(
