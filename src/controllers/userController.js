@@ -239,6 +239,7 @@ userController.get('/organizerForApprove', async (req, res) => {
 });
 
 userController.get('/allOrganizerUsers', async (req, res) => {
+    //TODO: what we want to return - all organizer or only already approved organizer
     try {
         const isAdmin = req.requester.role == 'admin';
         if (!isAdmin) {
