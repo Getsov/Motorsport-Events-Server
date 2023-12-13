@@ -10,6 +10,7 @@ const {
     returnAllFavouriteEvents,
     updateUserRole,
     approvedUser,
+    organizersAwaitingForApproval,
 } = require('../services/userService');
 const { validPassword } = require('../shared/sharedRegex');
 const { checkRequestData } = require('../utils/ckeckData');
@@ -157,8 +158,8 @@ userController.put('/editUserRole/:id', async (req, res) => {
 });
 
 userController.get('/getMyEvents', async (req, res) => {
+    const userId = req.requester?._id;
     try {
-        const userId = req.requester._id;
         const result = await returnAllCreatedEvents(userId);
         res.status(200).json(result);
         res.end();
@@ -219,6 +220,20 @@ userController.put('/approve/:id', async (req, res) => {
     }
 });
 
+userController.get('/organizerForApprove', async (req, res) => {
+    try {
+        const isAdmin = req.requester.role == 'admin';
+        if (!isAdmin) {
+            throw new Error('You do not have access to these record!');
+        }
+        const result = await organizersAwaitingForApproval();
+        res.status(200).json(result);
+        res.end();
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ error: error.message });
+    }
+});
 // Unmatched route
 userController.use((req, res) => {
     res.status(404).json({
