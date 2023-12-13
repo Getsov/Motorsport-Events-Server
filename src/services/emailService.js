@@ -1,8 +1,6 @@
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
-const jwt = require('jsonwebtoken');
-const { secret } = require('../utils/parseToken');
 const { generatePassword } = require('../utils/generatePassword');
 
 async function resetPassword(requestBody) {
