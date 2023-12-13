@@ -262,6 +262,9 @@ async function allUsers() {
 }
 
 function createToken(user) {
+    // As a rule, seconds are set for the duration of tokens
+    const expiresInTenDays = 10 * 24 * 60 * 60;
+
     const payload = {
         _id: user._id,
         email: user.email,
@@ -288,7 +291,7 @@ function createToken(user) {
         phone: user.phone,
         isDeleted: user.isDeleted,
         isApproved: user.isApproved,
-        accessToken: jwt.sign(payload, secret, { expiresIn: '24h' }),
+        accessToken: jwt.sign(payload, secret, { expiresIn: expiresInTenDays }),
     };
 }
 
