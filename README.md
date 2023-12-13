@@ -144,11 +144,10 @@ Update entry with ID `654651caf696083cab72ab1c` in the `events` collection:
 
 Every user can like an Event. To do it, 'authorized' user must send a `POST` request with event `id`. When user liked some event, the event itself keep information about liked users and also every user keep information about events which he liked.
 Example: `/events/like/:id`
-
 -   **Method:** `POST`
 -   **Endpont:** `/events/like/6563804d62f4145aefcc2e01`
 
+Password-reset: Every user can recover their password. To fulfill the request, the `user` must provide `email`. A new `password` will be send to the given email address. 
 -   **Method:** `POST`
 -   **Endpont:** `/user/reset-password`
     Body: JSON-formatted data
-    Every user can recover their password. To fulfill the request, the `user` must provide `email`. A new `password` will be send to the given email address. 
