@@ -10,7 +10,7 @@ const {
     returnAllFavouriteEvents,
     updateUserRole,
     organizersForApprove,
-    allOrginzerUsers,
+    allOrganizers,
     allRegularUsers,
     allAdmins,
     approveOrganizer,
@@ -233,14 +233,11 @@ userController.get('/organizersForApprove', async (req, res) => {
     }
 });
 
-userController.get('/allOrganizerUsers', async (req, res) => {
+userController.get('/allOrganizers', async (req, res) => {
     //TODO: what we want to return - all organizer or only already approved organizer
     try {
-        const isAdmin = req.requester.role == 'admin';
-        if (!isAdmin) {
-            throw new Error('You do not have access to these record!');
-        }
-        const result = await allOrginzerUsers();
+        const requesterId = req.requester._id;
+        const result = await allOrganizers(requesterId);
         res.status(200).json(result);
         res.end();
     } catch (error) {
@@ -251,11 +248,8 @@ userController.get('/allOrganizerUsers', async (req, res) => {
 
 userController.get('/allRegularUsers', async (req, res) => {
     try {
-        const isAdmin = req.requester.role == 'admin';
-        if (!isAdmin) {
-            throw new Error('You do not have access to these record!');
-        }
-        const result = await allRegularUsers();
+        const requesterId = req.requester._id;
+        const result = await allRegularUsers(requesterId);
         res.status(200).json(result);
         res.end();
     } catch (error) {

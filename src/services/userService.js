@@ -254,15 +254,28 @@ async function organizersForApprove(requesterId) {
     return activeUsers;
 }
 
-async function allOrginzerUsers() {
-    const allOrganizer = await User.find({
+async function allOrganizers(requesterId) {
+    const requester = await User.findById(requesterId);
+    if (requester.isDeleted) {
+        throw new Error('Your profile is deleted!');
+    }
+    if (requester.role !== 'admin') {
+        throw new Error('You do not have access to these record!');
+    }
+    const allOrganizers = await User.find({
         role: 'organizer',
-        isDeleted: false,
     });
-    return allOrganizer;
+    return allOrganizers;
 }
 
 async function allRegularUsers() {
+    const requester = await User.findById(requesterId);
+    if (requester.isDeleted) {
+        throw new Error('Your profile is deleted!');
+    }
+    if (requester.role !== 'admin') {
+        throw new Error('You do not have access to these record!');
+    }
     const allRegular = await User.find({ role: 'regular' });
     return allRegular;
 }
@@ -324,7 +337,7 @@ module.exports = {
     returnAllFavouriteEvents,
     approveOrganizer,
     organizersForApprove,
-    allOrginzerUsers,
+    allOrganizers,
     allRegularUsers,
     allAdmins,
     allUsers,
