@@ -158,7 +158,7 @@ async function addEventToLikedEvents(eventId, userId, isAlreadyLiked) {
     }
 
     if (existingUser.likedEvents.includes(eventId) && isAlreadyLiked) {
-        let filteredLikes = await existingUser.likedEvents.filter(
+        let filteredLikes = existingUser.likedEvents.filter(
             (x) => x != eventId
         );
         existingUser.likedEvents = filteredLikes;
@@ -222,9 +222,7 @@ async function approveOrganizer(userId, requesterId, requestBody) {
         throw new Error('Your profile is deleted!');
     }
     if (requester.role !== 'admin') {
-        throw new Error(
-            "You don't have admin rights to modify the record because!"
-        );
+        throw new Error("You don't have admin rights to modify these record!");
     }
     if (existingUser.isDeleted == true) {
         throw new Error('User is deleted!');
@@ -244,14 +242,13 @@ async function organizersForApprove(requesterId) {
         throw new Error('Your profile is deleted!');
     }
     if (requester.role !== 'admin') {
-        throw new Error('You do not have access to these record!');
+        throw new Error('You do not have access to these records!');
     }
-    const activeUsers = await User.find({
+    const waitingOrganizers = await User.find({
         isApproved: false,
-        isDeleted: false,
         role: 'organizer',
     });
-    return activeUsers;
+    return waitingOrganizers;
 }
 
 async function allOrganizers(requesterId) {
@@ -260,7 +257,7 @@ async function allOrganizers(requesterId) {
         throw new Error('Your profile is deleted!');
     }
     if (requester.role !== 'admin') {
-        throw new Error('You do not have access to these record!');
+        throw new Error('You do not have access to these records!');
     }
     const allOrganizers = await User.find({
         role: 'organizer',
@@ -268,24 +265,38 @@ async function allOrganizers(requesterId) {
     return allOrganizers;
 }
 
-async function allRegularUsers() {
+async function allRegularUsers(requesterId) {
     const requester = await User.findById(requesterId);
     if (requester.isDeleted) {
         throw new Error('Your profile is deleted!');
     }
     if (requester.role !== 'admin') {
-        throw new Error('You do not have access to these record!');
+        throw new Error('You do not have access to these records!');
     }
-    const allRegular = await User.find({ role: 'regular' });
-    return allRegular;
+    const allRegularUsers = await User.find({ role: 'regular' });
+    return allRegularUsers;
 }
 
-async function allAdmins() {
-    const allRegular = await User.find({ role: 'admin' });
-    return allRegular;
+async function allAdmins(requesterId) {
+    const requester = await User.findById(requesterId);
+    if (requester.isDeleted) {
+        throw new Error('Your profile is deleted!');
+    }
+    if (requester.role !== 'admin') {
+        throw new Error('You do not have access to these records!');
+    }
+    const allAdmins = await User.find({ role: 'admin' });
+    return allAdmins;
 }
 
-async function allUsers() {
+async function allUsers(requesterId) {
+    const requester = await User.findById(requesterId);
+    if (requester.isDeleted) {
+        throw new Error('Your profile is deleted!');
+    }
+    if (requester.role !== 'admin') {
+        throw new Error('You do not have access to these records!');
+    }
     const allUsers = await User.find();
     return allUsers;
 }

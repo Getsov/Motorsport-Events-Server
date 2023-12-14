@@ -260,11 +260,8 @@ userController.get('/allRegularUsers', async (req, res) => {
 
 userController.get('/allAdmins', async (req, res) => {
     try {
-        const isAdmin = req.requester.role == 'admin';
-        if (!isAdmin) {
-            throw new Error('You do not have access to these record!');
-        }
-        const result = await allAdmins();
+        const requesterId = req.requester._id;
+        const result = await allAdmins(requesterId);
         res.status(200).json(result);
         res.end();
     } catch (error) {
@@ -275,11 +272,8 @@ userController.get('/allAdmins', async (req, res) => {
 
 userController.get('/allUsers', async (req, res) => {
     try {
-        const isAdmin = req.requester.role == 'admin';
-        if (!isAdmin) {
-            throw new Error('You do not have access to these record!');
-        }
-        const result = await allUsers();
+        const requesterId = req.requester._id;
+        const result = await allUsers(requesterId);
         res.status(200).json(result);
         res.end();
     } catch (error) {
