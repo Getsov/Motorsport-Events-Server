@@ -215,8 +215,17 @@ async function returnAllFavouriteEvents(userId) {
     }
 }
 
-async function approveOrganizer(userId, requestBody) {
+async function approveOrganizer(userId, requesterId, requestBody) {
     const existingUser = await User.findById(userId);
+    const requester = await User.findById(requesterId);
+    if (requester.isDeleted) {
+        throw new Error('Your profile is deleted!');
+    }
+    if (requester.role !== 'admin') {
+        throw new Error(
+            "You don't have admin rights to modify the record because!"
+        );
+    }
     if (existingUser.isDeleted == true) {
         throw new Error('User is deleted!');
     }
@@ -228,8 +237,15 @@ async function approveOrganizer(userId, requestBody) {
     const newRecord = await existingUser.save();
     return createToken(newRecord);
 }
-//TODO -
-async function organizersAwaitingApproval() {
+
+async function organizersForApprove(requesterId) {
+    const requester = await User.findById(requesterId);
+    if (requester.isDeleted) {
+        throw new Error('Your profile is deleted!');
+    }
+    if (requester.role !== 'admin') {
+        throw new Error('You do not have access to these record!');
+    }
     const activeUsers = await User.find({
         isApproved: false,
         isDeleted: false,
@@ -307,7 +323,7 @@ module.exports = {
     returnAllCreatedEvents,
     returnAllFavouriteEvents,
     approveOrganizer,
-    organizersAwaitingApproval,
+    organizersForApprove,
     allOrginzerUsers,
     allRegularUsers,
     allAdmins,

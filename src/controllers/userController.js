@@ -9,7 +9,7 @@ const {
     returnAllCreatedEvents,
     returnAllFavouriteEvents,
     updateUserRole,
-    organizersAwaitingApproval,
+    organizersForApprove,
     allOrginzerUsers,
     allRegularUsers,
     allAdmins,
@@ -209,15 +209,12 @@ userController.post('/reset-password', async (req, res) => {
 userController.put('/approveOrganizer/:id', async (req, res) => {
     try {
         const userId = req.params.id;
-        const isAdmin = req.requester.role == 'admin';
+        const requesterId = req.requester._id;
         checkRequestData(req.body);
-        if (isAdmin) {
-            const result = await approveOrganizer(userId, req.body);
-            res.status(200).json(result);
-            res.end();
-        } else {
-            throw new Error('You do not have rights to modify the record!');
-        }
+
+        const result = await approveOrganizer(userId, requesterId, req.body);
+        res.status(200).json(result);
+        res.end();
     } catch (error) {
         console.log(error);
         res.status(400).json({ error: error.message });
@@ -226,11 +223,8 @@ userController.put('/approveOrganizer/:id', async (req, res) => {
 
 userController.get('/organizersForApprove', async (req, res) => {
     try {
-        const isAdmin = req.requester.role == 'admin';
-        if (!isAdmin) {
-            throw new Error('You do not have access to these record!');
-        }
-        const result = await organizersAwaitingApproval();
+        const requesterId = req.requester._id;
+        const result = await organizersForApprove(requesterId);
         res.status(200).json(result);
         res.end();
     } catch (error) {
