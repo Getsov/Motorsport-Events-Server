@@ -272,7 +272,7 @@ userController.get('/allAdmins', async (req, res) => {
     }
 });
 
-userController.get('/allUsers', async (req, res) => {
+userController.get('/getAllUsers', async (req, res) => {
     try {
         const requesterId = req.requester._id;
         const result = await allUsers(requesterId);
