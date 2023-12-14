@@ -9,17 +9,16 @@ const {
     returnAllCreatedEvents,
     returnAllFavouriteEvents,
     updateUserRole,
-    organizersForApprove,
-    allOrganizers,
-    allRegularUsers,
-    allAdmins,
+    getAllOrganizersForApproval,
+    getAllOrganizers,
+    getAllRegularUsers,
+    getAllAdmins,
     approveOrganizer,
-    allUsers,
+    getAllUsers,
 } = require('../services/userService');
 const { validPassword } = require('../shared/sharedRegex');
 const { checkRequestData } = require('../utils/ckeckData');
 const { resetPassword } = require('../services/emailService');
-
 
 //TODO- CHECK THE ADMIN DIRECTLY FROM DB FOR ALL AUTHENTICATED REQUEST. REFACTOR WHERE IT NEEDS
 userController.post('/registerUser', async (req, res) => {
@@ -226,7 +225,7 @@ userController.put('/approveOrganizer/:id', async (req, res) => {
 userController.get('/organizersForApprove', async (req, res) => {
     try {
         const requesterId = req.requester._id;
-        const result = await organizersForApprove(requesterId);
+        const result = await getAllOrganizersForApproval(requesterId);
         res.status(200).json(result);
         res.end();
     } catch (error) {
@@ -239,7 +238,7 @@ userController.get('/allOrganizers', async (req, res) => {
     //TODO: what we want to return - all organizer or only already approved organizer
     try {
         const requesterId = req.requester._id;
-        const result = await allOrganizers(requesterId);
+        const result = await getAllOrganizers(requesterId);
         res.status(200).json(result);
         res.end();
     } catch (error) {
@@ -251,7 +250,7 @@ userController.get('/allOrganizers', async (req, res) => {
 userController.get('/allRegularUsers', async (req, res) => {
     try {
         const requesterId = req.requester._id;
-        const result = await allRegularUsers(requesterId);
+        const result = await getAllRegularUsers(requesterId);
         res.status(200).json(result);
         res.end();
     } catch (error) {
@@ -263,7 +262,7 @@ userController.get('/allRegularUsers', async (req, res) => {
 userController.get('/allAdmins', async (req, res) => {
     try {
         const requesterId = req.requester._id;
-        const result = await allAdmins(requesterId);
+        const result = await getAllAdmins(requesterId);
         res.status(200).json(result);
         res.end();
     } catch (error) {
@@ -272,10 +271,10 @@ userController.get('/allAdmins', async (req, res) => {
     }
 });
 
-userController.get('/getAllUsers', async (req, res) => {
+userController.get('/allUsers', async (req, res) => {
     try {
         const requesterId = req.requester._id;
-        const result = await allUsers(requesterId);
+        const result = await getAllUsers(requesterId);
         res.status(200).json(result);
         res.end();
     } catch (error) {

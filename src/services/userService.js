@@ -236,7 +236,7 @@ async function approveOrganizer(userId, requesterId, requestBody) {
     return createToken(newRecord);
 }
 
-async function organizersForApprove(requesterId) {
+async function getAllOrganizersForApproval(requesterId) {
     const requester = await User.findById(requesterId);
     if (requester.isDeleted) {
         throw new Error('Your profile is deleted!');
@@ -251,7 +251,7 @@ async function organizersForApprove(requesterId) {
     return waitingOrganizers;
 }
 
-async function allOrganizers(requesterId) {
+async function getAllOrganizers(requesterId) {
     const requester = await User.findById(requesterId);
     if (requester.isDeleted) {
         throw new Error('Your profile is deleted!');
@@ -265,7 +265,7 @@ async function allOrganizers(requesterId) {
     return allOrganizers;
 }
 
-async function allRegularUsers(requesterId) {
+async function getAllRegularUsers(requesterId) {
     const requester = await User.findById(requesterId);
     if (requester.isDeleted) {
         throw new Error('Your profile is deleted!');
@@ -277,7 +277,7 @@ async function allRegularUsers(requesterId) {
     return allRegularUsers;
 }
 
-async function allAdmins(requesterId) {
+async function getAllAdmins(requesterId) {
     const requester = await User.findById(requesterId);
     if (requester.isDeleted) {
         throw new Error('Your profile is deleted!');
@@ -289,7 +289,7 @@ async function allAdmins(requesterId) {
     return allAdmins;
 }
 
-async function allUsers(requesterId) {
+async function getAllUsers(requesterId) {
     const requester = await User.findById(requesterId);
     if (requester.isDeleted) {
         throw new Error('Your profile is deleted!');
@@ -347,9 +347,9 @@ module.exports = {
     returnAllCreatedEvents,
     returnAllFavouriteEvents,
     approveOrganizer,
-    organizersForApprove,
-    allOrganizers,
-    allRegularUsers,
-    allAdmins,
-    allUsers,
+    getAllOrganizersForApproval,
+    getAllOrganizers,
+    getAllRegularUsers,
+    getAllAdmins,
+    getAllUsers,
 };
