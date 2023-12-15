@@ -80,6 +80,10 @@ eventController.get('/:id', async (req, res) => {
 // Update event by ID!
 eventController.put('/:id', async (req, res) => {
     try {
+        if (Object.keys(req.body).length === 0) {
+            throw new Error('Invalid request Body!')
+        }
+        
         const event = await findEventByID(req.params.id);
 
         if (
