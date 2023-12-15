@@ -222,7 +222,7 @@ async function approveOrganizer(userId, requesterId, requestBody) {
         throw new Error('Your profile is deleted!');
     }
     if (requester.role !== 'admin') {
-        throw new Error("You don't have admin rights to modify these record!");
+        throw new Error('You do not have access to these records!');
     }
     if (existingUser.isDeleted == true) {
         throw new Error('User is deleted!');
