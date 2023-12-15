@@ -73,7 +73,8 @@ async function updateUserInfo(userId, requestBody, isAdmin) {
             key == 'likedEvents' ||
             key == 'createdEvents' ||
             key == 'hashedPassword' ||
-            key == 'isDeleted'
+            key == 'isDeleted' ||
+            key == 'isApproved'
         ) {
             continue;
         }
@@ -157,7 +158,7 @@ async function addEventToLikedEvents(eventId, userId, isAlreadyLiked) {
     }
 
     if (existingUser.likedEvents.includes(eventId) && isAlreadyLiked) {
-        let filteredLikes = await existingUser.likedEvents.filter(
+        let filteredLikes = existingUser.likedEvents.filter(
             (x) => x != eventId
         );
         existingUser.likedEvents = filteredLikes;
@@ -214,7 +215,96 @@ async function returnAllFavouriteEvents(userId) {
     }
 }
 
+async function approveOrganizer(userId, requesterId, requestBody) {
+    const existingUser = await User.findById(userId);
+    const requester = await User.findById(requesterId);
+    if (requester.isDeleted) {
+        throw new Error('Your profile is deleted!');
+    }
+    if (requester.role !== 'admin') {
+        throw new Error('You do not have access to these records!');
+    }
+    if (existingUser.isDeleted == true) {
+        throw new Error('User is deleted!');
+    }
+    if (!existingUser) {
+        throw new Error('User not found!');
+    }
+    existingUser.isApproved = requestBody.isApproved;
+
+    const newRecord = await existingUser.save();
+    return createToken(newRecord);
+}
+
+async function getAllOrganizersForApproval(requesterId) {
+    const requester = await User.findById(requesterId);
+    if (requester.isDeleted) {
+        throw new Error('Your profile is deleted!');
+    }
+    if (requester.role !== 'admin') {
+        throw new Error('You do not have access to these records!');
+    }
+    const waitingOrganizers = await User.find({
+        isApproved: false,
+        role: 'organizer',
+    });
+    return waitingOrganizers;
+}
+
+async function getAllOrganizers(requesterId) {
+    const requester = await User.findById(requesterId);
+    if (requester.isDeleted) {
+        throw new Error('Your profile is deleted!');
+    }
+    if (requester.role !== 'admin') {
+        throw new Error('You do not have access to these records!');
+    }
+    const allOrganizers = await User.find({
+        role: 'organizer',
+    });
+    return allOrganizers;
+}
+
+async function getAllRegularUsers(requesterId) {
+    const requester = await User.findById(requesterId);
+    if (requester.isDeleted) {
+        throw new Error('Your profile is deleted!');
+    }
+    if (requester.role !== 'admin') {
+        throw new Error('You do not have access to these records!');
+    }
+    const allRegularUsers = await User.find({ role: 'regular' });
+    return allRegularUsers;
+}
+
+async function getAllAdmins(requesterId) {
+    const requester = await User.findById(requesterId);
+    if (requester.isDeleted) {
+        throw new Error('Your profile is deleted!');
+    }
+    if (requester.role !== 'admin') {
+        throw new Error('You do not have access to these records!');
+    }
+    const allAdmins = await User.find({ role: 'admin' });
+    return allAdmins;
+}
+
+async function getAllUsers(requesterId) {
+    const requester = await User.findById(requesterId);
+    if (requester.isDeleted) {
+        throw new Error('Your profile is deleted!');
+    }
+    if (requester.role !== 'admin') {
+        throw new Error('You do not have access to these records!');
+    }
+    const allUsers = await User.find();
+    return allUsers;
+}
+
 function createToken(user) {
+    // As a rule, seconds are set for the duration of tokens.
+    const expiresInTenDays = 10 * 24 * 60 * 60;
+
     const payload = {
         _id: user._id,
         email: user.email,
@@ -226,6 +316,7 @@ function createToken(user) {
         // address: user.address,
         phone: user.phone,
         isDeleted: user.isDeleted,
+        isApproved: user.isApproved,
     };
 
     return {
@@ -239,7 +330,8 @@ function createToken(user) {
         // address: user.address,
         phone: user.phone,
         isDeleted: user.isDeleted,
-        accessToken: jwt.sign(payload, secret),
+        isApproved: user.isApproved,
+        accessToken: jwt.sign(payload, secret, { expiresIn: expiresInTenDays }),
     };
 }
 
@@ -254,4 +346,10 @@ module.exports = {
     addEventToCreatedEvents,
     returnAllCreatedEvents,
     returnAllFavouriteEvents,
+    approveOrganizer,
+    getAllOrganizersForApproval,
+    getAllOrganizers,
+    getAllRegularUsers,
+    getAllAdmins,
+    getAllUsers,
 };

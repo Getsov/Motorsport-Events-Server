@@ -9,11 +9,18 @@ const {
     returnAllCreatedEvents,
     returnAllFavouriteEvents,
     updateUserRole,
+    getAllOrganizersForApproval,
+    getAllOrganizers,
+    getAllRegularUsers,
+    getAllAdmins,
+    approveOrganizer,
+    getAllUsers,
 } = require('../services/userService');
 const { validPassword } = require('../shared/sharedRegex');
-const { checkRequestData } = require('../utils/ckeckData');
+const { checkRequestData } = require('../utils/checkData');
 const { resetPassword } = require('../services/emailService');
 
+//TODO- CHECK THE ADMIN DIRECTLY FROM DB FOR ALL AUTHENTICATED REQUEST. REFACTOR WHERE IT NEEDS
 userController.post('/registerUser', async (req, res) => {
     try {
         const passwordTest = validPassword.test(req.body.password);
@@ -47,7 +54,7 @@ userController.post('/registerUser', async (req, res) => {
             role: req.body.role ? req.body.role : 'regular',
             //TODO: region - as enum from FE
             region: req.body.region ? req.body.region : '',
-            // address: req.body.address ? req.body.address : '',
+            // address: req.body.address ? req.body.address : ''
             phone: req.body.phone ? req.body.phone : '',
             hashedPassword: await bcrypt.hash(req.body.password, 10),
         };
@@ -56,7 +63,7 @@ userController.post('/registerUser', async (req, res) => {
             if (!req.body.organizatorName || !req.body.phone) {
                 throw new Error('Fill all required fields!');
             }
-
+            userData.isApproved = false;
             userData.organizatorName = req.body.organizatorName;
         }
 
@@ -81,9 +88,9 @@ userController.post('/loginUser', async (req, res) => {
 });
 
 userController.put('/editUserInfo/:id', async (req, res) => {
-    const userId = req.params.id;
-    const isAdmin = req.requester.role == 'admin';
     try {
+        const userId = req.params.id;
+        const isAdmin = req.requester.role == 'admin';
         checkRequestData(req.body);
         if (req.requester._id == userId || isAdmin) {
             const result = await updateUserInfo(userId, req.body, isAdmin);
@@ -99,10 +106,9 @@ userController.put('/editUserInfo/:id', async (req, res) => {
 });
 
 userController.put('/editUserEmail/:id', async (req, res) => {
-    const userId = req.params.id;
-    const isAdmin = req.requester.role == 'admin';
-
     try {
+        const userId = req.params.id;
+        const isAdmin = req.requester.role == 'admin';
         checkRequestData(req.body);
         if (req.requester._id == userId || isAdmin) {
             const result = await updateUserEmail(userId, req.body);
@@ -118,9 +124,9 @@ userController.put('/editUserEmail/:id', async (req, res) => {
 });
 
 userController.put('/editUserPassword/:id', async (req, res) => {
-    const userId = req.params.id;
-    const isAdmin = req.requester.role == 'admin';
     try {
+        const userId = req.params.id;
+        const isAdmin = req.requester.role == 'admin';
         checkRequestData(req.body);
         if (req.body.newPassword !== req.body.newRepass) {
             throw new Error('Password dismatch!');
@@ -139,9 +145,9 @@ userController.put('/editUserPassword/:id', async (req, res) => {
     }
 });
 userController.put('/editUserRole/:id', async (req, res) => {
-    const userId = req.params.id;
-    const isAdmin = req.requester.role == 'admin';
     try {
+        const userId = req.params.id;
+        const isAdmin = req.requester.role == 'admin';
         checkRequestData(req.body);
         if (isAdmin) {
             const result = await updateUserRole(userId, req.body);
@@ -157,9 +163,8 @@ userController.put('/editUserRole/:id', async (req, res) => {
 });
 
 userController.get('/getMyEvents', async (req, res) => {
-    const userId = req.requester._id;
-
     try {
+        const userId = req.requester?._id;
         const result = await returnAllCreatedEvents(userId);
         res.status(200).json(result);
         res.end();
@@ -170,9 +175,8 @@ userController.get('/getMyEvents', async (req, res) => {
 });
 
 userController.get('/getMyFavourites', async (req, res) => {
-    const userId = req.requester?._id;
-
     try {
+        const userId = req.requester?._id;
         const result = await returnAllFavouriteEvents(userId);
         res.status(200).json(result);
         res.end();
@@ -186,15 +190,92 @@ userController.get('/getMyFavourites', async (req, res) => {
 userController.post('/reset-password', async (req, res) => {
     try {
         if (req.body.to === undefined) {
-            throw new Error('Email is not passed!')
+            throw new Error('Email is not passed!');
         }
         if (req.body.to === '') {
-            throw new Error('Email field is empty!')
+            throw new Error('Email field is empty!');
         }
 
         const result = await resetPassword(req.body);
-        
+
         res.status(200).json({ message: 'Email sent successfully' });
+        res.end();
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ error: error.message });
+    }
+});
+
+// Approving / Unapproving user
+userController.put('/approveOrganizer/:id', async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const requesterId = req.requester._id;
+        checkRequestData(req.body);
+
+        const result = await approveOrganizer(userId, requesterId, req.body);
+        res.status(200).json(result);
+        res.end();
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ error: error.message });
+    }
+});
+
+userController.get('/organizersForApproval', async (req, res) => {
+    try {
+        const requesterId = req.requester._id;
+        const result = await getAllOrganizersForApproval(requesterId);
+        res.status(200).json(result);
+        res.end();
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ error: error.message });
+    }
+});
+
+userController.get('/allOrganizers', async (req, res) => {
+    //TODO: what we want to return - all organizer or only already approved organizer
+    try {
+        const requesterId = req.requester._id;
+        const result = await getAllOrganizers(requesterId);
+        res.status(200).json(result);
+        res.end();
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ error: error.message });
+    }
+});
+
+userController.get('/allRegularUsers', async (req, res) => {
+    try {
+        const requesterId = req.requester._id;
+        const result = await getAllRegularUsers(requesterId);
+        res.status(200).json(result);
+        res.end();
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ error: error.message });
+    }
+});
+
+userController.get('/allAdmins', async (req, res) => {
+    try {
+        const requesterId = req.requester._id;
+        const result = await getAllAdmins(requesterId);
+        res.status(200).json(result);
+        res.end();
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ error: error.message });
+    }
+});
+
+userController.get('/allUsers', async (req, res) => {
+    try {
+        const requesterId = req.requester._id;
+        const result = await getAllUsers(requesterId);
+        res.status(200).json(result);
         res.end();
     } catch (error) {
         console.log(error);
@@ -204,7 +285,9 @@ userController.post('/reset-password', async (req, res) => {
 
 // Unmatched route
 userController.use((req, res) => {
-    res.status(404).json({ message: 'Route not found or request is not right!' });
+    res.status(404).json({
+        message: 'Route not found or request is not right!',
+    });
 });
 
 module.exports = {
