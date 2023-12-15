@@ -25,7 +25,7 @@ async function registerEvent(requestBody, requesterId) {
 }
 
 async function findEventByID(eventId) {
-    const event = await Event.findById(eventId);
+    const event = await Event.findById(eventId).populate('creator');
     if (event?.isDeleted === true) throw new Error('This event is deleted!');
 
     return event;
