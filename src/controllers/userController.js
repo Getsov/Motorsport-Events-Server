@@ -222,7 +222,7 @@ userController.put('/approveOrganizer/:id', async (req, res) => {
     }
 });
 
-userController.get('/organizersForApprove', async (req, res) => {
+userController.get('/organizersForApproval', async (req, res) => {
     try {
         const requesterId = req.requester._id;
         const result = await getAllOrganizersForApproval(requesterId);
