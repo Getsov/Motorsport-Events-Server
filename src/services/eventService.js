@@ -25,8 +25,8 @@ async function registerEvent(requestBody, requesterId) {
 }
 
 async function findEventByID(eventId) {
-    const event = await Event.findById(eventId);
-    if (event.isDeleted === true) throw new Error('This event is deleted!');
+    const event = await Event.findById(eventId).populate('creator');
+    if (event?.isDeleted === true) throw new Error('This event is deleted!');
 
     return event;
 }
@@ -74,7 +74,7 @@ async function updateEvent(requestBody, existingEvent, isAdmin) {
         if (isAdmin && (key === 'creator' || key === 'likes')) {
             existingEvent[key] = requestBody[key];
         } else if (!isAdmin && (key === 'creator' || key === 'likes')) {
-            throw new Error('Only Admin can modify this property!');
+            throw new Error(`Only Admin can modify '${key}' property!`);
         }
         if (isAdmin && key === 'isDeleted') {
             existingEvent[key] = requestBody[key];

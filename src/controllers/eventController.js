@@ -11,10 +11,14 @@ const {
     addEventToLikedEvents,
     addEventToCreatedEvents,
 } = require('../services/userService');
-const { checkRequestData } = require('../utils/ckeckData');
+const { checkRequestData } = require('../utils/checkData');
 
 eventController.post('/register', async (req, res) => {
     try {
+        if (Object.keys(req.body).length === 0) {
+            throw new Error('Invalid request Body!')
+        }
+
         checkRequestData(req.body);
         // Checks if there is not user. Or if the user have admin role or if the user is organization.
         if (
@@ -76,6 +80,10 @@ eventController.get('/:id', async (req, res) => {
 // Update event by ID!
 eventController.put('/:id', async (req, res) => {
     try {
+        if (Object.keys(req.body).length === 0) {
+            throw new Error('Invalid request Body!')
+        }
+        
         const event = await findEventByID(req.params.id);
 
         if (
@@ -149,7 +157,6 @@ eventController.get('/month/:year/:month', async (req, res) => {
     try {
         const { year, month } = req.params;
         const { startDate, endDate } = getMonthRange(parseInt(year), parseInt(month));
-
 
         const events = await getByMonth(startDate, endDate);
 
