@@ -11,7 +11,7 @@ const {
     addEventToLikedEvents,
     addEventToCreatedEvents,
 } = require('../services/userService');
-const { checkRequestData } = require('../utils/ckeckData');
+const { checkRequestData } = require('../utils/checkData');
 
 eventController.post('/register', async (req, res) => {
     try {
