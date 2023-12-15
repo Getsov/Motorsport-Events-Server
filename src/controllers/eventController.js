@@ -15,6 +15,10 @@ const { checkRequestData } = require('../utils/checkData');
 
 eventController.post('/register', async (req, res) => {
     try {
+        if (Object.keys(req.body).length === 0) {
+            throw new Error('Invalid request Body!')
+        }
+
         checkRequestData(req.body);
         // Checks if there is not user. Or if the user have admin role or if the user is organization.
         if (
