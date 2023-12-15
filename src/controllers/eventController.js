@@ -158,7 +158,6 @@ eventController.get('/month/:year/:month', async (req, res) => {
         const { year, month } = req.params;
         const { startDate, endDate } = getMonthRange(parseInt(year), parseInt(month));
 
-
         const events = await getByMonth(startDate, endDate);
 
         res.status(200).json(events);
