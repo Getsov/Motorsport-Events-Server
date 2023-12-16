@@ -12,6 +12,7 @@ const {
     addEventToCreatedEvents,
 } = require('../services/userService');
 const { checkRequestData } = require('../utils/checkData');
+const { duplicateDates } = require('../utils/duplicateDates');
 
 eventController.post('/register', async (req, res) => {
     try {
@@ -21,9 +22,9 @@ eventController.post('/register', async (req, res) => {
         if (Object.keys(req.body).length === 0) {
             throw new Error('Invalid request Body!')
         }
-        if (req.body.dates[0].startTime >= req.body.dates[0].endTime) {
-            throw new Error('Start-time can\'t be after or equal to end-time!')
-        }
+        // TODO: Ask can we create event with empty date array?
+        
+        duplicateDates(req.body.dates, req.body.dates[0]?.date);
 
         checkRequestData(req.body);
         // Checks if there is not user. Or if the user have admin role or if the user is organization.
@@ -65,7 +66,7 @@ eventController.get('/', async (req, res) => {
 eventController.get('/:id', async (req, res) => {
     try {
         const event = await findEventByID(req.params.id);
-        
+
         if (event?.isApproved === false && req.requester?._id != event.creator._id) {
             throw new Error("This Event is not Approved by Admin!");
         }
@@ -96,7 +97,7 @@ eventController.put('/:id', async (req, res) => {
         if (req.body.dates[0].startTime >= req.body.dates[0].endTime) {
             throw new Error('Start-time can\'t be after or equal to end-time!')
         }
-        
+
         const event = await findEventByID(req.params.id);
 
         if (
@@ -133,7 +134,7 @@ eventController.post('/like/:id', async (req, res) => {
         }
 
         const event = await findEventByID(req.params.id);
-        
+
         if (event?.isApproved === false) {
             throw new Error("This Event is not Approved by Admin!");
         }
