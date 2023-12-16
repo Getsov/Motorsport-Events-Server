@@ -15,6 +15,9 @@ const { checkRequestData } = require('../utils/checkData');
 
 eventController.post('/register', async (req, res) => {
     try {
+        if (req.requester.isApproved === false) {
+            throw new Error('This "User" is not approved to register Event!')
+        }
         if (Object.keys(req.body).length === 0) {
             throw new Error('Invalid request Body!')
         }
