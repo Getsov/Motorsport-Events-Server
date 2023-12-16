@@ -209,6 +209,7 @@ const eventSchema = new Schema({
         },
     },
     isDeleted: { type: Boolean, default: false },
+    isApproved:{ type: Boolean, default: false }
 });
 
 eventSchema.index(
