@@ -65,8 +65,8 @@ eventController.get('/', async (req, res) => {
 eventController.get('/:id', async (req, res) => {
     try {
         const event = await findEventByID(req.params.id);
-
-        if (event?.isApproved === false) {
+        
+        if (event?.isApproved === false && req.requester?._id != event.creator._id) {
             throw new Error("This Event is not Approved by Admin!");
         }
         if (event === null) {
