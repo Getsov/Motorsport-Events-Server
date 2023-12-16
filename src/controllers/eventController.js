@@ -131,7 +131,9 @@ eventController.post('/like/:id', async (req, res) => {
         if (!req.requester) {
             throw new Error('You must log-in to like this Event!');
         }
+
         const event = await findEventByID(req.params.id);
+        
         if (event?.isApproved === false) {
             throw new Error("This Event is not Approved by Admin!");
         }
