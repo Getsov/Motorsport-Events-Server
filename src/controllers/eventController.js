@@ -65,6 +65,7 @@ eventController.get('/', async (req, res) => {
 eventController.get('/:id', async (req, res) => {
     try {
         const event = await findEventByID(req.params.id);
+
         if (event?.isApproved === false) {
             throw new Error("This Event is not Approved by Admin!");
         }
@@ -95,7 +96,7 @@ eventController.put('/:id', async (req, res) => {
         if (req.body.dates[0].startTime >= req.body.dates[0].endTime) {
             throw new Error('Start-time can\'t be after or equal to end-time!')
         }
-
+        
         const event = await findEventByID(req.params.id);
 
         if (
@@ -130,7 +131,12 @@ eventController.post('/like/:id', async (req, res) => {
         if (!req.requester) {
             throw new Error('You must log-in to like this Event!');
         }
+
         const event = await findEventByID(req.params.id);
+        
+        if (event?.isApproved === false) {
+            throw new Error("This Event is not Approved by Admin!");
+        }
         if (event === null || event.isDeleted) {
             throw new Error("Event is deleted, or doesn't exist!");
         }
