@@ -101,7 +101,7 @@ eventController.put('/:id', async (req, res) => {
 
         if (
             req.requester?._id === undefined ||
-            (req.requester._id != event?.creator &&
+            (req.requester._id != event?.creator._id &&
                 req.requester.role !== 'admin')
         ) {
             throw new Error('You are not owner or Admin to modify this Event!');
@@ -131,9 +131,7 @@ eventController.post('/like/:id', async (req, res) => {
         if (!req.requester) {
             throw new Error('You must log-in to like this Event!');
         }
-
         const event = await findEventByID(req.params.id);
-        
         if (event?.isApproved === false) {
             throw new Error("This Event is not Approved by Admin!");
         }
