@@ -18,6 +18,9 @@ eventController.post('/register', async (req, res) => {
         if (Object.keys(req.body).length === 0) {
             throw new Error('Invalid request Body!')
         }
+        if (req.body.dates[0].startTime >= req.body.dates[0].endTime) {
+            throw new Error('Start-time can\'t be after or equal to end-time!')
+        }
 
         checkRequestData(req.body);
         // Checks if there is not user. Or if the user have admin role or if the user is organization.
@@ -83,7 +86,10 @@ eventController.put('/:id', async (req, res) => {
         if (Object.keys(req.body).length === 0) {
             throw new Error('Invalid request Body!')
         }
-        
+        if (req.body.dates[0].startTime >= req.body.dates[0].endTime) {
+            throw new Error('Start-time can\'t be after or equal to end-time!')
+        }
+
         const event = await findEventByID(req.params.id);
 
         if (
