@@ -23,7 +23,7 @@ eventController.post('/register', async (req, res) => {
             throw new Error('Invalid request Body!')
         }
         // TODO: Ask can we create event with empty date array?
-        
+
         duplicateDates(req.body.dates, req.body.dates[0]?.date);
 
         checkRequestData(req.body);
@@ -100,11 +100,7 @@ eventController.put('/:id', async (req, res) => {
 
         const event = await findEventByID(req.params.id);
 
-        if (
-            req.requester?._id === undefined ||
-            (req.requester._id != event?.creator._id &&
-                req.requester.role !== 'admin')
-        ) {
+        if (req.requester?._id != event?.creator._id && req.requester?.role !== 'admin') {
             throw new Error('You are not owner or Admin to modify this Event!');
         }
         if (
