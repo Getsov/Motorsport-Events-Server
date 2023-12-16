@@ -36,7 +36,8 @@ async function findAllEvents(query) {
     const page = query.page
     const limit = query.limit
     const criteria = {
-        isDeleted: false
+        isDeleted: false,
+        isApproved: true
     }
 
     if (query.category) {
