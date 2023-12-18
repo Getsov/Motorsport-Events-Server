@@ -98,9 +98,9 @@ eventController.put('/:id', async (req, res) => {
         }
         checkDatesAndTime(req.body.dates)
         const event = await findEventByID(req.params.id);
-        const createorId = event?.creator._id.toLocaleString()
+        const creatorId = event?.creator._id.toLocaleString()
         if (
-            req.requester?._id !== createor &&
+            req.requester?._id !== creatorId &&
             req.requester?.role !== 'admin'
         ) {
             throw new Error('You are not owner or Admin to modify this Event!');
