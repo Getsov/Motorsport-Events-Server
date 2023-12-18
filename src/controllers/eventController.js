@@ -12,19 +12,20 @@ const {
     addEventToCreatedEvents,
 } = require('../services/userService');
 const { checkRequestData } = require('../utils/checkData');
-const { duplicateDates } = require('../utils/duplicateDates');
+const { checkDatesAndTime } = require('../utils/checkDatesAndTime');
 
 eventController.post('/register', async (req, res) => {
     try {
         if (req.requester.isApproved === false) {
-            throw new Error('This "User" is not approved to register an Event!')
+            throw new Error(
+                'This "User" is not approved to register an Event!'
+            );
         }
         if (Object.keys(req.body).length === 0) {
-            throw new Error('Invalid request Body!')
+            throw new Error('Invalid request Body!');
         }
-        // TODO: Ask can we create event with empty date array?
 
-        duplicateDates(req.body.dates, req.body.dates[0]?.date);
+        checkDatesAndTime(req.body.dates, req.body.dates[0]?.date);
 
         checkRequestData(req.body);
         // Checks if there is not user. Or if the user have admin role or if the user is organization.
@@ -67,8 +68,11 @@ eventController.get('/:id', async (req, res) => {
     try {
         const event = await findEventByID(req.params.id);
 
-        if (event?.isApproved === false && req.requester?._id != event.creator._id) {
-            throw new Error("This Event is not Approved by Admin!");
+        if (
+            event?.isApproved === false &&
+            req.requester?._id !== event.creator._id
+        ) {
+            throw new Error('This Event is not Approved by Admin!');
         }
         if (event === null) {
             throw new Error("Event is deleted, or doesn't exist!");
@@ -92,15 +96,18 @@ eventController.get('/:id', async (req, res) => {
 eventController.put('/:id', async (req, res) => {
     try {
         if (Object.keys(req.body).length === 0) {
-            throw new Error('Invalid request Body!')
+            throw new Error('Invalid request Body!');
         }
         if (req.body.dates[0].startTime >= req.body.dates[0].endTime) {
-            throw new Error('Start-time can\'t be after or equal to end-time!')
+            throw new Error("Start-time can't be after or equal to end-time!");
         }
 
         const event = await findEventByID(req.params.id);
 
-        if (req.requester?._id != event?.creator._id && req.requester?.role !== 'admin') {
+        if (
+            req.requester?._id !== event?.creator._id &&
+            req.requester?.role !== 'admin'
+        ) {
             throw new Error('You are not owner or Admin to modify this Event!');
         }
         if (
@@ -132,7 +139,7 @@ eventController.post('/like/:id', async (req, res) => {
         const event = await findEventByID(req.params.id);
 
         if (event?.isApproved === false) {
-            throw new Error("This Event is not Approved by Admin!");
+            throw new Error('This Event is not Approved by Admin!');
         }
         if (event === null || event.isDeleted) {
             throw new Error("Event is deleted, or doesn't exist!");
@@ -171,7 +178,10 @@ eventController.get('/month/:year/:month', async (req, res) => {
     // TODO: Later add errors for wrong parameters.
     try {
         const { year, month } = req.params;
-        const { startDate, endDate } = getMonthRange(parseInt(year), parseInt(month));
+        const { startDate, endDate } = getMonthRange(
+            parseInt(year),
+            parseInt(month)
+        );
 
         const events = await getByMonth(startDate, endDate);
 
@@ -185,7 +195,9 @@ eventController.get('/month/:year/:month', async (req, res) => {
 
 // Unmatched route
 eventController.use((req, res) => {
-    res.status(404).json({ message: 'Route not found or request is not right!' });
+    res.status(404).json({
+        message: 'Route not found or request is not right!',
+    });
 });
 
 module.exports = {
@@ -195,7 +207,9 @@ module.exports = {
 // TODO: Add it in utils later!
 const getMonthRange = (year, month) => {
     if (month < 1 || month > 12) {
-        throw new Error('Invalid month value. Month should be in the range 1-12.');
+        throw new Error(
+            'Invalid month value. Month should be in the range 1-12.'
+        );
     }
 
     const startDate = new Date(year, month - 1, 1);
@@ -209,4 +223,4 @@ const getMonthRange = (year, month) => {
     const localEndDate = endDate.toLocaleString();
 
     return { startDate, endDate };
-}
+};

@@ -1,5 +1,5 @@
 
-function duplicateDates(dates, date) {
+function checkDatesAndTime(dates, date) {
     function checkDates(dates, date) {
         const filteredArray = dates.filter(obj => obj.date === date);
         return filteredArray.length > 1;
@@ -17,4 +17,4 @@ function duplicateDates(dates, date) {
 }
 
 
-module.exports = { duplicateDates };
+module.exports = { checkDatesAndTime };
