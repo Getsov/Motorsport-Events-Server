@@ -36,7 +36,8 @@ async function findAllEvents(query) {
     const page = query.page
     const limit = query.limit
     const criteria = {
-        isDeleted: false
+        isDeleted: false,
+        isApproved: true
     }
 
     if (query.category) {
@@ -71,9 +72,9 @@ async function findAllEvents(query) {
 // TODO: Update the event later!
 async function updateEvent(requestBody, existingEvent, isAdmin) {
     for (let key in requestBody) {
-        if (isAdmin && (key === 'creator' || key === 'likes')) {
+        if (isAdmin && (key === 'creator' || key === 'likes' || key === 'isApproved')) {
             existingEvent[key] = requestBody[key];
-        } else if (!isAdmin && (key === 'creator' || key === 'likes')) {
+        } else if (!isAdmin && (key === 'creator' || key === 'likes' || key === 'isApproved')) {
             throw new Error(`Only Admin can modify '${key}' property!`);
         }
         if (isAdmin && key === 'isDeleted') {
@@ -117,6 +118,7 @@ async function getByMonth(startDate, endDate) {
     // Return documents where their 'dates.date[]' have the date from the given month.
     const events = await Event.find({
         isDeleted: false,
+        isApproved: true,
         'dates': {
             $elemMatch: {
                 date: {
