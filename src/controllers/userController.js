@@ -21,7 +21,7 @@ const { checkRequestData } = require('../utils/checkData');
 const { resetPassword } = require('../services/emailService');
 
 //TODO- CHECK THE ADMIN DIRECTLY FROM DB FOR ALL AUTHENTICATED REQUEST. REFACTOR WHERE IT NEEDS
-userController.post('/registerUser', async (req, res) => {
+userController.post('/register', async (req, res) => {
     try {
         const passwordTest = validPassword.test(req.body.password);
         checkRequestData(req.body);
@@ -37,7 +37,7 @@ userController.post('/registerUser', async (req, res) => {
         if (req.body.password.length > 24) {
             throw new Error('Password must be maximum 24 characters long!');
         }
-        if (req.body.password !== req.body.repass) {
+        if (req.body.password !== req.body.repassword) {
             throw new Error('Password dismatch!');
         }
         if (!req.body.email || req.body.email == '') {
@@ -75,7 +75,7 @@ userController.post('/registerUser', async (req, res) => {
     }
 });
 
-userController.post('/loginUser', async (req, res) => {
+userController.post('/login', async (req, res) => {
     try {
         checkRequestData(req.body);
         const user = await loginUser(req.body.email, req.body.password);
@@ -128,7 +128,7 @@ userController.put('/editUserPassword/:id', async (req, res) => {
         const userId = req.params.id;
         const isAdmin = req.requester.role == 'admin';
         checkRequestData(req.body);
-        if (req.body.newPassword !== req.body.newRepass) {
+        if (req.body.newPassword !== req.body.newRepassword) {
             throw new Error('Password dismatch!');
         }
 
