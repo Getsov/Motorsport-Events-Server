@@ -98,7 +98,7 @@ eventController.put('/:id', async (req, res) => {
         }
         checkDatesAndTime(req.body.dates)
         const event = await findEventByID(req.params.id);
-        const createor = event?.creator._id.toLocaleString()
+        const createorId = event?.creator._id.toLocaleString()
         if (
             req.requester?._id !== createor &&
             req.requester?.role !== 'admin'
