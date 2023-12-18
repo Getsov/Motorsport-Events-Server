@@ -96,14 +96,11 @@ eventController.put('/:id', async (req, res) => {
         if (Object.keys(req.body).length === 0) {
             throw new Error('Invalid request Body!');
         }
-        if (req.body.dates[0].startTime >= req.body.dates[0].endTime) {
-            throw new Error("Start-time can't be after or equal to end-time!");
-        }
-
+        checkDatesAndTime(req.body.dates)
         const event = await findEventByID(req.params.id);
-
+        const createor = event?.creator._id.toLocaleString()
         if (
-            req.requester?._id !== event?.creator._id &&
+            req.requester?._id !== createor &&
             req.requester?.role !== 'admin'
         ) {
             throw new Error('You are not owner or Admin to modify this Event!');
