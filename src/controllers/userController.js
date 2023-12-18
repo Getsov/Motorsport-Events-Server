@@ -21,7 +21,7 @@ const { checkRequestData } = require('../utils/checkData');
 const { resetPassword } = require('../services/emailService');
 
 //TODO- CHECK THE ADMIN DIRECTLY FROM DB FOR ALL AUTHENTICATED REQUEST. REFACTOR WHERE IT NEEDS
-userController.post('/registerUser', async (req, res) => {
+userController.post('/register', async (req, res) => {
     try {
         const passwordTest = validPassword.test(req.body.password);
         checkRequestData(req.body);
