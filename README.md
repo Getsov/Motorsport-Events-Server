@@ -74,47 +74,51 @@ Response will be All events according to provided year and month: `2024/1`
 -   **Method:** `GET`
 -   **Endpoint:** `/events/month/2024/1`
 
--   **_User_**:
-
--   **Method:** `GET`
--   **Endpont:** `/user/getMyEvents`
-
-Retrieve all events created from current user!
-
--   **Method:** `GET`
--   **Endpont:** `/user/getMyFavourites`
-
-Retrieve all events added to favourites from current user!
+Retrieve all events waiting for approval! Available only for active and approved admins!
 
 -   **Method:** `GET`
 -   **Endpont:** `/events/eventsForApproval`
 
-Retrieve all events waiting for approval! Available only for active and approved admins!
+Retrieve all organizers waiting for approval! Available only for active and approved admins!
 
 -   **Method:** `GET`
 -   **Endpont:** `/events/organizersForApproval`
 
-Retrieve all organizers waiting for approval! Available only for active and approved admins!
+Retrieve all organizers! Available only for active and approved admins!
 
 -   **Method:** `GET`
 -   **Endpont:** `/events/allOrganizers`
 
-Retrieve all organizers! Available only for active and approved admins!
+Retrieve all regular users! Available only for active and approved admins!
 
 -   **Method:** `GET`
 -   **Endpont:** `/events/allRegularUsers`
 
-Retrieve all regular users! Available only for active and approved admins!
+Retrieve all admins! Available only for active and approved admins!
 
 -   **Method:** `GET`
 -   **Endpont:** `/events/allAdmins`
 
-Retrieve all admins! Available only for active and approved admins!
+Retrieve all users! Available only for active and approved admins!
 
 -   **Method:** `GET`
 -   **Endpont:** `/events/allUsers`
 
-Retrieve all users! Available only for active and approved admins!
+
+-   **_User_**:
+
+Retrieve all events created from current user!
+
+-   **Method:** `GET`
+-   **Endpont:** `/user/getMyEvents`
+
+Retrieve all events added to favourites from current user!
+
+-   **Method:** `GET`
+-   **Endpont:** `/user/getMyFavourites`
+
+
+
 
 ### Create:
 
