@@ -224,6 +224,9 @@ async function approveOrganizer(userId, requesterId, requestBody) {
     if (requester.role !== 'admin') {
         throw new Error('You do not have access to these records!');
     }
+    if (!requester.isApproved) {
+        throw new Error('Your profile is not approved!');
+    }
     if (existingUser.isDeleted == true) {
         throw new Error('User is deleted!');
     }
@@ -241,6 +244,9 @@ async function getAllOrganizersForApproval(requesterId) {
     if (requester.isDeleted) {
         throw new Error('Your profile is deleted!');
     }
+    if (!requester.isApproved) {
+        throw new Error('Your profile is not approved!');
+    }
     if (requester.role !== 'admin') {
         throw new Error('You do not have access to these records!');
     }
@@ -256,6 +262,9 @@ async function getAllOrganizers(requesterId) {
     if (requester.isDeleted) {
         throw new Error('Your profile is deleted!');
     }
+    if (!requester.isApproved) {
+        throw new Error('Your profile is not approved!');
+    }
     if (requester.role !== 'admin') {
         throw new Error('You do not have access to these records!');
     }
@@ -270,6 +279,9 @@ async function getAllRegularUsers(requesterId) {
     if (requester.isDeleted) {
         throw new Error('Your profile is deleted!');
     }
+    if (!requester.isApproved) {
+        throw new Error('Your profile is not approved!');
+    }
     if (requester.role !== 'admin') {
         throw new Error('You do not have access to these records!');
     }
@@ -282,6 +294,9 @@ async function getAllAdmins(requesterId) {
     if (requester.isDeleted) {
         throw new Error('Your profile is deleted!');
     }
+    if (!requester.isApproved) {
+        throw new Error('Your profile is not approved!');
+    }
     if (requester.role !== 'admin') {
         throw new Error('You do not have access to these records!');
     }
@@ -293,6 +308,9 @@ async function getAllUsers(requesterId) {
     const requester = await User.findById(requesterId);
     if (requester.isDeleted) {
         throw new Error('Your profile is deleted!');
+    }
+    if (!requester.isApproved) {
+        throw new Error('Your profile is not approved!');
     }
     if (requester.role !== 'admin') {
         throw new Error('You do not have access to these records!');
