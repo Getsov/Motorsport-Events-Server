@@ -6,7 +6,7 @@ const {
     updateEvent,
     likeUnlikeEvent,
     getByMonth,
-    getAllEventsForApproval
+    getAllEventsForApproval,
 } = require('../services/eventService');
 const {
     addEventToLikedEvents,
@@ -37,7 +37,7 @@ eventController.post('/register', async (req, res) => {
         if (Object.keys(req.body).length === 0) {
             throw new Error('Invalid request Body!');
         }
-        
+
         // TODO: MORE TEST
         checkDatesAndTime(req.body.dates);
 
@@ -109,9 +109,9 @@ eventController.put('/:id', async (req, res) => {
         if (Object.keys(req.body).length === 0) {
             throw new Error('Invalid request Body!');
         }
-        checkDatesAndTime(req.body.dates)
+        checkDatesAndTime(req.body.dates);
         const event = await findEventByID(req.params.id);
-        const creatorId = event?.creator._id.toLocaleString()
+        const creatorId = event?.creator._id.toLocaleString();
         if (
             req.requester?._id !== creatorId &&
             req.requester?.role !== 'admin'
@@ -232,5 +232,3 @@ const getMonthRange = (year, month) => {
 
     return { startDate, endDate };
 };
-
-
