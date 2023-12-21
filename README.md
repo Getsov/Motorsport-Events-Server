@@ -104,7 +104,6 @@ Retrieve all users! Available only for active and approved admins!
 -   **Method:** `GET`
 -   **Endpont:** `/events/allUsers`
 
-
 -   **_User_**:
 
 Retrieve all events created from current user!
@@ -116,9 +115,6 @@ Retrieve all events added to favourites from current user!
 
 -   **Method:** `GET`
 -   **Endpont:** `/user/getMyFavourites`
-
-
-
 
 ### Create:
 
