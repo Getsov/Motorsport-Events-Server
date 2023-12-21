@@ -219,3 +219,16 @@ const getMonthRange = (year, month) => {
 
     return { startDate, endDate };
 };
+
+
+userController.get('/eventsForApproval', async (req, res) => {
+    try {
+        const requesterId = req.requester._id;
+        const result = await getAllEventsForApproval(requesterId);
+        res.status(200).json(result);
+        res.end();
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ error: error.message });
+    }
+});
