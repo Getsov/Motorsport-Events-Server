@@ -178,7 +178,7 @@ Update entry with ID `654651caf696083cab72ab1c` in the `events` collection:
     Headers: `Content-Type: application/json`
     Body: JSON-formatted data
     Changes: Admin which is approved and not deleted, only can approve/disapprove the organizer which also need to be not deleted.
-    To fulfill the request, the admin must send {"isApproved": false/true}. 
+    To fulfill the request, the admin must send {"isApproved": false/true}.
 
 Like-Event: Every user can like an Event. To do it, 'authorized' user must send a `POST` request with event `id`. When user liked some event, the event itself keep information about liked users and also every user keep information about events which he liked.
 Example: `/events/like/:id`
