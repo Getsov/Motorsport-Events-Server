@@ -174,6 +174,9 @@ async function getAllEventsForApproval(requesterId) {
     if (requester.isDeleted) {
         throw new Error('Your profile is deleted!');
     }
+    if (!requester.isApproved) {
+        throw new Error('Your profile is not approved!');
+    }
     if (requester.role !== 'admin') {
         throw new Error('You do not have access to these records!');
     }
