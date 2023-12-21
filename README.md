@@ -70,6 +70,7 @@ IMPORTANT: You can use search filtering and pagination with multiple passed valu
 
 Calendar: If you want to retrieve the data for the calendar, you must send a `GET` request.
 Response will be All events according to provided year and month: `2024/1`
+
 -   **Method:** `GET`
 -   **Endpoint:** `/events/month/2024/1`
 
@@ -84,6 +85,36 @@ Retrieve all events created from current user!
 -   **Endpont:** `/user/getMyFavourites`
 
 Retrieve all events added to favourites from current user!
+
+-   **Method:** `GET`
+-   **Endpont:** `/events/eventsForApproval`
+
+Retrieve all events waiting for approval! Available only for active and approved admins!
+
+-   **Method:** `GET`
+-   **Endpont:** `/events/organizersForApproval`
+
+Retrieve all organizers waiting for approval! Available only for active and approved admins!
+
+-   **Method:** `GET`
+-   **Endpont:** `/events/allOrganizers`
+
+Retrieve all organizers! Available only for active and approved admins!
+
+-   **Method:** `GET`
+-   **Endpont:** `/events/allRegularUsers`
+
+Retrieve all regular users! Available only for active and approved admins!
+
+-   **Method:** `GET`
+-   **Endpont:** `/events/allAdmins`
+
+Retrieve all admins! Available only for active and approved admins!
+
+-   **Method:** `GET`
+-   **Endpont:** `/events/allUsers`
+
+Retrieve all users! Available only for active and approved admins!
 
 ### Create:
 
@@ -142,12 +173,21 @@ Update entry with ID `654651caf696083cab72ab1c` in the `events` collection:
     Changes: Admin only can change the role of single user.
     To fulfill the request, the admin must send role. If new role is 'organizer', the fields 'organizatorName' and 'phone' also should be fulfilled if there was empty before update.
 
+-   **Method:** `PUT`
+-   **Endpont:** `/user/approveOrganizer/:id`
+    Headers: `Content-Type: application/json`
+    Body: JSON-formatted data
+    Changes: Admin which is approved and not deleted, only can approve/disapprove the organizer which also need to be not deleted.
+    To fulfill the request, the admin must send {"isApproved": false/true}. 
+
 Like-Event: Every user can like an Event. To do it, 'authorized' user must send a `POST` request with event `id`. When user liked some event, the event itself keep information about liked users and also every user keep information about events which he liked.
 Example: `/events/like/:id`
+
 -   **Method:** `POST`
 -   **Endpont:** `/events/like/6563804d62f4145aefcc2e01`
 
-Password-reset: Every user can recover their password. To fulfill the request, the `user` must provide `email`. A new `password` will be send to the given email address. 
+Password-reset: Every user can recover their password. To fulfill the request, the `user` must provide `email`. A new `password` will be send to the given email address.
+
 -   **Method:** `POST`
 -   **Endpont:** `/user/reset-password`
     Body: JSON-formatted data
