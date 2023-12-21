@@ -180,7 +180,7 @@ async function getAllEventsForApproval(requesterId) {
     const waitingEvents = await Event.find({
         isApproved: false,
     });
-    return waitingOrganizers;
+    return waitingEvents;
 }
 
 module.exports = {

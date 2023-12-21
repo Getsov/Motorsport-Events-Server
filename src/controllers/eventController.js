@@ -6,6 +6,7 @@ const {
     updateEvent,
     likeUnlikeEvent,
     getByMonth,
+    getAllEventsForApproval
 } = require('../services/eventService');
 const {
     addEventToLikedEvents,
@@ -13,6 +14,18 @@ const {
 } = require('../services/userService');
 const { checkRequestData } = require('../utils/checkData');
 const { checkDatesAndTime } = require('../utils/checkDatesAndTime');
+
+eventController.get('/eventsForApproval', async (req, res) => {
+    try {
+        const requesterId = req.requester._id;
+        const result = await getAllEventsForApproval(requesterId);
+        res.status(200).json(result);
+        res.end();
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ error: error.message });
+    }
+});
 
 eventController.post('/register', async (req, res) => {
     try {
@@ -221,14 +234,3 @@ const getMonthRange = (year, month) => {
 };
 
 
-eventController.get('/eventsForApproval', async (req, res) => {
-    try {
-        const requesterId = req.requester._id;
-        const result = await getAllEventsForApproval(requesterId);
-        res.status(200).json(result);
-        res.end();
-    } catch (error) {
-        console.log(error);
-        res.status(400).json({ error: error.message });
-    }
-});
