@@ -1,4 +1,5 @@
 const Event = require('../models/Event');
+const User = require('../models/User');
 const { categories } = require('../shared/categories');
 const { regions } = require('../shared/regions');
 const { limitModels } = require('../utils/limitModels');
@@ -10,7 +11,9 @@ async function registerEvent(requestBody, requesterId) {
         longTitle: requestBody.longTitle,
         shortDescription: requestBody.shortDescription,
         longDescription: requestBody.longDescription,
-        dates: requestBody.dates.sort((a, b) => new Date(a.date) - new Date(b.date)),
+        dates: requestBody.dates.sort(
+            (a, b) => new Date(a.date) - new Date(b.date)
+        ),
         imageUrl: requestBody.imageUrl,
         contacts: requestBody.contacts,
         category: requestBody.category,
@@ -33,36 +36,61 @@ async function findEventByID(eventId) {
 
 async function findAllEvents(query) {
     // TODO: In later stage we mmay want to search by Organizer Name?
-    const page = query.page
-    const limit = query.limit
+    const page = query.page;
+    const limit = query.limit;
     const criteria = {
         isDeleted: false,
-        isApproved: true
-    }
+        isApproved: true,
+    };
 
     if (query.category) {
         criteria.category = {
             $in: Array.isArray(query.category)
-                ? query.category.map(key => categories[key])
-                : [categories[query.category]]
-        }
+                ? query.category.map((key) => categories[key])
+                : [categories[query.category]],
+        };
     }
     if (query.region) {
         criteria['contacts.region'] = {
             $in: Array.isArray(query.region)
-                ? query.region.map(key => regions[key])
-                : [regions[query.region]]
-        }
+                ? query.region.map((key) => regions[key])
+                : [regions[query.region]],
+        };
     }
     if (query.search) {
         criteria.$or = [
-            { shortTitle: { $regex: query.search.toLowerCase(), $options: 'i' } },
-            { longTitle: { $regex: query.search.toLowerCase(), $options: 'i' } },
-            { shortDescription: { $regex: query.search.toLowerCase(), $options: 'i' } },
-            { longDescription: { $regex: query.search.toLowerCase(), $options: 'i' } },
+            {
+                shortTitle: {
+                    $regex: query.search.toLowerCase(),
+                    $options: 'i',
+                },
+            },
+            {
+                longTitle: {
+                    $regex: query.search.toLowerCase(),
+                    $options: 'i',
+                },
+            },
+            {
+                shortDescription: {
+                    $regex: query.search.toLowerCase(),
+                    $options: 'i',
+                },
+            },
+            {
+                longDescription: {
+                    $regex: query.search.toLowerCase(),
+                    $options: 'i',
+                },
+            },
             // TODO: Discuss searching about following Event properties, look for a good practices about search and sort at one time together!
             { category: { $regex: query.search.toLowerCase(), $options: 'i' } },
-            { ['contacts.region']: { $regex: query.search.toLowerCase(), $options: 'i' } },
+            {
+                ['contacts.region']: {
+                    $regex: query.search.toLowerCase(),
+                    $options: 'i',
+                },
+            },
         ];
     }
 
@@ -72,9 +100,15 @@ async function findAllEvents(query) {
 // TODO: Update the event later!
 async function updateEvent(requestBody, existingEvent, isAdmin) {
     for (let key in requestBody) {
-        if (isAdmin && (key === 'creator' || key === 'likes' || key === 'isApproved')) {
+        if (
+            isAdmin &&
+            (key === 'creator' || key === 'likes' || key === 'isApproved')
+        ) {
             existingEvent[key] = requestBody[key];
-        } else if (!isAdmin && (key === 'creator' || key === 'likes' || key === 'isApproved')) {
+        } else if (
+            !isAdmin &&
+            (key === 'creator' || key === 'likes' || key === 'isApproved')
+        ) {
             throw new Error(`Only Admin can modify '${key}' property!`);
         }
         if (isAdmin && key === 'isDeleted') {
@@ -93,7 +127,11 @@ async function updateEvent(requestBody, existingEvent, isAdmin) {
             key !== 'likes' &&
             key !== 'isDeleted'
         ) {
-            key === 'dates' ? requestBody[key].sort((a, b) => new Date(a.date) - new Date(b.date)) : null;
+            key === 'dates'
+                ? requestBody[key].sort(
+                      (a, b) => new Date(a.date) - new Date(b.date)
+                  )
+                : null;
             existingEvent[key] = requestBody[key];
         }
     }
@@ -119,16 +157,33 @@ async function getByMonth(startDate, endDate) {
     const events = await Event.find({
         isDeleted: false,
         isApproved: true,
-        'dates': {
+        dates: {
             $elemMatch: {
                 date: {
                     $gte: startDate,
                     $lte: endDate,
-                }
-            }
-        }
+                },
+            },
+        },
     });
     return events;
+}
+
+async function getAllEventsForApproval(requesterId) {
+    const requester = await User.findById(requesterId);
+    if (requester.isDeleted) {
+        throw new Error('Your profile is deleted!');
+    }
+    if (!requester.isApproved) {
+        throw new Error('Your profile is not approved!');
+    }
+    if (requester.role !== 'admin') {
+        throw new Error('You do not have access to these records!');
+    }
+    const waitingEvents = await Event.find({
+        isApproved: false,
+    });
+    return waitingEvents;
 }
 
 module.exports = {
@@ -137,7 +192,8 @@ module.exports = {
     findAllEvents,
     updateEvent,
     likeUnlikeEvent,
-    getByMonth
+    getByMonth,
+    getAllEventsForApproval,
 };
 
 // Commented code below is for postman tests!
