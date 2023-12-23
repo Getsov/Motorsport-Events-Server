@@ -26,10 +26,11 @@ async function loginUser(email, password) {
     if (!user) {
         throw new Error('Invalid email or password!');
     }
-    if (user.isDeleted == true) {
-        throw new Error(
-            'This account has been deleted, please contact support'
-        );
+    if (user.isDeleted) {
+        throw new Error('This account has been deleted, please contact support');
+    }
+    if (!user.isApproved) {
+        throw new Error('Your profile is not approved yet!');
     }
 
     // Validate user when login
@@ -55,7 +56,7 @@ async function loginUser(email, password) {
 //accept id of user which will be updated, new data and isAdmin property
 async function updateUserInfo(userId, requestBody, isAdmin) {
     const user = await User.findById(userId);
-    
+
     if (!user) {
         throw new Error('User not found');
     }
@@ -100,62 +101,81 @@ async function updateUserInfo(userId, requestBody, isAdmin) {
 }
 
 async function updateUserEmail(userId, requestBody) {
-    const existingUser = await User.findById(userId);
-    if (!existingUser) {
+    const user = await User.findById(userId);
+    if (!user) {
         throw new Error('User not found!');
+    }
+    if (user.isDeleted) {
+        throw new Error('Your profile is deleted!');
+    }
+    if (!user.isApproved) {
+        throw new Error('Your profile is not approved!');
     }
 
     if (requestBody.email == '') {
         throw new Error("Email field can't be empty!");
     }
 
-    existingUser.email = requestBody.email;
-    const newRecord = await existingUser.save();
+    user.email = requestBody.email;
+    const newRecord = await user.save();
     return createToken(newRecord);
 }
 
 async function updateUserPassword(userId, requestBody, isAdmin) {
-    const existingUser = await User.findById(userId);
+    const user = await User.findById(userId);
 
-    if (!existingUser) {
+    if (!user) {
         throw new Error('User not found!');
+    }
+    if (user.isDeleted) {
+        throw new Error('Your profile is deleted!');
+    }
+    if (!user.isApproved) {
+        throw new Error('Your profile is not approved!');
     }
 
     if (!isAdmin) {
         const match = await bcrypt.compare(
             requestBody.oldPassword,
-            existingUser.hashedPassword
+            user.hashedPassword
         );
         if (!match) {
             throw new Error('Password dismatch!');
         }
     }
 
-    existingUser.hashedPassword = await bcrypt.hash(
+    user.hashedPassword = await bcrypt.hash(
         requestBody.newPassword,
         10
     );
-    const newRecord = await existingUser.save();
+    const newRecord = await user.save();
     return createToken(newRecord);
 }
 
 async function updateUserRole(userId, requestBody) {
-    const existingUser = await User.findById(userId);
-    if (!existingUser) {
+    const user = await User.findById(userId);
+    if (!user) {
         throw new Error('User not found');
     }
+    if (user.isDeleted) {
+        throw new Error('Your profile is deleted!');
+    }
+    if (!user.isApproved) {
+        throw new Error('Your profile is not approved!');
+    }
+
     if (requestBody.role == 'organizer') {
-        if (existingUser.organizatorName == '' && existingUser.phone == '') {
+        if (user.organizatorName == '' && user.phone == '') {
             if (!requestBody.organizatorName || !requestBody.phone) {
                 throw new Error('Fill all required fields!');
             }
-            existingUser.organizatorName = requestBody.organizatorName;
-            existingUser.phone = requestBody.phone;
+            user.organizatorName = requestBody.organizatorName;
+            user.phone = requestBody.phone;
         }
     }
-    existingUser.role = requestBody.role;
+    user.role = requestBody.role;
 
-    const newRecord = await existingUser.save();
+    const newRecord = await user.save();
     return createToken(newRecord);
 }
 
