@@ -90,6 +90,7 @@ userController.post('/login', async (req, res) => {
 userController.put('/editUserInfo/:id', async (req, res) => {
     try {
         const userId = req.params.id;
+        //TODO - Check the requester form DB
         const isAdmin = req.requester.role == 'admin';
         checkRequestData(req.body);
         if (req.requester._id == userId || isAdmin) {
@@ -108,6 +109,7 @@ userController.put('/editUserInfo/:id', async (req, res) => {
 userController.put('/editUserEmail/:id', async (req, res) => {
     try {
         const userId = req.params.id;
+        //TODO - Check the requester form DB
         const isAdmin = req.requester.role == 'admin';
         checkRequestData(req.body);
         if (req.requester._id == userId || isAdmin) {
@@ -126,6 +128,8 @@ userController.put('/editUserEmail/:id', async (req, res) => {
 userController.put('/editUserPassword/:id', async (req, res) => {
     try {
         const userId = req.params.id;
+        //TODO - Check the requester form DB
+
         const isAdmin = req.requester.role == 'admin';
         checkRequestData(req.body);
         if (req.body.newPassword !== req.body.newRepassword) {
@@ -147,6 +151,7 @@ userController.put('/editUserPassword/:id', async (req, res) => {
 userController.put('/editUserRole/:id', async (req, res) => {
     try {
         const userId = req.params.id;
+        //TODO - Check the requester form DB
         const isAdmin = req.requester.role == 'admin';
         checkRequestData(req.body);
         if (isAdmin) {
