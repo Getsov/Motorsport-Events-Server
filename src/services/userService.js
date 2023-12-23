@@ -22,7 +22,7 @@ async function registerUser(requestBody) {
 
 async function loginUser(email, password) {
     const user = await User.findOne({ email });
-    // TODO: Can not approved user will be able to log in?
+
     if (!user) {
         throw new Error('Invalid email or password!');
     }
