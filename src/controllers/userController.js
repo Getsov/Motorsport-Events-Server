@@ -89,17 +89,22 @@ userController.post('/login', async (req, res) => {
 
 userController.put('/editUserInfo/:id', async (req, res) => {
     try {
-        const userId = req.params.id;
+        const userForEdit = req.params.id;
+        const requester = req.requester._id;
         //TODO - Check the requester form DB
-        const isAdmin = req.requester.role == 'admin';
+        //check if requester is admin or same user
+        //to check if is not deleted, approve, and fields
+        //to change isApproved to false
         checkRequestData(req.body);
-        if (req.requester._id == userId || isAdmin) {
-            const result = await updateUserInfo(userId, req.body, isAdmin);
-            res.status(200).json(result);
-            res.end();
-        } else {
-            throw new Error('You do not have rights to modify the record!');
-        }
+        const result = await updateUserInfo(userForEdit, req.body,requester);
+        res.status(200).json(result);
+        res.end();
+        // const isAdmin = req.requester.role == 'admin';
+        // if (req.requester._id == userId || isAdmin) {
+        //     res.end();
+        // } else {
+        //     throw new Error('You do not have rights to modify the record!');
+        // }
     } catch (error) {
         console.log(error);
         res.status(400).json({ error: error.message });
@@ -152,6 +157,7 @@ userController.put('/editUserRole/:id', async (req, res) => {
     try {
         const userId = req.params.id;
         //TODO - Check the requester form DB
+                //to change isApproved to false
         const isAdmin = req.requester.role == 'admin';
         checkRequestData(req.body);
         if (isAdmin) {

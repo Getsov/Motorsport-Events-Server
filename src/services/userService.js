@@ -27,7 +27,9 @@ async function loginUser(email, password) {
         throw new Error('Invalid email or password!');
     }
     if (user.isDeleted) {
-        throw new Error('This account has been deleted, please contact support');
+        throw new Error(
+            'This account has been deleted, please contact support'
+        );
     }
     if (!user.isApproved) {
         throw new Error('Your profile is not approved yet!');
@@ -54,23 +56,29 @@ async function loginUser(email, password) {
 
 //updateUser can be invoked by adminController and userController
 //accept id of user which will be updated, new data and isAdmin property
-async function updateUserInfo(userId, requestBody, isAdmin) {
-    const user = await User.findById(userId);
+async function updateUserInfo(idOfuserForEdit, requestBody, requesterId) {
+    const userForEdit = await User.findById(idOfuserForEdit);
+    const requester = await User.findById(requesterId);
+    const isAdmin = requester.role == 'admin' ? true : false;
 
-    if (!user) {
+    if (!isAdmin && requester._id != idOfuserForEdit) {
+        throw new Error('You do not have rights to modify the record!');
+    }
+    if (!userForEdit || !requester) {
         throw new Error('User not found');
     }
-    if (user.isDeleted) {
+    if (userForEdit.isDeleted || requester.isDeleted) {
         throw new Error('Your profile is deleted!');
     }
-    if (!user.isApproved) {
+    if (!userForEdit.isApproved || !requester.isApproved) {
         throw new Error('Your profile is not approved!');
     }
-    if (user.role == 'organizer') {
-        if (user.organizatorName == '') {
+
+    if (userForEdit.role == 'organizer') {
+        if (userForEdit.organizatorName == '') {
             throw new Error('Name of organization is required');
         }
-        if (user.phone == '') {
+        if (userForEdit.phone == '') {
             throw new Error('Phone is required');
         }
     }
@@ -87,16 +95,16 @@ async function updateUserInfo(userId, requestBody, isAdmin) {
         ) {
             continue;
         }
-        user[key] = requestBody[key];
+        userForEdit[key] = requestBody[key];
     }
 
     if (isAdmin) {
         'isDeleted' in requestBody
-            ? (user.isDeleted = requestBody.isDeleted)
-            : (user.isDeleted = user.isDeleted);
+            ? (userForEdit.isDeleted = requestBody.isDeleted)
+            : (userForEdit.isDeleted = userForEdit.isDeleted);
     }
 
-    const newRecord = await user.save();
+    const newRecord = await userForEdit.save();
     return createToken(newRecord);
 }
 
@@ -144,10 +152,7 @@ async function updateUserPassword(userId, requestBody, isAdmin) {
         }
     }
 
-    user.hashedPassword = await bcrypt.hash(
-        requestBody.newPassword,
-        10
-    );
+    user.hashedPassword = await bcrypt.hash(requestBody.newPassword, 10);
     const newRecord = await user.save();
     return createToken(newRecord);
 }
