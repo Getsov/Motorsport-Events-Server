@@ -56,12 +56,12 @@ async function loginUser(email, password) {
 
 //updateUser can be invoked by adminController and userController
 //accept id of user which will be updated, new data and isAdmin property
-async function updateUserInfo(idOfuserForEdit, requestBody, requesterId) {
-    const userForEdit = await User.findById(idOfuserForEdit);
+async function updateUserInfo(idOfUserForEdit, requestBody, requesterId) {
+    const userForEdit = await User.findById(idOfUserForEdit);
     const requester = await User.findById(requesterId);
     const isAdmin = requester.role == 'admin' ? true : false;
 
-    if (!isAdmin && requester._id != idOfuserForEdit) {
+    if (!isAdmin && requester._id != idOfUserForEdit) {
         throw new Error('You do not have rights to modify the record!');
     }
     if (!userForEdit || !requester) {
@@ -97,7 +97,7 @@ async function updateUserInfo(idOfuserForEdit, requestBody, requesterId) {
         }
         userForEdit[key] = requestBody[key];
     }
-
+    //To remove delete function and make new request for "delete" property
     if (isAdmin) {
         'isDeleted' in requestBody
             ? (userForEdit.isDeleted = requestBody.isDeleted)
@@ -108,15 +108,21 @@ async function updateUserInfo(idOfuserForEdit, requestBody, requesterId) {
     return createToken(newRecord);
 }
 
-async function updateUserEmail(userId, requestBody) {
-    const user = await User.findById(userId);
-    if (!user) {
-        throw new Error('User not found!');
+async function updateUserEmail(idOfUserForEdit, requestBody, requesterId) {
+    const userForEdit = await User.findById(idOfUserForEdit);
+    const requester = await User.findById(requesterId);
+    const isAdmin = requester.role == 'admin' ? true : false;
+
+    if (!isAdmin && requester._id != idOfUserForEdit) {
+        throw new Error('You do not have rights to modify the record!');
     }
-    if (user.isDeleted) {
+    if (!userForEdit || !requester) {
+        throw new Error('User not found');
+    }
+    if (userForEdit.isDeleted || requester.isDeleted) {
         throw new Error('Your profile is deleted!');
     }
-    if (!user.isApproved) {
+    if (!userForEdit.isApproved || !requester.isApproved) {
         throw new Error('Your profile is not approved!');
     }
 
@@ -124,8 +130,8 @@ async function updateUserEmail(userId, requestBody) {
         throw new Error("Email field can't be empty!");
     }
 
-    user.email = requestBody.email;
-    const newRecord = await user.save();
+    userForEdit.email = requestBody.email;
+    const newRecord = await userForEdit.save();
     return createToken(newRecord);
 }
 
