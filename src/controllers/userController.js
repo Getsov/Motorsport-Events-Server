@@ -92,7 +92,7 @@ userController.put('/editUserInfo/:id', async (req, res) => {
         const userForEdit = req.params.id;
         const requester = req.requester._id;
         checkRequestData(req.body);
-        const result = await updateUserInfo(userForEdit, req.body,requester);
+        const result = await updateUserInfo(userForEdit, req.body, requester);
         res.status(200).json(result);
         res.end();
     } catch (error) {
@@ -121,7 +121,7 @@ userController.put('/editUserEmail/:id', async (req, res) => {
 });
 
 userController.put('/editUserPassword/:id', async (req, res) => {
-    //TODO - Create new request for change "delete" property of user 
+    //TODO - Create new request for change "delete" property of user
     try {
         const userId = req.params.id;
 
@@ -147,7 +147,7 @@ userController.put('/editUserRole/:id', async (req, res) => {
     try {
         const userId = req.params.id;
         //TODO - Check the requester form DB
-                //to change isApproved to false
+        //to change isApproved to false
         const isAdmin = req.requester.role == 'admin';
         checkRequestData(req.body);
         if (isAdmin) {
