@@ -8,7 +8,7 @@ const {
     updateUserPassword,
     returnAllCreatedEvents,
     returnAllFavouriteEvents,
-    updateUserRole,
+    editUserRole,
     getAllOrganizersForApproval,
     getAllOrganizers,
     getAllRegularUsers,
@@ -141,7 +141,7 @@ userController.put('/editUserRole/:id', async (req, res) => {
         const userForEdit = req.params.id;
         const requester = req.requester._id;
         checkRequestData(req.body);
-        const result = await updateUserRole(userForEdit, req.body, requester);
+        const result = await editUserRole(userForEdit, req.body, requester);
         res.status(200).json(result);
         res.end();
     } catch (error) {

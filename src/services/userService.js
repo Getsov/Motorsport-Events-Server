@@ -167,7 +167,7 @@ async function updateUserPassword(idOfUserForEdit, requestBody, requesterId) {
     return createToken(newRecord);
 }
 
-async function updateUserRole(idOfUserForEdit, requestBody, requesterId) {
+async function editUserRole(idOfUserForEdit, requestBody, requesterId) {
     const userForEdit = await User.findById(idOfUserForEdit);
     const requester = await User.findById(requesterId);
     const isAdmin = requester.role == 'admin' ? true : false;
@@ -409,7 +409,7 @@ module.exports = {
     updateUserInfo,
     updateUserEmail,
     updateUserPassword,
-    updateUserRole,
+    editUserRole,
     addEventToLikedEvents,
     addEventToCreatedEvents,
     returnAllCreatedEvents,
