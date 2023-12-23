@@ -22,6 +22,7 @@ async function registerUser(requestBody) {
 
 async function loginUser(email, password) {
     const user = await User.findOne({ email });
+    // TODO: Can not approved user will be able to log in?
     if (!user) {
         throw new Error('Invalid email or password!');
     }
@@ -53,15 +54,22 @@ async function loginUser(email, password) {
 //updateUser can be invoked by adminController and userController
 //accept id of user which will be updated, new data and isAdmin property
 async function updateUserInfo(userId, requestBody, isAdmin) {
-    const existingUser = await User.findById(userId);
-    if (!existingUser) {
+    const user = await User.findById(userId);
+    
+    if (!user) {
         throw new Error('User not found');
     }
-    if (existingUser.role == 'organizer') {
-        if (existingUser.organizatorName == '') {
+    if (user.isDeleted) {
+        throw new Error('Your profile is deleted!');
+    }
+    if (!user.isApproved) {
+        throw new Error('Your profile is not approved!');
+    }
+    if (user.role == 'organizer') {
+        if (user.organizatorName == '') {
             throw new Error('Name of organization is required');
         }
-        if (existingUser.phone == '') {
+        if (user.phone == '') {
             throw new Error('Phone is required');
         }
     }
@@ -78,16 +86,16 @@ async function updateUserInfo(userId, requestBody, isAdmin) {
         ) {
             continue;
         }
-        existingUser[key] = requestBody[key];
+        user[key] = requestBody[key];
     }
 
     if (isAdmin) {
         'isDeleted' in requestBody
-            ? (existingUser.isDeleted = requestBody.isDeleted)
-            : (existingUser.isDeleted = existingUser.isDeleted);
+            ? (user.isDeleted = requestBody.isDeleted)
+            : (user.isDeleted = user.isDeleted);
     }
 
-    const newRecord = await existingUser.save();
+    const newRecord = await user.save();
     return createToken(newRecord);
 }
 
