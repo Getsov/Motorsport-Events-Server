@@ -107,7 +107,11 @@ userController.put('/editDeleted/:id', async (req, res) => {
         const userForEdit = req.params.id;
         const requester = req.requester._id;
         checkRequestData(req.body);
-        const result = await editDeletedProperty(userForEdit, req.body, requester);
+        const result = await editDeletedProperty(
+            userForEdit,
+            req.body,
+            requester
+        );
         res.status(200).json(result);
         res.end();
     } catch (error) {

@@ -204,16 +204,15 @@ async function editDeletedProperty(idOfUserForEdit, requestBody, requesterId) {
     if (!userForEdit || !requester) {
         throw new Error('User not found');
     }
-    if (userForEdit.isDeleted || requester.isDeleted) {
-        throw new Error('This profile is deleted!');
+    if (requester.isDeleted) {
+        throw new Error('Your profile is deleted!');
     }
     if (!requester.isApproved) {
         throw new Error('Your profile is not approved!');
     }
-    if(requestBody.isDeleted){
-        userForEdit.isDeleted = requestBody.isDeleted
+    if (requestBody.isDeleted) {
+        userForEdit.isDeleted = requestBody.isDeleted;
     }
- 
 
     const newRecord = await userForEdit.save();
     return createToken(newRecord);
