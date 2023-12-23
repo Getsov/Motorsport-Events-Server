@@ -9,7 +9,6 @@ function checkDatesAndTime(dates) {
         for (let j = i + 1; j < dates.length; j++) {
             const nextDate = dates[j].date;
             if (currentDate === nextDate) {
-                console.log(dates[i].date, dates[j].date);
                 throw new Error('Event cant be created with same dates!');
             }
         }
