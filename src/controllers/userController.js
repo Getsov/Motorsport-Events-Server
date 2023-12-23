@@ -124,7 +124,7 @@ userController.put('/editUserPassword/:id', async (req, res) => {
         if (req.body.newPassword !== req.body.newRepassword) {
             throw new Error('Password dismatch!');
         }
-        const result = await updateUserPassword(userId, req.body, isAdmin);
+        const result = await updateUserPassword(userForEdit, req.body, requester);
         res.status(200).json(result);
         res.end();
     } catch (error) {
