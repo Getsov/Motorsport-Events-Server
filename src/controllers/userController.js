@@ -15,6 +15,7 @@ const {
     getAllAdmins,
     approveOrganizer,
     getAllUsers,
+    editDeletedProperty,
 } = require('../services/userService');
 const { validPassword } = require('../shared/sharedRegex');
 const { checkRequestData } = require('../utils/checkData');
@@ -93,6 +94,20 @@ userController.put('/editUserInfo/:id', async (req, res) => {
         const requester = req.requester._id;
         checkRequestData(req.body);
         const result = await updateUserInfo(userForEdit, req.body, requester);
+        res.status(200).json(result);
+        res.end();
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ error: error.message });
+    }
+});
+
+userController.put('/editDeleted/:id', async (req, res) => {
+    try {
+        const userForEdit = req.params.id;
+        const requester = req.requester._id;
+        checkRequestData(req.body);
+        const result = await editDeletedProperty(userForEdit, req.body, requester);
         res.status(200).json(result);
         res.end();
     } catch (error) {
