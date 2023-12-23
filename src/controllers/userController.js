@@ -91,20 +91,10 @@ userController.put('/editUserInfo/:id', async (req, res) => {
     try {
         const userForEdit = req.params.id;
         const requester = req.requester._id;
-        //TODO - Check the requester form DB
-        //check if requester is admin or same user
-        //to check if is not deleted, approve, and fields
-        //to change isApproved to false
         checkRequestData(req.body);
         const result = await updateUserInfo(userForEdit, req.body,requester);
         res.status(200).json(result);
         res.end();
-        // const isAdmin = req.requester.role == 'admin';
-        // if (req.requester._id == userId || isAdmin) {
-        //     res.end();
-        // } else {
-        //     throw new Error('You do not have rights to modify the record!');
-        // }
     } catch (error) {
         console.log(error);
         res.status(400).json({ error: error.message });
@@ -131,9 +121,9 @@ userController.put('/editUserEmail/:id', async (req, res) => {
 });
 
 userController.put('/editUserPassword/:id', async (req, res) => {
+    //TODO - Create new request for change "delete" property of user 
     try {
         const userId = req.params.id;
-        //TODO - Check the requester form DB
 
         const isAdmin = req.requester.role == 'admin';
         checkRequestData(req.body);
