@@ -97,12 +97,6 @@ async function updateUserInfo(idOfUserForEdit, requestBody, requesterId) {
         }
         userForEdit[key] = requestBody[key];
     }
-    //To remove delete function and make new request for "delete" property
-    if (isAdmin) {
-        'isDeleted' in requestBody
-            ? (userForEdit.isDeleted = requestBody.isDeleted)
-            : (userForEdit.isDeleted = userForEdit.isDeleted);
-    }
 
     const newRecord = await userForEdit.save();
     return createToken(newRecord);
@@ -194,6 +188,32 @@ async function editUserRole(idOfUserForEdit, requestBody, requesterId) {
         }
     }
     userForEdit.role = requestBody.role;
+
+    const newRecord = await userForEdit.save();
+    return createToken(newRecord);
+}
+
+async function editDeletedProperty(idOfUserForEdit, requestBody, requesterId) {
+    const userForEdit = await User.findById(idOfUserForEdit);
+    const requester = await User.findById(requesterId);
+
+    const isAdmin = requester.role == 'admin' ? true : false;
+    if (!isAdmin) {
+        throw new Error('You do not have rights to modify the record!');
+    }
+    if (!userForEdit || !requester) {
+        throw new Error('User not found');
+    }
+    if (userForEdit.isDeleted || requester.isDeleted) {
+        throw new Error('This profile is deleted!');
+    }
+    if (!requester.isApproved) {
+        throw new Error('Your profile is not approved!');
+    }
+    if(requestBody.isDeleted){
+        userForEdit.isDeleted = requestBody.isDeleted
+    }
+ 
 
     const newRecord = await userForEdit.save();
     return createToken(newRecord);
@@ -410,6 +430,7 @@ module.exports = {
     updateUserEmail,
     updateUserPassword,
     editUserRole,
+    editDeletedProperty,
     addEventToLikedEvents,
     addEventToCreatedEvents,
     returnAllCreatedEvents,
