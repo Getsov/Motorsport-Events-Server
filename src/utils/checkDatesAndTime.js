@@ -1,5 +1,5 @@
 function checkDatesAndTime(dates) {
-    for (let i = 0; i < dates.length; i++) {
+    for (let i = 0; i < dates.length - 1; i++) {
         const currentDate = dates[i].date;
         const startTime = dates[i].startTime;
         const endTime = dates[i].endTime;
