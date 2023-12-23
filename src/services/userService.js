@@ -136,7 +136,6 @@ async function updateUserEmail(idOfUserForEdit, requestBody, requesterId) {
 }
 
 async function updateUserPassword(idOfUserForEdit, requestBody, requesterId) {
-
     const userForEdit = await User.findById(idOfUserForEdit);
     const requester = await User.findById(requesterId);
     const isAdmin = requester.role == 'admin' ? true : false;
