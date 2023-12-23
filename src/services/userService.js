@@ -135,31 +135,36 @@ async function updateUserEmail(idOfUserForEdit, requestBody, requesterId) {
     return createToken(newRecord);
 }
 
-async function updateUserPassword(userId, requestBody, isAdmin) {
-    const user = await User.findById(userId);
+async function updateUserPassword(idOfUserForEdit, requestBody, requesterId) {
 
-    if (!user) {
-        throw new Error('User not found!');
+    const userForEdit = await User.findById(idOfUserForEdit);
+    const requester = await User.findById(requesterId);
+    const isAdmin = requester.role == 'admin' ? true : false;
+    if (!isAdmin && requester._id != idOfUserForEdit) {
+        throw new Error('You do not have rights to modify the record!');
     }
-    if (user.isDeleted) {
-        throw new Error('Your profile is deleted!');
+    if (!userForEdit || !requester) {
+        throw new Error('User not found');
     }
-    if (!user.isApproved) {
-        throw new Error('Your profile is not approved!');
+    if (userForEdit.isDeleted || requester.isDeleted) {
+        throw new Error('This profile is deleted!');
+    }
+    if (!userForEdit.isApproved || !requester.isApproved) {
+        throw new Error('This profile is not approved!');
     }
 
     if (!isAdmin) {
         const match = await bcrypt.compare(
             requestBody.oldPassword,
-            user.hashedPassword
+            userForEdit.hashedPassword
         );
         if (!match) {
             throw new Error('Password dismatch!');
         }
     }
 
-    user.hashedPassword = await bcrypt.hash(requestBody.newPassword, 10);
-    const newRecord = await user.save();
+    userForEdit.hashedPassword = await bcrypt.hash(requestBody.newPassword, 10);
+    const newRecord = await userForEdit.save();
     return createToken(newRecord);
 }
 
