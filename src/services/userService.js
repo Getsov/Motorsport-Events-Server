@@ -388,6 +388,7 @@ function createToken(user) {
         phone: user.phone,
         isDeleted: user.isDeleted,
         isApproved: user.isApproved,
+        likedEvents: user.likedEvents,
         accessToken: jwt.sign(payload, secret, { expiresIn: expiresInTenDays }),
     };
 }
