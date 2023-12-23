@@ -31,9 +31,7 @@ const eventSchema = new Schema({
     },
     longDescription: {
         type: String,
-        required: true,
         trim: true,
-        minlength: [10, 'Long description must be minimum 10 characters long!'],
         maxlength: [
             250,
             'Long description must be maximum 250 characters long!',
