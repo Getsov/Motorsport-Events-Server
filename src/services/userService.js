@@ -75,10 +75,10 @@ async function updateUserInfo(idOfUserForEdit, requestBody, requesterId) {
     }
 
     if (userForEdit.role == 'organizer') {
-        if (userForEdit.organizatorName == '') {
+        if (requestBody.organizatorName == '') {
             throw new Error('Name of organization is required');
         }
-        if (userForEdit.phone == '') {
+        if (requestBody.phone == '') {
             throw new Error('Phone is required');
         }
     }
