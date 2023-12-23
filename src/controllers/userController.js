@@ -138,18 +138,12 @@ userController.put('/editUserPassword/:id', async (req, res) => {
 });
 userController.put('/editUserRole/:id', async (req, res) => {
     try {
-        const userId = req.params.id;
-        //TODO - Check the requester form DB
-        //to change isApproved to false
-        const isAdmin = req.requester.role == 'admin';
+        const userForEdit = req.params.id;
+        const requester = req.requester._id;
         checkRequestData(req.body);
-        if (isAdmin) {
-            const result = await updateUserRole(userId, req.body);
-            res.status(200).json(result);
-            res.end();
-        } else {
-            throw new Error('You do not have rights to modify the record!');
-        }
+        const result = await updateUserRole(userForEdit, req.body, requester);
+        res.status(200).json(result);
+        res.end();
     } catch (error) {
         console.log(error);
         res.status(400).json({ error: error.message });

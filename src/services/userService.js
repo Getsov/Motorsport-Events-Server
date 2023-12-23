@@ -167,30 +167,35 @@ async function updateUserPassword(idOfUserForEdit, requestBody, requesterId) {
     return createToken(newRecord);
 }
 
-async function updateUserRole(userId, requestBody) {
-    const user = await User.findById(userId);
-    if (!user) {
+async function updateUserRole(idOfUserForEdit, requestBody, requesterId) {
+    const userForEdit = await User.findById(idOfUserForEdit);
+    const requester = await User.findById(requesterId);
+    const isAdmin = requester.role == 'admin' ? true : false;
+    if (!isAdmin) {
+        throw new Error('You do not have rights to modify the record!');
+    }
+    if (!userForEdit || !requester) {
         throw new Error('User not found');
     }
-    if (user.isDeleted) {
-        throw new Error('Your profile is deleted!');
+    if (userForEdit.isDeleted || requester.isDeleted) {
+        throw new Error('This profile is deleted!');
     }
-    if (!user.isApproved) {
-        throw new Error('Your profile is not approved!');
+    if (!userForEdit.isApproved || !requester.isApproved) {
+        throw new Error('This profile is not approved!');
     }
 
     if (requestBody.role == 'organizer') {
-        if (user.organizatorName == '' && user.phone == '') {
+        if (userForEdit.organizatorName == '' && userForEdit.phone == '') {
             if (!requestBody.organizatorName || !requestBody.phone) {
                 throw new Error('Fill all required fields!');
             }
-            user.organizatorName = requestBody.organizatorName;
-            user.phone = requestBody.phone;
+            userForEdit.organizatorName = requestBody.organizatorName;
+            userForEdit.phone = requestBody.phone;
         }
     }
-    user.role = requestBody.role;
+    userForEdit.role = requestBody.role;
 
-    const newRecord = await user.save();
+    const newRecord = await userForEdit.save();
     return createToken(newRecord);
 }
 
