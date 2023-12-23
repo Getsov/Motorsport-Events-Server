@@ -120,10 +120,10 @@ async function updateUserEmail(idOfUserForEdit, requestBody, requesterId) {
         throw new Error('User not found');
     }
     if (userForEdit.isDeleted || requester.isDeleted) {
-        throw new Error('Your profile is deleted!');
+        throw new Error('This profile is deleted!');
     }
     if (!userForEdit.isApproved || !requester.isApproved) {
-        throw new Error('Your profile is not approved!');
+        throw new Error('This profile is not approved!');
     }
 
     if (requestBody.email == '') {
