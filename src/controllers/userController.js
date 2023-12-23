@@ -102,7 +102,7 @@ userController.put('/editUserInfo/:id', async (req, res) => {
 });
 
 userController.put('/editUserEmail/:id', async (req, res) => {
-    try { 
+    try {
         const userForEdit = req.params.id;
         const requester = req.requester._id;
         checkRequestData(req.body);
@@ -118,21 +118,15 @@ userController.put('/editUserEmail/:id', async (req, res) => {
 userController.put('/editUserPassword/:id', async (req, res) => {
     //TODO - Create new request for change "delete" property of user
     try {
-        const userId = req.params.id;
-
-        const isAdmin = req.requester.role == 'admin';
+        const userForEdit = req.params.id;
+        const requester = req.requester._id;
         checkRequestData(req.body);
         if (req.body.newPassword !== req.body.newRepassword) {
             throw new Error('Password dismatch!');
         }
-
-        if (req.requester._id == userId || isAdmin) {
-            const result = await updateUserPassword(userId, req.body, isAdmin);
-            res.status(200).json(result);
-            res.end();
-        } else {
-            throw new Error('You do not have rights to modify the record!');
-        }
+        const result = await updateUserPassword(userId, req.body, isAdmin);
+        res.status(200).json(result);
+        res.end();
     } catch (error) {
         console.log(error);
         res.status(400).json({ error: error.message });
