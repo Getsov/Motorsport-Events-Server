@@ -169,14 +169,23 @@ async function getByMonth(startDate, endDate) {
     return events;
 }
 
-async function getUpcoming(today) {
-    // Return documents where their 'dates.date[]' have the date from the given month.
-    const events = await Event.find({
-        isDeleted: false,
-        isApproved: true,
-        'dates.0.date': { $gt: today }
-    });
-    return events;
+async function getUpcomingPastEvents(today) {
+    if (today?.todayEnd) {
+        const events = await Event.find({
+            isDeleted: false,
+            isApproved: true,
+            'dates.0.date': { $gt: today.todayEnd }
+        });
+        return events;
+    }
+    if (today?.todayStart) {
+        const events = await Event.find({
+            isDeleted: false,
+            isApproved: true,
+            'dates.0.date': { $lt: today.todayStart }
+        });
+        return events;
+    }
 }
 
 async function getAllEventsForApproval(requesterId) {
@@ -204,70 +213,36 @@ module.exports = {
     likeUnlikeEvent,
     getByMonth,
     getAllEventsForApproval,
-    getUpcoming,
+    getUpcomingPastEvents,
 };
 
 // Commented code below is for postman tests!
 
 // {
-//     "shortTitle": "Hissar Coup",
-//     "longTitle": "",
+//     "shortTitle": "Special Testing",
 //     "shortDescription": "Lorem..",
-//     "longDescription": "Lorem ipsum dolor sit amet miimet.",
 //     "dates": [
 //         {
-//             "date": "2023-11-17",
-//             "startTime": "23:59",
-//             "endTime": "06:40"
+//             "date": "2023-12-25",
+//             "startTime": "10:59",
+//             "endTime": "22:40"
 //         }
 //     ],
-//     "imageUrl": "",
 //     "contacts": {
 //         "coordinates": {
 //             "lat": "42.52911093579847",
 //             "long": "24.707900125838766"
 //         },
-//         "region": "Hisarya",
+//         "region": "Пловдив",
 //         "address": "Хайдут Генчо N1",
 //         "phone": "0123456789",
 //         "email": "peter@abv.bg"
 //     },
-//     "category": "Drag",
-//     "likes": [
-//         "6542c24b6102c6f4e79108fc",
-//         "6542c24b6102c6f4e79108fc",
-//         "6542c24b6102c6f4e79108fc"
-//     ],
-//     "winners": [
-//         {
-//             "name": "Pavel",
-//             "vehicle": "Trabant",
-//             "place": 1,
-//             "_id": "65573f3a1bba3e1d78877f48"
-//         },
-//         {
-//             "name": "Ivan",
-//             "vehicle": "Wartburg",
-//             "place": 2,
-//             "_id": "65573f3a1bba3e1d78877f49"
-//         },
-//         {
-//             "name": "Dragan",
-//             "vehicle": "Moskvich",
-//             "place": 3,
-//             "_id": "65573f3a1bba3e1d78877f4a"
-//         }
-//     ],
+//     "category": "Драг",
 //     "visitorPrices": [
 //         {
 //             "price": 15,
 //             "description": "Цена за зрители"
-//         }
-//     ],
-//     "participantPrices": [
-//         {
-//             "price": 15,
-//             "description": "Цена за участници"
 //         }
 //     ]
 // }
