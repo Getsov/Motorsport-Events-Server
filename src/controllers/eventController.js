@@ -7,6 +7,7 @@ const {
     likeUnlikeEvent,
     getByMonth,
     getAllEventsForApproval,
+    getUpcoming,
 } = require('../services/eventService');
 const {
     addEventToLikedEvents,
@@ -57,11 +58,26 @@ eventController.post('/register', async (req, res) => {
 
         const event = await registerEvent(req.body, req.requester._id);
         await addEventToCreatedEvents(event._id, req.requester._id);
-
+        
         res.status(200).json(event);
         res.end();
     } catch (error) {
         res.status(400).json({ error: error.message });
+    }
+});
+
+// Upcoming Events
+eventController.get('/upcoming', async (req, res) => {
+    try {
+        const { today } = getMonthRange();
+        console.log(today);
+        const events = await getUpcoming(today);
+
+        res.status(200).json(events);
+        res.end();
+    } catch (error) {
+        res.status(400).json(error.message);
+        res.end();
     }
 });
 
@@ -201,6 +217,7 @@ eventController.get('/month/:year/:month', async (req, res) => {
     }
 });
 
+
 // Unmatched route
 eventController.use((req, res) => {
     res.status(404).json({
@@ -226,9 +243,12 @@ const getMonthRange = (year, month) => {
     const endDate = new Date(year, month, 0);
     endDate.setHours(23, 59, 59, 999);
 
+    const today = new Date(Date.now());
+    today.setHours(0, 0, 0, 0);
+
     // Check who need to know about local time, and then pass this variables?
     const localStartDate = startDate.toLocaleString();
     const localEndDate = endDate.toLocaleString();
 
-    return { startDate, endDate };
+    return { startDate, endDate, today };
 };
