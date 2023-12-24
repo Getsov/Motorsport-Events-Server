@@ -81,7 +81,6 @@ Retrieve all events waiting for approval! Available only for active and approved
 
 -   **_User_**:
 
-
 Retrieve all organizers waiting for approval! Available only for active and approved admins!
 
 -   **Method:** `GET`
@@ -159,6 +158,7 @@ Update entry with ID `654651caf696083cab72ab1c` in the `events` collection:
     Headers: `Content-Type: application/json`
     Body: JSON-formatted data
     Changes: Admin and User itself can change the email, but only if the requester of this change is not deleted or is approved.
+    To fulfill the request, the user must send the new email.
 
 -   **Method:** `PUT`
 -   **Endpont:** `/user/editUserPassword/:id`
