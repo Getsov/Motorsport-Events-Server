@@ -1,4 +1,7 @@
 function checkDatesAndTime(dates) {
+    if (!dates || dates?.length < 1) {
+        throw new Error('Event need dates!');
+    }
     for (let i = 0; i < dates.length; i++) {
         const currentDate = dates[i].date;
         const startTime = dates[i].startTime;
