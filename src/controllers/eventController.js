@@ -69,9 +69,9 @@ eventController.post('/register', async (req, res) => {
 // Upcoming Events
 eventController.get('/upcoming', async (req, res) => {
     try {
-        const { today } = getMonthRange();
-        console.log(today);
-        const events = await getUpcoming(today);
+        const { todayEnd } = getMonthRange();
+        console.log(todayEnd);
+        const events = await getUpcoming(todayEnd);
 
         res.status(200).json(events);
         res.end();
@@ -243,12 +243,14 @@ const getMonthRange = (year, month) => {
     const endDate = new Date(year, month, 0);
     endDate.setHours(23, 59, 59, 999);
 
-    const today = new Date(Date.now());
-    today.setHours(0, 0, 0, 0);
+    const todayStart = new Date(Date.now());
+    todayStart.setHours(0, 0, 0, 0);
+
+    const todayEnd = todayStart.setHours(23, 59, 59, 999);;
 
     // Check who need to know about local time, and then pass this variables?
     const localStartDate = startDate.toLocaleString();
     const localEndDate = endDate.toLocaleString();
 
-    return { startDate, endDate, today };
+    return { startDate, endDate, todayStart, todayEnd };
 };
