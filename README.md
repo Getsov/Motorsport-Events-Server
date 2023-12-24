@@ -79,32 +79,33 @@ Retrieve all events waiting for approval! Available only for active and approved
 -   **Method:** `GET`
 -   **Endpont:** `/events/eventsForApproval`
 
+-   **_User_**:
+
+
 Retrieve all organizers waiting for approval! Available only for active and approved admins!
 
 -   **Method:** `GET`
--   **Endpont:** `/events/organizersForApproval`
+-   **Endpont:** `/user/organizersForApproval`
 
 Retrieve all organizers! Available only for active and approved admins!
 
 -   **Method:** `GET`
--   **Endpont:** `/events/allOrganizers`
+-   **Endpont:** `/user/allOrganizers`
 
 Retrieve all regular users! Available only for active and approved admins!
 
 -   **Method:** `GET`
--   **Endpont:** `/events/allRegularUsers`
+-   **Endpont:** `/user/allRegularUsers`
 
 Retrieve all admins! Available only for active and approved admins!
 
 -   **Method:** `GET`
--   **Endpont:** `/events/allAdmins`
+-   **Endpont:** `/user/allAdmins`
 
 Retrieve all users! Available only for active and approved admins!
 
 -   **Method:** `GET`
--   **Endpont:** `/events/allUsers`
-
--   **_User_**:
+-   **Endpont:** `/user/allUsers`
 
 Retrieve all events created from current user!
 

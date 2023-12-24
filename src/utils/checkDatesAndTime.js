@@ -6,7 +6,7 @@ function checkDatesAndTime(dates) {
         if (startTime >= endTime) {
             throw new Error("Start-time can't be after or equal to end-time!");
         }
-        for (let j = 1; j < dates.length; j++) {
+        for (let j = i + 1; j < dates.length; j++) {
             const nextDate = dates[j].date;
             if (currentDate === nextDate) {
                 throw new Error('Event cant be created with same dates!');

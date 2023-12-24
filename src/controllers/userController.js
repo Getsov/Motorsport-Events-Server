@@ -8,13 +8,14 @@ const {
     updateUserPassword,
     returnAllCreatedEvents,
     returnAllFavouriteEvents,
-    updateUserRole,
+    editUserRole,
     getAllOrganizersForApproval,
     getAllOrganizers,
     getAllRegularUsers,
     getAllAdmins,
     approveOrganizer,
     getAllUsers,
+    editDeletedProperty,
 } = require('../services/userService');
 const { validPassword } = require('../shared/sharedRegex');
 const { checkRequestData } = require('../utils/checkData');
@@ -89,16 +90,30 @@ userController.post('/login', async (req, res) => {
 
 userController.put('/editUserInfo/:id', async (req, res) => {
     try {
-        const userId = req.params.id;
-        const isAdmin = req.requester.role == 'admin';
+        const userForEdit = req.params.id;
+        const requester = req.requester._id;
         checkRequestData(req.body);
-        if (req.requester._id == userId || isAdmin) {
-            const result = await updateUserInfo(userId, req.body, isAdmin);
-            res.status(200).json(result);
-            res.end();
-        } else {
-            throw new Error('You do not have rights to modify the record!');
-        }
+        const result = await updateUserInfo(userForEdit, req.body, requester);
+        res.status(200).json(result);
+        res.end();
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ error: error.message });
+    }
+});
+
+userController.put('/editDeleted/:id', async (req, res) => {
+    try {
+        const userForEdit = req.params.id;
+        const requester = req.requester._id;
+        checkRequestData(req.body);
+        const result = await editDeletedProperty(
+            userForEdit,
+            req.body,
+            requester
+        );
+        res.status(200).json(result);
+        res.end();
     } catch (error) {
         console.log(error);
         res.status(400).json({ error: error.message });
@@ -107,16 +122,12 @@ userController.put('/editUserInfo/:id', async (req, res) => {
 
 userController.put('/editUserEmail/:id', async (req, res) => {
     try {
-        const userId = req.params.id;
-        const isAdmin = req.requester.role == 'admin';
+        const userForEdit = req.params.id;
+        const requester = req.requester._id;
         checkRequestData(req.body);
-        if (req.requester._id == userId || isAdmin) {
-            const result = await updateUserEmail(userId, req.body);
-            res.status(200).json(result);
-            res.end();
-        } else {
-            throw new Error('You do not have rights to modify the record!');
-        }
+        const result = await updateUserEmail(userForEdit, req.body, requester);
+        res.status(200).json(result);
+        res.end();
     } catch (error) {
         console.log(error);
         res.status(400).json({ error: error.message });
@@ -124,21 +135,21 @@ userController.put('/editUserEmail/:id', async (req, res) => {
 });
 
 userController.put('/editUserPassword/:id', async (req, res) => {
+    //TODO - Create new request for change "delete" property of user
     try {
-        const userId = req.params.id;
-        const isAdmin = req.requester.role == 'admin';
+        const userForEdit = req.params.id;
+        const requester = req.requester._id;
         checkRequestData(req.body);
         if (req.body.newPassword !== req.body.newRepassword) {
             throw new Error('Password dismatch!');
         }
-
-        if (req.requester._id == userId || isAdmin) {
-            const result = await updateUserPassword(userId, req.body, isAdmin);
-            res.status(200).json(result);
-            res.end();
-        } else {
-            throw new Error('You do not have rights to modify the record!');
-        }
+        const result = await updateUserPassword(
+            userForEdit,
+            req.body,
+            requester
+        );
+        res.status(200).json(result);
+        res.end();
     } catch (error) {
         console.log(error);
         res.status(400).json({ error: error.message });
@@ -146,16 +157,12 @@ userController.put('/editUserPassword/:id', async (req, res) => {
 });
 userController.put('/editUserRole/:id', async (req, res) => {
     try {
-        const userId = req.params.id;
-        const isAdmin = req.requester.role == 'admin';
+        const userForEdit = req.params.id;
+        const requester = req.requester._id;
         checkRequestData(req.body);
-        if (isAdmin) {
-            const result = await updateUserRole(userId, req.body);
-            res.status(200).json(result);
-            res.end();
-        } else {
-            throw new Error('You do not have rights to modify the record!');
-        }
+        const result = await editUserRole(userForEdit, req.body, requester);
+        res.status(200).json(result);
+        res.end();
     } catch (error) {
         console.log(error);
         res.status(400).json({ error: error.message });

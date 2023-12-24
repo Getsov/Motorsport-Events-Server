@@ -22,13 +22,17 @@ async function registerUser(requestBody) {
 
 async function loginUser(email, password) {
     const user = await User.findOne({ email });
+
     if (!user) {
         throw new Error('Invalid email or password!');
     }
-    if (user.isDeleted == true) {
+    if (user.isDeleted) {
         throw new Error(
             'This account has been deleted, please contact support'
         );
+    }
+    if (!user.isApproved) {
+        throw new Error('Your profile is not approved yet!');
     }
 
     // Validate user when login
@@ -52,16 +56,29 @@ async function loginUser(email, password) {
 
 //updateUser can be invoked by adminController and userController
 //accept id of user which will be updated, new data and isAdmin property
-async function updateUserInfo(userId, requestBody, isAdmin) {
-    const existingUser = await User.findById(userId);
-    if (!existingUser) {
+async function updateUserInfo(idOfUserForEdit, requestBody, requesterId) {
+    const userForEdit = await User.findById(idOfUserForEdit);
+    const requester = await User.findById(requesterId);
+    const isAdmin = requester.role == 'admin' ? true : false;
+
+    if (!isAdmin && requester._id != idOfUserForEdit) {
+        throw new Error('You do not have rights to modify the record!');
+    }
+    if (!userForEdit || !requester) {
         throw new Error('User not found');
     }
-    if (existingUser.role == 'organizer') {
-        if (existingUser.organizatorName == '') {
+    if (userForEdit.isDeleted || requester.isDeleted) {
+        throw new Error('This profile is deleted!');
+    }
+    if (!userForEdit.isApproved || !requester.isApproved) {
+        throw new Error('This profile is not approved!');
+    }
+
+    if (userForEdit.role == 'organizer') {
+        if (requestBody.organizatorName == '') {
             throw new Error('Name of organization is required');
         }
-        if (existingUser.phone == '') {
+        if (requestBody.phone == '') {
             throw new Error('Phone is required');
         }
     }
@@ -78,76 +95,126 @@ async function updateUserInfo(userId, requestBody, isAdmin) {
         ) {
             continue;
         }
-        existingUser[key] = requestBody[key];
+        userForEdit[key] = requestBody[key];
     }
 
-    if (isAdmin) {
-        'isDeleted' in requestBody
-            ? (existingUser.isDeleted = requestBody.isDeleted)
-            : (existingUser.isDeleted = existingUser.isDeleted);
-    }
-
-    const newRecord = await existingUser.save();
+    const newRecord = await userForEdit.save();
     return createToken(newRecord);
 }
 
-async function updateUserEmail(userId, requestBody) {
-    const existingUser = await User.findById(userId);
-    if (!existingUser) {
-        throw new Error('User not found!');
+async function updateUserEmail(idOfUserForEdit, requestBody, requesterId) {
+    const userForEdit = await User.findById(idOfUserForEdit);
+    const requester = await User.findById(requesterId);
+    const isAdmin = requester.role == 'admin' ? true : false;
+
+    if (!isAdmin && requester._id != idOfUserForEdit) {
+        throw new Error('You do not have rights to modify the record!');
+    }
+    if (!userForEdit || !requester) {
+        throw new Error('User not found');
+    }
+    if (userForEdit.isDeleted || requester.isDeleted) {
+        throw new Error('This profile is deleted!');
+    }
+    if (!userForEdit.isApproved || !requester.isApproved) {
+        throw new Error('This profile is not approved!');
     }
 
     if (requestBody.email == '') {
         throw new Error("Email field can't be empty!");
     }
 
-    existingUser.email = requestBody.email;
-    const newRecord = await existingUser.save();
+    userForEdit.email = requestBody.email;
+    const newRecord = await userForEdit.save();
     return createToken(newRecord);
 }
 
-async function updateUserPassword(userId, requestBody, isAdmin) {
-    const existingUser = await User.findById(userId);
-
-    if (!existingUser) {
-        throw new Error('User not found!');
+async function updateUserPassword(idOfUserForEdit, requestBody, requesterId) {
+    const userForEdit = await User.findById(idOfUserForEdit);
+    const requester = await User.findById(requesterId);
+    const isAdmin = requester.role == 'admin' ? true : false;
+    if (!isAdmin && requester._id != idOfUserForEdit) {
+        throw new Error('You do not have rights to modify the record!');
+    }
+    if (!userForEdit || !requester) {
+        throw new Error('User not found');
+    }
+    if (userForEdit.isDeleted || requester.isDeleted) {
+        throw new Error('This profile is deleted!');
+    }
+    if (!userForEdit.isApproved || !requester.isApproved) {
+        throw new Error('This profile is not approved!');
     }
 
     if (!isAdmin) {
         const match = await bcrypt.compare(
             requestBody.oldPassword,
-            existingUser.hashedPassword
+            userForEdit.hashedPassword
         );
         if (!match) {
             throw new Error('Password dismatch!');
         }
     }
 
-    existingUser.hashedPassword = await bcrypt.hash(
-        requestBody.newPassword,
-        10
-    );
-    const newRecord = await existingUser.save();
+    userForEdit.hashedPassword = await bcrypt.hash(requestBody.newPassword, 10);
+    const newRecord = await userForEdit.save();
     return createToken(newRecord);
 }
 
-async function updateUserRole(userId, requestBody) {
-    const existingUser = await User.findById(userId);
-    if (!existingUser) {
+async function editUserRole(idOfUserForEdit, requestBody, requesterId) {
+    const userForEdit = await User.findById(idOfUserForEdit);
+    const requester = await User.findById(requesterId);
+    const isAdmin = requester.role == 'admin' ? true : false;
+    if (!isAdmin) {
+        throw new Error('You do not have rights to modify the record!');
+    }
+    if (!userForEdit || !requester) {
         throw new Error('User not found');
     }
+    if (userForEdit.isDeleted || requester.isDeleted) {
+        throw new Error('This profile is deleted!');
+    }
+    if (!userForEdit.isApproved || !requester.isApproved) {
+        throw new Error('This profile is not approved!');
+    }
+
     if (requestBody.role == 'organizer') {
-        if (existingUser.organizatorName == '' && existingUser.phone == '') {
+        if (userForEdit.organizatorName == '' && userForEdit.phone == '') {
             if (!requestBody.organizatorName || !requestBody.phone) {
                 throw new Error('Fill all required fields!');
             }
-            existingUser.organizatorName = requestBody.organizatorName;
-            existingUser.phone = requestBody.phone;
+            userForEdit.organizatorName = requestBody.organizatorName;
+            userForEdit.phone = requestBody.phone;
         }
     }
-    existingUser.role = requestBody.role;
+    userForEdit.role = requestBody.role;
 
-    const newRecord = await existingUser.save();
+    const newRecord = await userForEdit.save();
+    return createToken(newRecord);
+}
+
+async function editDeletedProperty(idOfUserForEdit, requestBody, requesterId) {
+    const userForEdit = await User.findById(idOfUserForEdit);
+    const requester = await User.findById(requesterId);
+
+    const isAdmin = requester.role == 'admin' ? true : false;
+    if (!isAdmin) {
+        throw new Error('You do not have rights to modify the record!');
+    }
+    if (!userForEdit || !requester) {
+        throw new Error('User not found');
+    }
+    if (requester.isDeleted) {
+        throw new Error('Your profile is deleted!');
+    }
+    if (!requester.isApproved) {
+        throw new Error('Your profile is not approved!');
+    }
+    if (requestBody.isDeleted) {
+        userForEdit.isDeleted = requestBody.isDeleted;
+    }
+
+    const newRecord = await userForEdit.save();
     return createToken(newRecord);
 }
 
@@ -349,6 +416,8 @@ function createToken(user) {
         phone: user.phone,
         isDeleted: user.isDeleted,
         isApproved: user.isApproved,
+        likedEvents: user.likedEvents,
+        createdEvents: user.createdEvents,
         accessToken: jwt.sign(payload, secret, { expiresIn: expiresInTenDays }),
     };
 }
@@ -359,7 +428,8 @@ module.exports = {
     updateUserInfo,
     updateUserEmail,
     updateUserPassword,
-    updateUserRole,
+    editUserRole,
+    editDeletedProperty,
     addEventToLikedEvents,
     addEventToCreatedEvents,
     returnAllCreatedEvents,
