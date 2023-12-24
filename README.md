@@ -152,26 +152,26 @@ Update entry with ID `654651caf696083cab72ab1c` in the `events` collection:
 -   **Endpont:** `/user/editUserInfo/:id`
     Headers: `Content-Type: application/json`
     Body: JSON-formatted data
-    Changes: Only optional data of User(firstName, lastName, region, organizationName, phone). Admin can change also "isDeleted" and "role" property.
+    Changes: Only optional data of User(firstName, lastName, region, organizationName, phone).Admin and User itself can change the data, but only if the requester of changes is not deleted or is approved.
 
 -   **Method:** `PUT`
 -   **Endpont:** `/user/editUserEmail/:id`
     Headers: `Content-Type: application/json`
     Body: JSON-formatted data
-    Changes: Admin and User itself can change the email.
+    Changes: Admin and User itself can change the email, but only if the requester of this change is not deleted or is approved.
 
 -   **Method:** `PUT`
 -   **Endpont:** `/user/editUserPassword/:id`
     Headers: `Content-Type: application/json`
     Body: JSON-formatted data
-    Changes: Admin and User itself can change password.
+    Changes: Admin and User itself can change password, but only if the requester of changes is not deleted or is approved.
     To fulfill the request, the user must send the old password, a new password and a repetition of the new password. The administrator must send a new password and repetition the new password.
 
 -   **Method:** `PUT`
 -   **Endpont:** `/user/editUserRole/:id`
     Headers: `Content-Type: application/json`
     Body: JSON-formatted data
-    Changes: Admin only can change the role of single user.
+    Changes: Admin only, if not deleted or is approved, can change the role of single user, but only if he is not deleted or is approved.
     To fulfill the request, the admin must send role. If new role is 'organizer', the fields 'organizatorName' and 'phone' also should be fulfilled if there was empty before update.
 
 -   **Method:** `PUT`
@@ -180,6 +180,13 @@ Update entry with ID `654651caf696083cab72ab1c` in the `events` collection:
     Body: JSON-formatted data
     Changes: Admin which is approved and not deleted, only can approve/disapprove the organizer which also need to be not deleted.
     To fulfill the request, the admin must send {"isApproved": false/true}.
+
+-   **Method:** `PUT`
+-   **Endpont:** `/user/editDeleted/:id`
+    Headers: `Content-Type: application/json`
+    Body: JSON-formatted data
+    Changes: Admin which is approved and not deleted, only can change "deleted" property of the current user.
+    To fulfill the request, the admin must send {"isDeleted": false/true}.
 
 Like-Event: Every user can like an Event. To do it, 'authorized' user must send a `POST` request with event `id`. When user liked some event, the event itself keep information about liked users and also every user keep information about events which he liked.
 Example: `/events/like/:id`
