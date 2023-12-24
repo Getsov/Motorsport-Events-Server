@@ -39,7 +39,6 @@ eventController.post('/register', async (req, res) => {
             throw new Error('Invalid request Body!');
         }
 
-        // TODO: MORE TEST
         checkDatesAndTime(req.body.dates);
 
         checkRequestData(req.body);
