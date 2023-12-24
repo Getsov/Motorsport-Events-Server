@@ -171,19 +171,30 @@ async function getByMonth(startDate, endDate) {
 
 async function getUpcomingPastEvents(today) {
     if (today?.todayEnd) {
+        console.log('upcoming', today);
         const events = await Event.find({
             isDeleted: false,
             isApproved: true,
-            'dates.0.date': { $gt: today.todayEnd }
+            dates: {
+                $elemMatch: {
+                    date: {
+                        $gt: today.todayEnd
+                    },
+                },
+            },
         });
         return events;
     }
     if (today?.todayStart) {
+        console.log('past');
         const events = await Event.find({
             isDeleted: false,
             isApproved: true,
-            'dates.0.date': { $lt: today.todayStart }
-        });
+            $expr: {
+                $lt: [{ $arrayElemAt: ['$dates.date', -1] }, today.todayStart],
+            },
+            // 'dates.0.date': { $lt: today.todayStart }
+        })
         return events;
     }
 }
