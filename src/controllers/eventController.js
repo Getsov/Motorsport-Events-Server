@@ -69,7 +69,6 @@ eventController.post('/register', async (req, res) => {
 eventController.get('/upcomingEvents', async (req, res) => {
     try {
         const { todayEnd } = getNeededDates();
-        console.log(todayEnd);
         const events = await getUpcomingPastEvents({ todayEnd });
 
         res.status(200).json(events);
@@ -84,7 +83,6 @@ eventController.get('/upcomingEvents', async (req, res) => {
 eventController.get('/pastEvents', async (req, res) => {
     try {
         const { todayStart } = getNeededDates();
-        console.log(todayStart);
         const events = await getUpcomingPastEvents({ todayStart });
 
         res.status(200).json(events);
