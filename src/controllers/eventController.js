@@ -7,7 +7,7 @@ const {
     likeUnlikeEvent,
     getByMonth,
     getAllEventsForApproval,
-    getUpcoming,
+    getUpcomingPastEvents,
 } = require('../services/eventService');
 const {
     addEventToLikedEvents,
@@ -58,7 +58,7 @@ eventController.post('/register', async (req, res) => {
 
         const event = await registerEvent(req.body, req.requester._id);
         await addEventToCreatedEvents(event._id, req.requester._id);
-        
+
         res.status(200).json(event);
         res.end();
     } catch (error) {
@@ -67,11 +67,26 @@ eventController.post('/register', async (req, res) => {
 });
 
 // Upcoming Events
-eventController.get('/upcoming', async (req, res) => {
+eventController.get('/upcomingEvents', async (req, res) => {
     try {
         const { todayEnd } = getNeededDates();
         console.log(todayEnd);
-        const events = await getUpcoming(todayEnd);
+        const events = await getUpcomingPastEvents({ todayEnd });
+
+        res.status(200).json(events);
+        res.end();
+    } catch (error) {
+        res.status(400).json(error.message);
+        res.end();
+    }
+});
+
+// Past events
+eventController.get('/pastEvents', async (req, res) => {
+    try {
+        const { todayStart } = getNeededDates();
+        console.log(todayStart);
+        const events = await getUpcomingPastEvents({ todayStart });
 
         res.status(200).json(events);
         res.end();
