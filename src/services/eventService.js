@@ -129,8 +129,8 @@ async function updateEvent(requestBody, existingEvent, isAdmin) {
         ) {
             key === 'dates'
                 ? requestBody[key].sort(
-                      (a, b) => new Date(a.date) - new Date(b.date)
-                  )
+                    (a, b) => new Date(a.date) - new Date(b.date)
+                )
                 : null;
             existingEvent[key] = requestBody[key];
         }
@@ -169,6 +169,16 @@ async function getByMonth(startDate, endDate) {
     return events;
 }
 
+async function getUpcoming(today) {
+    // Return documents where their 'dates.date[]' have the date from the given month.
+    const events = await Event.find({
+        isDeleted: false,
+        isApproved: true,
+        'dates.0.date': { $gt: today }
+    });
+    return events;
+}
+
 async function getAllEventsForApproval(requesterId) {
     const requester = await User.findById(requesterId);
     if (requester.isDeleted) {
@@ -194,6 +204,7 @@ module.exports = {
     likeUnlikeEvent,
     getByMonth,
     getAllEventsForApproval,
+    getUpcoming,
 };
 
 // Commented code below is for postman tests!
