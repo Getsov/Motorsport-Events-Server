@@ -15,6 +15,7 @@ const {
 } = require('../services/userService');
 const { checkRequestData } = require('../utils/checkData');
 const { checkDatesAndTime } = require('../utils/checkDatesAndTime');
+const { getNeededDates } = require('../utils/getNeededDates');
 
 eventController.get('/eventsForApproval', async (req, res) => {
     try {
@@ -239,31 +240,4 @@ eventController.use((req, res) => {
 
 module.exports = {
     eventController,
-};
-
-// TODO: Add it in utils later!
-const getNeededDates = (year, month) => {
-    if (month < 1 || month > 12) {
-        throw new Error(
-            'Invalid month value. Month should be in the range 1-12.'
-        );
-    }
-
-    const startDate = new Date(year, month - 1, 1);
-    startDate.setHours(0, 0, 0, 0);
-
-    const endDate = new Date(year, month, 0);
-    endDate.setHours(23, 59, 59, 999);
-
-    const todayStart = new Date(Date.now());
-    todayStart.setHours(0, 0, 0, 0);
-
-    const todayEnd = new Date(Date.now());
-    todayEnd.setHours(23, 59, 59, 999);
-
-    // Check who need to know about local time, and then pass this variables?
-    const localStartDate = startDate.toLocaleString();
-    const localEndDate = endDate.toLocaleString();
-
-    return { startDate, endDate, todayStart, todayEnd };
 };
