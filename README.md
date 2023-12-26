@@ -36,6 +36,7 @@ TODO: Add info about `logout` when is done on the Back-End!
 To make an authorized request, add the following header, where {token} is the `accessToken`, returned by the service upon successful login or registration: `X-Authorization: {token}`
 
 ### Read:
+Important!: Event must be approved to see it!
 
 -   **_Event_**:
     Send a `GET` request to the endpoint. The response will be in JSON format.
@@ -125,6 +126,7 @@ Retrieve all events added to favourites from current user!
 -   **Endpont:** `/user/getMyFavourites`
 
 ### Create:
+Important!: Event must be approved to see it!
 
     Send a `POST` request to the endpoint. The shape of the body is restricted. The service will respond with the object, created in the DB, which will have an added ` _id` property, that is automatically generated.
     Examples: `http://localhost:3030/events/register` +
@@ -139,6 +141,7 @@ Retrieve all events added to favourites from current user!
     Body: JSON-formatted data
 
 ### Update:
+Important!: Event must be approved to see it!
 
 This requests requires authorization and content-type: `application/json`. Only owner of the resource and `admin` can edit it. Admin can change `isDeleted`, `creator`and `likes` properties, while owner can't change them.
 Send a PUT request to the endpoint, appending the Id or any appropriate property name. The existing resource will be fully replaced! The service will respond with the updated object.
