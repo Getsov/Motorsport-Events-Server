@@ -15,7 +15,7 @@ function getNeededDates (year, month) {
     todayStart.setHours(0, 0, 0, 0);
 
     const todayEnd = new Date(Date.now());
-    todayEnd.setHours(23, 59, 59, 999);
+    todayEnd.setHours(0, 0, 0, 0);
 
     // Check who need to know about local time, and then pass this variables?
     const localStartDate = startDate.toLocaleString();
