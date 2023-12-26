@@ -78,6 +78,10 @@ Upcoming Events: If you want to get upcoming events send a get request.
 -   **Method:** `GET`
 -   **Endpoint:** `/events/upcomingEvents`
 
+Past Events: If you want to get past events send a get request.
+-   **Method:** `GET`
+-   **Endpoint:** `/events/pastEvents`
+
 Retrieve all events waiting for approval! Available only for active and approved admins!
 
 -   **Method:** `GET`
