@@ -151,7 +151,7 @@ Update entry with ID `654651caf696083cab72ab1c` in the `events` collection:
 -   **Endpont:** `/user/editUserInfo/:id`
     Headers: `Content-Type: application/json`
     Body: JSON-formatted data
-    Changes: Only optional data of User(firstName, lastName, region, organizationName, phone).Admin and User itself can change the data, but only if the requester of changes is not deleted or is approved.
+    Changes: Only optional data of User(firstName, lastName, region, organizationName, phone). Admin and User itself can change the data, but only if the requester of changes is not deleted or is approved.
 
 -   **Method:** `PUT`
 -   **Endpont:** `/user/editUserEmail/:id`
@@ -171,7 +171,7 @@ Update entry with ID `654651caf696083cab72ab1c` in the `events` collection:
 -   **Endpont:** `/user/editUserRole/:id`
     Headers: `Content-Type: application/json`
     Body: JSON-formatted data
-    Changes: Admin only, if not deleted or is approved, can change the role of single user, but only if he is not deleted or is approved.
+    Changes: Only the administrator, if not deleted or approved, can change the role of an individual user, but only if the corresponding user is also not deleted or approved.
     To fulfill the request, the admin must send role. If new role is 'organizer', the fields 'organizatorName' and 'phone' also should be fulfilled if there was empty before update.
 
 -   **Method:** `PUT`
