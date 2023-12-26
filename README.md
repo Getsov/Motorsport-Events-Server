@@ -74,6 +74,10 @@ Response will be All events according to provided year and month: `2024/1`
 -   **Method:** `GET`
 -   **Endpoint:** `/events/month/2024/1`
 
+Upcoming Events: If you want to get upcoming events send a get request.
+-   **Method:** `GET`
+-   **Endpoint:** `/events/upcomingEvents`
+
 Retrieve all events waiting for approval! Available only for active and approved admins!
 
 -   **Method:** `GET`
