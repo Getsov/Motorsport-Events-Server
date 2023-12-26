@@ -170,30 +170,36 @@ async function getByMonth(startDate, endDate) {
 }
 
 async function getUpcomingPastEvents(today) {
+    let query = {
+        isDeleted: false,
+        isApproved: true
+    };
+    
     if (today?.todayEnd) {
-        const events = await Event.find({
-            isDeleted: false,
-            isApproved: true,
-            dates: {
+        // Query for upcoming events
+        // An event is upcoming if any of its dates are on or after todayEnd
+        query.dates = {
+            $elemMatch: {
+                date: { $gte: today.todayEnd }
+            }
+        };
+    } else if (today?.todayStart) {
+        // Query for past events
+        // An event is past if all of its dates are before todayStart
+        query.dates = {
+            $not: {
                 $elemMatch: {
-                    date: {
-                        $gt: today.todayEnd
-                    },
-                },
-            },
-        });
-        return events;
+                    date: { $gte: today.todayStart }
+                }
+            }
+        };
+    } else {
+        // Handle invalid 'today' parameter
+        return []; // Or handle as needed
     }
-    if (today?.todayStart) {
-        const events = await Event.find({
-            isDeleted: false,
-            isApproved: true,
-            $expr: {
-                $lt: [{ $arrayElemAt: ['$dates.date', -1] }, today.todayStart],
-            },
-        })
-        return events;
-    }
+    
+    const events = await Event.find(query);
+    return events;
 }
 
 async function getAllEventsForApproval(requesterId) {
