@@ -169,13 +169,13 @@ async function getByMonth(startDate, endDate) {
     return events;
 }
 
-async function getUpcomingPastEvents(today) {
+async function getUpcomingEvents(today) {
     let query = {
         isDeleted: false,
         isApproved: true
     };
-    
-    if (today?.today === 'upcoming') {
+
+    if (today?.todayStart) {
         // Query for upcoming events
         // An event is upcoming if any of its dates are on or after todayEnd
         query.dates = {
@@ -183,7 +183,22 @@ async function getUpcomingPastEvents(today) {
                 date: { $gte: today.todayStart }
             }
         };
-    } else if (today?.today === 'past') {
+
+    } else {
+        // Handle invalid 'today' parameter
+        return []; // Or handle as needed
+    }
+
+    const events = await Event.find(query);
+    return events;
+}
+async function getPastEvents(today) {
+    let query = {
+        isDeleted: false,
+        isApproved: true
+    };
+
+    if (today?.todayStart) {
         // Query for past events
         // An event is past if all of its dates are before todayStart
         query.dates = {
@@ -193,11 +208,12 @@ async function getUpcomingPastEvents(today) {
                 }
             }
         };
+
     } else {
         // Handle invalid 'today' parameter
         return []; // Or handle as needed
     }
-    
+
     const events = await Event.find(query);
     return events;
 }
@@ -227,7 +243,8 @@ module.exports = {
     likeUnlikeEvent,
     getByMonth,
     getAllEventsForApproval,
-    getUpcomingPastEvents,
+    getUpcomingEvents,
+    getPastEvents,
 };
 
 // Commented code below is for postman tests!
