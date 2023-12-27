@@ -175,15 +175,15 @@ async function getUpcomingPastEvents(today) {
         isApproved: true
     };
     
-    if (today?.todayEnd) {
+    if (today?.today === 'upcoming') {
         // Query for upcoming events
         // An event is upcoming if any of its dates are on or after todayEnd
         query.dates = {
             $elemMatch: {
-                date: { $gte: today.todayEnd }
+                date: { $gte: today.todayStart }
             }
         };
-    } else if (today?.todayStart) {
+    } else if (today?.today === 'past') {
         // Query for past events
         // An event is past if all of its dates are before todayStart
         query.dates = {
