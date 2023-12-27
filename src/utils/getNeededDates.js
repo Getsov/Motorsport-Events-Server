@@ -29,33 +29,3 @@ function getNeededDates (year, month) {
 module.exports = {
     getNeededDates
 }
-
-// Old function for getting upcoming and past events.
-
-// async function getUpcomingPastEvents(today) {
-//     if (today?.todayEnd) {
-//         const events = await Event.find({
-//             isDeleted: false,
-//             isApproved: true,
-//             dates: {
-//                 $elemMatch: {
-//                     date: {
-//                         $gt: today.todayEnd
-//                     },
-//                 },
-//             },
-//         });
-//         console.log('todayEnd', today.todayEnd);
-//         return events;
-//     }
-//     if (today?.todayStart) {
-//         const events = await Event.find({
-//             isDeleted: false,
-//             isApproved: true,
-//             $expr: {
-//                 $lt: [{ $arrayElemAt: ['$dates.date', -1] }, today.todayStart],
-//             },
-//         })
-//         return events;
-//     }
-// }
