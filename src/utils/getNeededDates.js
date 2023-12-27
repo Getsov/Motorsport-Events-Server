@@ -16,14 +16,11 @@ function getNeededDates (year, month) {
     const todayStart = new Date(Date.now());
     todayStart.setHours(0, 0, 0, 0);
 
-    const todayEnd = new Date(Date.now());
-    todayEnd.setHours(0, 0, 0, 0);
-
     // Check who need to know about local time, and then pass this variables?
     const localStartDate = startDate.toLocaleString();
     const localEndDate = endDate.toLocaleString();
 
-    return { startDate, endDate, todayStart, todayEnd };
+    return { startDate, endDate, todayStart };
 };
 
 module.exports = {
