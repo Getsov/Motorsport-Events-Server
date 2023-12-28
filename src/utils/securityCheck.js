@@ -3,6 +3,7 @@ module.exports.checkAuthorizedRequests = async function (
     requester
 ) {
     const isAdmin = requester.role == 'admin' ? true : false;
+
     if (!isAdmin && requester._id.toString() != userForEdit._id.toString()) {
         throw new Error('You do not have rights to modify the record!');
     }
