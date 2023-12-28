@@ -135,7 +135,6 @@ userController.put('/editUserEmail/:id', async (req, res) => {
 });
 
 userController.put('/editUserPassword/:id', async (req, res) => {
-    //TODO - Create new request for change "delete" property of user
     try {
         const userForEdit = req.params.id;
         const requester = req.requester._id;
