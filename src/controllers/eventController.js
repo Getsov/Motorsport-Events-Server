@@ -5,7 +5,7 @@ const {
     findAllEvents,
     updateEvent,
     likeUnlikeEvent,
-    getByMonth,
+    getEventsByMonth,
     getAllEventsForApproval,
     getPastEvents,
     getUpcomingEvents,
@@ -221,7 +221,7 @@ eventController.get('/month/:year/:month', async (req, res) => {
             parseInt(month)
         );
 
-        const events = await getByMonth(startDate, endDate);
+        const events = await getEventsByMonth(startDate, endDate);
 
         res.status(200).json(events);
         res.end();
