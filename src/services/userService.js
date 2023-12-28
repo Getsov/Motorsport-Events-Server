@@ -103,7 +103,8 @@ async function updateUserEmail(idOfUserForEdit, requestBody, requesterId) {
         userForEdit,
         requester,
         (isAdminRequest = false),
-        (editDeleteRequest = false)
+        (editDeleteRequest = false),
+        (editApproveRequest = false)
     );
 
     if (requestBody.email == '') {
@@ -124,7 +125,8 @@ async function updateUserPassword(idOfUserForEdit, requestBody, requesterId) {
         userForEdit,
         requester,
         (isAdminRequest = false),
-        (editDeleteRequest = false)
+        (editDeleteRequest = false),
+        (editApproveRequest = false)
     );
 
     if (!isAdmin) {
@@ -150,7 +152,8 @@ async function editUserRole(idOfUserForEdit, requestBody, requesterId) {
         userForEdit,
         requester,
         (isAdminRequest = true),
-        (editDeleteRequest = false)
+        (editDeleteRequest = false),
+        (editApproveRequest = false)
     );
 
     if (requestBody.role == 'organizer') {
@@ -181,12 +184,31 @@ async function editDeletedProperty(idOfUserForEdit, requestBody, requesterId) {
         userForEdit,
         requester,
         (isAdminRequest = true),
-        (editDeleteRequest = true)
+        (editDeleteRequest = true),
+        (editApproveRequest = false)
     );
 
     if (requestBody.isDeleted) {
         userForEdit.isDeleted = requestBody.isDeleted;
     }
+
+    const newRecord = await userForEdit.save();
+    return createToken(newRecord);
+}
+
+async function approveOrganizer(userId, requesterId, requestBody) {
+    const userForEdit = await User.findById(userId);
+    const requester = await User.findById(requesterId);
+
+    await checkAuthorizedRequests(
+        userForEdit,
+        requester,
+        (isAdminRequest = true),
+        (editDeleteRequest = false),
+        (editApproveRequest = true)
+    );
+
+    userForEdit.isApproved = requestBody.isApproved;
 
     const newRecord = await userForEdit.save();
     return createToken(newRecord);
@@ -254,30 +276,6 @@ async function returnAllFavouriteEvents(userId) {
     } else {
         return allFavouriteEvents;
     }
-}
-
-async function approveOrganizer(userId, requesterId, requestBody) {
-    const existingUser = await User.findById(userId);
-    const requester = await User.findById(requesterId);
-    if (requester.isDeleted) {
-        throw new Error('Your profile is deleted!');
-    }
-    if (requester.role !== 'admin') {
-        throw new Error('You do not have access to these records!');
-    }
-    if (!requester.isApproved) {
-        throw new Error('Your profile is not approved!');
-    }
-    if (existingUser.isDeleted == true) {
-        throw new Error('User is deleted!');
-    }
-    if (!existingUser) {
-        throw new Error('User not found!');
-    }
-    existingUser.isApproved = requestBody.isApproved;
-
-    const newRecord = await existingUser.save();
-    return createToken(newRecord);
 }
 
 async function getAllOrganizersForApproval(requesterId) {

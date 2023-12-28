@@ -2,7 +2,8 @@ module.exports.checkAuthorizedRequests = async function (
     userForEdit,
     requester,
     isAdminRequest,
-    editDeleteRequest
+    editDeleteRequest,
+    editApproveRequest
 ) {
     const isAdmin = requester.role == 'admin' ? true : false;
 
@@ -16,6 +17,13 @@ module.exports.checkAuthorizedRequests = async function (
         if (editDeleteRequest) {
             if (requester.isDeleted) {
                 throw new Error('Your profile is deleted!');
+            }
+            if (!requester.isApproved) {
+                throw new Error('Your profile is not approved!');
+            }
+        } else if (!editDeleteRequest && editApproveRequest) {
+            if (userForEdit.isDeleted || requester.isDeleted) {
+                throw new Error('This profile is deleted!');
             }
             if (!requester.isApproved) {
                 throw new Error('Your profile is not approved!');
