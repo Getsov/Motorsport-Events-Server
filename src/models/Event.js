@@ -89,8 +89,8 @@ const eventSchema = new Schema({
     contacts: {
         // TODO: Check later for unique COORDS..!
         coordinates: {
+            lat: { type: String, required: true, trim: true },
             lng: { type: String, required: true, trim: true },
-            long: { type: String, required: true, trim: true },
         },
         region: {
             type: String,
