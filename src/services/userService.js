@@ -61,7 +61,11 @@ async function updateUserInfo(idOfUserForEdit, requestBody, requesterId) {
     const userForEdit = await User.findById(idOfUserForEdit);
     const requester = await User.findById(requesterId);
 
-    await checkAuthorizedRequests(userForEdit, requester);
+    await checkAuthorizedRequests(
+        userForEdit,
+        requester,
+        (isAdminRequest = false)
+    );
 
     if (userForEdit.role == 'organizer') {
         if (requestBody.organizatorName == '') {
@@ -95,7 +99,11 @@ async function updateUserEmail(idOfUserForEdit, requestBody, requesterId) {
     const userForEdit = await User.findById(idOfUserForEdit);
     const requester = await User.findById(requesterId);
 
-    await checkAuthorizedRequests(userForEdit, requester);
+    await checkAuthorizedRequests(
+        userForEdit,
+        requester,
+        (isAdminRequest = false)
+    );
 
     if (requestBody.email == '') {
         throw new Error("Email field can't be empty!");
@@ -111,7 +119,7 @@ async function updateUserPassword(idOfUserForEdit, requestBody, requesterId) {
     const requester = await User.findById(requesterId);
     const isAdmin = requester.role == 'admin' ? true : false;
 
-    await checkAuthorizedRequests(userForEdit, requester);
+    await checkAuthorizedRequests(userForEdit, requester, false);
 
     if (!isAdmin) {
         const match = await bcrypt.compare(
@@ -131,19 +139,12 @@ async function updateUserPassword(idOfUserForEdit, requestBody, requesterId) {
 async function editUserRole(idOfUserForEdit, requestBody, requesterId) {
     const userForEdit = await User.findById(idOfUserForEdit);
     const requester = await User.findById(requesterId);
-    const isAdmin = requester.role == 'admin' ? true : false;
-    if (!isAdmin) {
-        throw new Error('You do not have rights to modify the record!');
-    }
-    if (!userForEdit || !requester) {
-        throw new Error('User not found');
-    }
-    if (userForEdit.isDeleted || requester.isDeleted) {
-        throw new Error('This profile is deleted!');
-    }
-    if (!userForEdit.isApproved || !requester.isApproved) {
-        throw new Error('This profile is not approved!');
-    }
+
+    await checkAuthorizedRequests(
+        userForEdit,
+        requester,
+        (isAdminRequest = true)
+    );
 
     if (requestBody.role == 'organizer') {
         if (userForEdit.organizatorName == '' && userForEdit.phone == '') {
