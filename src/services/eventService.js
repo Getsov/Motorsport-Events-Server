@@ -185,7 +185,7 @@ async function getUpcomingEvents(today) {
         };
 
     } else {
-        return [];
+        throw new Error('Server Error!');
     }
 
     const events = await Event.find(query);
@@ -210,7 +210,7 @@ async function getPastEvents(today) {
         };
 
     } else {
-        return [];
+        throw new Error('Server Error!');
     }
 
     const events = await Event.find(query);
