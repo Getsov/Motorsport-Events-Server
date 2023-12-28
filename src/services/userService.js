@@ -154,13 +154,18 @@ async function editUserRole(idOfUserForEdit, requestBody, requesterId) {
     );
 
     if (requestBody.role == 'organizer') {
-        if (userForEdit.organizatorName == '' && userForEdit.phone == '') {
-            if (!requestBody.organizatorName || !requestBody.phone) {
+        if (userForEdit.organizatorName == '') {
+            if (!requestBody.organizatorName) {
                 throw new Error('Fill all required fields!');
             }
-            userForEdit.organizatorName = requestBody.organizatorName;
-            userForEdit.phone = requestBody.phone;
         }
+        if (userForEdit.phone == '') {
+            if (!requestBody.phone) {
+                throw new Error('Fill all required fields!');
+            }
+        }
+        userForEdit.organizatorName = requestBody.organizatorName;
+        userForEdit.phone = requestBody.phone;
     }
     userForEdit.role = requestBody.role;
 
