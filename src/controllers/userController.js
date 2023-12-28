@@ -102,24 +102,6 @@ userController.put('/editUserInfo/:id', async (req, res) => {
     }
 });
 
-userController.put('/editDeleted/:id', async (req, res) => {
-    try {
-        const userForEdit = req.params.id;
-        const requester = req.requester._id;
-        checkRequestData(req.body);
-        const result = await editDeletedProperty(
-            userForEdit,
-            req.body,
-            requester
-        );
-        res.status(200).json(result);
-        res.end();
-    } catch (error) {
-        console.log(error);
-        res.status(400).json({ error: error.message });
-    }
-});
-
 userController.put('/editUserEmail/:id', async (req, res) => {
     try {
         const userForEdit = req.params.id;
@@ -168,6 +150,40 @@ userController.put('/editUserRole/:id', async (req, res) => {
     }
 });
 
+userController.put('/editDeleted/:id', async (req, res) => {
+    try {
+        const userForEdit = req.params.id;
+        const requester = req.requester._id;
+        checkRequestData(req.body);
+        const result = await editDeletedProperty(
+            userForEdit,
+            req.body,
+            requester
+        );
+        res.status(200).json(result);
+        res.end();
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ error: error.message });
+    }
+});
+
+// Approving / Unapproving user
+userController.put('/approveOrganizer/:id', async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const requesterId = req.requester._id;
+        checkRequestData(req.body);
+
+        const result = await approveOrganizer(userId, requesterId, req.body);
+        res.status(200).json(result);
+        res.end();
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ error: error.message });
+    }
+});
+
 userController.get('/getMyEvents', async (req, res) => {
     try {
         const userId = req.requester?._id;
@@ -205,22 +221,6 @@ userController.post('/reset-password', async (req, res) => {
         const result = await resetPassword(req.body);
 
         res.status(200).json({ message: 'Email sent successfully' });
-        res.end();
-    } catch (error) {
-        console.log(error);
-        res.status(400).json({ error: error.message });
-    }
-});
-
-// Approving / Unapproving user
-userController.put('/approveOrganizer/:id', async (req, res) => {
-    try {
-        const userId = req.params.id;
-        const requesterId = req.requester._id;
-        checkRequestData(req.body);
-
-        const result = await approveOrganizer(userId, requesterId, req.body);
-        res.status(200).json(result);
         res.end();
     } catch (error) {
         console.log(error);
