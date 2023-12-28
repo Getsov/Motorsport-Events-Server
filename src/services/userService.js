@@ -64,7 +64,9 @@ async function updateUserInfo(idOfUserForEdit, requestBody, requesterId) {
     await checkAuthorizedRequests(
         userForEdit,
         requester,
-        (isAdminRequest = false)
+        (isAdminRequest = false),
+        (editDeleteRequest = false),
+        (editApproveRequest = false)
     );
 
     if (userForEdit.role == 'organizer') {
