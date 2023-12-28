@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const { secret } = require('../utils/parseToken');
+const { checkAuthorizedRequests } = require('../utils/securityCheck');
 
 async function registerUser(requestBody) {
     const email = requestBody.email;
@@ -59,20 +60,8 @@ async function loginUser(email, password) {
 async function updateUserInfo(idOfUserForEdit, requestBody, requesterId) {
     const userForEdit = await User.findById(idOfUserForEdit);
     const requester = await User.findById(requesterId);
-    const isAdmin = requester.role == 'admin' ? true : false;
 
-    if (!isAdmin && requester._id != idOfUserForEdit) {
-        throw new Error('You do not have rights to modify the record!');
-    }
-    if (!userForEdit || !requester) {
-        throw new Error('User not found');
-    }
-    if (userForEdit.isDeleted || requester.isDeleted) {
-        throw new Error('This profile is deleted!');
-    }
-    if (!userForEdit.isApproved || !requester.isApproved) {
-        throw new Error('This profile is not approved!');
-    }
+    await checkAuthorizedRequests(userForEdit, requester);
 
     if (userForEdit.role == 'organizer') {
         if (requestBody.organizatorName == '') {
