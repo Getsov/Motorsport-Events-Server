@@ -17,6 +17,7 @@ const {
     getAllUsers,
     editDeletedProperty,
 } = require('../services/userService');
+
 const { validPassword } = require('../shared/sharedRegex');
 const { checkRequestData } = require('../utils/checkData');
 const { resetPassword } = require('../services/emailService');
@@ -209,24 +210,6 @@ userController.get('/getMyFavourites', async (req, res) => {
 });
 
 // Reset password.
-userController.post('/reset-password', async (req, res) => {
-    try {
-        if (req.body.to === undefined) {
-            throw new Error('Email is not passed!');
-        }
-        if (req.body.to === '') {
-            throw new Error('Email field is empty!');
-        }
-
-        const result = await resetPassword(req.body);
-
-        res.status(200).json({ message: 'Email sent successfully' });
-        res.end();
-    } catch (error) {
-        console.log(error);
-        res.status(400).json({ error: error.message });
-    }
-});
 
 userController.get('/organizersForApproval', async (req, res) => {
     try {
@@ -282,6 +265,24 @@ userController.get('/allUsers', async (req, res) => {
         const requesterId = req.requester._id;
         const result = await getAllUsers(requesterId);
         res.status(200).json(result);
+        res.end();
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ error: error.message });
+    }
+});
+userController.post('/reset-password', async (req, res) => {
+    try {
+        if (req.body.to === undefined) {
+            throw new Error('Email is not passed!');
+        }
+        if (req.body.to === '') {
+            throw new Error('Email field is empty!');
+        }
+
+        const result = await resetPassword(req.body);
+
+        res.status(200).json({ message: 'Email sent successfully' });
         res.end();
     } catch (error) {
         console.log(error);

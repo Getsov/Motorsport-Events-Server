@@ -214,40 +214,6 @@ async function approveOrganizer(userId, requesterId, requestBody) {
     return createToken(newRecord);
 }
 
-async function addEventToLikedEvents(eventId, userId, isAlreadyLiked) {
-    const existingUser = await User.findById(userId);
-    if (!existingUser) {
-        throw new Error('User not found!');
-    }
-
-    if (existingUser.likedEvents.includes(eventId) && isAlreadyLiked) {
-        let filteredLikes = existingUser.likedEvents.filter(
-            (x) => x != eventId
-        );
-        existingUser.likedEvents = filteredLikes;
-        return await existingUser.save();
-    }
-
-    existingUser.likedEvents.push(eventId);
-    return await existingUser.save();
-}
-
-async function addEventToCreatedEvents(eventId, userId) {
-    eventId = eventId.toString();
-    const existingUser = await User.findById(userId);
-    if (!existingUser) {
-        throw new Error('User not found!');
-    }
-
-    //TODO: Fot future development:
-    //check if this event is already addded to particular "organizer";
-    // if (existingUser.createdEvents.includes(eventId) ) {
-    //     throw new Error('This event is already created by the user!');
-    // }
-
-    existingUser.createdEvents.push(eventId);
-    return await existingUser.save();
-}
 async function returnAllCreatedEvents(userId) {
     const existingUser = await User.findById(userId);
     if (!existingUser) {
@@ -356,6 +322,40 @@ async function getAllUsers(requesterId) {
     }
     const allUsers = await User.find();
     return allUsers;
+}
+async function addEventToLikedEvents(eventId, userId, isAlreadyLiked) {
+    const existingUser = await User.findById(userId);
+    if (!existingUser) {
+        throw new Error('User not found!');
+    }
+
+    if (existingUser.likedEvents.includes(eventId) && isAlreadyLiked) {
+        let filteredLikes = existingUser.likedEvents.filter(
+            (x) => x != eventId
+        );
+        existingUser.likedEvents = filteredLikes;
+        return await existingUser.save();
+    }
+
+    existingUser.likedEvents.push(eventId);
+    return await existingUser.save();
+}
+
+async function addEventToCreatedEvents(eventId, userId) {
+    eventId = eventId.toString();
+    const existingUser = await User.findById(userId);
+    if (!existingUser) {
+        throw new Error('User not found!');
+    }
+
+    //TODO: Fot future development:
+    //check if this event is already addded to particular "organizer";
+    // if (existingUser.createdEvents.includes(eventId) ) {
+    //     throw new Error('This event is already created by the user!');
+    // }
+
+    existingUser.createdEvents.push(eventId);
+    return await existingUser.save();
 }
 
 function createToken(user) {
