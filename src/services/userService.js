@@ -102,7 +102,8 @@ async function updateUserEmail(idOfUserForEdit, requestBody, requesterId) {
     await checkAuthorizedRequests(
         userForEdit,
         requester,
-        (isAdminRequest = false)
+        (isAdminRequest = false),
+        (editDeleteRequest = false)
     );
 
     if (requestBody.email == '') {
@@ -119,7 +120,12 @@ async function updateUserPassword(idOfUserForEdit, requestBody, requesterId) {
     const requester = await User.findById(requesterId);
     const isAdmin = requester.role == 'admin' ? true : false;
 
-    await checkAuthorizedRequests(userForEdit, requester, false);
+    await checkAuthorizedRequests(
+        userForEdit,
+        requester,
+        (isAdminRequest = false),
+        (editDeleteRequest = false)
+    );
 
     if (!isAdmin) {
         const match = await bcrypt.compare(
@@ -143,7 +149,8 @@ async function editUserRole(idOfUserForEdit, requestBody, requesterId) {
     await checkAuthorizedRequests(
         userForEdit,
         requester,
-        (isAdminRequest = true)
+        (isAdminRequest = true),
+        (editDeleteRequest = false)
     );
 
     if (requestBody.role == 'organizer') {
@@ -165,19 +172,13 @@ async function editDeletedProperty(idOfUserForEdit, requestBody, requesterId) {
     const userForEdit = await User.findById(idOfUserForEdit);
     const requester = await User.findById(requesterId);
 
-    const isAdmin = requester.role == 'admin' ? true : false;
-    if (!isAdmin) {
-        throw new Error('You do not have rights to modify the record!');
-    }
-    if (!userForEdit || !requester) {
-        throw new Error('User not found');
-    }
-    if (requester.isDeleted) {
-        throw new Error('Your profile is deleted!');
-    }
-    if (!requester.isApproved) {
-        throw new Error('Your profile is not approved!');
-    }
+    await checkAuthorizedRequests(
+        userForEdit,
+        requester,
+        (isAdminRequest = true),
+        (editDeleteRequest = true)
+    );
+
     if (requestBody.isDeleted) {
         userForEdit.isDeleted = requestBody.isDeleted;
     }
