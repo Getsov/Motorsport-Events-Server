@@ -60,14 +60,9 @@ async function loginUser(email, password) {
 async function updateUserInfo(idOfUserForEdit, requestBody, requesterId) {
     const userForEdit = await User.findById(idOfUserForEdit);
     const requester = await User.findById(requesterId);
+    const isAdmin = requester.role == 'admin' ? true : false;
 
-    await checkAuthorizedRequests(
-        userForEdit,
-        requester,
-        (isAdminRequest = false),
-        (editDeleteRequest = false),
-        (editApproveRequest = false)
-    );
+    await checkAuthorizedRequests(userForEdit, requester, isAdmin);
 
     if (userForEdit.role == 'organizer') {
         if (requestBody.organizatorName == '') {
