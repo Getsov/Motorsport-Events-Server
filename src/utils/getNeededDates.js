@@ -1,5 +1,3 @@
-const { events } = require("../models/Event");
-
 function getNeededDates(year, month) {
     if (month < 1 || month > 12) {
         throw new Error(
