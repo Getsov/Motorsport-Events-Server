@@ -186,17 +186,18 @@ async function editDeletedProperty(idOfUserForEdit, requestBody, requesterId) {
     return createToken(newRecord);
 }
 
-async function approveOrganizer(userId, requesterId, requestBody) {
+async function approveUser(userId, requesterId, requestBody) {
     const userForEdit = await User.findById(userId);
     const requester = await User.findById(requesterId);
+    const isAdmin = requester.role == 'admin' ? true : false;
 
-    await checkAuthorizedRequests(
-        userForEdit,
-        requester,
-        (isAdminRequest = true),
-        (editDeleteRequest = false),
-        (editApproveRequest = true)
-    );
+    if (!isAdmin || requester.isDeleted || !requester.isApproved) {
+        throw new Error('You do not have rights to modify the record!');
+    }
+
+    if (!userForEdit) {
+        throw new Error('User not found');
+    }
 
     userForEdit.isApproved = requestBody.isApproved;
 
@@ -396,7 +397,7 @@ module.exports = {
     addEventToCreatedEvents,
     returnAllCreatedEvents,
     returnAllFavouriteEvents,
-    approveOrganizer,
+    approveUser,
     getAllOrganizersForApproval,
     getAllOrganizers,
     getAllRegularUsers,
