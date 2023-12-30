@@ -3,7 +3,7 @@ const userController = require('express').Router();
 const {
     registerUser,
     loginUser,
-    updateUserInfo,
+    editUserInfo,
     updateUserEmail,
     editUserPassword,
     returnAllCreatedEvents,
@@ -94,7 +94,7 @@ userController.put('/editUserInfo/:id', async (req, res) => {
         const userForEdit = req.params.id;
         const requester = req.requester._id;
         checkRequestData(req.body);
-        const result = await updateUserInfo(userForEdit, req.body, requester);
+        const result = await editUserInfo(userForEdit, req.body, requester);
         res.status(200).json(result);
         res.end();
     } catch (error) {

@@ -57,7 +57,7 @@ async function loginUser(email, password) {
 
 //updateUser can be invoked by adminController and userController
 //accept id of user which will be updated, new data and isAdmin property
-async function updateUserInfo(idOfUserForEdit, requestBody, requesterId) {
+async function editUserInfo(idOfUserForEdit, requestBody, requesterId) {
     const userForEdit = await User.findById(idOfUserForEdit);
     const requester = await User.findById(requesterId);
     const isAdmin = requester.role == 'admin' ? true : false;
@@ -388,7 +388,7 @@ function createToken(user) {
 module.exports = {
     registerUser,
     loginUser,
-    updateUserInfo,
+    editUserInfo,
     updateUserEmail,
     editUserPassword,
     editUserRole,
