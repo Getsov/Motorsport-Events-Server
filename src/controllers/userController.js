@@ -13,9 +13,9 @@ const {
     getAllOrganizers,
     getAllRegularUsers,
     getAllAdmins,
-    approveOrganizer,
     getAllUsers,
     editDeletedProperty,
+    approveUser,
 } = require('../services/userService');
 
 const { validPassword } = require('../shared/sharedRegex');
@@ -169,14 +169,14 @@ userController.put('/editDeleted/:id', async (req, res) => {
     }
 });
 
-// Approving / Unapproving user
-userController.put('/approveOrganizer/:id', async (req, res) => {
+// Approving / Unapproving user/organizer
+userController.put('/approveUser/:id', async (req, res) => {
     try {
         const userId = req.params.id;
         const requesterId = req.requester._id;
         checkRequestData(req.body);
 
-        const result = await approveOrganizer(userId, requesterId, req.body);
+        const result = await approveUser(userId, requesterId, req.body);
         res.status(200).json(result);
         res.end();
     } catch (error) {
