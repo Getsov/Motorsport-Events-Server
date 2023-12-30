@@ -4,7 +4,7 @@ const {
     registerUser,
     loginUser,
     editUserInfo,
-    updateUserEmail,
+    editUserEmail,
     editUserPassword,
     returnAllCreatedEvents,
     returnAllFavouriteEvents,
@@ -108,7 +108,7 @@ userController.put('/editUserEmail/:id', async (req, res) => {
         const userForEdit = req.params.id;
         const requester = req.requester._id;
         checkRequestData(req.body);
-        const result = await updateUserEmail(userForEdit, req.body, requester);
+        const result = await editUserEmail(userForEdit, req.body, requester);
         res.status(200).json(result);
         res.end();
     } catch (error) {
