@@ -185,7 +185,7 @@ async function getUpcomingEvents(today) {
         };
 
     } else {
-        throw new Error('Server Error!');
+        throw new Error('Invalid "todayStart" value!');
     }
 
     const events = await Event.find(query);
@@ -210,7 +210,7 @@ async function getPastEvents(today) {
         };
 
     } else {
-        throw new Error('Server Error!');
+        throw new Error('Invalid "todayStart" value!!');
     }
 
     const events = await Event.find(query);
@@ -260,8 +260,8 @@ module.exports = {
 //     ],
 //     "contacts": {
 //         "coordinates": {
-//             "lng": "42.52911093579847",
-//             "long": "24.707900125838766"
+//             "lat": "42.52911093579847",
+//             "lng": "24.707900125838766"
 //         },
 //         "region": "Пловдив",
 //         "address": "Хайдут Генчо N1",
