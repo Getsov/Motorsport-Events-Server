@@ -33,29 +33,4 @@ module.exports.checkAuthorizedRequests = async function (
         throw new Error('This profile is not approved!');
     }
 
-    // if (isAdminRequest) {
-    //     if (!isAdmin) {
-    //         throw new Error('You do not have rights to modify the record!');
-    //     }
-    //     if (!userForEdit || !requester) {
-    //         throw new Error('User not found');
-    //     }
-    //     if (editDeleteRequest) {
-
-    //     } else if (!editDeleteRequest && editApproveRequest) {
-    //         if (userForEdit.isDeleted ) {
-    //             throw new Error('This profile is deleted!');
-    //         }
-
-    //     } else {
-    //         if (userForEdit.isDeleted || requester.isDeleted) {
-    //             throw new Error('This profile is deleted!');
-    //         }
-    //         if (!userForEdit.isApproved || !requester.isApproved) {
-    //             throw new Error('This profile is not approved!');
-    //         }
-    //     }
-    // } else {
-
-    // }
 };
