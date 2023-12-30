@@ -175,10 +175,10 @@ Update entry with ID `654651caf696083cab72ab1c` in the `events` collection:
     To fulfill the request, the admin must send role. If new role is 'organizer', the fields 'organizatorName' and 'phone' also should be fulfilled if there was empty before update.
 
 -   **Method:** `PUT`
--   **Endpont:** `/user/approveOrganizer/:id`
+-   **Endpont:** `/user/approveUser/:id`
     Headers: `Content-Type: application/json`
     Body: JSON-formatted data
-    Changes: Admin which is approved and not deleted, only can approve/disapprove the organizer which also need to be not deleted.
+    Changes: Admin which is approved and not deleted, only can approve/disapprove the users.
     To fulfill the request, the admin must send {"isApproved": false/true}.
 
 -   **Method:** `PUT`
