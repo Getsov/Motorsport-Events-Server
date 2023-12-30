@@ -135,11 +135,9 @@ async function editUserRole(idOfUserForEdit, requestBody, requesterId) {
     const requester = await User.findById(requesterId);
     const isAdmin = requester.role == 'admin' ? true : false;
 
-    if (!isAdmin) {
+    if (!isAdmin || requester.isDeleted || !requester.isApproved) {
         throw new Error('You do not have rights to modify the record!');
     }
-
-    await checkAuthorizedRequests(userForEdit, requester, isAdmin);
 
     if (requestBody.role == 'organizer') {
         if (userForEdit.organizatorName == '') {
