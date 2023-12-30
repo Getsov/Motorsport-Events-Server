@@ -169,7 +169,7 @@ userController.put('/editDeleted/:id', async (req, res) => {
     }
 });
 
-// Approving / Unapproving user/organizer
+// Approving / Disapproving user/organizer
 userController.put('/approveUser/:id', async (req, res) => {
     try {
         const userId = req.params.id;

@@ -146,7 +146,7 @@ async function editUserRole(idOfUserForEdit, requestBody, requesterId) {
     if (requestBody.role == 'organizer') {
         if (userForEdit.organizatorName == '') {
             if (!requestBody.organizatorName) {
-                throw new Error('Fill all required fields!');
+                throw new Error('Name of organization is required!');
             } else {
                 userForEdit.organizatorName = requestBody.organizatorName;
             }
@@ -154,7 +154,7 @@ async function editUserRole(idOfUserForEdit, requestBody, requesterId) {
 
         if (userForEdit.phone == '') {
             if (!requestBody.phone) {
-                throw new Error('Fill all required fields!');
+                throw new Error('Phone is required!');
             } else {
                 userForEdit.phone = requestBody.phone;
             }
@@ -314,7 +314,7 @@ async function getAllUsers(requesterId) {
     const allUsers = await User.find();
     return allUsers;
 }
-async function addEventToLikedEvents(eventId, userId, isAlreadyLiked) {
+async function addRemoveLikedEvent(eventId, userId, isAlreadyLiked) {
     const existingUser = await User.findById(userId);
     if (!existingUser) {
         throw new Error('User not found!');
@@ -393,7 +393,7 @@ module.exports = {
     updateUserPassword,
     editUserRole,
     editDeletedProperty,
-    addEventToLikedEvents,
+    addRemoveLikedEvent,
     addEventToCreatedEvents,
     returnAllCreatedEvents,
     returnAllFavouriteEvents,

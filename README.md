@@ -178,7 +178,7 @@ Update entry with ID `654651caf696083cab72ab1c` in the `events` collection:
 -   **Endpont:** `/user/approveUser/:id`
     Headers: `Content-Type: application/json`
     Body: JSON-formatted data
-    Changes: Only the administrator who is approved and not deleted can approve/dissapprove an individual user.
+    Changes: Only the administrator who is approved and not deleted can approve/disapprove an individual user.
     To fulfill the request, the admin must send {"isApproved": false/true}.
 
 -   **Method:** `PUT`
