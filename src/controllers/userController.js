@@ -5,7 +5,7 @@ const {
     loginUser,
     updateUserInfo,
     updateUserEmail,
-    updateUserPassword,
+    editUserPassword,
     returnAllCreatedEvents,
     returnAllFavouriteEvents,
     editUserRole,
@@ -125,7 +125,7 @@ userController.put('/editUserPassword/:id', async (req, res) => {
         if (req.body.newPassword !== req.body.newRepassword) {
             throw new Error('Password dismatch!');
         }
-        const result = await updateUserPassword(
+        const result = await editUserPassword(
             userForEdit,
             req.body,
             requester
