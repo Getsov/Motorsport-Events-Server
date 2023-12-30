@@ -139,37 +139,44 @@ async function editUserRole(idOfUserForEdit, requestBody, requesterId) {
         throw new Error('You do not have rights to modify the record!');
     }
 
+    if (!userForEdit) {
+        throw new Error('User not found');
+    }
+
     if (requestBody.role == 'organizer') {
         if (userForEdit.organizatorName == '') {
             if (!requestBody.organizatorName) {
                 throw new Error('Fill all required fields!');
+            } else {
+                userForEdit.organizatorName = requestBody.organizatorName;
             }
         }
+
         if (userForEdit.phone == '') {
             if (!requestBody.phone) {
                 throw new Error('Fill all required fields!');
+            } else {
+                userForEdit.phone = requestBody.phone;
             }
         }
-        userForEdit.organizatorName = requestBody.organizatorName;
-        userForEdit.phone = requestBody.phone;
     }
     userForEdit.role = requestBody.role;
 
     const newRecord = await userForEdit.save();
     return createToken(newRecord);
 }
-
 async function editDeletedProperty(idOfUserForEdit, requestBody, requesterId) {
     const userForEdit = await User.findById(idOfUserForEdit);
     const requester = await User.findById(requesterId);
+    const isAdmin = requester.role == 'admin' ? true : false;
 
-    await checkAuthorizedRequests(
-        userForEdit,
-        requester,
-        (isAdminRequest = true),
-        (editDeleteRequest = true),
-        (editApproveRequest = false)
-    );
+    if (!isAdmin || requester.isDeleted || !requester.isApproved) {
+        throw new Error('You do not have rights to modify the record!');
+    }
+
+    if (!userForEdit) {
+        throw new Error('User not found');
+    }
 
     if (requestBody.isDeleted) {
         userForEdit.isDeleted = requestBody.isDeleted;
