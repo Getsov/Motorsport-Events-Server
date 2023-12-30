@@ -115,7 +115,6 @@ async function updateUserPassword(idOfUserForEdit, requestBody, requesterId) {
 
     await checkAuthorizedRequests(userForEdit, requester, isAdmin);
 
-
     if (!isAdmin) {
         const match = await bcrypt.compare(
             requestBody.oldPassword,
@@ -134,14 +133,13 @@ async function updateUserPassword(idOfUserForEdit, requestBody, requesterId) {
 async function editUserRole(idOfUserForEdit, requestBody, requesterId) {
     const userForEdit = await User.findById(idOfUserForEdit);
     const requester = await User.findById(requesterId);
+    const isAdmin = requester.role == 'admin' ? true : false;
 
-    await checkAuthorizedRequests(
-        userForEdit,
-        requester,
-        (isAdminRequest = true),
-        (editDeleteRequest = false),
-        (editApproveRequest = false)
-    );
+    if (!isAdmin) {
+        throw new Error('You do not have rights to modify the record!');
+    }
+
+    await checkAuthorizedRequests(userForEdit, requester, isAdmin);
 
     if (requestBody.role == 'organizer') {
         if (userForEdit.organizatorName == '') {
