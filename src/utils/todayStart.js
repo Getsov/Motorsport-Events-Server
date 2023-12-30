@@ -5,7 +5,7 @@ function getTodayStart() {
     // Check who need to know about local time, and then pass this variables?
     // const localTodayStart = todayStart.toLocaleString();
 
-    return { todayStart };
+    return todayStart;
 }
 
 module.exports = {
