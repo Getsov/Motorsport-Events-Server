@@ -92,7 +92,7 @@ async function editUserInfo(idOfUserForEdit, requestBody, requesterId) {
     return createToken(newRecord);
 }
 
-async function updateUserEmail(idOfUserForEdit, requestBody, requesterId) {
+async function editUserEmail(idOfUserForEdit, requestBody, requesterId) {
     const userForEdit = await User.findById(idOfUserForEdit);
     const requester = await User.findById(requesterId);
     const isAdmin = requester.role == 'admin' ? true : false;
@@ -389,7 +389,7 @@ module.exports = {
     registerUser,
     loginUser,
     editUserInfo,
-    updateUserEmail,
+    editUserEmail,
     editUserPassword,
     editUserRole,
     editDeletedProperty,
