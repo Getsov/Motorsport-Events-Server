@@ -95,14 +95,9 @@ async function updateUserInfo(idOfUserForEdit, requestBody, requesterId) {
 async function updateUserEmail(idOfUserForEdit, requestBody, requesterId) {
     const userForEdit = await User.findById(idOfUserForEdit);
     const requester = await User.findById(requesterId);
+    const isAdmin = requester.role == 'admin' ? true : false;
 
-    await checkAuthorizedRequests(
-        userForEdit,
-        requester,
-        (isAdminRequest = false),
-        (editDeleteRequest = false),
-        (editApproveRequest = false)
-    );
+    await checkAuthorizedRequests(userForEdit, requester, isAdmin);
 
     if (requestBody.email == '') {
         throw new Error("Email field can't be empty!");
