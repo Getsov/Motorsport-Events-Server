@@ -113,13 +113,8 @@ async function updateUserPassword(idOfUserForEdit, requestBody, requesterId) {
     const requester = await User.findById(requesterId);
     const isAdmin = requester.role == 'admin' ? true : false;
 
-    await checkAuthorizedRequests(
-        userForEdit,
-        requester,
-        (isAdminRequest = false),
-        (editDeleteRequest = false),
-        (editApproveRequest = false)
-    );
+    await checkAuthorizedRequests(userForEdit, requester, isAdmin);
+
 
     if (!isAdmin) {
         const match = await bcrypt.compare(
