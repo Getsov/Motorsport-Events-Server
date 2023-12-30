@@ -169,18 +169,18 @@ async function getEventsByMonth(startDate, endDate) {
     return events;
 }
 
-async function getUpcomingEvents(today) {
+async function getUpcomingEvents(todayStart) {
     let query = {
         isDeleted: false,
         isApproved: true
     };
 
-    if (today?.todayStart) {
+    if (todayStart) {
         // Query for upcoming events
         // An event is upcoming if any of its dates are on or after todayEnd
         query.dates = {
             $elemMatch: {
-                date: { $gte: today.todayStart }
+                date: { $gte: todayStart }
             }
         };
 
@@ -192,19 +192,19 @@ async function getUpcomingEvents(today) {
     return events;
 }
 
-async function getPastEvents(today) {
+async function getPastEvents(todayStart) {
     let query = {
         isDeleted: false,
         isApproved: true
     };
 
-    if (today?.todayStart) {
+    if (todayStart) {
         // Query for past events
         // An event is past if all of its dates are before todayStart
         query.dates = {
             $not: {
                 $elemMatch: {
-                    date: { $gte: today.todayStart }
+                    date: { $gte: todayStart }
                 }
             }
         };
