@@ -15,7 +15,7 @@ function getNeededDates(year, month) {
     // const localStartDate = startDate.toLocaleString();
     // const localEndDate = endDate.toLocaleString();
 
-    return { startDate, endDate, todayStart };
+    return { startDate, endDate };
 };
 
 module.exports = {
