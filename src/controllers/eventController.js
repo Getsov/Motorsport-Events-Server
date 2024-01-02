@@ -9,7 +9,7 @@ const {
     getAllEventsForApproval,
 } = require('../services/eventService');
 const {
-    addEventToLikedEvents,
+    addRemoveLikedEvent,
     addEventToCreatedEvents,
 } = require('../services/userService');
 const { checkRequestData } = require('../utils/checkData');
@@ -165,7 +165,7 @@ eventController.post('/like/:id', async (req, res) => {
             isAlreadyLiked
         );
 
-        await addEventToLikedEvents(
+        await addRemoveLikedEvent(
             req.params.id,
             req.requester._id,
             isAlreadyLiked

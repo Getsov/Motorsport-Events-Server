@@ -1,22 +1,36 @@
-export async function checkAuthorityRequests(idOfUserForEdit, requesterId){
-// TODO - Export most of check from userService
-// function for approving from Valeri Getsov
+module.exports.checkAuthorizedRequests = async function (
+    userForEdit,
+    requester,
+    isAdmin
+) {
+    //If the requester or the user which will be edit can't be found in DB
+    if (!userForEdit || !requester) {
+        throw new Error('User not found');
+    }
 
-const userForEdit = await User.findById(idOfUserForEdit);
-const requester = await User.findById(requesterId);
-const isAdmin = requester.role == 'admin' ? true : false;
+    //If the requester have property "isDeleted" : true
+    if (requester.isDeleted) {
+        throw new Error('Your profile is deleted!');
+    }
 
-if (!isAdmin && requester._id != idOfUserForEdit) {
-    throw new Error('You do not have rights to modify the record!');
-}
-if (!userForEdit || !requester) {
-    throw new Error('User not found');
-}
-if (userForEdit.isDeleted || requester.isDeleted) {
-    throw new Error('This profile is deleted!');
-}
-if (!userForEdit.isApproved || !requester.isApproved) {
-    throw new Error('This profile is not approved!');
-}
+    //If the requester have property "isApproved" : false
+    if (!requester.isApproved) {
+        throw new Error('Your profile is not approved!');
+    }
 
-}
+    //If the requester is not "admin" or is not the user itslef
+    if (!isAdmin && requester._id.toString() != userForEdit._id.toString()) {
+        throw new Error('You do not have rights to modify the record!');
+    }
+
+    //If the user for edit have property "isDeleted" : true
+    if (userForEdit.isDeleted) {
+        throw new Error('This profile is deleted!');
+    }
+
+    //If the user for edit have property "isApproved" : false
+    if (!userForEdit.isApproved) {
+        throw new Error('This profile is not approved!');
+    }
+
+};

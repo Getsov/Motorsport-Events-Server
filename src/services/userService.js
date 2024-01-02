@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const { secret } = require('../utils/parseToken');
+const { checkAuthorizedRequests } = require('../utils/securityCheck');
 
 async function registerUser(requestBody) {
     const email = requestBody.email;
@@ -56,23 +57,12 @@ async function loginUser(email, password) {
 
 //updateUser can be invoked by adminController and userController
 //accept id of user which will be updated, new data and isAdmin property
-async function updateUserInfo(idOfUserForEdit, requestBody, requesterId) {
+async function editUserInfo(idOfUserForEdit, requestBody, requesterId) {
     const userForEdit = await User.findById(idOfUserForEdit);
     const requester = await User.findById(requesterId);
     const isAdmin = requester.role == 'admin' ? true : false;
 
-    if (!isAdmin && requester._id != idOfUserForEdit) {
-        throw new Error('You do not have rights to modify the record!');
-    }
-    if (!userForEdit || !requester) {
-        throw new Error('User not found');
-    }
-    if (userForEdit.isDeleted || requester.isDeleted) {
-        throw new Error('This profile is deleted!');
-    }
-    if (!userForEdit.isApproved || !requester.isApproved) {
-        throw new Error('This profile is not approved!');
-    }
+    await checkAuthorizedRequests(userForEdit, requester, isAdmin);
 
     if (userForEdit.role == 'organizer') {
         if (requestBody.organizatorName == '') {
@@ -102,23 +92,12 @@ async function updateUserInfo(idOfUserForEdit, requestBody, requesterId) {
     return createToken(newRecord);
 }
 
-async function updateUserEmail(idOfUserForEdit, requestBody, requesterId) {
+async function editUserEmail(idOfUserForEdit, requestBody, requesterId) {
     const userForEdit = await User.findById(idOfUserForEdit);
     const requester = await User.findById(requesterId);
     const isAdmin = requester.role == 'admin' ? true : false;
 
-    if (!isAdmin && requester._id != idOfUserForEdit) {
-        throw new Error('You do not have rights to modify the record!');
-    }
-    if (!userForEdit || !requester) {
-        throw new Error('User not found');
-    }
-    if (userForEdit.isDeleted || requester.isDeleted) {
-        throw new Error('This profile is deleted!');
-    }
-    if (!userForEdit.isApproved || !requester.isApproved) {
-        throw new Error('This profile is not approved!');
-    }
+    await checkAuthorizedRequests(userForEdit, requester, isAdmin);
 
     if (requestBody.email == '') {
         throw new Error("Email field can't be empty!");
@@ -129,22 +108,12 @@ async function updateUserEmail(idOfUserForEdit, requestBody, requesterId) {
     return createToken(newRecord);
 }
 
-async function updateUserPassword(idOfUserForEdit, requestBody, requesterId) {
+async function editUserPassword(idOfUserForEdit, requestBody, requesterId) {
     const userForEdit = await User.findById(idOfUserForEdit);
     const requester = await User.findById(requesterId);
     const isAdmin = requester.role == 'admin' ? true : false;
-    if (!isAdmin && requester._id != idOfUserForEdit) {
-        throw new Error('You do not have rights to modify the record!');
-    }
-    if (!userForEdit || !requester) {
-        throw new Error('User not found');
-    }
-    if (userForEdit.isDeleted || requester.isDeleted) {
-        throw new Error('This profile is deleted!');
-    }
-    if (!userForEdit.isApproved || !requester.isApproved) {
-        throw new Error('This profile is not approved!');
-    }
+
+    await checkAuthorizedRequests(userForEdit, requester, isAdmin);
 
     if (!isAdmin) {
         const match = await bcrypt.compare(
@@ -165,26 +134,30 @@ async function editUserRole(idOfUserForEdit, requestBody, requesterId) {
     const userForEdit = await User.findById(idOfUserForEdit);
     const requester = await User.findById(requesterId);
     const isAdmin = requester.role == 'admin' ? true : false;
-    if (!isAdmin) {
+
+    if (!isAdmin || requester.isDeleted || !requester.isApproved) {
         throw new Error('You do not have rights to modify the record!');
     }
-    if (!userForEdit || !requester) {
+
+    if (!userForEdit) {
         throw new Error('User not found');
-    }
-    if (userForEdit.isDeleted || requester.isDeleted) {
-        throw new Error('This profile is deleted!');
-    }
-    if (!userForEdit.isApproved || !requester.isApproved) {
-        throw new Error('This profile is not approved!');
     }
 
     if (requestBody.role == 'organizer') {
-        if (userForEdit.organizatorName == '' && userForEdit.phone == '') {
-            if (!requestBody.organizatorName || !requestBody.phone) {
-                throw new Error('Fill all required fields!');
+        if (userForEdit.organizatorName == '') {
+            if (!requestBody.organizatorName) {
+                throw new Error('Name of organization is required!');
+            } else {
+                userForEdit.organizatorName = requestBody.organizatorName;
             }
-            userForEdit.organizatorName = requestBody.organizatorName;
-            userForEdit.phone = requestBody.phone;
+        }
+
+        if (userForEdit.phone == '') {
+            if (!requestBody.phone) {
+                throw new Error('Phone is required!');
+            } else {
+                userForEdit.phone = requestBody.phone;
+            }
         }
     }
     userForEdit.role = requestBody.role;
@@ -192,24 +165,19 @@ async function editUserRole(idOfUserForEdit, requestBody, requesterId) {
     const newRecord = await userForEdit.save();
     return createToken(newRecord);
 }
-
 async function editDeletedProperty(idOfUserForEdit, requestBody, requesterId) {
     const userForEdit = await User.findById(idOfUserForEdit);
     const requester = await User.findById(requesterId);
-
     const isAdmin = requester.role == 'admin' ? true : false;
-    if (!isAdmin) {
+
+    if (!isAdmin || requester.isDeleted || !requester.isApproved) {
         throw new Error('You do not have rights to modify the record!');
     }
-    if (!userForEdit || !requester) {
+
+    if (!userForEdit) {
         throw new Error('User not found');
     }
-    if (requester.isDeleted) {
-        throw new Error('Your profile is deleted!');
-    }
-    if (!requester.isApproved) {
-        throw new Error('Your profile is not approved!');
-    }
+
     if (requestBody.isDeleted) {
         userForEdit.isDeleted = requestBody.isDeleted;
     }
@@ -218,40 +186,25 @@ async function editDeletedProperty(idOfUserForEdit, requestBody, requesterId) {
     return createToken(newRecord);
 }
 
-async function addEventToLikedEvents(eventId, userId, isAlreadyLiked) {
-    const existingUser = await User.findById(userId);
-    if (!existingUser) {
-        throw new Error('User not found!');
+async function approveUser(userId, requesterId, requestBody) {
+    const userForEdit = await User.findById(userId);
+    const requester = await User.findById(requesterId);
+    const isAdmin = requester.role == 'admin' ? true : false;
+
+    if (!isAdmin || requester.isDeleted || !requester.isApproved) {
+        throw new Error('You do not have rights to modify the record!');
     }
 
-    if (existingUser.likedEvents.includes(eventId) && isAlreadyLiked) {
-        let filteredLikes = existingUser.likedEvents.filter(
-            (x) => x != eventId
-        );
-        existingUser.likedEvents = filteredLikes;
-        return await existingUser.save();
+    if (!userForEdit) {
+        throw new Error('User not found');
     }
 
-    existingUser.likedEvents.push(eventId);
-    return await existingUser.save();
+    userForEdit.isApproved = requestBody.isApproved;
+
+    const newRecord = await userForEdit.save();
+    return createToken(newRecord);
 }
 
-async function addEventToCreatedEvents(eventId, userId) {
-    eventId = eventId.toString();
-    const existingUser = await User.findById(userId);
-    if (!existingUser) {
-        throw new Error('User not found!');
-    }
-
-    //TODO: Fot future development:
-    //check if this event is already addded to particular "organizer";
-    // if (existingUser.createdEvents.includes(eventId) ) {
-    //     throw new Error('This event is already created by the user!');
-    // }
-
-    existingUser.createdEvents.push(eventId);
-    return await existingUser.save();
-}
 async function returnAllCreatedEvents(userId) {
     const existingUser = await User.findById(userId);
     if (!existingUser) {
@@ -280,30 +233,6 @@ async function returnAllFavouriteEvents(userId) {
     } else {
         return allFavouriteEvents;
     }
-}
-
-async function approveOrganizer(userId, requesterId, requestBody) {
-    const existingUser = await User.findById(userId);
-    const requester = await User.findById(requesterId);
-    if (requester.isDeleted) {
-        throw new Error('Your profile is deleted!');
-    }
-    if (requester.role !== 'admin') {
-        throw new Error('You do not have access to these records!');
-    }
-    if (!requester.isApproved) {
-        throw new Error('Your profile is not approved!');
-    }
-    if (existingUser.isDeleted == true) {
-        throw new Error('User is deleted!');
-    }
-    if (!existingUser) {
-        throw new Error('User not found!');
-    }
-    existingUser.isApproved = requestBody.isApproved;
-
-    const newRecord = await existingUser.save();
-    return createToken(newRecord);
 }
 
 async function getAllOrganizersForApproval(requesterId) {
@@ -385,6 +314,40 @@ async function getAllUsers(requesterId) {
     const allUsers = await User.find();
     return allUsers;
 }
+async function addRemoveLikedEvent(eventId, userId, isAlreadyLiked) {
+    const existingUser = await User.findById(userId);
+    if (!existingUser) {
+        throw new Error('User not found!');
+    }
+
+    if (existingUser.likedEvents.includes(eventId) && isAlreadyLiked) {
+        let filteredLikes = existingUser.likedEvents.filter(
+            (x) => x != eventId
+        );
+        existingUser.likedEvents = filteredLikes;
+        return await existingUser.save();
+    }
+
+    existingUser.likedEvents.push(eventId);
+    return await existingUser.save();
+}
+
+async function addEventToCreatedEvents(eventId, userId) {
+    eventId = eventId.toString();
+    const existingUser = await User.findById(userId);
+    if (!existingUser) {
+        throw new Error('User not found!');
+    }
+
+    //TODO: Fot future development:
+    //check if this event is already addded to particular "organizer";
+    // if (existingUser.createdEvents.includes(eventId) ) {
+    //     throw new Error('This event is already created by the user!');
+    // }
+
+    existingUser.createdEvents.push(eventId);
+    return await existingUser.save();
+}
 
 function createToken(user) {
     // As a rule, seconds are set for the duration of tokens.
@@ -425,16 +388,16 @@ function createToken(user) {
 module.exports = {
     registerUser,
     loginUser,
-    updateUserInfo,
-    updateUserEmail,
-    updateUserPassword,
+    editUserInfo,
+    editUserEmail,
+    editUserPassword,
     editUserRole,
     editDeletedProperty,
-    addEventToLikedEvents,
+    addRemoveLikedEvent,
     addEventToCreatedEvents,
     returnAllCreatedEvents,
     returnAllFavouriteEvents,
-    approveOrganizer,
+    approveUser,
     getAllOrganizersForApproval,
     getAllOrganizers,
     getAllRegularUsers,
