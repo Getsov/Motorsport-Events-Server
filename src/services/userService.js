@@ -173,6 +173,7 @@ async function editDeletedProperty(idOfUserForEdit, requestBody, requesterId) {
   if (!userForEdit) {
     throw new Error('User not found');
   }
+
   if (requestBody.hasOwnProperty('isDeleted')) {
     requestBody.isDeleted
       ? (userForEdit.isDeleted = true)
@@ -196,7 +197,11 @@ async function approveUser(userId, requesterId, requestBody) {
     throw new Error('User not found');
   }
 
-  userForEdit.isApproved = requestBody.isApproved;
+  if (requestBody.hasOwnProperty('isApproved')) {
+    requestBody.isApproved
+      ? (userForEdit.isApproved = true)
+      : (userForEdit.isApproved = false);
+  }
 
   const newRecord = await userForEdit.save();
   return createToken(newRecord);
