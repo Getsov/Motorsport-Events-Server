@@ -17,7 +17,6 @@ const {
 const { checkRequestData } = require('../utils/checkData');
 const { checkDatesAndTime } = require('../utils/checkDatesAndTime');
 const { getNeededDates } = require('../utils/getNeededDates');
-const { getTodayStart } = require('../utils/todayStart');
 
 eventController.get('/eventsForApproval', async (req, res) => {
     try {
@@ -71,8 +70,7 @@ eventController.post('/register', async (req, res) => {
 // Upcoming Events
 eventController.get('/upcomingEvents', async (req, res) => {
     try {
-        const todayStart = getTodayStart();
-        const events = await getUpcomingEvents(todayStart);
+        const events = await getUpcomingEvents();
 
         res.status(200).json(events);
         res.end();
@@ -85,8 +83,7 @@ eventController.get('/upcomingEvents', async (req, res) => {
 // Past events
 eventController.get('/pastEvents', async (req, res) => {
     try {
-        const todayStart = getTodayStart();
-        const events = await getPastEvents(todayStart);
+        const events = await getPastEvents();
 
         res.status(200).json(events);
         res.end();
