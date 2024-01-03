@@ -320,6 +320,7 @@ async function getAllUsers(requesterId) {
   const allUsers = await User.find();
   return allUsers;
 }
+
 async function addRemoveLikedEvent(eventId, userId, isAlreadyLiked) {
   const existingUser = await User.findById(userId);
   if (!existingUser) {
