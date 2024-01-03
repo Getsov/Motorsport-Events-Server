@@ -12,11 +12,11 @@ const xssRegex = /[<>]/g;
 // };
 
 module.exports = {
-    emailRegex,
-    phoneRegex,
-    validTime,
-    validUrl,
-    validPassword,
-    xssRegex,
-    // checkPhoneNumber,
+  emailRegex,
+  phoneRegex,
+  validTime,
+  validUrl,
+  validPassword,
+  xssRegex,
+  // checkPhoneNumber,
 };
