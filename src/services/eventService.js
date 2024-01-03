@@ -129,8 +129,8 @@ async function updateEvent(requestBody, existingEvent, isAdmin) {
         ) {
             key === 'dates'
                 ? requestBody[key].sort(
-                      (a, b) => new Date(a.date) - new Date(b.date)
-                  )
+                    (a, b) => new Date(a.date) - new Date(b.date)
+                )
                 : null;
             existingEvent[key] = requestBody[key];
         }
@@ -152,7 +152,7 @@ async function likeUnlikeEvent(existingEvent, id, isAlreadyLiked) {
 }
 
 // Find by month.
-async function getByMonth(startDate, endDate) {
+async function getEventsByMonth(startDate, endDate) {
     // Return documents where their 'dates.date[]' have the date from the given month.
     const events = await Event.find({
         isDeleted: false,
@@ -166,6 +166,48 @@ async function getByMonth(startDate, endDate) {
             },
         },
     });
+    return events;
+}
+
+async function getUpcomingEvents() {
+    let query = {
+        isDeleted: false,
+        isApproved: true
+    };
+
+    let todayStart = new Date(Date.now());
+    todayStart.setHours(0, 0, 0, 0);
+        // Query for upcoming events
+        // An event is upcoming if any of its dates are on or after todayEnd
+        query.dates = {
+            $elemMatch: {
+                date: { $gte: todayStart }
+            }
+        };
+
+    const events = await Event.find(query);
+    return events;
+}
+
+async function getPastEvents() {
+    let query = {
+        isDeleted: false,
+        isApproved: true
+    };
+
+    let todayStart = new Date(Date.now());
+    todayStart.setHours(0, 0, 0, 0);
+        // Query for past events
+        // An event is past if all of its dates are before todayStart
+        query.dates = {
+            $not: {
+                $elemMatch: {
+                    date: { $gte: todayStart }
+                }
+            }
+        };
+
+    const events = await Event.find(query);
     return events;
 }
 
@@ -192,71 +234,39 @@ module.exports = {
     findAllEvents,
     updateEvent,
     likeUnlikeEvent,
-    getByMonth,
+    getEventsByMonth,
     getAllEventsForApproval,
+    getUpcomingEvents,
+    getPastEvents,
 };
 
 // Commented code below is for postman tests!
 
 // {
-//     "shortTitle": "Hissar Coup",
-//     "longTitle": "",
+//     "shortTitle": "Special Testing",
 //     "shortDescription": "Lorem..",
-//     "longDescription": "Lorem ipsum dolor sit amet miimet.",
 //     "dates": [
 //         {
-//             "date": "2023-11-17",
-//             "startTime": "23:59",
-//             "endTime": "06:40"
+//             "date": "2023-12-25",
+//             "startTime": "10:59",
+//             "endTime": "22:40"
 //         }
 //     ],
-//     "imageUrl": "",
 //     "contacts": {
 //         "coordinates": {
 //             "lat": "42.52911093579847",
-//             "long": "24.707900125838766"
+//             "lng": "24.707900125838766"
 //         },
-//         "region": "Hisarya",
+//         "region": "Пловдив",
 //         "address": "Хайдут Генчо N1",
 //         "phone": "0123456789",
 //         "email": "peter@abv.bg"
 //     },
-//     "category": "Drag",
-//     "likes": [
-//         "6542c24b6102c6f4e79108fc",
-//         "6542c24b6102c6f4e79108fc",
-//         "6542c24b6102c6f4e79108fc"
-//     ],
-//     "winners": [
-//         {
-//             "name": "Pavel",
-//             "vehicle": "Trabant",
-//             "place": 1,
-//             "_id": "65573f3a1bba3e1d78877f48"
-//         },
-//         {
-//             "name": "Ivan",
-//             "vehicle": "Wartburg",
-//             "place": 2,
-//             "_id": "65573f3a1bba3e1d78877f49"
-//         },
-//         {
-//             "name": "Dragan",
-//             "vehicle": "Moskvich",
-//             "place": 3,
-//             "_id": "65573f3a1bba3e1d78877f4a"
-//         }
-//     ],
+//     "category": "Драг",
 //     "visitorPrices": [
 //         {
 //             "price": 15,
 //             "description": "Цена за зрители"
-//         }
-//     ],
-//     "participantPrices": [
-//         {
-//             "price": 15,
-//             "description": "Цена за участници"
 //         }
 //     ]
 // }

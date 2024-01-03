@@ -5,8 +5,10 @@ const {
     findAllEvents,
     updateEvent,
     likeUnlikeEvent,
-    getByMonth,
+    getEventsByMonth,
     getAllEventsForApproval,
+    getPastEvents,
+    getUpcomingEvents,
 } = require('../services/eventService');
 const {
     addRemoveLikedEvent,
@@ -14,6 +16,7 @@ const {
 } = require('../services/userService');
 const { checkRequestData } = require('../utils/checkData');
 const { checkDatesAndTime } = require('../utils/checkDatesAndTime');
+const { getNeededDates } = require('../utils/getNeededDates');
 
 eventController.get('/eventsForApproval', async (req, res) => {
     try {
@@ -38,7 +41,6 @@ eventController.post('/register', async (req, res) => {
             throw new Error('Invalid request Body!');
         }
 
-        // TODO: MORE TEST
         checkDatesAndTime(req.body.dates);
 
         checkRequestData(req.body);
@@ -62,6 +64,32 @@ eventController.post('/register', async (req, res) => {
         res.end();
     } catch (error) {
         res.status(400).json({ error: error.message });
+    }
+});
+
+// Upcoming Events
+eventController.get('/upcomingEvents', async (req, res) => {
+    try {
+        const events = await getUpcomingEvents();
+
+        res.status(200).json(events);
+        res.end();
+    } catch (error) {
+        res.status(400).json(error.message);
+        res.end();
+    }
+});
+
+// Past events
+eventController.get('/pastEvents', async (req, res) => {
+    try {
+        const events = await getPastEvents();
+
+        res.status(200).json(events);
+        res.end();
+    } catch (error) {
+        res.status(400).json(error.message);
+        res.end();
     }
 });
 
@@ -186,12 +214,12 @@ eventController.get('/month/:year/:month', async (req, res) => {
     // TODO: Later add errors for wrong parameters.
     try {
         const { year, month } = req.params;
-        const { startDate, endDate } = getMonthRange(
+        const { startDate, endDate } = getNeededDates(
             parseInt(year),
             parseInt(month)
         );
 
-        const events = await getByMonth(startDate, endDate);
+        const events = await getEventsByMonth(startDate, endDate);
 
         res.status(200).json(events);
         res.end();
@@ -200,6 +228,7 @@ eventController.get('/month/:year/:month', async (req, res) => {
         res.end();
     }
 });
+
 
 // Unmatched route
 eventController.use((req, res) => {
@@ -210,25 +239,4 @@ eventController.use((req, res) => {
 
 module.exports = {
     eventController,
-};
-
-// TODO: Add it in utils later!
-const getMonthRange = (year, month) => {
-    if (month < 1 || month > 12) {
-        throw new Error(
-            'Invalid month value. Month should be in the range 1-12.'
-        );
-    }
-
-    const startDate = new Date(year, month - 1, 1);
-    startDate.setHours(0, 0, 0, 0);
-
-    const endDate = new Date(year, month, 0);
-    endDate.setHours(23, 59, 59, 999);
-
-    // Check who need to know about local time, and then pass this variables?
-    const localStartDate = startDate.toLocaleString();
-    const localEndDate = endDate.toLocaleString();
-
-    return { startDate, endDate };
 };
