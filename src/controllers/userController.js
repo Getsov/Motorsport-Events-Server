@@ -271,7 +271,7 @@ userController.get('/allUsers', async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 });
-userController.post('/reset-password', async (req, res) => {
+userController.post('/resetPassword', async (req, res) => {
     try {
         if (req.body.to === undefined) {
             throw new Error('Email is not passed!');
