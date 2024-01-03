@@ -143,7 +143,6 @@ const eventSchema = new Schema({
   category: {
     type: String,
     required: true,
-    // TODO: Check later if we'll let them as they are or to be in cyrillic?
     enum: [
       'Автокрос',
       'Драг',

@@ -5,7 +5,6 @@ const { regions } = require('../shared/regions');
 const { limitModels } = require('../utils/limitModels');
 
 async function registerEvent(requestBody, requesterId) {
-  // TODO: make more tests with different values!
   const event = await Event.create({
     shortTitle: requestBody.shortTitle,
     longTitle: requestBody.longTitle,
