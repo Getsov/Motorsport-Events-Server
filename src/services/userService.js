@@ -178,6 +178,8 @@ async function editDeletedProperty(idOfUserForEdit, requestBody, requesterId) {
     requestBody.isDeleted
       ? (userForEdit.isDeleted = true)
       : (userForEdit.isDeleted = false);
+  } else {
+    throw new Error('Add correct data in the request: "isDeleted"');
   }
 
   const newRecord = await userForEdit.save();
@@ -201,6 +203,8 @@ async function approveUser(userId, requesterId, requestBody) {
     requestBody.isApproved
       ? (userForEdit.isApproved = true)
       : (userForEdit.isApproved = false);
+  } else {
+    throw new Error('Add correct data in the request: "isApproved"');
   }
 
   const newRecord = await userForEdit.save();
