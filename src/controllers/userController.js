@@ -16,6 +16,7 @@ const {
   getAllUsers,
   editDeletedProperty,
   approveUser,
+  getUserById,
 } = require('../services/userService');
 
 const { validPassword } = require('../shared/sharedRegex');
@@ -130,6 +131,7 @@ userController.put('/editUserPassword/:id', async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
+
 userController.put('/editUserRole/:id', async (req, res) => {
   try {
     const userForEdit = req.params.id;
@@ -154,6 +156,19 @@ userController.put('/editDeleted/:id', async (req, res) => {
     res.end();
   } catch (error) {
     console.log(error);
+    res.status(400).json({ error: error.message });
+  }
+});
+
+userController.get('/getUserById/:id', async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const requesterId = req.requester?._id;
+    const user = await getUserById(userId, requesterId);
+
+    res.send(user);
+    res.end();
+  } catch (error) {
     res.status(400).json({ error: error.message });
   }
 });
@@ -197,8 +212,6 @@ userController.get('/getMyFavourites', async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
-
-// Reset password.
 
 userController.get('/organizersForApproval', async (req, res) => {
   try {

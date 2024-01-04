@@ -50,13 +50,13 @@ Important!: Event must be approved to see it!
 Retrieve entry with ID: `654651caf696083cab72ab1c` from the events collection:
 
 - **Method:** `GET`
-- **Endpont:** `/events/654651caf696083cab72ab1c`
+- **Endpont:** `/events/:id`
 
 Filtering entries by `category` and `region` from the events collection:
 If you want to use filtering you must provide a query string with `category`, `region` or both properties to filter entries.
 
 - **Method:** `GET`
-- **Endpont:** `/events?category=Rally&region=16`
+- **Endpont:** `/events?category=2&region=16`
 
 If you want to use pagination provide `page` and `limit` options to the queryString, the service automatically limits the result based on `limit` entries.
 Append `page={n}&limit={n}` to the query parameters, where {page} is the number of entries to skip and {limit} is the number of entries to return.
@@ -118,6 +118,11 @@ Retrieve all users! Available only for active and approved admins!
 - **Method:** `GET`
 - **Endpont:** `/user/allUsers`
 
+Retrieve single user. Only admin and owner can get the requested user info.
+
+- **Method:** `GET`
+- **Endpont:** `/user/getUserInfo/:id`
+
 Retrieve all events created from current user!
 
 - **Method:** `GET`
@@ -157,7 +162,7 @@ Update entry with ID `654651caf696083cab72ab1c` in the `events` collection:
 - **_Event_**:
 
 - **Method:** `PUT`
-- **Endpont:** `/event/654651caf696083cab72ab1c`
+- **Endpont:** `/event/:id`
   Headers: `Content-Type: application/json`
   Body: JSON-formatted data
 
@@ -208,7 +213,7 @@ Like-Event: Every user can like an Event. To do it, 'authorized' user must send 
 Example: `/events/like/:id`
 
 - **Method:** `POST`
-- **Endpont:** `/events/like/6563804d62f4145aefcc2e01`
+- **Endpont:** `/events/like/:id`
 
 Password-reset: Every user can recover their password. To fulfill the request, the `user` must provide `email`. A new `password` will be send to the given email address.
 

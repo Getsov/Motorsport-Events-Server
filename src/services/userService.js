@@ -20,7 +20,7 @@ async function registerUser(requestBody) {
 }
 
 async function loginUser(email, password) {
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email }).select('+hashedPassword');
 
   if (!user) {
     throw new Error('Invalid email or password!');
@@ -241,6 +241,28 @@ async function returnAllFavouriteEvents(userId) {
   }
 }
 
+async function getUserById(userId, requesterId) {
+  const user = await User.findById(userId);
+  const requester = await User.findById(requesterId);
+
+  if (!user) {
+    throw new Error('User not found!');
+  }
+  if (!requester) {
+    throw new Error('Your profile is not found!');
+  }
+
+  if (requester.isDeleted || !requester.isApproved) {
+    throw new Error('You do not have access to these records!');
+  }
+
+  if (requester.role !== 'admin' && requester._id != user._id) {
+    throw new Error('You are not authorized to see User details!');
+  }
+
+  return user;
+}
+
 async function getAllOrganizersForApproval(requesterId) {
   const requester = await User.findById(requesterId);
   if (requester.isDeleted) {
@@ -408,4 +430,5 @@ module.exports = {
   getAllRegularUsers,
   getAllAdmins,
   getAllUsers,
+  getUserById,
 };

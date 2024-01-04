@@ -89,7 +89,7 @@ const userSchema = new Schema({
   },
   createdEvents: [{ type: ObjectId, ref: 'Event' }],
   likedEvents: [{ type: ObjectId, ref: 'Event' }],
-  hashedPassword: { type: String, required: true },
+  hashedPassword: { type: String, required: true, select: false },
   isDeleted: { type: Boolean, default: false },
   isApproved: { type: Boolean, default: true },
 });
