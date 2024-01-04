@@ -20,7 +20,7 @@ async function registerUser(requestBody) {
 }
 
 async function loginUser(email, password) {
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email }).select('+hashedPassword');
 
   if (!user) {
     throw new Error('Invalid email or password!');
