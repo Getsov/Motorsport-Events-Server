@@ -162,11 +162,9 @@ userController.put('/editDeleted/:id', async (req, res) => {
 
 userController.get('/getUserInfo/:id', async (req, res) => {
   try {
-    const user = await getUserInfo(req.params.id);
-
-    if (req.requester?.role !== 'admin' && req.requester?._id != user._id) {
-      throw new Error('You are not authorized to see User details!')
-    }
+    const userId = req.params.id;
+    const requesterId = req.requester?._id
+    const user = await getUserInfo(userId, requesterId);
 
     res.send(user);
     res.end();
