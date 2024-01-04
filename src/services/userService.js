@@ -255,7 +255,7 @@ async function getAllOrganizersForApproval(requesterId) {
   const waitingOrganizers = await User.find({
     isApproved: false,
     role: 'organizer',
-  });
+  }).select('-hashedPassword');
   return waitingOrganizers;
 }
 
@@ -272,7 +272,7 @@ async function getAllOrganizers(requesterId) {
   }
   const allOrganizers = await User.find({
     role: 'organizer',
-  });
+  }).select('-hashedPassword');
   return allOrganizers;
 }
 
@@ -287,7 +287,7 @@ async function getAllRegularUsers(requesterId) {
   if (requester.role !== 'admin') {
     throw new Error('You do not have access to these records!');
   }
-  const allRegularUsers = await User.find({ role: 'regular' });
+  const allRegularUsers = await User.find({ role: 'regular' }).select('-hashedPassword');
   return allRegularUsers;
 }
 
@@ -302,7 +302,7 @@ async function getAllAdmins(requesterId) {
   if (requester.role !== 'admin') {
     throw new Error('You do not have access to these records!');
   }
-  const allAdmins = await User.find({ role: 'admin' });
+  const allAdmins = await User.find({ role: 'admin' }).select('-hashedPassword');
   return allAdmins;
 }
 
@@ -317,7 +317,7 @@ async function getAllUsers(requesterId) {
   if (requester.role !== 'admin') {
     throw new Error('You do not have access to these records!');
   }
-  const allUsers = await User.find();
+  const allUsers = await User.find().select('-hashedPassword');
   return allUsers;
 }
 
