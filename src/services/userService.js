@@ -241,6 +241,11 @@ async function returnAllFavouriteEvents(userId) {
   }
 }
 
+async function getUserInfo(userId) {
+  const user = await User.findById(userId);
+  return user;
+}
+
 async function getAllOrganizersForApproval(requesterId) {
   const requester = await User.findById(requesterId);
   if (requester.isDeleted) {
@@ -255,7 +260,7 @@ async function getAllOrganizersForApproval(requesterId) {
   const waitingOrganizers = await User.find({
     isApproved: false,
     role: 'organizer',
-  }).select('-hashedPassword');
+  });
   return waitingOrganizers;
 }
 
@@ -272,7 +277,7 @@ async function getAllOrganizers(requesterId) {
   }
   const allOrganizers = await User.find({
     role: 'organizer',
-  }).select('-hashedPassword');
+  });
   return allOrganizers;
 }
 
@@ -287,7 +292,7 @@ async function getAllRegularUsers(requesterId) {
   if (requester.role !== 'admin') {
     throw new Error('You do not have access to these records!');
   }
-  const allRegularUsers = await User.find({ role: 'regular' }).select('-hashedPassword');
+  const allRegularUsers = await User.find({ role: 'regular' });
   return allRegularUsers;
 }
 
@@ -302,7 +307,7 @@ async function getAllAdmins(requesterId) {
   if (requester.role !== 'admin') {
     throw new Error('You do not have access to these records!');
   }
-  const allAdmins = await User.find({ role: 'admin' }).select('-hashedPassword');
+  const allAdmins = await User.find({ role: 'admin' });
   return allAdmins;
 }
 
@@ -317,7 +322,7 @@ async function getAllUsers(requesterId) {
   if (requester.role !== 'admin') {
     throw new Error('You do not have access to these records!');
   }
-  const allUsers = await User.find().select('-hashedPassword');
+  const allUsers = await User.find();
   return allUsers;
 }
 
@@ -354,10 +359,6 @@ async function addEventToCreatedEvents(eventId, userId) {
   return await existingUser.save();
 }
 
-async function getUserInfo(userId) {
-  const user = await User.findById(userId).select('-hashedPassword');
-  return user;
-}
 
 function createToken(user) {
   // As a rule, seconds are set for the duration of tokens.
