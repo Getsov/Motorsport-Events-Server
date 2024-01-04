@@ -16,7 +16,7 @@ const {
   getAllUsers,
   editDeletedProperty,
   approveUser,
-  getUserInfo,
+  getUserById,
 } = require('../services/userService');
 
 const { validPassword } = require('../shared/sharedRegex');
@@ -160,15 +160,14 @@ userController.put('/editDeleted/:id', async (req, res) => {
   }
 });
 
-userController.get('/getUserInfo/:id', async (req, res) => {
+userController.get('/getUserById/:id', async (req, res) => {
   try {
     const userId = req.params.id;
-    const requesterId = req.requester?._id
-    const user = await getUserInfo(userId, requesterId);
+    const requesterId = req.requester?._id;
+    const user = await getUserById(userId, requesterId);
 
     res.send(user);
     res.end();
-
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

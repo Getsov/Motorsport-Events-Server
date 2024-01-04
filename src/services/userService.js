@@ -241,16 +241,19 @@ async function returnAllFavouriteEvents(userId) {
   }
 }
 
-async function getUserInfo(userId, requesterId) {
-  const user = await User.findById(userId)
+async function getUserById(userId, requesterId) {
+  const user = await User.findById(userId);
   const requester = await User.findById(requesterId);
 
   if (!user) {
     throw new Error('User not found!');
   }
-
   if (!requester) {
     throw new Error('Your profile is not found!');
+  }
+
+  if (requester.isDeleted || !requester.isApproved) {
+    throw new Error('You do not have access to these records!');
   }
 
   if (requester.role !== 'admin' && requester._id != user._id) {
@@ -373,7 +376,6 @@ async function addEventToCreatedEvents(eventId, userId) {
   return await existingUser.save();
 }
 
-
 function createToken(user) {
   // As a rule, seconds are set for the duration of tokens.
   const expiresInTenDays = 10 * 24 * 60 * 60;
@@ -428,5 +430,5 @@ module.exports = {
   getAllRegularUsers,
   getAllAdmins,
   getAllUsers,
-  getUserInfo
+  getUserById,
 };
