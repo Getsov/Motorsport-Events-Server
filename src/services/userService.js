@@ -354,6 +354,11 @@ async function addEventToCreatedEvents(eventId, userId) {
   return await existingUser.save();
 }
 
+async function getUserInfo(userId) {
+  const user = await User.findById(userId).select('-hashedPassword');
+  return user;
+}
+
 function createToken(user) {
   // As a rule, seconds are set for the duration of tokens.
   const expiresInTenDays = 10 * 24 * 60 * 60;
@@ -408,4 +413,5 @@ module.exports = {
   getAllRegularUsers,
   getAllAdmins,
   getAllUsers,
+  getUserInfo
 };
