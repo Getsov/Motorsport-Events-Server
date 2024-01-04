@@ -16,6 +16,7 @@ const {
   getAllUsers,
   editDeletedProperty,
   approveUser,
+  getUserInfo,
 } = require('../services/userService');
 
 const { validPassword } = require('../shared/sharedRegex');
@@ -130,6 +131,7 @@ userController.put('/editUserPassword/:id', async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
+
 userController.put('/editUserRole/:id', async (req, res) => {
   try {
     const userForEdit = req.params.id;
@@ -154,6 +156,22 @@ userController.put('/editDeleted/:id', async (req, res) => {
     res.end();
   } catch (error) {
     console.log(error);
+    res.status(400).json({ error: error.message });
+  }
+});
+
+userController.get('/getUserInfo/:id', async (req, res) => {
+  try {
+    const user = await getUserInfo(req.params.id);
+
+    if (req.requester?.role !== 'admin' && req.requester?._id != user._id) {
+      throw new Error('You are not authorized to see User details!')
+    }
+
+    res.send(user);
+    res.end();
+
+  } catch (error) {
     res.status(400).json({ error: error.message });
   }
 });
@@ -197,8 +215,6 @@ userController.get('/getMyFavourites', async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
-
-// Reset password.
 
 userController.get('/organizersForApproval', async (req, res) => {
   try {
