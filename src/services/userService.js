@@ -44,6 +44,7 @@ async function loginUser(email, password) {
   }
 
   const match = await bcrypt.compare(password, user.hashedPassword);
+  console.log(password);
 
   if (!match) {
     throw new Error('Invalid email or password!');
@@ -241,8 +242,22 @@ async function returnAllFavouriteEvents(userId) {
   }
 }
 
-async function getUserInfo(userId) {
-  const user = await User.findById(userId);
+async function getUserInfo(userId, requesterId) {
+  const user = await User.findById(userId)
+  const requester = await User.findById(requesterId);
+
+  if (!user) {
+    throw new Error('User not found!');
+  }
+
+  if (!requester) {
+    throw new Error('Your profile is not found!');
+  }
+
+  if (requester.role !== 'admin' && requester._id != user._id) {
+    throw new Error('You are not authorized to see User details!');
+  }
+
   return user;
 }
 
