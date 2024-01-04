@@ -256,7 +256,7 @@ async function getUserById(userId, requesterId) {
     throw new Error('You do not have access to these records!');
   }
 
-  if (requester.role !== 'admin' && requester._id != user._id) {
+  if (requester.role !== 'admin' && requester._id.toString() != user._id.toString()) {
     throw new Error('You are not authorized to see User details!');
   }
 
