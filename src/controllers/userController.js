@@ -64,8 +64,11 @@ userController.post('/register', async (req, res) => {
     }
 
     if (req.body.role == 'organizer') {
-      if (!req.body.organizatorName || !req.body.phone) {
-        throw new Error('Fill all required fields!');
+      if (!req.body.organizatorName) {
+        throw new Error('Name of organizator is required!');
+      }
+      if (!req.body.phone) {
+        throw new Error('Phone is required!');
       }
       userData.organizatorName = req.body.organizatorName;
     }
