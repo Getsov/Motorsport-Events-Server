@@ -167,11 +167,11 @@ async function likeUnlikeEvent(existingEvent, requesterId, isAlreadyLiked) {
   if (isAlreadyLiked) {
     let filteredLikes = await existingEvent.likes.filter((x) => x != requesterId);
     existingEvent.likes = filteredLikes;
-    return await existingEvent.save();
+    return await existingEvent.save({ validateBeforeSave: false });
   }
 
   existingEvent.likes.push(requesterId);
-  return await existingEvent.save();
+  return await existingEvent.save({ validateBeforeSave: false });
 }
 
 // Find by month.
