@@ -248,16 +248,16 @@ async function getUserById(userId, requesterId) {
   if (!user) {
     throw new Error('User not found!');
   }
-  
+
   if (!requester) {
     throw new Error('Your profile is not found!');
   }
 
-  if (requester.isDeleted || !requester.isApproved) {
+  if (requester?.isDeleted || !requester?.isApproved) {
     throw new Error('You do not have access to these records!');
   }
 
-  if (requester.role !== 'admin' && requester._id.toString() != user._id.toString()) {
+  if (requester?.role !== 'admin' && requester?._id.toString() != user?._id.toString()) {
     throw new Error('You are not authorized to see User details!');
   }
 
