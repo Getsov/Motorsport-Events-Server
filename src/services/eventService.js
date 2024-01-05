@@ -11,11 +11,11 @@ async function registerEvent(requestBody, requesterId) {
     throw new Error('User not found!');
   }
 
-  if (requester.isDeleted === true) {
+  if (requester?.isDeleted === true) {
     throw new Error('This User is deleted!');
   }
   
-  if (requester.isApproved === false) {
+  if (requester?.isApproved === false) {
     throw new Error('This User must be approved to register events!');
   }
 
