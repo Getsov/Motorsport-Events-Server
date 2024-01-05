@@ -144,7 +144,8 @@ eventController.put('/:id', async (req, res) => {
     const updatedEvent = await updateEvent(
       req.body,
       event,
-      req.requester.role === 'admin'
+      req.requester.role === 'admin',
+      req.requester._id
     );
 
     res.status(200).json(updatedEvent);
