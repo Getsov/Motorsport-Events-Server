@@ -122,7 +122,7 @@ async function updateEvent(requestBody, existingEvent, isAdmin, requesterId) {
     throw new Error('This User is deleted!');
   }
 
-  if (requester.isApproved === false) {
+  if (!requester.isApproved) {
     throw new Error('This User must be approved to update events!');
   }
 
@@ -172,7 +172,7 @@ async function likeUnlikeEvent(existingEvent, requesterId, isAlreadyLiked) {
     throw new Error('This User is deleted!');
   }
 
-  if (requester.isApproved === false) {
+  if (!requester?.isApproved) {
     throw new Error('This User must be approved to like events!');
   }
 
