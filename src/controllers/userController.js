@@ -56,14 +56,17 @@ userController.post('/register', async (req, res) => {
       role: req.body.role ? req.body.role : 'regular',
       region: req.body.region ? req.body.region : '',
       phone: req.body.phone ? req.body.phone : '',
+      isDeleted: false,
       hashedPassword: await bcrypt.hash(req.body.password, 10),
     };
+    if (userData.role == 'regular') {
+      userData.isApproved = true;
+    }
 
     if (req.body.role == 'organizer') {
       if (!req.body.organizatorName || !req.body.phone) {
         throw new Error('Fill all required fields!');
       }
-      userData.isApproved = false;
       userData.organizatorName = req.body.organizatorName;
     }
 
