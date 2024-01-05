@@ -15,7 +15,7 @@ async function registerEvent(requestBody, requesterId) {
     throw new Error('This User is deleted!');
   }
   
-  if (requester?.isApproved === false) {
+  if (!requester?.isApproved) {
     throw new Error('This User must be approved to register events!');
   }
 
