@@ -244,7 +244,7 @@ async function returnAllFavouriteEvents(userId) {
 async function getUserById(userId, requesterId) {
   const user = await User.findById(userId);
   const requester = await User.findById(requesterId);
- 
+
   if (!user) {
     throw new Error('User not found!');
   }
@@ -257,7 +257,10 @@ async function getUserById(userId, requesterId) {
     throw new Error('You do not have access to these records!');
   }
 
-  if (requester?.role !== 'admin' && requester?._id.toString() != user?._id.toString()) {
+  if (
+    requester?.role !== 'admin' &&
+    requester?._id.toString() != user?._id.toString()
+  ) {
     throw new Error('You are not authorized to see User details!');
   }
 
@@ -366,12 +369,6 @@ async function addEventToCreatedEvents(eventId, userId) {
   if (!existingUser) {
     throw new Error('User not found!');
   }
-
-  //TODO: Fot future development:
-  //check if this event is already addded to particular "organizer";
-  // if (existingUser.createdEvents.includes(eventId) ) {
-  //     throw new Error('This event is already created by the user!');
-  // }
 
   existingUser.createdEvents.push(eventId);
   return await existingUser.save();
