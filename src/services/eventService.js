@@ -7,12 +7,16 @@ const { limitModels } = require('../utils/limitModels');
 async function registerEvent(requestBody, requesterId) {
   const requester = await User.findById(requesterId);
 
+  if (!requester) {
+    throw new Error('User not found!');
+  }
+
   if (requester.isDeleted === true) {
-    throw new Error('This User is deleted!')
+    throw new Error('This User is deleted!');
   }
   
   if (requester.isApproved === false) {
-    throw new Error('This User must be approved to register events!')
+    throw new Error('This User must be approved to register events!');
   }
 
   const event = await Event.create({
@@ -110,12 +114,16 @@ async function findAllEvents(query) {
 async function updateEvent(requestBody, existingEvent, isAdmin, requesterId) {
   const requester = await User.findById(requesterId);
 
+  if (!requester) {
+    throw new Error('User not found!');
+  }
+
   if (requester.isDeleted === true) {
-    throw new Error('This User is deleted!')
+    throw new Error('This User is deleted!');
   }
 
   if (requester.isApproved === false) {
-    throw new Error('This User must be approved to update events!')
+    throw new Error('This User must be approved to update events!');
   }
 
   for (let key in requestBody) {
@@ -154,14 +162,18 @@ async function updateEvent(requestBody, existingEvent, isAdmin, requesterId) {
 
 // Like/Unlike event.
 async function likeUnlikeEvent(existingEvent, requesterId, isAlreadyLiked) {
-  const requester = await User.findById(requesterId);
+  let requester = await User.findById(requesterId);
+  
+  if (!requester) {
+    throw new Error('User not found!');
+  }
 
   if (requester.isDeleted === true) {
-    throw new Error('This User is deleted!')
+    throw new Error('This User is deleted!');
   }
 
   if (requester.isApproved === false) {
-    throw new Error('This User must be approved to like events!')
+    throw new Error('This User must be approved to like events!');
   }
 
   if (isAlreadyLiked) {
