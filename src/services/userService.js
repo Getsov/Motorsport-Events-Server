@@ -244,10 +244,11 @@ async function returnAllFavouriteEvents(userId) {
 async function getUserById(userId, requesterId) {
   const user = await User.findById(userId);
   const requester = await User.findById(requesterId);
-
+ 
   if (!user) {
     throw new Error('User not found!');
   }
+  
   if (!requester) {
     throw new Error('Your profile is not found!');
   }
