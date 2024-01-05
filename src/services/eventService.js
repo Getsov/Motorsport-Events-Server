@@ -5,6 +5,16 @@ const { regions } = require('../shared/regions');
 const { limitModels } = require('../utils/limitModels');
 
 async function registerEvent(requestBody, requesterId) {
+  const requester = await User.findById(requesterId);
+
+  if (requester.isDeleted === true) {
+    throw new Error('This User is deleted!')
+  }
+  
+  if (requester.isApproved === false) {
+    throw new Error('This User must be approved to register events!')
+  }
+
   const event = await Event.create({
     shortTitle: requestBody.shortTitle,
     longTitle: requestBody.longTitle,
@@ -97,7 +107,17 @@ async function findAllEvents(query) {
 }
 
 // TODO: Update the event later!
-async function updateEvent(requestBody, existingEvent, isAdmin) {
+async function updateEvent(requestBody, existingEvent, isAdmin, requesterId) {
+  const requester = await User.findById(requesterId);
+
+  if (requester.isDeleted === true) {
+    throw new Error('This User is deleted!')
+  }
+
+  if (requester.isApproved === false) {
+    throw new Error('This User must be approved to update events!')
+  }
+
   for (let key in requestBody) {
     if (
       isAdmin &&
@@ -133,14 +153,24 @@ async function updateEvent(requestBody, existingEvent, isAdmin) {
 }
 
 // Like/Unlike event.
-async function likeUnlikeEvent(existingEvent, id, isAlreadyLiked) {
+async function likeUnlikeEvent(existingEvent, requesterId, isAlreadyLiked) {
+  const requester = await User.findById(requesterId);
+
+  if (requester.isDeleted === true) {
+    throw new Error('This User is deleted!')
+  }
+
+  if (requester.isApproved === false) {
+    throw new Error('This User must be approved to like events!')
+  }
+
   if (isAlreadyLiked) {
-    let filteredLikes = await existingEvent.likes.filter((x) => x != id);
+    let filteredLikes = await existingEvent.likes.filter((x) => x != requesterId);
     existingEvent.likes = filteredLikes;
     return await existingEvent.save();
   }
 
-  existingEvent.likes.push(id);
+  existingEvent.likes.push(requesterId);
   return await existingEvent.save();
 }
 
