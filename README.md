@@ -121,7 +121,7 @@ Retrieve all users! Available only for active and approved admins!
 Retrieve single user. Only admin and owner can get the requested user info.
 
 - **Method:** `GET`
-- **Endpont:** `/user/getUserInfo/:id`
+- **Endpont:** `/user/getUserById/:id`
 
 Retrieve all events created from current user!
 

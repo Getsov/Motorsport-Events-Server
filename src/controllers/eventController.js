@@ -32,9 +32,6 @@ eventController.get('/eventsForApproval', async (req, res) => {
 
 eventController.post('/register', async (req, res) => {
   try {
-    if (req.requester.isApproved === false) {
-      throw new Error('This "User" is not approved to register an Event!');
-    }
     if (Object.keys(req.body).length === 0) {
       throw new Error('Invalid request Body!');
     }
@@ -144,7 +141,8 @@ eventController.put('/:id', async (req, res) => {
     const updatedEvent = await updateEvent(
       req.body,
       event,
-      req.requester.role === 'admin'
+      req.requester.role === 'admin',
+      req.requester._id
     );
 
     res.status(200).json(updatedEvent);

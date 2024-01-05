@@ -5,6 +5,20 @@ const { regions } = require('../shared/regions');
 const { limitModels } = require('../utils/limitModels');
 
 async function registerEvent(requestBody, requesterId) {
+  const requester = await User.findById(requesterId);
+
+  if (!requester) {
+    throw new Error('User not found!');
+  }
+
+  if (requester?.isDeleted === true) {
+    throw new Error('This User is deleted!');
+  }
+  
+  if (!requester?.isApproved) {
+    throw new Error('This User must be approved to register events!');
+  }
+
   const event = await Event.create({
     shortTitle: requestBody.shortTitle,
     longTitle: requestBody.longTitle,
@@ -97,7 +111,21 @@ async function findAllEvents(query) {
 }
 
 // TODO: Update the event later!
-async function updateEvent(requestBody, existingEvent, isAdmin) {
+async function updateEvent(requestBody, existingEvent, isAdmin, requesterId) {
+  const requester = await User.findById(requesterId);
+
+  if (!requester) {
+    throw new Error('User not found!');
+  }
+
+  if (requester.isDeleted === true) {
+    throw new Error('This User is deleted!');
+  }
+
+  if (!requester.isApproved) {
+    throw new Error('This User must be approved to update events!');
+  }
+
   for (let key in requestBody) {
     if (
       isAdmin &&
@@ -133,15 +161,29 @@ async function updateEvent(requestBody, existingEvent, isAdmin) {
 }
 
 // Like/Unlike event.
-async function likeUnlikeEvent(existingEvent, id, isAlreadyLiked) {
-  if (isAlreadyLiked) {
-    let filteredLikes = await existingEvent.likes.filter((x) => x != id);
-    existingEvent.likes = filteredLikes;
-    return await existingEvent.save();
+async function likeUnlikeEvent(existingEvent, requesterId, isAlreadyLiked) {
+  let requester = await User.findById(requesterId);
+  
+  if (!requester) {
+    throw new Error('User not found!');
   }
 
-  existingEvent.likes.push(id);
-  return await existingEvent.save();
+  if (requester.isDeleted === true) {
+    throw new Error('This User is deleted!');
+  }
+
+  if (!requester?.isApproved) {
+    throw new Error('This User must be approved to like events!');
+  }
+
+  if (isAlreadyLiked) {
+    let filteredLikes = await existingEvent.likes.filter((x) => x != requesterId);
+    existingEvent.likes = filteredLikes;
+    return await existingEvent.save({ validateBeforeSave: false });
+  }
+
+  existingEvent.likes.push(requesterId);
+  return await existingEvent.save({ validateBeforeSave: false });
 }
 
 // Find by month.
