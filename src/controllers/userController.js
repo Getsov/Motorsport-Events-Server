@@ -24,7 +24,6 @@ const { checkRequestData } = require('../utils/checkData');
 const { resetPassword } = require('../services/emailService');
 
 
-
 userController.post('/register', async (req, res) => {
   try {
     const passwordTest = validPassword.test(req.body.password);
