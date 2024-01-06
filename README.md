@@ -21,12 +21,12 @@ The service is not initialized with any data. You need to create it by yourself.
 
 ### Register:
 
-Create a new `user` by sending a POST request to `http://localhost:3030`: + `/user/register` with properties: `email`, `password`, `repassword`.If you register as admin, you need to pass `role`. If you register as organizator you need to add to request  `role`, `organizatorName`, `phone`.  The service automatically creates a session and returns object with `accessToken` inside, that can be used for authorized requests. 
+Create a new `user` by sending a POST request to `http://localhost:3030`: + `/user/register` with properties: `email`, `password`, `repassword`.If you register as admin, you need to pass `role`. If you register as organizator you need to add to request `role`, `organizatorName`, `phone`. The service automatically creates a session and returns object with `accessToken` inside, that can be used for authorized requests.
 Admins and organizаtors will be active after approval by active admin.
 
 ### Login:
 
-Login by sending a POST request with `email` and `password` to `http://localhost:3030` + `/user/login`. The service will respond with object with details containing a standard `accessToken`, that can be used for authorized requests.
+Login by sending a POST request with `email` and `password` to `http://localhost:3030` + `/user/login`. If the profile is approved and it's not deleted, the service will respond with object with details containing a standard `accessToken`,that can be used for authorized requests.
 
 ### Logout:
 
@@ -146,7 +146,7 @@ Important!: Event must be approved to see it!
 
 - **Method:** `POST`
 - **Endpont:** `/events/register`
-  Headers: Content-Type: application/json
+  Headers: `Content-Type: application/json`
   `X-Authorization: {token}`
   Body: JSON-formatted data
 
@@ -163,8 +163,9 @@ Update entry with ID `654651caf696083cab72ab1c` in the `events` collection:
 - **_Event_**:
 
 - **Method:** `PUT`
-- **Endpont:** `/event/:id`
+- **Endpont:** `/events/:id`
   Headers: `Content-Type: application/json`
+  `X-Authorization: {token}`
   Body: JSON-formatted data
 
 - **_User_**:
@@ -172,12 +173,14 @@ Update entry with ID `654651caf696083cab72ab1c` in the `events` collection:
 - **Method:** `PUT`
 - **Endpont:** `/user/editUserInfo/:id`
   Headers: `Content-Type: application/json`
+  `X-Authorization: {token}`
   Body: JSON-formatted data
   Changes: Only optional data of User(firstName, lastName, region, organizationName, phone). Admin and User itself can change the data, but only if the requester of changes is not deleted or is approved.
 
 - **Method:** `PUT`
 - **Endpont:** `/user/editUserEmail/:id`
   Headers: `Content-Type: application/json`
+  `X-Authorization: {token}`
   Body: JSON-formatted data
   Changes: Admin and User itself can change the email, but only if the requester of this change is approved and not deleted.
   To fulfill the request, the user must send the new email.
@@ -185,6 +188,7 @@ Update entry with ID `654651caf696083cab72ab1c` in the `events` collection:
 - **Method:** `PUT`
 - **Endpont:** `/user/editUserPassword/:id`
   Headers: `Content-Type: application/json`
+  `X-Authorization: {token}`
   Body: JSON-formatted data
   Changes: Admin and User itself can change password, but only if the requester of this change is approved and not deleted.
   To fulfill the request, the user must send the old password, a new password and a repetition of the new password. The administrator must send a new password and repetition the new password.
@@ -192,6 +196,7 @@ Update entry with ID `654651caf696083cab72ab1c` in the `events` collection:
 - **Method:** `PUT`
 - **Endpont:** `/user/editUserRole/:id`
   Headers: `Content-Type: application/json`
+  `X-Authorization: {token}`
   Body: JSON-formatted data
   Changes: Only the administrator who is approved and not deleted can change the role of an individual user.
   To fulfill the request, the admin must send role. If new role is 'organizer', the fields 'organizatorName' and 'phone' also should be fulfilled if there was empty before update.
@@ -199,6 +204,8 @@ Update entry with ID `654651caf696083cab72ab1c` in the `events` collection:
 - **Method:** `PUT`
 - **Endpont:** `/user/approveUser/:id`
   Headers: `Content-Type: application/json`
+  `X-Authorization: {token}`
+
   Body: JSON-formatted data
   Changes: Only the administrator who is approved and not deleted can approve/disapprove an individual user.
   To fulfill the request, the admin must send {"isApproved": false/true}.
@@ -206,6 +213,7 @@ Update entry with ID `654651caf696083cab72ab1c` in the `events` collection:
 - **Method:** `PUT`
 - **Endpont:** `/user/editDeleted/:id`
   Headers: `Content-Type: application/json`
+  `X-Authorization: {token}`
   Body: JSON-formatted data
   Changes: Only the administrator who is approved and not deleted can change the "isDeleted" property of an individual user.
   To fulfill the request, the admin must send {"isDeleted": false/true}.
@@ -216,8 +224,8 @@ Example: `/events/like/:id`
 - **Method:** `POST`
 - **Endpont:** `/events/like/:id`
 
-Password-reset: Every user can recover their password. To fulfill the request, the `user` must provide `email`. A new `password` will be send to the given email address.
-
 - **Method:** `POST`
 - **Endpont:** `/user/reset-password`
   Body: JSON-formatted data
+
+Password-reset: Every user can recover their password. To fulfill the request, the `user` must provide `email`. A new `password` will be send to the given email address.
