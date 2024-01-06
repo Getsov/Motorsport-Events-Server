@@ -4,7 +4,7 @@ const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'Race Fanatic Documentation',
+      title: 'My documentation - custom',
       version: '1.0.0',
       description: 'Description of your API',
     },

@@ -24,7 +24,6 @@ const { checkRequestData } = require('../utils/checkData');
 const { resetPassword } = require('../services/emailService');
 
 
-
 userController.post('/register', async (req, res) => {
   try {
     const passwordTest = validPassword.test(req.body.password);
@@ -167,7 +166,7 @@ userController.put('/editDeleted/:id', async (req, res) => {
 
 /**
  * @swagger
- * /user/{id}:
+ * /swagger/getUserById/{id}: // Adjusted route to match Swagger UI setup
  *   get:
  *     summary: Get a user by ID
  *     description: Retrieve a user by their ID.
