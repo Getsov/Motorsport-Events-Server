@@ -162,7 +162,7 @@ Update entry with ID `654651caf696083cab72ab1c` in the `events` collection:
 - **_Event_**:
 
 - **Method:** `PUT`
-- **Endpont:** `/event/:id`
+- **Endpont:** `/events/:id`
   Headers: `Content-Type: application/json`
   Body: JSON-formatted data
 
