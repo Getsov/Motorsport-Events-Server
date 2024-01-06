@@ -165,6 +165,7 @@ Update entry with ID `654651caf696083cab72ab1c` in the `events` collection:
 - **Endpont:** `/events/:id`
   Headers: `Content-Type: application/json`
   Body: JSON-formatted data
+  `X-Authorization: {token}`
 
 - **_User_**:
 
