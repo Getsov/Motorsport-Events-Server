@@ -100,15 +100,9 @@ eventController.get('/', async (req, res) => {
 // Get event by ID!
 eventController.get('/:id', async (req, res) => {
   try {
-    const event = await findEventByID(req.params.id);
-    const idOfCreator = event.creator._id.toLocaleString();
-    if (event?.isApproved === false && req.requester?._id !== idOfCreator) {
-      throw new Error('This Event is not Approved by Admin!');
-    }
+    const event = await findEventByID(req.params.id, req.requester?._id);
+
     if (event === null) {
-      throw new Error("Event is deleted, or doesn't exist!");
-    }
-    if (event && event.isDeleted === true && req.requester.role != 'admin') {
       throw new Error("Event is deleted, or doesn't exist!");
     }
 
