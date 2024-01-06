@@ -40,9 +40,17 @@ async function registerEvent(requestBody, requesterId) {
   return event;
 }
 
-async function findEventByID(eventId) {
+async function findEventByID(eventId, requesterId) {
   const event = await Event.findById(eventId).populate('creator');
-  if (event?.isDeleted === true) throw new Error('This event is deleted!');
+  const requester = await User.findById(requesterId);
+
+  if (event?.isDeleted === true && requester?.role !== 'admin') {
+    throw new Error("Event is deleted, or doesn't exist!");
+  }
+
+  if (event?.isApproved === false && requester?._id != event?.creator._id && requester?.role !== 'admin') {
+    throw new Error('This Event is not Approved by Admin!');
+  }
 
   return event;
 }
