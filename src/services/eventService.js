@@ -45,7 +45,7 @@ async function findEventByID(eventId, requesterId) {
   const requester = await User.findById(requesterId);
 
   if (event?.isDeleted === true && requester?.role !== 'admin') {
-    throw new Error("Event is deleted, or doesn't exist!");
+    throw new Error("Event is deleted!");
   }
 
   if (event?.isApproved === false && requester?._id != event?.creator._id && requester?.role !== 'admin') {
