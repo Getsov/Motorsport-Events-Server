@@ -166,7 +166,7 @@ userController.put('/editDeleted/:id', async (req, res) => {
 
 /**
  * @swagger
- * /swagger/getUserById/{id}: // Adjusted route to match Swagger UI setup
+ * /user/{id}:
  *   get:
  *     summary: Get a user by ID
  *     description: Retrieve a user by their ID.
