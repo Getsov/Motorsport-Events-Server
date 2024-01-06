@@ -23,6 +23,8 @@ const { validPassword } = require('../shared/sharedRegex');
 const { checkRequestData } = require('../utils/checkData');
 const { resetPassword } = require('../services/emailService');
 
+
+
 userController.post('/register', async (req, res) => {
   try {
     const passwordTest = validPassword.test(req.body.password);
@@ -163,6 +165,25 @@ userController.put('/editDeleted/:id', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /user/{id}:
+ *   get:
+ *     summary: Get a user by ID
+ *     description: Retrieve a user by their ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user to retrieve
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Details of the user.
+ *       404:
+ *         description: User not found.
+ */
 userController.get('/getUserById/:id', async (req, res) => {
   try {
     const userId = req.params.id;

@@ -9,6 +9,8 @@ const trimBoddy = require('./src/middlewares/trimBoddy');
 mongoose.set('strictQuery', true);
 require('dotenv').config();
 
+
+
 const initializeDatabase = () =>
   mongoose
     .connect(dbConnectionString)
