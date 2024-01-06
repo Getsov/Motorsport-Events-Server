@@ -45,9 +45,6 @@ userController.post('/register', async (req, res) => {
     if (!req.body.email || req.body.email == '') {
       throw new Error('Email is required!');
     }
-    if (req.body.role == 'admin') {
-      throw new Error('You do not have admin rights!');
-    }
 
     const userData = {
       email: req.body.email,
@@ -56,9 +53,9 @@ userController.post('/register', async (req, res) => {
       role: req.body.role ? req.body.role : 'regular',
       region: req.body.region ? req.body.region : '',
       phone: req.body.phone ? req.body.phone : '',
-      isDeleted: false,
       hashedPassword: await bcrypt.hash(req.body.password, 10),
     };
+
     if (userData.role == 'regular') {
       userData.isApproved = true;
     }
