@@ -59,6 +59,9 @@ userController.post('/register', async (req, res) => {
     if (userData.role == 'regular') {
       userData.isApproved = true;
     }
+    if (userData.role == 'admin') {
+      userData.isApproved = true;
+    }
 
     if (req.body.role == 'organizer') {
       if (!req.body.organizatorName) {
