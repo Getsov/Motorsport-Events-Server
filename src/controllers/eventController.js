@@ -119,24 +119,15 @@ eventController.put('/:id', async (req, res) => {
     if (Object.keys(req.body).length === 0) {
       throw new Error('Invalid request Body!');
     }
+
     checkDatesAndTime(req.body.dates);
-    const event = await findEventByID(req.params.id);
-    const creatorId = event?.creator._id.toLocaleString();
-    if (req.requester?._id !== creatorId && req.requester?.role !== 'admin') {
-      throw new Error('You are not owner or Admin to modify this Event!');
-    }
-    if (
-      event === null ||
-      (req.requester?.role !== 'admin' && event.isDeleted !== false)
-    ) {
-      throw new Error("Event is deleted, or doesn't exist!");
-    }
+
+    const event = await findEventByID(req.params.id, req.requester?._id);
 
     const updatedEvent = await updateEvent(
       req.body,
       event,
-      req.requester.role === 'admin',
-      req.requester._id
+      req.requester?._id
     );
 
     res.status(200).json(updatedEvent);
@@ -152,7 +143,7 @@ eventController.post('/like/:id', async (req, res) => {
       throw new Error('You must log-in to like this Event!');
     }
 
-    const event = await findEventByID(req.params.id);
+    const event = await findEventByID(req.params.id, req.requester?._id);
 
     if (event?.isApproved === false) {
       throw new Error('This Event is not Approved by Admin!');
