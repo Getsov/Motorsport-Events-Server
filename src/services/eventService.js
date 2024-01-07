@@ -120,20 +120,35 @@ async function findAllEvents(query) {
 }
 
 // TODO: Update the event later!
-async function updateEvent(requestBody, existingEvent, isAdmin, requesterId) {
-  const requester = await User.findById(requesterId);
+async function updateEvent(requestBody, existingEvent, reqRequester) {
+  const creatorId = existingEvent?.creator._id.toLocaleString();
+  const requester = await User.findById(reqRequester);
+  const requesterId = requester?._id.toString();
+  const isAdmin = requester?.role === 'admin';
+
+  if (
+    existingEvent === null ||
+    (requester?.role !== 'admin' && existingEvent?.isDeleted !== false)
+  ) {
+    throw new Error("Event is deleted!");
+  }
+
+  if (requesterId !== creatorId && requester?.role !== 'admin') {
+    throw new Error('You are not owner or Admin to modify this Event!');
+  }
 
   if (!requester) {
     throw new Error('User not found!');
   }
 
-  if (requester.isDeleted === true) {
+  if (requester?.isDeleted === true) {
     throw new Error('This User is deleted!');
   }
 
-  if (!requester.isApproved) {
+  if (!requester?.isApproved) {
     throw new Error('This User must be approved to update events!');
   }
+
 
   for (let key in requestBody) {
     if (
@@ -177,7 +192,7 @@ async function likeUnlikeEvent(existingEvent, requesterId, isAlreadyLiked) {
     throw new Error('User not found!');
   }
 
-  if (requester.isDeleted === true) {
+  if (requester?.isDeleted === true) {
     throw new Error('This User is deleted!');
   }
 
