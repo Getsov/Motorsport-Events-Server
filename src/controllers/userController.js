@@ -22,7 +22,7 @@ const {
 const { validPassword } = require('../shared/sharedRegex');
 const { checkRequestData } = require('../utils/checkData');
 const { resetPassword } = require('../services/emailService');
-
+//TODO: getAllAdminsForApproval
 userController.post('/register', async (req, res) => {
   try {
     const passwordTest = validPassword.test(req.body.password);
@@ -57,9 +57,6 @@ userController.post('/register', async (req, res) => {
     };
 
     if (userData.role == 'regular') {
-      userData.isApproved = true;
-    }
-    if (userData.role == 'admin') {
       userData.isApproved = true;
     }
 
