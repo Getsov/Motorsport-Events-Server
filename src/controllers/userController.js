@@ -23,7 +23,25 @@ const { validPassword } = require('../shared/sharedRegex');
 const { checkRequestData } = require('../utils/checkData');
 const { resetPassword } = require('../services/emailService');
 
-
+/**
+ * @swagger
+ * /register:
+ *   post:
+ *     summary: Registry of user.
+ *     description: Retrieve a user by their ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user to retrieve
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Details of the user.
+ *       404:
+ *         description: User not found.
+ */
 userController.post('/register', async (req, res) => {
   try {
     const passwordTest = validPassword.test(req.body.password);
@@ -79,6 +97,25 @@ userController.post('/register', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /login:
+ *   post:
+ *     summary: Get a user by ID
+ *     description: Retrieve a user by their ID.
+ *     parameters:
+ *       - in: path
+ *         name: email
+ *         required: true
+ *         description: ID of the user to retrieve
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Details of the user.
+ *       404:
+ *         description: User not found.
+ */
 userController.post('/login', async (req, res) => {
   try {
     checkRequestData(req.body);
@@ -91,6 +128,25 @@ userController.post('/login', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /editUserInfo/{id}:
+ *   put:
+ *     summary: Registry of user.
+ *     description: Retrieve a user by their ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user to retrieve
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Details of the user.
+ *       404:
+ *         description: User not found.
+ */
 userController.put('/editUserInfo/:id', async (req, res) => {
   try {
     const userForEdit = req.params.id;
@@ -105,6 +161,25 @@ userController.put('/editUserInfo/:id', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /editUserEmail/{id}:
+ *   put:
+ *     summary: Registry of user.
+ *     description: Retrieve a user by their ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user to retrieve
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Details of the user.
+ *       404:
+ *         description: User not found.
+ */
 userController.put('/editUserEmail/:id', async (req, res) => {
   try {
     const userForEdit = req.params.id;
@@ -119,6 +194,25 @@ userController.put('/editUserEmail/:id', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /editUserPassword/{id}:
+ *   put:
+ *     summary: Registry of user.
+ *     description: Retrieve a user by their ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user to retrieve
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Details of the user.
+ *       404:
+ *         description: User not found.
+ */
 userController.put('/editUserPassword/:id', async (req, res) => {
   try {
     const userForEdit = req.params.id;
@@ -136,6 +230,25 @@ userController.put('/editUserPassword/:id', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /editUserRole/{id}:
+ *   put:
+ *     summary: Registry of user.
+ *     description: Retrieve a user by their ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user to retrieve
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Details of the user.
+ *       404:
+ *         description: User not found.
+ */
 userController.put('/editUserRole/:id', async (req, res) => {
   try {
     const userForEdit = req.params.id;
@@ -150,6 +263,25 @@ userController.put('/editUserRole/:id', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /editDeleted/{id}:
+ *   put:
+ *     summary: Registry of user.
+ *     description: Retrieve a user by their ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user to retrieve
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Details of the user.
+ *       404:
+ *         description: User not found.
+ */
 userController.put('/editDeleted/:id', async (req, res) => {
   try {
     const userForEdit = req.params.id;
@@ -166,7 +298,7 @@ userController.put('/editDeleted/:id', async (req, res) => {
 
 /**
  * @swagger
- * /user/{id}:
+ * /getUserById/{id}:
  *   get:
  *     summary: Get a user by ID
  *     description: Retrieve a user by their ID.
@@ -196,6 +328,26 @@ userController.get('/getUserById/:id', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /editDeleted/{id}:
+ *   put:
+ *     summary: Registry of user.
+ *     description: Retrieve a user by their ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user to retrieve
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Details of the user.
+ *       404:
+ *         description: User not found.
+ */
+
 // Approving / Disapproving user/organizer
 userController.put('/approveUser/:id', async (req, res) => {
   try {
@@ -212,6 +364,25 @@ userController.put('/approveUser/:id', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /getMyEvents:
+ *   get:
+ *     summary: Registry of user.
+ *     description: Retrieve a user by their ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user to retrieve
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Details of the user.
+ *       404:
+ *         description: User not found.
+ */
 userController.get('/getMyEvents', async (req, res) => {
   try {
     const userId = req.requester?._id;
@@ -224,6 +395,25 @@ userController.get('/getMyEvents', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /getMyFavourites:
+ *   get:
+ *     summary: Registry of user.
+ *     description: Retrieve a user by their ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user to retrieve
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Details of the user.
+ *       404:
+ *         description: User not found.
+ */
 userController.get('/getMyFavourites', async (req, res) => {
   try {
     const userId = req.requester?._id;
@@ -236,6 +426,25 @@ userController.get('/getMyFavourites', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /organizersForApproval:
+ *   get:
+ *     summary: Registry of user.
+ *     description: Retrieve a user by their ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user to retrieve
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Details of the user.
+ *       404:
+ *         description: User not found.
+ */
 userController.get('/organizersForApproval', async (req, res) => {
   try {
     const requesterId = req.requester._id;
@@ -248,6 +457,25 @@ userController.get('/organizersForApproval', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /allOrganizers:
+ *   get:
+ *     summary: Registry of user.
+ *     description: Retrieve a user by their ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user to retrieve
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Details of the user.
+ *       404:
+ *         description: User not found.
+ */
 userController.get('/allOrganizers', async (req, res) => {
   //TODO: what we want to return - all organizer or only already approved organizer
   try {
@@ -261,6 +489,25 @@ userController.get('/allOrganizers', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /allRegularUsers:
+ *   get:
+ *     summary: Registry of user.
+ *     description: Retrieve a user by their ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user to retrieve
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Details of the user.
+ *       404:
+ *         description: User not found.
+ */
 userController.get('/allRegularUsers', async (req, res) => {
   try {
     const requesterId = req.requester._id;
@@ -273,6 +520,25 @@ userController.get('/allRegularUsers', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /allAdmins:
+ *   get:
+ *     summary: Registry of user.
+ *     description: Retrieve a user by their ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user to retrieve
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Details of the user.
+ *       404:
+ *         description: User not found.
+ */
 userController.get('/allAdmins', async (req, res) => {
   try {
     const requesterId = req.requester._id;
@@ -285,6 +551,25 @@ userController.get('/allAdmins', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /allUsers:
+ *   get:
+ *     summary: Registry of user.
+ *     description: Retrieve a user by their ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user to retrieve
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Details of the user.
+ *       404:
+ *         description: User not found.
+ */
 userController.get('/allUsers', async (req, res) => {
   try {
     const requesterId = req.requester._id;
@@ -297,6 +582,25 @@ userController.get('/allUsers', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /resetPassword:
+ *   post:
+ *     summary: Registry of user.
+ *     description: Retrieve a user by their ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user to retrieve
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Details of the user.
+ *       404:
+ *         description: User not found.
+ */
 userController.post('/resetPassword', async (req, res) => {
   try {
     if (req.body.to === undefined) {
