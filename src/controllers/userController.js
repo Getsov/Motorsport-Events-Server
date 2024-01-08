@@ -216,6 +216,18 @@ userController.get('/getMyFavourites', async (req, res) => {
   }
 });
 
+userController.get('/adminsForApproval', async (req, res) => {
+  try {
+    const requesterId = req.requester._id;
+    const result = await getAllAdminsForApprovals(requesterId);
+    res.status(200).json(result);
+    res.end();
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: error.message });
+  }
+});
+
 userController.get('/organizersForApproval', async (req, res) => {
   try {
     const requesterId = req.requester._id;
