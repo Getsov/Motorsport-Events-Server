@@ -17,6 +17,7 @@ const {
   editDeletedProperty,
   approveUser,
   getUserById,
+  getAllAdminsForApprovals,
 } = require('../services/userService');
 
 const { validPassword } = require('../shared/sharedRegex');
