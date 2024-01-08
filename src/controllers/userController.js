@@ -22,7 +22,7 @@ const {
 const { validPassword } = require('../shared/sharedRegex');
 const { checkRequestData } = require('../utils/checkData');
 const { resetPassword } = require('../services/emailService');
-
+//TODO: getAllAdminsForApproval
 userController.post('/register', async (req, res) => {
   try {
     const passwordTest = validPassword.test(req.body.password);
@@ -45,9 +45,6 @@ userController.post('/register', async (req, res) => {
     if (!req.body.email || req.body.email == '') {
       throw new Error('Email is required!');
     }
-    if (req.body.role == 'admin') {
-      throw new Error('You do not have admin rights!');
-    }
 
     const userData = {
       email: req.body.email,
@@ -59,11 +56,17 @@ userController.post('/register', async (req, res) => {
       hashedPassword: await bcrypt.hash(req.body.password, 10),
     };
 
+    if (userData.role == 'regular') {
+      userData.isApproved = true;
+    }
+
     if (req.body.role == 'organizer') {
-      if (!req.body.organizatorName || !req.body.phone) {
-        throw new Error('Fill all required fields!');
+      if (!req.body.organizatorName) {
+        throw new Error('Name of organizator is required!');
       }
-      userData.isApproved = false;
+      if (!req.body.phone) {
+        throw new Error('Phone is required!');
+      }
       userData.organizatorName = req.body.organizatorName;
     }
 
