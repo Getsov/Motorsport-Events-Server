@@ -113,21 +113,30 @@ userController.post('/register', async (req, res) => {
 
 /**
  * @swagger
- * /login:
+ * /user/login:
  *   post:
- *     summary: Get a user by ID
+ *     summary: Returned user with access token
  *     description: Retrieve a user by their ID.
- *     parameters:
- *       - in: path
- *         name: email
- *         required: true
- *         description: ID of the user to retrieve
- *         schema:
- *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: e-mail of the user
+ *               password:
+ *                 type: string
+ *                 description: password of the user
+ *             example:
+ *                email: example@abv.bg
+ *                password: "123456"
  *     responses:
  *       200:
  *         description: Details of the user.
- *       404:
+ *       400:
  *         description: User not found.
  */
 userController.post('/login', async (req, res) => {
