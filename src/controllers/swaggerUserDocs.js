@@ -89,7 +89,7 @@
 
 /**
  * @swagger
- * /editUserEmail/{id}:
+ * /user/editUserEmail/{id}:
  *   put:
  *     summary: Registry of user.
  *     description: Retrieve a user by their ID.
@@ -111,7 +111,7 @@
 
 /**
  * @swagger
- * /editUserPassword/{id}:
+ * /user/editUserPassword/{id}:
  *   put:
  *     summary: Registry of user.
  *     description: Retrieve a user by their ID.
@@ -133,7 +133,7 @@
 
 /**
  * @swagger
- * /editUserRole/{id}:
+ * /user/editUserRole/{id}:
  *   put:
  *     summary: Registry of user.
  *     description: Retrieve a user by their ID.
@@ -155,7 +155,7 @@
 
 /**
  * @swagger
- * /editDeleted/{id}:
+ * /user/editDeleted/{id}:
  *   put:
  *     summary: Registry of user.
  *     description: Retrieve a user by their ID.
@@ -177,7 +177,7 @@
 
 /**
  * @swagger
- * /getUserById/{id}:
+ * /user/getUserById/{id}:
  *   get:
  *     summary: Get a user by ID
  *     description: Retrieve a user by their ID.
@@ -199,7 +199,7 @@
 
 /**
  * @swagger
- * /getMyEvents:
+ * /user/getMyEvents:
  *   get:
  *     summary: Registry of user.
  *     description: Retrieve a user by their ID.
@@ -221,7 +221,7 @@
 
 /**
  * @swagger
- * /getMyFavourites:
+ * /user/getMyFavourites:
  *   get:
  *     summary: Registry of user.
  *     description: Retrieve a user by their ID.
@@ -243,7 +243,7 @@
 
 /**
  * @swagger
- * /organizersForApproval:
+ * /user/organizersForApproval:
  *   get:
  *     summary: Registry of user.
  *     description: Retrieve a user by their ID.
@@ -265,7 +265,7 @@
 
 /**
  * @swagger
- * /allOrganizers:
+ * /user/allOrganizers:
  *   get:
  *     summary: Registry of user.
  *     description: Retrieve a user by their ID.
@@ -287,7 +287,7 @@
 
 /**
  * @swagger
- * /allRegularUsers:
+ * /user/allRegularUsers:
  *   get:
  *     summary: Registry of user.
  *     description: Retrieve a user by their ID.
@@ -309,7 +309,7 @@
 
 /**
  * @swagger
- * /allAdmins:
+ * /user/allAdmins:
  *   get:
  *     summary: Registry of user.
  *     description: Retrieve a user by their ID.
@@ -331,7 +331,7 @@
 
 /**
  * @swagger
- * /allUsers:
+ * /user/allUsers:
  *   get:
  *     summary: Registry of user.
  *     description: Retrieve a user by their ID.
@@ -353,7 +353,7 @@
 
 /**
  * @swagger
- * /resetPassword:
+ * /user/resetPassword:
  *   post:
  *     summary: Registry of user.
  *     description: Retrieve a user by their ID.
