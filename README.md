@@ -94,6 +94,11 @@ Retrieve all events waiting for approval! Available only for active and approved
 
 - **_User_**:
 
+Retrieve all admins waiting for approval! Available only for active and approved admins!
+
+- **Method:** `GET`
+- **Endpont:** `/user/adminsForApproval`
+
 Retrieve all organizers waiting for approval! Available only for active and approved admins!
 
 - **Method:** `GET`
