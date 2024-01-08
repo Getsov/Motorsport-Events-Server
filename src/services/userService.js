@@ -290,6 +290,9 @@ async function getAllAdminsForApprovals(requesterId) {
 
 async function getAllOrganizersForApproval(requesterId) {
   const requester = await User.findById(requesterId);
+  if (!requester) {
+    throw new Error('User not found!');
+  }
   if (requester.isDeleted) {
     throw new Error('Your profile is deleted!');
   }
