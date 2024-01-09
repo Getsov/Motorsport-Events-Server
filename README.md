@@ -48,12 +48,12 @@ Important!: Event must be approved to see it!
 - **Method:** `GET`
 - **Endpont:** `/events`
 
-Retrieve entry with ID: `654651caf696083cab72ab1c` from the events collection:
+Retrieve entry with ID: `:id` from the events collection:
 
 - **Method:** `GET`
 - **Endpont:** `/events/:id`
 
-Filtering entries by `category` and `region` from the events collection:
+Filter entries using multiple `category` and `region` values from the events collection:
 If you want to use filtering you must provide a query string with `category`, `region` or both properties to filter entries.
 
 - **Method:** `GET`
