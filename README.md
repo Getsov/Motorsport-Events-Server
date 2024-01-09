@@ -53,11 +53,11 @@ Retrieve entry with ID: `654651caf696083cab72ab1c` from the events collection:
 - **Method:** `GET`
 - **Endpont:** `/events/:id`
 
-Filtering entries by `category` and `region` from the events collection:
-If you want to use filtering you must provide a query string with `category`, `region` or both properties to filter entries.
+Filtering entries by `categories` and `region` from the events collection:
+If you want to use filtering you must provide a query string with `categories`, `region` or both properties to filter entries.
 
 - **Method:** `GET`
-- **Endpont:** `/events?category=2&region=16`
+- **Endpont:** `/events?categories=2&region=16`
 
 If you want to use pagination provide `page` and `limit` options to the queryString, the service automatically limits the result based on `limit` entries.
 Append `page={n}&limit={n}` to the query parameters, where {page} is the number of entries to skip and {limit} is the number of entries to return.
@@ -69,7 +69,7 @@ Example: To take the third page from the events collection, assuming 5 entries p
 IMPORTANT: You can use search filtering and pagination with multiple passed values, when using pagination always use `page` and `limit` properties!
 
 - **Method:** `GET`
-- **Endpoint:** `/events?page=1&limit=2&category=1&region=16&category=9&search=2`
+- **Endpoint:** `/events?page=1&limit=2&categories=1&region=16&categories=9&search=2`
 
 Calendar: If you want to retrieve the data for the calendar, you must send a `GET` request.
 Response will be All events according to provided year and month: `2024/1`
