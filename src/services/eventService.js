@@ -64,7 +64,7 @@ async function findAllEvents(query) {
     isDeleted: false,
     isApproved: true,
   };
-
+  
   if (query.categories) {
     criteria.categories = {
       $in: Array.isArray(query.categories)
