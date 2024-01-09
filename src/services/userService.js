@@ -283,6 +283,7 @@ async function getAllAdminsForApprovals(requesterId) {
   }
   const waitingAdmins = await User.find({
     isApproved: false,
+    isDeleted: false,
     role: 'admin',
   });
   return waitingAdmins;
@@ -304,6 +305,7 @@ async function getAllOrganizersForApproval(requesterId) {
   }
   const waitingOrganizers = await User.find({
     isApproved: false,
+    isDeleted: false,
     role: 'organizer',
   });
   return waitingOrganizers;
