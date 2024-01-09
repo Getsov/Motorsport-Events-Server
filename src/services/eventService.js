@@ -29,7 +29,7 @@ async function registerEvent(requestBody, requesterId) {
     ),
     imageUrl: requestBody.imageUrl,
     contacts: requestBody.contacts,
-    category: requestBody.category,
+    categories: requestBody.categories,
     likes: requestBody.likes,
     creator: requesterId,
     winners: requestBody.winners,
@@ -65,11 +65,11 @@ async function findAllEvents(query) {
     isApproved: true,
   };
 
-  if (query.category) {
-    criteria.category = {
-      $in: Array.isArray(query.category)
-        ? query.category.map((key) => categories[key])
-        : [categories[query.category]],
+  if (query.categories) {
+    criteria.categories = {
+      $in: Array.isArray(query.categories)
+        ? query.categories.map((key) => categories[key])
+        : [categories[query.categories]],
     };
   }
   if (query.region) {
@@ -106,7 +106,7 @@ async function findAllEvents(query) {
         },
       },
       // TODO: Discuss searching about following Event properties, look for a good practices about search and sort at one time together!
-      { category: { $regex: query.search.toLowerCase(), $options: 'i' } },
+      { categories: { $regex: query.search.toLowerCase(), $options: 'i' } },
       {
         ['contacts.region']: {
           $regex: query.search.toLowerCase(),
@@ -321,7 +321,7 @@ module.exports = {
 //         "phone": "0123456789",
 //         "email": "peter@abv.bg"
 //     },
-//     "category": "Драг",
+//     "categories": "Драг",
 //     "visitorPrices": [
 //         {
 //             "price": 15,
