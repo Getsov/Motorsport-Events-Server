@@ -48,7 +48,7 @@ Important!: Event must be approved to see it!
 - **Method:** `GET`
 - **Endpont:** `/events`
 
-Retrieve entry with ID: `654651caf696083cab72ab1c` from the events collection:
+Retrieve entry with ID: `:id` from the events collection:
 
 - **Method:** `GET`
 - **Endpont:** `/events/:id`
