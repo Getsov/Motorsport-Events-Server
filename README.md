@@ -53,7 +53,7 @@ Retrieve entry with ID: `:id` from the events collection:
 - **Method:** `GET`
 - **Endpont:** `/events/:id`
 
-Filtering entries by `category` and you can add one category or more... and `region` from the events collection:
+Filtering entries by `category` and you can add one category or more, and `region` from the events collection:
 If you want to use filtering you must provide a query string with `category`, `region` or both properties to filter entries.
 
 - **Method:** `GET`
