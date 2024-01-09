@@ -267,8 +267,33 @@ async function getUserById(userId, requesterId) {
   return user;
 }
 
+async function getAllAdminsForApprovals(requesterId) {
+  const requester = await User.findById(requesterId);
+  if (!requester) {
+    throw new Error('User not found!');
+  }
+  if (requester.isDeleted) {
+    throw new Error('Your profile is deleted!');
+  }
+  if (!requester.isApproved) {
+    throw new Error('Your profile is not approved!');
+  }
+  if (requester.role !== 'admin') {
+    throw new Error('You do not have access to these records!');
+  }
+  const waitingAdmins = await User.find({
+    isApproved: false,
+    isDeleted: false,
+    role: 'admin',
+  });
+  return waitingAdmins;
+}
+
 async function getAllOrganizersForApproval(requesterId) {
   const requester = await User.findById(requesterId);
+  if (!requester) {
+    throw new Error('User not found!');
+  }
   if (requester.isDeleted) {
     throw new Error('Your profile is deleted!');
   }
@@ -280,6 +305,7 @@ async function getAllOrganizersForApproval(requesterId) {
   }
   const waitingOrganizers = await User.find({
     isApproved: false,
+    isDeleted: false,
     role: 'organizer',
   });
   return waitingOrganizers;
@@ -421,6 +447,7 @@ module.exports = {
   returnAllCreatedEvents,
   returnAllFavouriteEvents,
   approveUser,
+  getAllAdminsForApprovals,
   getAllOrganizersForApproval,
   getAllOrganizers,
   getAllRegularUsers,
