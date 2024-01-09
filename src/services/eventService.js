@@ -69,7 +69,7 @@ async function findAllEvents(query) {
   if (query.category) {
     criteria.categories = {
       $in: Array.isArray(query.category)
-        ? query.categories.map((key) => categories[key])
+        ? query.category.map((key) => categories[key])
         : [categories[query.category]],
     };
   }
