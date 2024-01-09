@@ -60,17 +60,17 @@ async function findAllEvents(query) {
   // TODO: In later stage we mmay want to search by Organizer Name?
   const page = query.page;
   const limit = query.limit;
-  
+
   const criteria = {
     isDeleted: false,
     isApproved: true,
   };
   
-  if (query.categories) {
+  if (query.category) {
     criteria.categories = {
-      $in: Array.isArray(query.categories)
+      $in: Array.isArray(query.category)
         ? query.categories.map((key) => categories[key])
-        : [categories[query.categories]],
+        : [categories[query.category]],
     };
   }
   if (query.region) {
