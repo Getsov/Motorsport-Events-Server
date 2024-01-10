@@ -154,7 +154,7 @@ eventController.put('/editDeletedEvent/:id', async (req, res) => {
   try {
     const event = await editDeletedEvent(req.params.id, req.requester?._id);
 
-    res.status(200).json('Event is successfuly deleted!');
+    res.status(200).json('Event is successfuly restored!');
     res.end();
   } catch (error) {
     res.status(400).json({error: error.message})
