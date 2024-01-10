@@ -153,12 +153,12 @@ async function updateEvent(requestBody, existingEvent, reqRequester) {
   for (let key in requestBody) {
     if (
       isAdmin &&
-      (key === 'creator' || key === 'likes' || key === 'isApproved')
+      (key === 'creator' || key === 'likes' || key === 'isApproved' || key === 'isDeleted')
     ) {
       existingEvent[key] = requestBody[key];
     } else if (
       !isAdmin &&
-      (key === 'creator' || key === 'likes' || key === 'isApproved')
+      (key === 'creator' || key === 'likes' || key === 'isApproved' || key === 'isDeleted')
     ) {
       throw new Error(`Only Admin can modify '${key}' property!`);
     }
