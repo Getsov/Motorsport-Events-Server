@@ -137,6 +137,27 @@ eventController.put('/:id', async (req, res) => {
   }
 });
 
+eventController.put('/deleteEvent/:id', async (req, res) => {
+  try {
+
+    res.status(200).json('Event is deleted!');
+    res.end();
+  } catch (error) {
+    res.status(400).json({error: error.message})
+  }
+});
+
+eventController.put('/deleteEvents', async (req, res) => {
+  // TODO: Add functionality to delete multiple Events!
+  try {
+
+    res.status(200).json('Events are deleted!');
+    res.end();
+  } catch (error) {
+    res.status(400).json({error: error.message})
+  }
+});
+
 eventController.post('/like/:id', async (req, res) => {
   try {
     if (!req.requester) {
