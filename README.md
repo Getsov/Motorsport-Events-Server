@@ -159,7 +159,7 @@ Important!: Event must be approved to see it!
 
 Important!: Event must be approved to see it!
 
-This requests requires authorization and content-type: `application/json`. Only owner of the resource and `admin` can edit it. Admin can change `isDeleted`, `creator`and `likes` properties, while owner can't change them.
+This requests requires authorization and content-type: `application/json`. Only owner of the resource and `admin` can edit it. Admin can change `isDeleted`, `isApproved`, `creator` and `likes` properties, while owner can't change them.
 Send a PUT request to the endpoint, appending the Id or any appropriate property name. The existing resource will be fully replaced! The service will respond with the updated object.
 
 Examples:
@@ -172,6 +172,13 @@ Update entry with ID `654651caf696083cab72ab1c` in the `events` collection:
   Headers: `Content-Type: application/json`
   `X-Authorization: {token}`
   Body: JSON-formatted data
+
+Event's `isDeleted` property can be changed by admin and owner only!
+
+- **Method:** `PUT`
+- **Endpont:** `/events/deleteEvent/:id`
+  Headers: `Content-Type: application/json`
+  `X-Authorization: {token}`
 
 - **_User_**:
 
