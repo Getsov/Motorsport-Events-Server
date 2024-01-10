@@ -180,6 +180,13 @@ Delete event, event's `isDeleted` property can be changed only to true, by admin
   Headers: `Content-Type: application/json`
   `X-Authorization: {token}`
 
+Restore deleted event can be done only by approved admin!
+
+- **Method:** `PUT`
+- **Endpont:** `/events/editDeletedEvent/:id`
+  Headers: `Content-Type: application/json`
+  `X-Authorization: {token}`
+
 - **_User_**:
 
 - **Method:** `PUT`
