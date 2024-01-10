@@ -9,8 +9,7 @@ const {
   getAllEventsForApproval,
   getPastEvents,
   getUpcomingEvents,
-  deleteEvent,
-  editDeletedEvent
+  deleteRestoreEvent
 } = require('../services/eventService');
 const {
   addRemoveLikedEvent,
@@ -141,21 +140,17 @@ eventController.put('/:id', async (req, res) => {
 
 eventController.put('/deleteEvent/:id', async (req, res) => {
   try {
-    const event = await deleteEvent(req.params.id, req.requester?._id);
+    const event = await deleteRestoreEvent(req.params.id, req.requester?._id, req?.body);
+    
+    if (event?.isDeleted) {
+      res.status(200).json('Event is successfuly deleted!');
+      res.end();
 
-    res.status(200).json('Event is successfuly deleted!');
-    res.end();
-  } catch (error) {
-    res.status(400).json({error: error.message})
-  }
-});
+    } else {
+      res.status(200).json('Event is successfuly restored!');
+      res.end();
+    }
 
-eventController.put('/editDeletedEvent/:id', async (req, res) => {
-  try {
-    const event = await editDeletedEvent(req.params.id, req.requester?._id);
-
-    res.status(200).json('Event is successfuly restored!');
-    res.end();
   } catch (error) {
     res.status(400).json({error: error.message})
   }
