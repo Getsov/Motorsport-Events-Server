@@ -173,7 +173,7 @@ Update entry with ID `654651caf696083cab72ab1c` in the `events` collection:
   `X-Authorization: {token}`
   Body: JSON-formatted data
 
-Event's `isDeleted` property can be changed by admin and owner only!
+Delete event, event's `isDeleted` property can be changed only to true, by admin and owner only!
 
 - **Method:** `PUT`
 - **Endpont:** `/events/deleteEvent/:id`
