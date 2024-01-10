@@ -153,12 +153,12 @@ async function updateEvent(requestBody, existingEvent, reqRequester) {
   for (let key in requestBody) {
     if (
       isAdmin &&
-      (key === 'creator' || key === 'likes' || key === 'isApproved' || key === 'isDeleted')
+      (key === 'creator' || key === 'likes' || key === 'isApproved')
     ) {
       existingEvent[key] = requestBody[key];
     } else if (
       !isAdmin &&
-      (key === 'creator' || key === 'likes' || key === 'isApproved' || key === 'isDeleted')
+      (key === 'creator' || key === 'likes' || key === 'isApproved')
     ) {
       throw new Error(`Only Admin can modify '${key}' property!`);
     }
@@ -202,6 +202,7 @@ async function deleteEvent(eventId, requesterId) {
   }
 
   event.isDeleted = true;
+  event.isApproved = false;
   return await event.save();
 }
 
