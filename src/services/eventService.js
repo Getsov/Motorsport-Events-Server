@@ -179,20 +179,19 @@ async function updateEvent(requestBody, existingEvent, reqRequester) {
   return await existingEvent.save();
 }
 
-async function deleteEvent(eventId, requesterId) {
+async function deleteRestoreEvent(eventId, requesterId, requestBody) {
   const event = await Event.findById(eventId);
   const creatorId = event.creator.toString();
   const requester = await User.findById(requesterId);
-
+  
   if (!requester) {
     throw new Error('User not found!');
   }
-
-  if (
-    event === null || event?.isDeleted !== false) {
+  
+  if (event === null || (event?.isDeleted !== false && requester?.role !== 'admin')) {
     throw new Error('Event is deleted!');
   }
-
+    
   if (!requester?.isApproved || requester?.isDeleted) {
     throw new Error('This User must be approved to delete events!');
   }
@@ -200,37 +199,19 @@ async function deleteEvent(eventId, requesterId) {
   if (requesterId !== creatorId && requester?.role !== 'admin') {
     throw new Error('You are not owner or Admin to modify this Event!');
   }
+  
+  if (event.isDeleted) {
+    event.isDeleted = false;
 
-  event.isDeleted = true;
-  event.isApproved = false;
+  } else {
+    event.isDeleted = true;
+    event.isApproved = false;
+  }
+
   return await event.save();
 }
 
-async function editDeletedEvent(eventId, requesterId) {
-  const event = await Event.findById(eventId);
-  const requester = await User.findById(requesterId);
-
-  if (!requester) {
-    throw new Error('User not found!');
-  }
-
-  if (event === null) {
-    throw new Error('Event is does not exist!');
-  }
-
-  if (!requester?.isApproved || requester?.isDeleted) {
-    throw new Error('This User must be approved to delete events!');
-  }
-
-  if (requester?.role !== 'admin') {
-    throw new Error('You are not Admin to modify this Event!');
-  }
-
-  event.isDeleted = false;
-  return await event.save();
-}
-
-async function deleteEvents(events, requesterId) {
+async function deleteRestoreEvents(events, requesterId) {
   //  TODO: Add logic for delete multiple events!
 }
 
@@ -347,8 +328,7 @@ module.exports = {
   getAllEventsForApproval,
   getUpcomingEvents,
   getPastEvents,
-  deleteEvent,
-  editDeletedEvent,
+  deleteRestoreEvent,
 };
 
 // Commented code below is for postman tests!
