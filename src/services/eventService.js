@@ -163,11 +163,6 @@ async function updateEvent(requestBody, existingEvent, reqRequester) {
     ) {
       throw new Error(`Only Admin can modify '${key}' property!`);
     }
-    if (isAdmin && key === 'isDeleted') {
-      existingEvent[key] = requestBody[key];
-    } else if (!isAdmin && key === 'isDeleted' && requestBody[key] === true) {
-      existingEvent[key] = requestBody[key];
-    }
 
     if (
       key !== 'toString' &&
