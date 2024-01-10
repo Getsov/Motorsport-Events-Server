@@ -193,7 +193,7 @@ async function deleteEvent(eventId, requesterId) {
     throw new Error('Event is deleted!');
   }
 
-  if (!requester?.isApproved) {
+  if (!requester?.isApproved || requester?.isDeleted) {
     throw new Error('This User must be approved to delete events!');
   }
 
