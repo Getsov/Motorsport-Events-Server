@@ -218,7 +218,7 @@ async function editDeletedEvent(eventId, requesterId) {
     throw new Error('Event is does not exist!');
   }
 
-  if (!requester?.isApproved) {
+  if (!requester?.isApproved || requester?.isDeleted) {
     throw new Error('This User must be approved to delete events!');
   }
 
