@@ -206,6 +206,30 @@ async function deleteEvent(eventId, requesterId) {
   return await event.save();
 }
 
+async function editDeletedEvent(eventId, requesterId) {
+  const event = await Event.findById(eventId);
+  const requester = await User.findById(requesterId);
+
+  if (!requester) {
+    throw new Error('User not found!');
+  }
+
+  if (event === null) {
+    throw new Error('Event is does not exist!');
+  }
+
+  if (!requester?.isApproved) {
+    throw new Error('This User must be approved to delete events!');
+  }
+
+  if (requester?.role !== 'admin') {
+    throw new Error('You are not Admin to modify this Event!');
+  }
+
+  event.isDeleted = false;
+  return await event.save();
+}
+
 async function deleteEvents(events, requesterId) {
   //  TODO: Add logic for delete multiple events!
 }
@@ -324,6 +348,7 @@ module.exports = {
   getUpcomingEvents,
   getPastEvents,
   deleteEvent,
+  editDeletedEvent,
 };
 
 // Commented code below is for postman tests!
