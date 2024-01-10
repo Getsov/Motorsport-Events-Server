@@ -65,7 +65,7 @@ async function findAllEvents(query) {
     isDeleted: false,
     isApproved: true,
   };
-  
+
   if (query.category) {
     criteria.categories = {
       $in: Array.isArray(query.category)
@@ -150,7 +150,6 @@ async function updateEvent(requestBody, existingEvent, reqRequester) {
     throw new Error('This User must be approved to update events!');
   }
 
-
   for (let key in requestBody) {
     if (
       isAdmin &&
@@ -180,10 +179,40 @@ async function updateEvent(requestBody, existingEvent, reqRequester) {
   return await existingEvent.save();
 }
 
+async function deleteEvent(eventId, requesterId) {
+  const event = await Event.findById(eventId);
+  const creatorId = event.creator.toString();
+  const requester = await User.findById(requesterId);
+
+  if (!requester) {
+    throw new Error('User not found!');
+  }
+
+  if (
+    event === null || event?.isDeleted !== false) {
+    throw new Error('Event is deleted!');
+  }
+
+  if (!requester?.isApproved) {
+    throw new Error('This User must be approved to delete events!');
+  }
+
+  if (requesterId !== creatorId && requester?.role !== 'admin') {
+    throw new Error('You are not owner or Admin to modify this Event!');
+  }
+
+  event.isDeleted = true;
+  return await event.save();
+}
+
+async function deleteEvents(events, requesterId) {
+  //  TODO: Add logic for delete multiple events!
+}
+
 // Like/Unlike event.
 async function likeUnlikeEvent(existingEvent, requesterId, isAlreadyLiked) {
   let requester = await User.findById(requesterId);
-  
+
   if (!requester) {
     throw new Error('User not found!');
   }
@@ -293,6 +322,7 @@ module.exports = {
   getAllEventsForApproval,
   getUpcomingEvents,
   getPastEvents,
+  deleteEvent,
 };
 
 // Commented code below is for postman tests!
