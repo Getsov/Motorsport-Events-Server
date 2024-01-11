@@ -179,7 +179,7 @@ async function updateEvent(requestBody, existingEvent, reqRequester) {
   return await existingEvent.save();
 }
 
-async function deleteRestoreEvent(eventId, requesterId) {
+async function deleteRestoreEvent(eventId, requesterId, requestBody) {
   const event = await Event.findById(eventId);
   const creatorId = event.creator.toString();
   const requester = await User.findById(requesterId);
@@ -188,7 +188,7 @@ async function deleteRestoreEvent(eventId, requesterId) {
     throw new Error('User not found!');
   }
   
-  if (event === null || (event?.isDeleted !== false && requester?.role !== 'admin')) {
+  if (!event || (event?.isDeleted !== false && requester?.role !== 'admin')) {
     throw new Error('Event is deleted!');
   }
     
@@ -200,12 +200,12 @@ async function deleteRestoreEvent(eventId, requesterId) {
     throw new Error('You are not owner or Admin to modify this Event!');
   }
   
-  if (event.isDeleted) {
-    event.isDeleted = false;
-
+  if (requestBody?.hasOwnProperty('isDeleted')) {
+    requestBody.isDeleted
+    ? (event.isDeleted = true, event.isApproved = false)
+    : event.isDeleted = false
   } else {
-    event.isDeleted = true;
-    event.isApproved = false;
+    throw new Error('Add correct data in the request body: "isDeleted"');
   }
 
   return await event.save();
