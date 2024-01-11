@@ -173,17 +173,10 @@ Update entry with ID `654651caf696083cab72ab1c` in the `events` collection:
   `X-Authorization: {token}`
   Body: JSON-formatted data
 
-Delete event, event's `isDeleted` property can be changed only to true, by admin and owner only! If event is deleted `isApproved` property will be changed to false.
+Delete event, event's `isDeleted` property can be changed only to true, by admin and owner only! If event is deleted `isApproved` property will be changed to false. Event also can be restored only by active admin.
 
 - **Method:** `PUT`
-- **Endpont:** `/events/deleteEvent/:id`
-  Headers: `Content-Type: application/json`
-  `X-Authorization: {token}`
-
-Restore deleted event can be done only by approved admin!
-
-- **Method:** `PUT`
-- **Endpont:** `/events/editDeletedEvent/:id`
+- **Endpont:** `/events/deleteRestoreEvent/:id`
   Headers: `Content-Type: application/json`
   `X-Authorization: {token}`
 
