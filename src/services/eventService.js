@@ -179,7 +179,7 @@ async function updateEvent(requestBody, existingEvent, reqRequester) {
   return await existingEvent.save();
 }
 
-async function deleteRestoreEvent(eventId, requesterId, requestBody) {
+async function deleteRestoreEvent(eventId, requesterId) {
   const event = await Event.findById(eventId);
   const creatorId = event.creator.toString();
   const requester = await User.findById(requesterId);
