@@ -174,6 +174,10 @@ async function editDeletedProperty(idOfUserForEdit, requestBody, requesterId) {
     throw new Error('You do not have rights to modify the record!');
   }
 
+  if (typeof requestBody?.isDeleted !== 'boolean') {
+    throw new Error('Only boolean values are valid!');
+  }
+  
   if (requestBody.hasOwnProperty('isDeleted')) {
     requestBody.isDeleted
       ? (userForEdit.isDeleted = true)

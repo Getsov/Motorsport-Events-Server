@@ -65,7 +65,7 @@ async function findAllEvents(query) {
     isDeleted: false,
     isApproved: true,
   };
-  
+
   if (query.category) {
     criteria.categories = {
       $in: Array.isArray(query.category)
@@ -150,7 +150,6 @@ async function updateEvent(requestBody, existingEvent, reqRequester) {
     throw new Error('This User must be approved to update events!');
   }
 
-
   for (let key in requestBody) {
     if (
       isAdmin &&
@@ -162,11 +161,6 @@ async function updateEvent(requestBody, existingEvent, reqRequester) {
       (key === 'creator' || key === 'likes' || key === 'isApproved')
     ) {
       throw new Error(`Only Admin can modify '${key}' property!`);
-    }
-    if (isAdmin && key === 'isDeleted') {
-      existingEvent[key] = requestBody[key];
-    } else if (!isAdmin && key === 'isDeleted' && requestBody[key] === true) {
-      existingEvent[key] = requestBody[key];
     }
 
     if (
@@ -185,10 +179,54 @@ async function updateEvent(requestBody, existingEvent, reqRequester) {
   return await existingEvent.save();
 }
 
+async function deleteRestoreEvent(eventId, requesterId, requestBody) {
+  const event = await Event.findById(eventId);
+  const creatorId = event.creator.toString();
+  const requester = await User.findById(requesterId);
+  
+  if (!requester) {
+    throw new Error('User not found!');
+  }
+  
+  if (!event || (event?.isDeleted !== false && requester?.role !== 'admin')) {
+    throw new Error('Event is deleted!');
+  }
+  
+  if (!requester?.isApproved || requester?.isDeleted) {
+    throw new Error('This User must be approved to delete events!');
+  }
+  
+  if (requesterId !== creatorId && requester?.role !== 'admin') {
+    throw new Error('You are not owner or Admin to modify this Event!');
+  }
+
+  if (typeof requestBody?.isDeleted !== 'boolean') {
+    throw new Error('Only boolean values are valid!');
+  }
+
+  if (requestBody?.isDeleted && event.isDeleted || !requestBody?.isDeleted && !event.isDeleted) {
+    throw new Error('You cannot modify same value!');
+  }
+  
+  if (requestBody?.hasOwnProperty('isDeleted')) {
+    requestBody.isDeleted
+    ? (event.isDeleted = true, event.isApproved = false)
+    : event.isDeleted = false
+  } else {
+    throw new Error('Add correct data in the request body: "isDeleted"');
+  }
+
+  return await event.save();
+}
+
+async function deleteRestoreEvents(events, requesterId) {
+  //  TODO: Add logic for delete multiple events!
+}
+
 // Like/Unlike event.
 async function likeUnlikeEvent(existingEvent, requesterId, isAlreadyLiked) {
   let requester = await User.findById(requesterId);
-  
+
   if (!requester) {
     throw new Error('User not found!');
   }
@@ -298,6 +336,7 @@ module.exports = {
   getAllEventsForApproval,
   getUpcomingEvents,
   getPastEvents,
+  deleteRestoreEvent,
 };
 
 // Commented code below is for postman tests!
