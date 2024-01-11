@@ -183,6 +183,7 @@ async function deleteRestoreEvent(eventId, requesterId, requestBody) {
   const event = await Event.findById(eventId);
   const creatorId = event.creator.toString();
   const requester = await User.findById(requesterId);
+
   
   if (!requester) {
     throw new Error('User not found!');
@@ -191,13 +192,17 @@ async function deleteRestoreEvent(eventId, requesterId, requestBody) {
   if (!event || (event?.isDeleted !== false && requester?.role !== 'admin')) {
     throw new Error('Event is deleted!');
   }
-    
+  
   if (!requester?.isApproved || requester?.isDeleted) {
     throw new Error('This User must be approved to delete events!');
   }
-
+  
   if (requesterId !== creatorId && requester?.role !== 'admin') {
     throw new Error('You are not owner or Admin to modify this Event!');
+  }
+  
+  if (requestBody?.isDeleted && event.isDeleted || !requestBody?.isDeleted && !event.isDeleted) {
+    throw new Error('You cannot modify same value!');
   }
   
   if (requestBody?.hasOwnProperty('isDeleted')) {
