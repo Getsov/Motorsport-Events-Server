@@ -140,7 +140,7 @@ eventController.put('/:id', async (req, res) => {
 
 eventController.put('/deleteRestoreEvent/:id', async (req, res) => {
   try {
-    const event = await deleteRestoreEvent(req.params.id, req.requester?._id);
+    const event = await deleteRestoreEvent(req.params.id, req.requester?._id, req?.body);
     
     if (event?.isDeleted) {
       res.status(200).json('Event is successfuly deleted!');
