@@ -195,7 +195,7 @@ async function editDeletedProperty(idOfUserForEdit, requestBody, requesterId) {
   return createToken(newRecord);
 }
 
-async function approveUser(userId, requesterId, requestBody) {
+async function approveSingleUser(userId, requesterId, requestBody) {
   const userForEdit = await User.findById(userId);
   const requester = await User.findById(requesterId);
   const isAdmin = requester.role == 'admin' ? true : false;
@@ -205,7 +205,7 @@ async function approveUser(userId, requesterId, requestBody) {
   }
 
   if (!userForEdit) {
-    throw new Error('User not found');
+    throw new Error('User not found!');
   }
 
   if (requestBody?.hasOwnProperty('isApproved')) {
@@ -462,7 +462,7 @@ module.exports = {
   addEventToCreatedEvents,
   returnAllCreatedEvents,
   returnAllFavouriteEvents,
-  approveUser,
+  approveSingleUser,
   getAllAdminsForApprovals,
   getAllOrganizersForApproval,
   getAllOrganizers,

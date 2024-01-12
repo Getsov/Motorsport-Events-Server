@@ -15,7 +15,7 @@ const {
   getAllAdmins,
   getAllUsers,
   editDeletedProperty,
-  approveUser,
+  approveSingleUser,
   getUserById,
   getAllAdminsForApprovals,
 } = require('../services/userService');
@@ -184,7 +184,7 @@ userController.put('/approveUser/:id', async (req, res) => {
     const requesterId = req.requester._id;
     checkRequestData(req.body);
 
-    const result = await approveUser(userId, requesterId, req.body);
+    const result = await approveSingleUser(userId, requesterId, req.body);
     res.status(200).json(result);
     res.end();
   } catch (error) {
