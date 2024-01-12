@@ -199,19 +199,19 @@ async function deleteRestoreEvent(eventId, requesterId, requestBody) {
   if (requesterId !== creatorId && requester?.role !== 'admin') {
     throw new Error('You are not owner or Admin to modify this Event!');
   }
-
-  if (typeof requestBody?.isDeleted !== 'boolean') {
-    throw new Error('Only boolean values are valid!');
-  }
-
-  if (requestBody?.isDeleted && event.isDeleted || !requestBody?.isDeleted && !event.isDeleted) {
-    throw new Error('You cannot modify same value!');
-  }
   
   if (requestBody?.hasOwnProperty('isDeleted')) {
+    if (typeof requestBody?.isDeleted !== 'boolean') {
+      throw new Error('Only boolean values are valid!');
+    }
+    if (requestBody?.isDeleted && event.isDeleted || !requestBody?.isDeleted && !event.isDeleted) {
+      throw new Error('You cannot modify same value!');
+    }
+
     requestBody.isDeleted
     ? (event.isDeleted = true, event.isApproved = false)
     : event.isDeleted = false
+
   } else {
     throw new Error('Add correct data in the request body: "isDeleted"');
   }
