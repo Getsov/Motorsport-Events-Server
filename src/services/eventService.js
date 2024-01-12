@@ -205,7 +205,7 @@ async function deleteRestoreEvent(eventId, requesterId, requestBody) {
       throw new Error('Only boolean values are valid!');
     }
     if (requestBody?.isDeleted && event.isDeleted || !requestBody?.isDeleted && !event.isDeleted) {
-      throw new Error('You cannot modify same value!');
+      throw new Error('You cannot modify with the same value!');
     }
 
     requestBody.isDeleted
@@ -244,7 +244,7 @@ async function approveDisapproveEvent(eventId, requesterId, requestBody) {
       throw new Error('Only boolean values are valid!');
     }
     if (requestBody?.isApproved && event.isApproved || !requestBody?.isApproved && !event.isApproved) {
-      throw new Error('You cannot modify same value!');
+      throw new Error('You cannot modify with the same value!');
     }
 
     requestBody.isApproved
