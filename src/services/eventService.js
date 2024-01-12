@@ -224,7 +224,7 @@ async function approveDisapproveEvent(eventId, requesterId, requestBody) {
   const requester = await User.findById(requesterId);
   
   if (!requester) {
-    throw new Error('Admin not found!');
+    throw new Error('User not found!');
   }
   
   if (!event) {
