@@ -208,7 +208,7 @@ async function deleteRestoreMultipleUsers(requestBody, requesterId) {
   const updatedUsersList = [];
 
   if (!Array.isArray(usersForEdit) || usersForEdit.length <= 0) {
-    throw new Error('There is no users for edit!');
+    throw new Error('There are no users for edit!');
   }
 
   if (!isAdmin || requester.isDeleted || !requester.isApproved) {
