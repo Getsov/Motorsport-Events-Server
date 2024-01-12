@@ -236,7 +236,7 @@ async function approveDisapproveEvent(eventId, requesterId, requestBody) {
   }
   
   if (requester?.role !== 'admin') {
-    throw new Error('You are not admin to modify this Event!');
+    throw new Error('You are not an admin to modify this Event!');
   }
   
   if (requestBody?.hasOwnProperty('isApproved')) {
