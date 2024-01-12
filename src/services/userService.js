@@ -161,6 +161,7 @@ async function editUserRole(idOfUserForEdit, requestBody, requesterId) {
   const newRecord = await userForEdit.save();
   return createToken(newRecord);
 }
+
 async function editDeletedProperty(idOfUserForEdit, requestBody, requesterId) {
   const userForEdit = await User.findById(idOfUserForEdit);
   const requester = await User.findById(requesterId);
@@ -174,7 +175,7 @@ async function editDeletedProperty(idOfUserForEdit, requestBody, requesterId) {
     throw new Error('You do not have rights to modify the record!');
   }
 
-  if (requestBody.hasOwnProperty('isDeleted')) {
+  if (requestBody?.hasOwnProperty('isDeleted')) {
     if (typeof requestBody?.isDeleted !== 'boolean') {
       throw new Error('Only boolean values are valid!');
     }
@@ -207,7 +208,7 @@ async function approveUser(userId, requesterId, requestBody) {
     throw new Error('User not found');
   }
 
-  if (requestBody.hasOwnProperty('isApproved')) {
+  if (requestBody?.hasOwnProperty('isApproved')) {
     if (typeof requestBody?.isApproved !== 'boolean') {
       throw new Error('Only boolean values are valid!');
     }
