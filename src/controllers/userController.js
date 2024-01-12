@@ -15,6 +15,7 @@ const {
   getAllAdmins,
   getAllUsers,
   deleteRestoreSingleUser,
+  deleteRestoreMultipleUsers,
   approveDisapproveSingleUser,
   getUserById,
   getAllAdminsForApprovals,
@@ -156,6 +157,19 @@ userController.put('/deleteRestoreSingleUser/:id', async (req, res) => {
     const requester = req.requester._id;
     checkRequestData(req.body);
     const result = await deleteRestoreSingleUser(userForEdit, req.body, requester);
+    res.status(200).json(result);
+    res.end();
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: error.message });
+  }
+});
+
+userController.put('/deleteRestoreMultipleUsers', async (req, res) => {
+  try {
+    const requester = req.requester._id;
+    checkRequestData(req.body);
+    const result = await deleteRestoreMultipleUsers(req.body, requester);
     res.status(200).json(result);
     res.end();
   } catch (error) {
