@@ -225,7 +225,7 @@ Request body will expect `isDeleted` property with boolean value.
   To fulfill the request, the admin must send {"isApproved": false/true}.
 
 - **Method:** `PUT`
-- **Endpont:** `/user/deleteRestoreSingleUser/:id`
+- **Endpont:** `/user/deleteRestoreUser/:id`
   Headers: `Content-Type: application/json`
   `X-Authorization: {token}`
   Body: JSON-formatted data
@@ -233,7 +233,7 @@ Request body will expect `isDeleted` property with boolean value.
   To fulfill the request, the admin must send {"isDeleted": false/true}.
 
 - **Method:** `PUT`
-- **Endpont:** `/user/deleteRestoreMultipleUsers`
+- **Endpont:** `/user/deleteRestoreUsers`
   Headers: `Content-Type: application/json`
   `X-Authorization: {token}`
   Body: JSON-formatted data

@@ -151,7 +151,7 @@ userController.put('/editUserRole/:id', async (req, res) => {
   }
 });
 
-userController.put('/deleteRestoreSingleUser/:id', async (req, res) => {
+userController.put('/deleteRestoreUser/:id', async (req, res) => {
   try {
     const userForEdit = req.params.id;
     const requester = req.requester._id;
@@ -165,7 +165,7 @@ userController.put('/deleteRestoreSingleUser/:id', async (req, res) => {
   }
 });
 
-userController.put('/deleteRestoreMultipleUsers', async (req, res) => {
+userController.put('/deleteRestoreUsers', async (req, res) => {
   try {
     const requester = req.requester._id;
     checkRequestData(req.body);
