@@ -174,14 +174,18 @@ async function editDeletedProperty(idOfUserForEdit, requestBody, requesterId) {
     throw new Error('You do not have rights to modify the record!');
   }
 
-  if (typeof requestBody?.isDeleted !== 'boolean') {
-    throw new Error('Only boolean values are valid!');
-  }
-  
   if (requestBody.hasOwnProperty('isDeleted')) {
+    if (typeof requestBody?.isDeleted !== 'boolean') {
+      throw new Error('Only boolean values are valid!');
+    }
+    if (requestBody?.isDeleted && userForEdit.isDeleted || !requestBody?.isDeleted && !userForEdit.isDeleted) {
+      throw new Error('You cannot modify same value!');
+    }
+
     requestBody.isDeleted
       ? (userForEdit.isDeleted = true)
       : (userForEdit.isDeleted = false);
+
   } else {
     throw new Error('Add correct data in the request: "isDeleted"');
   }
@@ -204,6 +208,13 @@ async function approveUser(userId, requesterId, requestBody) {
   }
 
   if (requestBody.hasOwnProperty('isApproved')) {
+    if (typeof requestBody?.isApproved !== 'boolean') {
+      throw new Error('Only boolean values are valid!');
+    }
+    if (requestBody?.isApproved && userForEdit.isApproved || !requestBody?.isApproved && !userForEdit.isApproved) {
+      throw new Error('You cannot modify same value!');
+    }
+
     requestBody.isApproved
       ? (userForEdit.isApproved = true)
       : (userForEdit.isApproved = false);
