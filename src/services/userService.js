@@ -264,19 +264,20 @@ async function approveDisapproveSingleUser(userId, requesterId, requestBody) {
     if (typeof requestBody?.isApproved !== 'boolean') {
       throw new Error('Only boolean values are valid!');
     }
-    if (
-      (requestBody?.isApproved && userForEdit.isApproved) ||
-      (!requestBody?.isApproved && !userForEdit.isApproved)
-    ) {
-      throw new Error('You cannot modify with the same value!');
-    }
-
-    requestBody.isApproved
-      ? (userForEdit.isApproved = true)
-      : (userForEdit.isApproved = false);
   } else {
     throw new Error('Add correct data in the request: "isApproved"');
   }
+  
+  if (
+    (requestBody?.isApproved && userForEdit.isApproved) ||
+    (!requestBody?.isApproved && !userForEdit.isApproved)
+  ) {
+    throw new Error('You cannot modify with the same value!');
+  }
+
+  requestBody.isApproved
+    ? (userForEdit.isApproved = true)
+    : (userForEdit.isApproved = false);
 
   const newRecord = await userForEdit.save();
   return createToken(newRecord);
