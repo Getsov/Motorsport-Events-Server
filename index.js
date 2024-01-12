@@ -21,7 +21,8 @@ const initializeDatabase = () =>
 
 async function startServer() {
   initializeDatabase();
-  app.use(express.json());
+  // TODO: To be tested on the FE.
+  app.use(express.json({ limit: '10mb' }));
   app.use(express.urlencoded({ extended: false }));
   app.use(cors());
   app.use(session());

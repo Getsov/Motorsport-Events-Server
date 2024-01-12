@@ -9,7 +9,8 @@ const {
   getAllEventsForApproval,
   getPastEvents,
   getUpcomingEvents,
-  deleteRestoreEvent
+  deleteRestoreEvent,
+  approveDisapproveEvent
 } = require('../services/eventService');
 const {
   addRemoveLikedEvent,
@@ -156,12 +157,19 @@ eventController.put('/deleteRestoreEvent/:id', async (req, res) => {
   }
 });
 
-eventController.put('/deleteEvents', async (req, res) => {
-  // TODO: Add functionality to delete multiple Events!
+eventController.put('/approveDisapproveEvent/:id', async (req, res) => {
   try {
+    const event = await approveDisapproveEvent(req.params?.id, req.requester?._id, req?.body);
+    console.log(event);
+    if (event?.isApproved) {
+      res.status(200).json('Event is successfuly approved!');
+      res.end();
 
-    res.status(200).json('Events are deleted!');
-    res.end();
+    } else {
+      res.status(200).json('Event is successfuly disapproved!');
+      res.end();
+    }
+
   } catch (error) {
     res.status(400).json({error: error.message})
   }

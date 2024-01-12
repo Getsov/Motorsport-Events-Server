@@ -199,19 +199,19 @@ async function deleteRestoreEvent(eventId, requesterId, requestBody) {
   if (requesterId !== creatorId && requester?.role !== 'admin') {
     throw new Error('You are not owner or Admin to modify this Event!');
   }
-
-  if (typeof requestBody?.isDeleted !== 'boolean') {
-    throw new Error('Only boolean values are valid!');
-  }
-
-  if (requestBody?.isDeleted && event.isDeleted || !requestBody?.isDeleted && !event.isDeleted) {
-    throw new Error('You cannot modify same value!');
-  }
   
   if (requestBody?.hasOwnProperty('isDeleted')) {
+    if (typeof requestBody?.isDeleted !== 'boolean') {
+      throw new Error('Only boolean values are valid!');
+    }
+    if (requestBody?.isDeleted && event.isDeleted || !requestBody?.isDeleted && !event.isDeleted) {
+      throw new Error('You cannot modify with the same value!');
+    }
+
     requestBody.isDeleted
     ? (event.isDeleted = true, event.isApproved = false)
     : event.isDeleted = false
+
   } else {
     throw new Error('Add correct data in the request body: "isDeleted"');
   }
@@ -219,8 +219,43 @@ async function deleteRestoreEvent(eventId, requesterId, requestBody) {
   return await event.save();
 }
 
-async function deleteRestoreEvents(events, requesterId) {
-  //  TODO: Add logic for delete multiple events!
+async function approveDisapproveEvent(eventId, requesterId, requestBody) {
+  const event = await Event.findById(eventId);
+  const requester = await User.findById(requesterId);
+  
+  if (!requester) {
+    throw new Error('User not found!');
+  }
+  
+  if (!event) {
+    throw new Error('Event does not exist!');
+  }
+  
+  if (!requester?.isApproved || requester?.isDeleted) {
+    throw new Error('This User must be active admin to approve/disapprove event!');
+  }
+  
+  if (requester?.role !== 'admin') {
+    throw new Error('You are not an admin to modify this Event!');
+  }
+  
+  if (requestBody?.hasOwnProperty('isApproved')) {
+    if (typeof requestBody?.isApproved !== 'boolean') {
+      throw new Error('Only boolean values are valid!');
+    }
+    if (requestBody?.isApproved && event.isApproved || !requestBody?.isApproved && !event.isApproved) {
+      throw new Error('You cannot modify with the same value!');
+    }
+
+    requestBody.isApproved
+    ? (event.isApproved = true)
+    : event.isApproved = false
+
+  } else {
+    throw new Error('Add correct data in the request body: "isApproved"');
+  }
+
+  return await event.save();
 }
 
 // Like/Unlike event.
@@ -337,6 +372,7 @@ module.exports = {
   getUpcomingEvents,
   getPastEvents,
   deleteRestoreEvent,
+  approveDisapproveEvent
 };
 
 // Commented code below is for postman tests!
