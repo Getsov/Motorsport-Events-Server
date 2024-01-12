@@ -184,8 +184,8 @@ async function editDeletedProperty(idOfUserForEdit, requestBody, requesterId) {
     }
 
     requestBody.isDeleted
-      ? (userForEdit.isDeleted = true)
-      : (userForEdit.isDeleted = false);
+    ? (userForEdit.isDeleted = true, userForEdit.isApproved = false)
+    : userForEdit.isDeleted = false
 
   } else {
     throw new Error('Add correct data in the request: "isDeleted"');
