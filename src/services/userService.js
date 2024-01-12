@@ -183,19 +183,20 @@ async function deleteRestoreSingleUser(
     if (typeof requestBody?.isDeleted !== 'boolean') {
       throw new Error('Only boolean values are valid!');
     }
-    if (
-      (requestBody?.isDeleted && userForEdit.isDeleted) ||
-      (!requestBody?.isDeleted && !userForEdit.isDeleted)
-    ) {
-      throw new Error('You cannot modify with the same value!');
-    }
-
-    requestBody.isDeleted
-      ? ((userForEdit.isDeleted = true), (userForEdit.isApproved = false))
-      : (userForEdit.isDeleted = false);
   } else {
     throw new Error('Add correct data in the request: "isDeleted"');
   }
+
+  if (
+    (requestBody?.isDeleted && userForEdit.isDeleted) ||
+    (!requestBody?.isDeleted && !userForEdit.isDeleted)
+  ) {
+    throw new Error('You cannot modify with the same value!');
+  }
+
+  requestBody.isDeleted
+    ? ((userForEdit.isDeleted = true), (userForEdit.isApproved = false))
+    : (userForEdit.isDeleted = false);
 
   const newRecord = await userForEdit.save();
   return createToken(newRecord);
@@ -267,7 +268,7 @@ async function approveDisapproveSingleUser(userId, requesterId, requestBody) {
   } else {
     throw new Error('Add correct data in the request: "isApproved"');
   }
-  
+
   if (
     (requestBody?.isApproved && userForEdit.isApproved) ||
     (!requestBody?.isApproved && !userForEdit.isApproved)
