@@ -212,7 +212,10 @@ async function deleteRestoreMultipleUsers(requestBody, requesterId) {
     throw new Error('You do not have rights to modify the record!');
   }
 
-  if (requestBody?.hasOwnProperty('isDeleted')) {
+  if (
+    requestBody?.hasOwnProperty('isDeleted') &&
+    requestBody?.hasOwnProperty('listOfUsers')
+  ) {
     if (typeof requestBody?.isDeleted !== 'boolean') {
       throw new Error('Only boolean values are valid!');
     }
@@ -261,10 +264,7 @@ async function approveDisapproveSingleUser(userId, requesterId, requestBody) {
     throw new Error('User not found!');
   }
 
-  if (
-    requestBody?.hasOwnProperty('isApproved') &&
-    requestBody?.hasOwnProperty('listOfUsers')
-  ) {
+  if (requestBody?.hasOwnProperty('isApproved')) {
     if (typeof requestBody?.isApproved !== 'boolean') {
       throw new Error('Only boolean values are valid!');
     }
