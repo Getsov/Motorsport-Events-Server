@@ -261,7 +261,10 @@ async function approveDisapproveSingleUser(userId, requesterId, requestBody) {
     throw new Error('User not found!');
   }
 
-  if (requestBody?.hasOwnProperty('isApproved')) {
+  if (
+    requestBody?.hasOwnProperty('isApproved') &&
+    requestBody?.hasOwnProperty('listOfUsers')
+  ) {
     if (typeof requestBody?.isApproved !== 'boolean') {
       throw new Error('Only boolean values are valid!');
     }
@@ -295,12 +298,17 @@ async function approveDisapproveMultipleUsers(requestBody, requesterId) {
     throw new Error('You do not have rights to modify the record!');
   }
 
-  if (requestBody?.hasOwnProperty('isApproved')) {
+  if (
+    requestBody?.hasOwnProperty('isApproved') &&
+    requestBody?.hasOwnProperty('listOfUsers')
+  ) {
     if (typeof requestBody?.isApproved !== 'boolean') {
       throw new Error('Only boolean values are valid!');
     }
   } else {
-    throw new Error('Add correct data in the request: "isApproved"');
+    throw new Error(
+      'Add correct data in the request: "isApproved", "listOfUsers'
+    );
   }
 
   if (!Array.isArray(usersForEdit) || usersForEdit.length <= 0) {
