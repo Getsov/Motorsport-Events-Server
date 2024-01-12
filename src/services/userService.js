@@ -180,7 +180,7 @@ async function editDeletedProperty(idOfUserForEdit, requestBody, requesterId) {
       throw new Error('Only boolean values are valid!');
     }
     if (requestBody?.isDeleted && userForEdit.isDeleted || !requestBody?.isDeleted && !userForEdit.isDeleted) {
-      throw new Error('You cannot modify same value!');
+      throw new Error('You cannot modify with the same value!');
     }
 
     requestBody.isDeleted
@@ -213,7 +213,7 @@ async function approveUser(userId, requesterId, requestBody) {
       throw new Error('Only boolean values are valid!');
     }
     if (requestBody?.isApproved && userForEdit.isApproved || !requestBody?.isApproved && !userForEdit.isApproved) {
-      throw new Error('You cannot modify same value!');
+      throw new Error('You cannot modify with the same value!');
     }
 
     requestBody.isApproved
