@@ -14,7 +14,7 @@ const {
   getAllRegularUsers,
   getAllAdmins,
   getAllUsers,
-  editDeletedProperty,
+  deleteRestoreSingleUser,
   approveDisapproveSingleUser,
   getUserById,
   getAllAdminsForApprovals,
@@ -150,12 +150,12 @@ userController.put('/editUserRole/:id', async (req, res) => {
   }
 });
 
-userController.put('/editDeleted/:id', async (req, res) => {
+userController.put('/deleteRestoreSingleUser/:id', async (req, res) => {
   try {
     const userForEdit = req.params.id;
     const requester = req.requester._id;
     checkRequestData(req.body);
-    const result = await editDeletedProperty(userForEdit, req.body, requester);
+    const result = await deleteRestoreSingleUser(userForEdit, req.body, requester);
     res.status(200).json(result);
     res.end();
   } catch (error) {
