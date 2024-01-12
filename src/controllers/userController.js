@@ -14,8 +14,9 @@ const {
   getAllRegularUsers,
   getAllAdmins,
   getAllUsers,
-  editDeletedProperty,
-  approveUser,
+  deleteRestoreSingleUser,
+  deleteRestoreMultipleUsers,
+  approveDisapproveSingleUser,
   getUserById,
   getAllAdminsForApprovals,
 } = require('../services/userService');
@@ -150,12 +151,25 @@ userController.put('/editUserRole/:id', async (req, res) => {
   }
 });
 
-userController.put('/editDeleted/:id', async (req, res) => {
+userController.put('/deleteRestoreUser/:id', async (req, res) => {
   try {
     const userForEdit = req.params.id;
     const requester = req.requester._id;
     checkRequestData(req.body);
-    const result = await editDeletedProperty(userForEdit, req.body, requester);
+    const result = await deleteRestoreSingleUser(userForEdit, req.body, requester);
+    res.status(200).json(result);
+    res.end();
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: error.message });
+  }
+});
+
+userController.put('/deleteRestoreUsers', async (req, res) => {
+  try {
+    const requester = req.requester._id;
+    checkRequestData(req.body);
+    const result = await deleteRestoreMultipleUsers(req.body, requester);
     res.status(200).json(result);
     res.end();
   } catch (error) {
@@ -184,7 +198,7 @@ userController.put('/approveUser/:id', async (req, res) => {
     const requesterId = req.requester._id;
     checkRequestData(req.body);
 
-    const result = await approveUser(userId, requesterId, req.body);
+    const result = await approveDisapproveSingleUser(userId, requesterId, req.body);
     res.status(200).json(result);
     res.end();
   } catch (error) {

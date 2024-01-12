@@ -162,7 +162,11 @@ async function editUserRole(idOfUserForEdit, requestBody, requesterId) {
   return createToken(newRecord);
 }
 
-async function editDeletedProperty(idOfUserForEdit, requestBody, requesterId) {
+async function deleteRestoreSingleUser(
+  idOfUserForEdit,
+  requestBody,
+  requesterId
+) {
   const userForEdit = await User.findById(idOfUserForEdit);
   const requester = await User.findById(requesterId);
   const isAdmin = requester.role == 'admin' ? true : false;
@@ -179,14 +183,16 @@ async function editDeletedProperty(idOfUserForEdit, requestBody, requesterId) {
     if (typeof requestBody?.isDeleted !== 'boolean') {
       throw new Error('Only boolean values are valid!');
     }
-    if (requestBody?.isDeleted && userForEdit.isDeleted || !requestBody?.isDeleted && !userForEdit.isDeleted) {
+    if (
+      (requestBody?.isDeleted && userForEdit.isDeleted) ||
+      (!requestBody?.isDeleted && !userForEdit.isDeleted)
+    ) {
       throw new Error('You cannot modify with the same value!');
     }
 
     requestBody.isDeleted
-      ? (userForEdit.isDeleted = true)
+      ? ((userForEdit.isDeleted = true), (userForEdit.isApproved = false))
       : (userForEdit.isDeleted = false);
-
   } else {
     throw new Error('Add correct data in the request: "isDeleted"');
   }
@@ -195,7 +201,53 @@ async function editDeletedProperty(idOfUserForEdit, requestBody, requesterId) {
   return createToken(newRecord);
 }
 
-async function approveUser(userId, requesterId, requestBody) {
+async function deleteRestoreMultipleUsers(requestBody, requesterId) {
+  const requester = await User.findById(requesterId);
+  const isAdmin = requester.role == 'admin' ? true : false;
+  const usersForEdit = requestBody.listOfUsers;
+  const updatedUsersList = [];
+
+  if (!Array.isArray(usersForEdit) || usersForEdit.length <= 0) {
+    throw new Error('There is no users for edit!');
+  }
+
+  if (!isAdmin || requester.isDeleted || !requester.isApproved) {
+    throw new Error('You do not have rights to modify the record!');
+  }
+
+  if (requestBody?.hasOwnProperty('isDeleted')) {
+    if (typeof requestBody?.isDeleted !== 'boolean') {
+      throw new Error('Only boolean values are valid!');
+    }
+  } else {
+    throw new Error('Add correct data in the request: "isDeleted"');
+  }
+
+  await Promise.all(
+    usersForEdit.map(async (userId) => {
+      const userForEdit = await User.findById(userId);
+      if (!userForEdit) {
+        throw new Error('User not found');
+      }
+      if (
+        (requestBody?.isDeleted && userForEdit.isDeleted) ||
+        (!requestBody?.isDeleted && !userForEdit.isDeleted)
+      ) {
+        throw new Error('You cannot modify with the same value!');
+      }
+
+      requestBody.isDeleted
+        ? ((userForEdit.isDeleted = true), (userForEdit.isApproved = false))
+        : (userForEdit.isDeleted = false);
+      const newRecord = await userForEdit.save();
+      updatedUsersList.push(newRecord);
+    })
+  );
+
+  return updatedUsersList;
+}
+
+async function approveDisapproveSingleUser(userId, requesterId, requestBody) {
   const userForEdit = await User.findById(userId);
   const requester = await User.findById(requesterId);
   const isAdmin = requester.role == 'admin' ? true : false;
@@ -205,14 +257,17 @@ async function approveUser(userId, requesterId, requestBody) {
   }
 
   if (!userForEdit) {
-    throw new Error('User not found');
+    throw new Error('User not found!');
   }
 
   if (requestBody?.hasOwnProperty('isApproved')) {
     if (typeof requestBody?.isApproved !== 'boolean') {
       throw new Error('Only boolean values are valid!');
     }
-    if (requestBody?.isApproved && userForEdit.isApproved || !requestBody?.isApproved && !userForEdit.isApproved) {
+    if (
+      (requestBody?.isApproved && userForEdit.isApproved) ||
+      (!requestBody?.isApproved && !userForEdit.isApproved)
+    ) {
       throw new Error('You cannot modify with the same value!');
     }
 
@@ -457,12 +512,13 @@ module.exports = {
   editUserEmail,
   editUserPassword,
   editUserRole,
-  editDeletedProperty,
+  deleteRestoreSingleUser,
+  deleteRestoreMultipleUsers,
   addRemoveLikedEvent,
   addEventToCreatedEvents,
   returnAllCreatedEvents,
   returnAllFavouriteEvents,
-  approveUser,
+  approveDisapproveSingleUser,
   getAllAdminsForApprovals,
   getAllOrganizersForApproval,
   getAllOrganizers,
