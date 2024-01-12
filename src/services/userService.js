@@ -282,6 +282,54 @@ async function approveDisapproveSingleUser(userId, requesterId, requestBody) {
   return createToken(newRecord);
 }
 
+async function approveDisapproveMultipleUsers(requestBody, requesterId) {
+  const requester = await User.findById(requesterId);
+  const isAdmin = requester.role == 'admin' ? true : false;
+  const usersForEdit = requestBody.listOfUsers;
+  // const usersForEdit = requestBody.listOfUsers;
+  const updatedUsersList = [];
+
+  if (!isAdmin || requester.isDeleted || !requester.isApproved) {
+    throw new Error('You do not have rights to modify the record!');
+  }
+
+  if (!Array.isArray(usersForEdit) || usersForEdit.length <= 0) {
+    throw new Error('There are no users for edit!');
+  }
+
+  if (requestBody?.hasOwnProperty('isApproved')) {
+    if (typeof requestBody?.isApproved !== 'boolean') {
+      throw new Error('Only boolean values are valid!');
+    }
+  } else {
+    throw new Error('Add correct data in the request: "isApproved"');
+  }
+
+
+  await Promise.all(
+    usersForEdit.map(async (userId) => {
+      const userForEdit = await User.findById(userId);
+      if (!userForEdit) {
+        throw new Error('User not found');
+      }
+      if (
+        (requestBody?.isApproved && userForEdit.isApproved) ||
+        (!requestBody?.isApproved && !userForEdit.isApproved)
+      ) {
+        throw new Error('You cannot modify with the same value!');
+      }
+
+      requestBody.isApproved
+        ? (userForEdit.isApproved = true)
+        : (userForEdit.isApproved = false);
+      const newRecord = await userForEdit.save();
+      updatedUsersList.push(newRecord);
+    })
+  );
+
+  return updatedUsersList;
+}
+
 async function returnAllCreatedEvents(userId) {
   const existingUser = await User.findById(userId);
   if (!existingUser) {
@@ -519,6 +567,7 @@ module.exports = {
   returnAllCreatedEvents,
   returnAllFavouriteEvents,
   approveDisapproveSingleUser,
+  approveDisapproveMultipleUsers,
   getAllAdminsForApprovals,
   getAllOrganizersForApproval,
   getAllOrganizers,
