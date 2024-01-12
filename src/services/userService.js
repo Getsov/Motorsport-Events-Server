@@ -195,7 +195,7 @@ async function editDeletedProperty(idOfUserForEdit, requestBody, requesterId) {
   return createToken(newRecord);
 }
 
-async function approveSingleUser(userId, requesterId, requestBody) {
+async function approveDisapproveSingleUser(userId, requesterId, requestBody) {
   const userForEdit = await User.findById(userId);
   const requester = await User.findById(requesterId);
   const isAdmin = requester.role == 'admin' ? true : false;
@@ -462,7 +462,7 @@ module.exports = {
   addEventToCreatedEvents,
   returnAllCreatedEvents,
   returnAllFavouriteEvents,
-  approveSingleUser,
+  approveDisapproveSingleUser,
   getAllAdminsForApprovals,
   getAllOrganizersForApproval,
   getAllOrganizers,
