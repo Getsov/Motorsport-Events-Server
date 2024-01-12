@@ -207,10 +207,6 @@ async function deleteRestoreMultipleUsers(requestBody, requesterId) {
   const usersForEdit = requestBody.listOfUsers;
   const updatedUsersList = [];
 
-  if (!Array.isArray(usersForEdit) || usersForEdit.length <= 0) {
-    throw new Error('There are no users for edit!');
-  }
-
   if (!isAdmin || requester.isDeleted || !requester.isApproved) {
     throw new Error('You do not have rights to modify the record!');
   }
@@ -221,6 +217,10 @@ async function deleteRestoreMultipleUsers(requestBody, requesterId) {
     }
   } else {
     throw new Error('Add correct data in the request: "isDeleted"');
+  }
+
+  if (!Array.isArray(usersForEdit) || usersForEdit.length <= 0) {
+    throw new Error('There are no users for edit!');
   }
 
   await Promise.all(
@@ -293,10 +293,6 @@ async function approveDisapproveMultipleUsers(requestBody, requesterId) {
     throw new Error('You do not have rights to modify the record!');
   }
 
-  if (!Array.isArray(usersForEdit) || usersForEdit.length <= 0) {
-    throw new Error('There are no users for edit!');
-  }
-
   if (requestBody?.hasOwnProperty('isApproved')) {
     if (typeof requestBody?.isApproved !== 'boolean') {
       throw new Error('Only boolean values are valid!');
@@ -305,6 +301,9 @@ async function approveDisapproveMultipleUsers(requestBody, requesterId) {
     throw new Error('Add correct data in the request: "isApproved"');
   }
 
+  if (!Array.isArray(usersForEdit) || usersForEdit.length <= 0) {
+    throw new Error('There are no users for edit!');
+  }
 
   await Promise.all(
     usersForEdit.map(async (userId) => {
