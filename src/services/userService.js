@@ -316,6 +316,7 @@ async function approveDisapproveMultipleUsers(requestBody, requesterId) {
       if (
         (requestBody?.isApproved && userForEdit.isApproved) ||
         (!requestBody?.isApproved && !userForEdit.isApproved)
+        //TODO to replace upper code on all place with "=="
       ) {
         throw new Error('You cannot modify with the same value!');
       }
