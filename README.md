@@ -216,13 +216,22 @@ Request body will expect `isDeleted` property with boolean value.
   To fulfill the request, the admin must send role. If new role is 'organizer', the fields 'organizatorName' and 'phone' also should be fulfilled if there was empty before update.
 
 - **Method:** `PUT`
-- **Endpont:** `/user/approveUser/:id`
+- **Endpont:** `/user/approveDisapproveUser/:id`
   Headers: `Content-Type: application/json`
   `X-Authorization: {token}`
 
   Body: JSON-formatted data
   Changes: Only the administrator who is approved and not deleted can approve/disapprove an individual user.
   To fulfill the request, the admin must send {"isApproved": false/true}.
+
+- **Method:** `PUT`
+- **Endpont:** `/user/approveDisapproveUsers/:id`
+  Headers: `Content-Type: application/json`
+  `X-Authorization: {token}`
+
+  Body: JSON-formatted data
+  Changes: Only the administrator who is approved and not deleted can approve/disapprove multiple users.
+  To fulfill the request, the admin must send {"isApproved": false/true, "listOfUsers" : [id,id]}.
 
 - **Method:** `PUT`
 - **Endpont:** `/user/deleteRestoreUser/:id`
@@ -237,7 +246,7 @@ Request body will expect `isDeleted` property with boolean value.
   Headers: `Content-Type: application/json`
   `X-Authorization: {token}`
   Body: JSON-formatted data
-  Changes: Only the administrator who is approved and not deleted can change the "isDeleted" property of an individual user.
+  Changes: Only the administrator who is approved and not deleted can change the "isDeleted" property of multiple users.
   To fulfill the request, the admin must send {"isDeleted": false/true, "listOfUsers" : [id,id]}.
 
 Like-Event: Every user can like an Event. To do it, 'authorized' user must send a `POST` request with event `id`. When user liked some event, the event itself keep information about liked users and also every user keep information about events which he liked.

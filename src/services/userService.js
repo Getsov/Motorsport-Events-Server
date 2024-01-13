@@ -183,19 +183,20 @@ async function deleteRestoreSingleUser(
     if (typeof requestBody?.isDeleted !== 'boolean') {
       throw new Error('Only boolean values are valid!');
     }
-    if (
-      (requestBody?.isDeleted && userForEdit.isDeleted) ||
-      (!requestBody?.isDeleted && !userForEdit.isDeleted)
-    ) {
-      throw new Error('You cannot modify with the same value!');
-    }
-
-    requestBody.isDeleted
-      ? ((userForEdit.isDeleted = true), (userForEdit.isApproved = false))
-      : (userForEdit.isDeleted = false);
   } else {
     throw new Error('Add correct data in the request: "isDeleted"');
   }
+
+  if (
+    (requestBody?.isDeleted && userForEdit.isDeleted) ||
+    (!requestBody?.isDeleted && !userForEdit.isDeleted)
+  ) {
+    throw new Error('You cannot modify with the same value!');
+  }
+
+  requestBody.isDeleted
+    ? ((userForEdit.isDeleted = true), (userForEdit.isApproved = false))
+    : (userForEdit.isDeleted = false);
 
   const newRecord = await userForEdit.save();
   return createToken(newRecord);
@@ -207,20 +208,23 @@ async function deleteRestoreMultipleUsers(requestBody, requesterId) {
   const usersForEdit = requestBody.listOfUsers;
   const updatedUsersList = [];
 
-  if (!Array.isArray(usersForEdit) || usersForEdit.length <= 0) {
-    throw new Error('There is no users for edit!');
-  }
-
   if (!isAdmin || requester.isDeleted || !requester.isApproved) {
     throw new Error('You do not have rights to modify the record!');
   }
 
-  if (requestBody?.hasOwnProperty('isDeleted')) {
+  if (
+    requestBody?.hasOwnProperty('isDeleted') &&
+    requestBody?.hasOwnProperty('listOfUsers')
+  ) {
     if (typeof requestBody?.isDeleted !== 'boolean') {
       throw new Error('Only boolean values are valid!');
     }
   } else {
     throw new Error('Add correct data in the request: "isDeleted"');
+  }
+
+  if (!Array.isArray(usersForEdit) || usersForEdit.length <= 0) {
+    throw new Error('There are no users for edit!');
   }
 
   await Promise.all(
@@ -264,22 +268,76 @@ async function approveDisapproveSingleUser(userId, requesterId, requestBody) {
     if (typeof requestBody?.isApproved !== 'boolean') {
       throw new Error('Only boolean values are valid!');
     }
-    if (
-      (requestBody?.isApproved && userForEdit.isApproved) ||
-      (!requestBody?.isApproved && !userForEdit.isApproved)
-    ) {
-      throw new Error('You cannot modify with the same value!');
-    }
-
-    requestBody.isApproved
-      ? (userForEdit.isApproved = true)
-      : (userForEdit.isApproved = false);
   } else {
     throw new Error('Add correct data in the request: "isApproved"');
   }
 
+  if (
+    (requestBody?.isApproved && userForEdit.isApproved) ||
+    (!requestBody?.isApproved && !userForEdit.isApproved)
+  ) {
+    throw new Error('You cannot modify with the same value!');
+  }
+
+  requestBody.isApproved
+    ? (userForEdit.isApproved = true)
+    : (userForEdit.isApproved = false);
+
   const newRecord = await userForEdit.save();
   return createToken(newRecord);
+}
+
+async function approveDisapproveMultipleUsers(requestBody, requesterId) {
+  const requester = await User.findById(requesterId);
+  const isAdmin = requester.role == 'admin' ? true : false;
+  const usersForEdit = requestBody.listOfUsers;
+  // const usersForEdit = requestBody.listOfUsers;
+  const updatedUsersList = [];
+
+  if (!isAdmin || requester.isDeleted || !requester.isApproved) {
+    throw new Error('You do not have rights to modify the record!');
+  }
+
+  if (
+    requestBody?.hasOwnProperty('isApproved') &&
+    requestBody?.hasOwnProperty('listOfUsers')
+  ) {
+    if (typeof requestBody?.isApproved !== 'boolean') {
+      throw new Error('Only boolean values are valid!');
+    }
+  } else {
+    throw new Error(
+      'Add correct data in the request: "isApproved", "listOfUsers'
+    );
+  }
+
+  if (!Array.isArray(usersForEdit) || usersForEdit.length <= 0) {
+    throw new Error('There are no users for edit!');
+  }
+
+  await Promise.all(
+    usersForEdit.map(async (userId) => {
+      const userForEdit = await User.findById(userId);
+      if (!userForEdit) {
+        throw new Error('User not found');
+      }
+      if (
+        (requestBody?.isApproved && userForEdit.isApproved) ||
+        (!requestBody?.isApproved && !userForEdit.isApproved)
+        //TODO to replace upper code on all place with "=="
+      ) {
+        throw new Error('You cannot modify with the same value!');
+      }
+
+      requestBody.isApproved
+        ? (userForEdit.isApproved = true)
+        : (userForEdit.isApproved = false);
+      const newRecord = await userForEdit.save();
+      updatedUsersList.push(newRecord);
+    })
+  );
+
+  return updatedUsersList;
 }
 
 async function returnAllCreatedEvents(userId) {
@@ -519,6 +577,7 @@ module.exports = {
   returnAllCreatedEvents,
   returnAllFavouriteEvents,
   approveDisapproveSingleUser,
+  approveDisapproveMultipleUsers,
   getAllAdminsForApprovals,
   getAllOrganizersForApproval,
   getAllOrganizers,

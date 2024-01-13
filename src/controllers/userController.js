@@ -19,12 +19,12 @@ const {
   approveDisapproveSingleUser,
   getUserById,
   getAllAdminsForApprovals,
+  approveDisapproveMultipleUsers,
 } = require('../services/userService');
 
 const { validPassword } = require('../shared/sharedRegex');
 const { checkRequestData } = require('../utils/checkData');
 const { resetPassword } = require('../services/emailService');
-//TODO: getAllAdminsForApproval
 userController.post('/register', async (req, res) => {
   try {
     const passwordTest = validPassword.test(req.body.password);
@@ -192,13 +192,26 @@ userController.get('/getUserById/:id', async (req, res) => {
 });
 
 // Approving / Disapproving user/organizer
-userController.put('/approveUser/:id', async (req, res) => {
+userController.put('/approveDisapproveUser/:id', async (req, res) => {
   try {
     const userId = req.params.id;
     const requesterId = req.requester._id;
     checkRequestData(req.body);
 
     const result = await approveDisapproveSingleUser(userId, requesterId, req.body);
+    res.status(200).json(result);
+    res.end();
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: error.message });
+  }
+});
+
+userController.put('/approveDisapproveUsers', async (req, res) => {
+  try {
+    const requester = req.requester._id;
+    checkRequestData(req.body);
+    const result = await approveDisapproveMultipleUsers(req.body, requester);
     res.status(200).json(result);
     res.end();
   } catch (error) {

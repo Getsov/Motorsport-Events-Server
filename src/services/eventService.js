@@ -14,7 +14,7 @@ async function registerEvent(requestBody, requesterId) {
   if (requester?.isDeleted === true) {
     throw new Error('This User is deleted!');
   }
-  
+
   if (!requester?.isApproved) {
     throw new Error('This User must be approved to register events!');
   }
@@ -46,10 +46,14 @@ async function findEventByID(eventId, requesterId) {
   const creatorId = event?.creator._id.toString();
 
   if (event?.isDeleted && requester?.role !== 'admin') {
-    throw new Error("Event is deleted!");
+    throw new Error('Event is deleted!');
   }
 
-  if (!event?.isApproved && requester?._id !== creatorId && requester?.role !== 'admin') {
+  if (
+    !event?.isApproved &&
+    requester?._id !== creatorId &&
+    requester?.role !== 'admin'
+  ) {
     throw new Error('This Event is not Approved by Admin!');
   }
 
@@ -131,7 +135,7 @@ async function updateEvent(requestBody, existingEvent, reqRequester) {
     existingEvent === null ||
     (requester?.role !== 'admin' && existingEvent?.isDeleted !== false)
   ) {
-    throw new Error("Event is deleted!");
+    throw new Error('Event is deleted!');
   }
 
   if (requesterId !== creatorId && requester?.role !== 'admin') {
@@ -183,35 +187,37 @@ async function deleteRestoreEvent(eventId, requesterId, requestBody) {
   const event = await Event.findById(eventId);
   const creatorId = event.creator.toString();
   const requester = await User.findById(requesterId);
-  
+
   if (!requester) {
     throw new Error('User not found!');
   }
-  
+
   if (!event || (event?.isDeleted !== false && requester?.role !== 'admin')) {
     throw new Error('Event is deleted!');
   }
-  
+
   if (!requester?.isApproved || requester?.isDeleted) {
     throw new Error('This User must be approved to delete events!');
   }
-  
+
   if (requesterId !== creatorId && requester?.role !== 'admin') {
     throw new Error('You are not owner or Admin to modify this Event!');
   }
-  
+
   if (requestBody?.hasOwnProperty('isDeleted')) {
     if (typeof requestBody?.isDeleted !== 'boolean') {
       throw new Error('Only boolean values are valid!');
     }
-    if (requestBody?.isDeleted && event.isDeleted || !requestBody?.isDeleted && !event.isDeleted) {
+    if (
+      (requestBody?.isDeleted && event.isDeleted) ||
+      (!requestBody?.isDeleted && !event.isDeleted)
+    ) {
       throw new Error('You cannot modify with the same value!');
     }
 
     requestBody.isDeleted
-    ? (event.isDeleted = true, event.isApproved = false)
-    : event.isDeleted = false
-
+      ? ((event.isDeleted = true), (event.isApproved = false))
+      : (event.isDeleted = false);
   } else {
     throw new Error('Add correct data in the request body: "isDeleted"');
   }
@@ -222,35 +228,39 @@ async function deleteRestoreEvent(eventId, requesterId, requestBody) {
 async function approveDisapproveEvent(eventId, requesterId, requestBody) {
   const event = await Event.findById(eventId);
   const requester = await User.findById(requesterId);
-  
+
   if (!requester) {
     throw new Error('User not found!');
   }
-  
+
   if (!event) {
     throw new Error('Event does not exist!');
   }
-  
+
   if (!requester?.isApproved || requester?.isDeleted) {
-    throw new Error('This User must be active admin to approve/disapprove event!');
+    throw new Error(
+      'This User must be active admin to approve/disapprove event!'
+    );
   }
-  
+
   if (requester?.role !== 'admin') {
     throw new Error('You are not an admin to modify this Event!');
   }
-  
+
   if (requestBody?.hasOwnProperty('isApproved')) {
     if (typeof requestBody?.isApproved !== 'boolean') {
       throw new Error('Only boolean values are valid!');
     }
-    if (requestBody?.isApproved && event.isApproved || !requestBody?.isApproved && !event.isApproved) {
+    if (
+      (requestBody?.isApproved && event.isApproved) ||
+      (!requestBody?.isApproved && !event.isApproved)
+    ) {
       throw new Error('You cannot modify with the same value!');
     }
 
     requestBody.isApproved
-    ? (event.isApproved = true)
-    : event.isApproved = false
-
+      ? (event.isApproved = true)
+      : (event.isApproved = false);
   } else {
     throw new Error('Add correct data in the request body: "isApproved"');
   }
@@ -275,7 +285,9 @@ async function likeUnlikeEvent(existingEvent, requesterId, isAlreadyLiked) {
   }
 
   if (isAlreadyLiked) {
-    let filteredLikes = await existingEvent.likes.filter((x) => x != requesterId);
+    let filteredLikes = await existingEvent.likes.filter(
+      (x) => x != requesterId
+    );
     existingEvent.likes = filteredLikes;
     return await existingEvent.save({ validateBeforeSave: false });
   }
@@ -372,7 +384,7 @@ module.exports = {
   getUpcomingEvents,
   getPastEvents,
   deleteRestoreEvent,
-  approveDisapproveEvent
+  approveDisapproveEvent,
 };
 
 // Commented code below is for postman tests!
