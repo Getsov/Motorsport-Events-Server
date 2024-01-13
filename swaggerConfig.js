@@ -12,14 +12,7 @@ const options = {
       {
         url: "http://localhost:3030/"
       },
-    ],
-    securityDefinitions: {
-      jwt: {
-        type: 'apiKey',
-        name: 'Authorization',
-        in: 'header',
-      },
-    },
+    ]
   },
   apis: ['./src/controllers/*.js'], // Path to the API routes
 };

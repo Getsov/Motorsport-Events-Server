@@ -67,8 +67,6 @@
  *         description: Details of the user.
  *       400:
  *         description: User not found.
- *         security:
- *         - jwt: []
  */
 
 /**
