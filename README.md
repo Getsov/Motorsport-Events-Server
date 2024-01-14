@@ -102,7 +102,7 @@ Retrieve all admins waiting for approval which are not deleted! Available only f
 Retrieve all organizers waiting for approval which are not deleted! Available only for active and approved admins!
 
 - **Method:** `GET`
-- **Endpont:** `/user/organizersForApproval`
+- **Endpont:** `/user/getAllOrganizersForApproval`
 
 Retrieve all organizers! Available only for active and approved admins!
 

@@ -12,5 +12,3 @@ module.exports.checkAdmin = async function (requester) {
     throw new Error('You do not have access to these records!');
   }
 };
-//TODO: export checks same as upper one
-//TODO: for future development

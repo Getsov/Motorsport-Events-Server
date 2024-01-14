@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const { secret } = require('../utils/parseToken');
 const { checkAuthorizedRequests } = require('../utils/securityCheck');
+const { checkAdmin } = require('../utils/adminsCheck');
 
 async function registerUser(requestBody) {
   const email = requestBody.email;
@@ -187,10 +188,7 @@ async function deleteRestoreSingleUser(
     throw new Error('Add correct data in the request: "isDeleted"');
   }
 
-  if (
-    (requestBody?.isDeleted && userForEdit.isDeleted) ||
-    (!requestBody?.isDeleted && !userForEdit.isDeleted)
-  ) {
+  if (requestBody?.isDeleted == userForEdit.isDeleted) {
     throw new Error('You cannot modify with the same value!');
   }
 
@@ -233,10 +231,7 @@ async function deleteRestoreMultipleUsers(requestBody, requesterId) {
       if (!userForEdit) {
         throw new Error('User not found');
       }
-      if (
-        (requestBody?.isDeleted && userForEdit.isDeleted) ||
-        (!requestBody?.isDeleted && !userForEdit.isDeleted)
-      ) {
+      if (requestBody?.isDeleted == userForEdit.isDeleted) {
         throw new Error('You cannot modify with the same value!');
       }
 
@@ -272,10 +267,7 @@ async function approveDisapproveSingleUser(userId, requesterId, requestBody) {
     throw new Error('Add correct data in the request: "isApproved"');
   }
 
-  if (
-    (requestBody?.isApproved && userForEdit.isApproved) ||
-    (!requestBody?.isApproved && !userForEdit.isApproved)
-  ) {
+  if (requestBody?.isApproved == userForEdit.isApproved) {
     throw new Error('You cannot modify with the same value!');
   }
 
@@ -321,11 +313,7 @@ async function approveDisapproveMultipleUsers(requestBody, requesterId) {
       if (!userForEdit) {
         throw new Error('User not found');
       }
-      if (
-        (requestBody?.isApproved && userForEdit.isApproved) ||
-        (!requestBody?.isApproved && !userForEdit.isApproved)
-        //TODO to replace upper code on all place with "=="
-      ) {
+      if (requestBody?.isApproved == userForEdit.isApproved) {
         throw new Error('You cannot modify with the same value!');
       }
 
@@ -362,7 +350,6 @@ async function returnAllFavouriteEvents(userId) {
   }
   const userWithEvents = await existingUser.populate('likedEvents');
   const allFavouriteEvents = userWithEvents.likedEvents;
-  //TODO check this FN => return empty array if there is no createdEvents by current user
   if (allFavouriteEvents.length === 0) {
     return allFavouriteEvents;
   } else {
@@ -398,18 +385,8 @@ async function getUserById(userId, requesterId) {
 
 async function getAllAdminsForApprovals(requesterId) {
   const requester = await User.findById(requesterId);
-  if (!requester) {
-    throw new Error('User not found!');
-  }
-  if (requester.isDeleted) {
-    throw new Error('Your profile is deleted!');
-  }
-  if (!requester.isApproved) {
-    throw new Error('Your profile is not approved!');
-  }
-  if (requester.role !== 'admin') {
-    throw new Error('You do not have access to these records!');
-  }
+  await checkAdmin(requester);
+
   const waitingAdmins = await User.find({
     isApproved: false,
     isDeleted: false,
@@ -420,18 +397,8 @@ async function getAllAdminsForApprovals(requesterId) {
 
 async function getAllOrganizersForApproval(requesterId) {
   const requester = await User.findById(requesterId);
-  if (!requester) {
-    throw new Error('User not found!');
-  }
-  if (requester.isDeleted) {
-    throw new Error('Your profile is deleted!');
-  }
-  if (!requester.isApproved) {
-    throw new Error('Your profile is not approved!');
-  }
-  if (requester.role !== 'admin') {
-    throw new Error('You do not have access to these records!');
-  }
+  await checkAdmin(requester);
+
   const waitingOrganizers = await User.find({
     isApproved: false,
     isDeleted: false,
@@ -442,15 +409,9 @@ async function getAllOrganizersForApproval(requesterId) {
 
 async function getAllOrganizers(requesterId) {
   const requester = await User.findById(requesterId);
-  if (requester.isDeleted) {
-    throw new Error('Your profile is deleted!');
-  }
-  if (!requester.isApproved) {
-    throw new Error('Your profile is not approved!');
-  }
-  if (requester.role !== 'admin') {
-    throw new Error('You do not have access to these records!');
-  }
+
+  await checkAdmin(requester);
+
   const allOrganizers = await User.find({
     role: 'organizer',
   });
@@ -459,45 +420,27 @@ async function getAllOrganizers(requesterId) {
 
 async function getAllRegularUsers(requesterId) {
   const requester = await User.findById(requesterId);
-  if (requester.isDeleted) {
-    throw new Error('Your profile is deleted!');
-  }
-  if (!requester.isApproved) {
-    throw new Error('Your profile is not approved!');
-  }
-  if (requester.role !== 'admin') {
-    throw new Error('You do not have access to these records!');
-  }
+
+  await checkAdmin(requester);
+
   const allRegularUsers = await User.find({ role: 'regular' });
   return allRegularUsers;
 }
 
 async function getAllAdmins(requesterId) {
   const requester = await User.findById(requesterId);
-  if (requester.isDeleted) {
-    throw new Error('Your profile is deleted!');
-  }
-  if (!requester.isApproved) {
-    throw new Error('Your profile is not approved!');
-  }
-  if (requester.role !== 'admin') {
-    throw new Error('You do not have access to these records!');
-  }
+
+  await checkAdmin(requester);
+
   const allAdmins = await User.find({ role: 'admin' });
   return allAdmins;
 }
 
 async function getAllUsers(requesterId) {
   const requester = await User.findById(requesterId);
-  if (requester.isDeleted) {
-    throw new Error('Your profile is deleted!');
-  }
-  if (!requester.isApproved) {
-    throw new Error('Your profile is not approved!');
-  }
-  if (requester.role !== 'admin') {
-    throw new Error('You do not have access to these records!');
-  }
+
+  await checkAdmin(requester);
+
   const allUsers = await User.find();
   return allUsers;
 }
