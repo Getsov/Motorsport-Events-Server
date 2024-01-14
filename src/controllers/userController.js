@@ -18,6 +18,7 @@ const {
   deleteRestoreMultipleUsers,
   approveDisapproveSingleUser,
   getUserById,
+  getApprovedAdmins,
   getAllAdminsForApprovals,
   approveDisapproveMultipleUsers,
 } = require('../services/userService');
@@ -244,6 +245,17 @@ userController.get('/getMyFavourites', async (req, res) => {
   try {
     const userId = req.requester?._id;
     const result = await returnAllFavouriteEvents(userId);
+    res.status(200).json(result);
+    res.end();
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: error.message });
+  }
+});
+userController.get('/getApprovedAdmins', async (req, res) => {
+  try {
+    const requesterId = req.requester._id;
+    const result = await getApprovedAdmins(requesterId);
     res.status(200).json(result);
     res.end();
   } catch (error) {
