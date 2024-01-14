@@ -42,7 +42,8 @@ Important!: Event must be approved to see it!
 
 - **_Event_**:
   Send a `GET` request to the endpoint. The response will be in JSON format.
-  Examples: `http://localhost:3030` + `/events`
+  Examples: `http://localhost:3030` + `/events`;
+
   Retrieve everything inside the `events` collection:
 
 - **Method:** `GET`
@@ -93,6 +94,11 @@ Retrieve all events waiting for approval! Available only for active and approved
 - **Endpont:** `/events/eventsForApproval`
 
 - **_User_**:
+
+Retrieve all approved admins which are not deleted! Available only for active and approved admins!
+
+- **Method:** `GET`
+- **Endpont:** `/user/getApprovedAdmins`
 
 Retrieve all admins waiting for approval which are not deleted! Available only for active and approved admins!
 
