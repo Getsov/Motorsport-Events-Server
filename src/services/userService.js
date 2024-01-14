@@ -349,7 +349,6 @@ async function returnAllFavouriteEvents(userId) {
   }
   const userWithEvents = await existingUser.populate('likedEvents');
   const allFavouriteEvents = userWithEvents.likedEvents;
-  //TODO check this FN => return empty array if there is no createdEvents by current user
   if (allFavouriteEvents.length === 0) {
     return allFavouriteEvents;
   } else {
