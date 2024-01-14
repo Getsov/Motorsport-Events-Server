@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const { secret } = require('../utils/parseToken');
 const { checkAuthorizedRequests } = require('../utils/securityCheck');
+const { checkAdmin } = require('../utils/adminsCheck');
 
 async function registerUser(requestBody) {
   const email = requestBody.email;
@@ -384,18 +385,8 @@ async function getUserById(userId, requesterId) {
 
 async function getAllAdminsForApprovals(requesterId) {
   const requester = await User.findById(requesterId);
-  if (!requester) {
-    throw new Error('User not found!');
-  }
-  if (requester.isDeleted) {
-    throw new Error('Your profile is deleted!');
-  }
-  if (!requester.isApproved) {
-    throw new Error('Your profile is not approved!');
-  }
-  if (requester.role !== 'admin') {
-    throw new Error('You do not have access to these records!');
-  }
+  await checkAdmin(requester);
+
   const waitingAdmins = await User.find({
     isApproved: false,
     isDeleted: false,
@@ -406,18 +397,8 @@ async function getAllAdminsForApprovals(requesterId) {
 
 async function getAllOrganizersForApproval(requesterId) {
   const requester = await User.findById(requesterId);
-  if (!requester) {
-    throw new Error('User not found!');
-  }
-  if (requester.isDeleted) {
-    throw new Error('Your profile is deleted!');
-  }
-  if (!requester.isApproved) {
-    throw new Error('Your profile is not approved!');
-  }
-  if (requester.role !== 'admin') {
-    throw new Error('You do not have access to these records!');
-  }
+  await checkAdmin(requester);
+
   const waitingOrganizers = await User.find({
     isApproved: false,
     isDeleted: false,
@@ -428,15 +409,9 @@ async function getAllOrganizersForApproval(requesterId) {
 
 async function getAllOrganizers(requesterId) {
   const requester = await User.findById(requesterId);
-  if (requester.isDeleted) {
-    throw new Error('Your profile is deleted!');
-  }
-  if (!requester.isApproved) {
-    throw new Error('Your profile is not approved!');
-  }
-  if (requester.role !== 'admin') {
-    throw new Error('You do not have access to these records!');
-  }
+
+  await checkAdmin(requester);
+
   const allOrganizers = await User.find({
     role: 'organizer',
   });
@@ -445,45 +420,27 @@ async function getAllOrganizers(requesterId) {
 
 async function getAllRegularUsers(requesterId) {
   const requester = await User.findById(requesterId);
-  if (requester.isDeleted) {
-    throw new Error('Your profile is deleted!');
-  }
-  if (!requester.isApproved) {
-    throw new Error('Your profile is not approved!');
-  }
-  if (requester.role !== 'admin') {
-    throw new Error('You do not have access to these records!');
-  }
+
+  await checkAdmin(requester);
+
   const allRegularUsers = await User.find({ role: 'regular' });
   return allRegularUsers;
 }
 
 async function getAllAdmins(requesterId) {
   const requester = await User.findById(requesterId);
-  if (requester.isDeleted) {
-    throw new Error('Your profile is deleted!');
-  }
-  if (!requester.isApproved) {
-    throw new Error('Your profile is not approved!');
-  }
-  if (requester.role !== 'admin') {
-    throw new Error('You do not have access to these records!');
-  }
+
+  await checkAdmin(requester);
+
   const allAdmins = await User.find({ role: 'admin' });
   return allAdmins;
 }
 
 async function getAllUsers(requesterId) {
   const requester = await User.findById(requesterId);
-  if (requester.isDeleted) {
-    throw new Error('Your profile is deleted!');
-  }
-  if (!requester.isApproved) {
-    throw new Error('Your profile is not approved!');
-  }
-  if (requester.role !== 'admin') {
-    throw new Error('You do not have access to these records!');
-  }
+
+  await checkAdmin(requester);
+
   const allUsers = await User.find();
   return allUsers;
 }
