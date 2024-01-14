@@ -10,7 +10,7 @@ const {
   getPastEvents,
   getUpcomingEvents,
   deleteRestoreEvent,
-  approveDisapproveEvent
+  approveDisapproveEvent,
 } = require('../services/eventService');
 const {
   addRemoveLikedEvent,
@@ -126,11 +126,7 @@ eventController.put('/:id', async (req, res) => {
 
     const event = await findEventByID(req.params.id, req.requester?._id);
 
-    const updatedEvent = await updateEvent(
-      req.body,
-      event,
-      req.requester?._id
-    );
+    const updatedEvent = await updateEvent(req.body, event, req.requester?._id);
 
     res.status(200).json(updatedEvent);
     res.end();
@@ -141,37 +137,41 @@ eventController.put('/:id', async (req, res) => {
 
 eventController.put('/deleteRestoreEvent/:id', async (req, res) => {
   try {
-    const event = await deleteRestoreEvent(req.params.id, req.requester?._id, req?.body);
-    
+    const event = await deleteRestoreEvent(
+      req.params.id,
+      req.requester?._id,
+      req?.body
+    );
+
     if (event?.isDeleted) {
       res.status(200).json('Event is successfuly deleted!');
       res.end();
-
     } else {
       res.status(200).json('Event is successfuly restored!');
       res.end();
     }
-
   } catch (error) {
-    res.status(400).json({error: error.message})
+    res.status(400).json({ error: error.message });
   }
 });
 
 eventController.put('/approveDisapproveEvent/:id', async (req, res) => {
   try {
-    const event = await approveDisapproveEvent(req.params?.id, req.requester?._id, req?.body);
+    const event = await approveDisapproveEvent(
+      req.params?.id,
+      req.requester?._id,
+      req?.body
+    );
     console.log(event);
     if (event?.isApproved) {
       res.status(200).json('Event is successfuly approved!');
       res.end();
-
     } else {
       res.status(200).json('Event is successfuly disapproved!');
       res.end();
     }
-
   } catch (error) {
-    res.status(400).json({error: error.message})
+    res.status(400).json({ error: error.message });
   }
 });
 

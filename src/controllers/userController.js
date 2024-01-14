@@ -156,7 +156,11 @@ userController.put('/deleteRestoreUser/:id', async (req, res) => {
     const userForEdit = req.params.id;
     const requester = req.requester._id;
     checkRequestData(req.body);
-    const result = await deleteRestoreSingleUser(userForEdit, req.body, requester);
+    const result = await deleteRestoreSingleUser(
+      userForEdit,
+      req.body,
+      requester
+    );
     res.status(200).json(result);
     res.end();
   } catch (error) {
@@ -198,7 +202,11 @@ userController.put('/approveDisapproveUser/:id', async (req, res) => {
     const requesterId = req.requester._id;
     checkRequestData(req.body);
 
-    const result = await approveDisapproveSingleUser(userId, requesterId, req.body);
+    const result = await approveDisapproveSingleUser(
+      userId,
+      requesterId,
+      req.body
+    );
     res.status(200).json(result);
     res.end();
   } catch (error) {
