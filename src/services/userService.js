@@ -187,10 +187,7 @@ async function deleteRestoreSingleUser(
     throw new Error('Add correct data in the request: "isDeleted"');
   }
 
-  if (
-    (requestBody?.isDeleted && userForEdit.isDeleted) ||
-    (!requestBody?.isDeleted && !userForEdit.isDeleted)
-  ) {
+  if (requestBody?.isDeleted == userForEdit.isDeleted) {
     throw new Error('You cannot modify with the same value!');
   }
 
@@ -233,10 +230,7 @@ async function deleteRestoreMultipleUsers(requestBody, requesterId) {
       if (!userForEdit) {
         throw new Error('User not found');
       }
-      if (
-        (requestBody?.isDeleted && userForEdit.isDeleted) ||
-        (!requestBody?.isDeleted && !userForEdit.isDeleted)
-      ) {
+      if (requestBody?.isDeleted == userForEdit.isDeleted) {
         throw new Error('You cannot modify with the same value!');
       }
 
@@ -272,10 +266,7 @@ async function approveDisapproveSingleUser(userId, requesterId, requestBody) {
     throw new Error('Add correct data in the request: "isApproved"');
   }
 
-  if (
-    (requestBody?.isApproved && userForEdit.isApproved) ||
-    (!requestBody?.isApproved && !userForEdit.isApproved)
-  ) {
+  if (requestBody?.isApproved == userForEdit.isApproved) {
     throw new Error('You cannot modify with the same value!');
   }
 
@@ -321,11 +312,7 @@ async function approveDisapproveMultipleUsers(requestBody, requesterId) {
       if (!userForEdit) {
         throw new Error('User not found');
       }
-      if (
-        (requestBody?.isApproved && userForEdit.isApproved) ||
-        (!requestBody?.isApproved && !userForEdit.isApproved)
-        //TODO to replace upper code on all place with "=="
-      ) {
+      if (requestBody?.isApproved == userForEdit.isApproved) {
         throw new Error('You cannot modify with the same value!');
       }
 
