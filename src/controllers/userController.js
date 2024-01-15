@@ -18,8 +18,10 @@ const {
   deleteRestoreMultipleUsers,
   approveDisapproveSingleUser,
   getUserById,
+  getApprovedAdmins,
   getAllAdminsForApprovals,
   approveDisapproveMultipleUsers,
+  getApprovedOrganizators,
 } = require('../services/userService');
 
 const { validPassword } = require('../shared/sharedRegex');
@@ -251,6 +253,17 @@ userController.get('/getMyFavourites', async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
+userController.get('/getApprovedAdmins', async (req, res) => {
+  try {
+    const requesterId = req.requester._id;
+    const result = await getApprovedAdmins(requesterId);
+    res.status(200).json(result);
+    res.end();
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: error.message });
+  }
+});
 
 userController.get('/getAllAdminsForApproval', async (req, res) => {
   try {
@@ -263,6 +276,19 @@ userController.get('/getAllAdminsForApproval', async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
+
+userController.get('/getApprovedOrganizators', async (req, res) => {
+  try {
+    const requesterId = req.requester._id;
+    const result = await getApprovedOrganizators(requesterId);
+    res.status(200).json(result);
+    res.end();
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: error.message });
+  }
+});
+//TODO: Rearange GET request in README.md
 
 userController.get('/getAllOrganizersForApproval', async (req, res) => {
   try {

@@ -383,6 +383,17 @@ async function getUserById(userId, requesterId) {
   return user;
 }
 
+async function getApprovedAdmins(requesterId) {
+  const requester = await User.findById(requesterId);
+  await checkAdmin(requester);
+
+  const approvedAdmins = await User.find({
+    isApproved: true,
+    role: 'admin',
+  });
+  return approvedAdmins;
+}
+
 async function getAllAdminsForApprovals(requesterId) {
   const requester = await User.findById(requesterId);
   await checkAdmin(requester);
@@ -393,6 +404,17 @@ async function getAllAdminsForApprovals(requesterId) {
     role: 'admin',
   });
   return waitingAdmins;
+}
+
+async function getApprovedOrganizators(requesterId) {
+  const requester = await User.findById(requesterId);
+  await checkAdmin(requester);
+
+  const approvedOrganizers = await User.find({
+    isApproved: true,
+    role: 'organizer',
+  });
+  return approvedOrganizers;
 }
 
 async function getAllOrganizersForApproval(requesterId) {
@@ -521,7 +543,9 @@ module.exports = {
   returnAllFavouriteEvents,
   approveDisapproveSingleUser,
   approveDisapproveMultipleUsers,
+  getApprovedAdmins,
   getAllAdminsForApprovals,
+  getApprovedOrganizators,
   getAllOrganizersForApproval,
   getAllOrganizers,
   getAllRegularUsers,
