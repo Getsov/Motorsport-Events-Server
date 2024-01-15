@@ -182,6 +182,15 @@ Request body will expect `isDeleted` property with boolean value.
   `X-Authorization: {token}`
   Body: JSON-formatted data
 
+Approve event, event's `isApproved` property can be changed to true or false, only admin can approve event! If event is approved, `isApproved` property will be changed to true.
+Request body will expect `isApproved` property with boolean value.
+
+- **Method:** `PUT`
+- **Endpont:** `/events/approveDisapproveEvent/:id`
+  Headers: `Content-Type: application/json`
+  `X-Authorization: {token}`
+  Body: JSON-formatted data
+
 - **_User_**:
 
 - **Method:** `PUT`
