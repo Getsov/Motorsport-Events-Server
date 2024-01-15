@@ -168,6 +168,12 @@ const eventSchema = new Schema({
       },
       message: 'Categories must be unique!',
     },
+    validate: {
+      validator: (value) => {
+        return value.length !== 0;
+      },
+      message: 'Add at least one category!',
+    },
     required: true,
   },
   likes: [{ type: ObjectId, ref: 'User' }],
