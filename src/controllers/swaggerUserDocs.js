@@ -3,7 +3,9 @@
  * /user/register:
  *   post:
  *     summary: Register "regular" user
- *     description: Create a new user. If you register as admin, you need to pass "role". If you register as organizator you need to add to request role, organizatorName, phone. The service automatically creates a session and returns object with accessToken inside, that can be used for authorized requests. Admins and organizаtors will be active after approval by active admin.
+ *     description: Create a new user.
+ *          The service automatically creates a session and returns object with accessToken inside,
+ *          that can be used for authorized requests.
  *     tags:
  *       - User
  *     requestBody:
