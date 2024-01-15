@@ -389,7 +389,6 @@ async function getApprovedAdmins(requesterId) {
 
   const approvedAdmins = await User.find({
     isApproved: true,
-    isDeleted: false,
     role: 'admin',
   });
   return approvedAdmins;
@@ -413,7 +412,6 @@ async function getApprovedOrganizators(requesterId) {
 
   const approvedOrganizers = await User.find({
     isApproved: true,
-    isDeleted: false,
     role: 'organizer',
   });
   return approvedOrganizers;
