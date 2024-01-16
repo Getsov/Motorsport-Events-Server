@@ -32,7 +32,6 @@ eventController.get('/eventsForApproval', async (req, res) => {
 
     res.status(200).json(result);
     res.end();
-
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -100,7 +99,7 @@ eventController.get('/', async (req, res) => {
 eventController.get('/:id', async (req, res) => {
   try {
     const eventId = req.params?.id;
-    
+
     if (eventId === ',') {
       throw new Error('Event "id" is missing!');
     }
@@ -217,7 +216,6 @@ eventController.post('/like/:id', async (req, res) => {
 
 // Get by Month.
 eventController.get('/month/:year/:month', async (req, res) => {
-  // TODO: Later add errors for wrong parameters.
   try {
     const { year, month } = req.params;
     const { startDate, endDate } = getNeededDates(
