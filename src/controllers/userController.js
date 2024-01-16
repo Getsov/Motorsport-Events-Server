@@ -288,7 +288,6 @@ userController.get('/getApprovedOrganizators', async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
-//TODO: Rearange GET request in README.md
 
 userController.get('/getAllOrganizersForApproval', async (req, res) => {
   try {
