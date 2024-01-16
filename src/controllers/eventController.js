@@ -25,7 +25,7 @@ eventController.get('/eventsForApproval', async (req, res) => {
     const requesterId = req.requester?._id;
 
     if (!requesterId) {
-      throw new Error('User "_id" not found!');
+      throw new Error('User "_id" is missing!');
     }
 
     const result = await getAllEventsForApproval(requesterId);
@@ -108,6 +108,12 @@ eventController.get('/', async (req, res) => {
 // Get event by ID!
 eventController.get('/:id', async (req, res) => {
   try {
+    const eventId = req.params?.id;
+    
+    if (eventId === ',') {
+      throw new Error('Event "id" is missing!');
+    }
+
     const event = await findEventByID(req.params.id, req.requester?._id);
 
     if (event === null) {
