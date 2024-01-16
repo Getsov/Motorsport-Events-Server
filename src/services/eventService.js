@@ -129,7 +129,6 @@ async function findAllEvents(query) {
   return await limitModels(Event, page, limit, criteria);
 }
 
-// TODO: Update the event later!
 async function updateEvent(requestBody, existingEvent, reqRequester) {
   const creatorId = existingEvent?.creator._id.toLocaleString();
   const requester = await User.findById(reqRequester);
