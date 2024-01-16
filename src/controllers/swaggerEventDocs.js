@@ -137,7 +137,7 @@
 
 /**
  * @swagger
- * /events?page=1&limit=2&category=&search=:
+ * /events?page=&limit=&category=&search=:
  *   get:
  *     parameters:
  *       - name: page
