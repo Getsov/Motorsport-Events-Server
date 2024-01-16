@@ -68,3 +68,23 @@
  *         description: Event not found.
  */
 
+/**
+ * @swagger
+ * /events/eventsForApproval:
+ *   get:
+ *     parameters:
+ *       - name: x-authorization
+ *         in: header
+ *         description: JWT token needed for the request
+ *         required: true
+ *         type: string
+ *     summary: Events waiting for approval.
+ *     description: Retrieve all events waiting for approval! Available only for active and approved admins!
+ *     tags:
+ *       - Event  
+ *     responses:
+ *       200:
+ *         description: Details of the Events.
+ *       400:
+ *         description: Events not found.
+ */
