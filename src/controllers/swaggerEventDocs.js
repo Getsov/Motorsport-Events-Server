@@ -131,3 +131,23 @@
  *       400:
  *         description: Server Error.
  */
+
+/**
+ * @swagger
+ * /events/{id}:
+ *   get:
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: Required `id` of the event to retrieve
+ *         type: string
+ *     summary: Certain event
+ *     description: Retrieve a certain event from the `events` collection.
+ *     tags:
+ *       - Event  
+ *     responses:
+ *       200:
+ *         description: Array of events or empty array if no events in the Database.
+ *       400:
+ *         description: Server Error.
+ */
