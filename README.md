@@ -42,108 +42,88 @@ Important!: Event must be approved to see it!
   Examples: `http://localhost:3030` + `/events`;
 
   Retrieve everything inside the `events` collection:
-
 - **Method:** `GET`
 - **Endpont:** `/events`
 
 Retrieve entry with ID: `:id` from the events collection:
-
 - **Method:** `GET`
 - **Endpont:** `/events/:id`
 
 Filter entries using multiple `category` and `region` values from the events collection:
 If you want to use filtering you must provide a query string with `category`, `region` or both properties to filter entries.
-
 - **Method:** `GET`
 - **Endpont:** `/events?category=2&region=16`
 
 If you want to use pagination provide `page` and `limit` options to the queryString, the service automatically limits the result based on `limit` entries.
 Append `page={n}&limit={n}` to the query parameters, where {page} is the number of entries to skip and {limit} is the number of entries to return.
 Example: To take the third page from the events collection, assuming 5 entries per page (entries 11 to 15):
-
 - **Method:** `GET`
 - **Endpoint:** `/events?page=3&limit=5`
 
 IMPORTANT: You can use search filtering and pagination with multiple passed values, when using pagination always use `page` and `limit` properties!
-
 - **Method:** `GET`
 - **Endpoint:** `/events?page=1&limit=2&category=1&region=16&category=9&search=2`
 
 Calendar: If you want to retrieve the data for the calendar, you must send a `GET` request.
 Response will be All events according to provided year and month: `2024/1`
-
 - **Method:** `GET`
 - **Endpoint:** `/events/month/2024/1`
 
 Upcoming Events: If you want to get upcoming events send a get request.
-
 - **Method:** `GET`
 - **Endpoint:** `/events/upcomingEvents`
 
 Past Events: If you want to get past events send a get request.
-
 - **Method:** `GET`
 - **Endpoint:** `/events/pastEvents`
 
 Retrieve all events waiting for approval! Available only for active and approved admins!
-
 - **Method:** `GET`
 - **Endpont:** `/events/eventsForApproval`
 
 - **_User_**:
 
 Retrieve all approved admins which are not deleted! Available only for active and approved admins!
-
 - **Method:** `GET`
 - **Endpont:** `/user/getApprovedAdmins`
 
 Retrieve all admins waiting for approval which are not deleted! Available only for active and approved admins!
-
 - **Method:** `GET`
 - **Endpont:** `/user/getAllAdminsForApproval`
 
 Retrieve all approved organizers which are not deleted! Available only for active and approved admins!
-
 - **Method:** `GET`
 - **Endpont:** `/user/getApprovedOrganizators`
 
 Retrieve all organizers waiting for approval which are not deleted! Available only for active and approved admins!
-
 - **Method:** `GET`
 - **Endpont:** `/user/getAllOrganizersForApproval`
 
 Retrieve all organizers! Available only for active and approved admins!
-
 - **Method:** `GET`
 - **Endpont:** `/user/allOrganizers`
 
 Retrieve all regular users! Available only for active and approved admins!
-
 - **Method:** `GET`
 - **Endpont:** `/user/allRegularUsers`
 
 Retrieve all admins! Available only for active and approved admins!
-
 - **Method:** `GET`
 - **Endpont:** `/user/allAdmins`
 
 Retrieve all users! Available only for active and approved admins!
-
 - **Method:** `GET`
 - **Endpont:** `/user/allUsers`
 
 Retrieve single user. Only admin and owner can get the requested user info.
-
 - **Method:** `GET`
 - **Endpont:** `/user/getUserById/:id`
 
 Retrieve all events created from current user!
-
 - **Method:** `GET`
 - **Endpont:** `/user/getMyEvents`
 
 Retrieve all events added to favourites from current user!
-
 - **Method:** `GET`
 - **Endpont:** `/user/getMyFavourites`
 
@@ -175,6 +155,7 @@ Update entry with ID `654651caf696083cab72ab1c` in the `events` collection:
 
 - **_Event_**:
 
+Update event. Event can be changed by admin and owner only!
 - **Method:** `PUT`
 - **Endpont:** `/events/:id`
   Headers: `Content-Type: application/json`
@@ -183,7 +164,6 @@ Update entry with ID `654651caf696083cab72ab1c` in the `events` collection:
 
 Delete event, event's `isDeleted` property can be changed only to true, by admin and owner only! If event is deleted `isApproved` property will be changed to false. Event also can be restored only by active admin.
 Request body will expect `isDeleted` property with boolean value.
-
 - **Method:** `PUT`
 - **Endpont:** `/events/deleteRestoreEvent/:id`
   Headers: `Content-Type: application/json`
@@ -191,8 +171,7 @@ Request body will expect `isDeleted` property with boolean value.
   Body: JSON-formatted data
 
 Approve event, event's `isApproved` property can be changed to true or false, only admin can approve event! If event is approved, `isApproved` property will be changed to true.
-Request body will expect `isApproved` property with boolean value.
-
+Request body will expect `isApproved` property with boolean value
 - **Method:** `PUT`
 - **Endpont:** `/events/approveDisapproveEvent/:id`
   Headers: `Content-Type: application/json`
@@ -201,70 +180,69 @@ Request body will expect `isApproved` property with boolean value.
 
 - **_User_**:
 
+Only optional data of User(firstName, lastName, region, organizationName, phone). Admin and User itself can change the data, but only if the requester of changes is not deleted or is approved.
 - **Method:** `PUT`
 - **Endpont:** `/user/editUserInfo/:id`
   Headers: `Content-Type: application/json`
   `X-Authorization: {token}`
   Body: JSON-formatted data
-  Changes: Only optional data of User(firstName, lastName, region, organizationName, phone). Admin and User itself can change the data, but only if the requester of changes is not deleted or is approved.
 
+Admin and User itself can change the email, but only if the requester of this change is approved and not deleted.
+To fulfill the request, the user must send the new email.
 - **Method:** `PUT`
 - **Endpont:** `/user/editUserEmail/:id`
   Headers: `Content-Type: application/json`
   `X-Authorization: {token}`
   Body: JSON-formatted data
-  Changes: Admin and User itself can change the email, but only if the requester of this change is approved and not deleted.
-  To fulfill the request, the user must send the new email.
 
+Admin and User itself can change password, but only if the requester of this change is approved and not deleted.
+To fulfill the request, the user must send the old password, a new password and a repetition of the new password. The administrator must send a new password and repetition the new password.
 - **Method:** `PUT`
 - **Endpont:** `/user/editUserPassword/:id`
   Headers: `Content-Type: application/json`
   `X-Authorization: {token}`
   Body: JSON-formatted data
-  Changes: Admin and User itself can change password, but only if the requester of this change is approved and not deleted.
-  To fulfill the request, the user must send the old password, a new password and a repetition of the new password. The administrator must send a new password and repetition the new password.
 
+Only the administrator who is approved and not deleted can change the role of an individual user.
+To fulfill the request, the admin must send role. If new role is 'organizer', the fields 'organizatorName' and 'phone' also should be fulfilled if there was empty before update.
 - **Method:** `PUT`
 - **Endpont:** `/user/editUserRole/:id`
   Headers: `Content-Type: application/json`
   `X-Authorization: {token}`
   Body: JSON-formatted data
-  Changes: Only the administrator who is approved and not deleted can change the role of an individual user.
-  To fulfill the request, the admin must send role. If new role is 'organizer', the fields 'organizatorName' and 'phone' also should be fulfilled if there was empty before update.
 
+Only the administrator who is approved and not deleted can approve/disapprove an individual user.
+To fulfill the request, the admin must send {"isApproved": false/true}.
 - **Method:** `PUT`
 - **Endpont:** `/user/approveDisapproveUser/:id`
   Headers: `Content-Type: application/json`
   `X-Authorization: {token}`
-
   Body: JSON-formatted data
-  Changes: Only the administrator who is approved and not deleted can approve/disapprove an individual user.
-  To fulfill the request, the admin must send {"isApproved": false/true}.
 
+Only the administrator who is approved and not deleted can approve/disapprove multiple users.
+To fulfill the request, the admin must send {"isApproved": false/true, "listOfUsers" : [id,id]}.
 - **Method:** `PUT`
 - **Endpont:** `/user/approveDisapproveUsers/:id`
   Headers: `Content-Type: application/json`
   `X-Authorization: {token}`
-
   Body: JSON-formatted data
-  Changes: Only the administrator who is approved and not deleted can approve/disapprove multiple users.
-  To fulfill the request, the admin must send {"isApproved": false/true, "listOfUsers" : [id,id]}.
-
+ 
+Only the administrator who is approved and not deleted can change the "isDeleted" property of an individual user.
+To fulfill the request, the admin must send {"isDeleted": false/true}.
 - **Method:** `PUT`
 - **Endpont:** `/user/deleteRestoreUser/:id`
   Headers: `Content-Type: application/json`
   `X-Authorization: {token}`
   Body: JSON-formatted data
-  Changes: Only the administrator who is approved and not deleted can change the "isDeleted" property of an individual user.
-  To fulfill the request, the admin must send {"isDeleted": false/true}.
 
+Only the administrator who is approved and not deleted can change the "isDeleted" property of multiple users.
+To fulfill the request, the admin must send {"isDeleted": false/true, "listOfUsers" : [id,id]}.
 - **Method:** `PUT`
 - **Endpont:** `/user/deleteRestoreUsers`
   Headers: `Content-Type: application/json`
   `X-Authorization: {token}`
   Body: JSON-formatted data
-  Changes: Only the administrator who is approved and not deleted can change the "isDeleted" property of multiple users.
-  To fulfill the request, the admin must send {"isDeleted": false/true, "listOfUsers" : [id,id]}.
+
 
 Like-Event: Every user can like an Event. To do it, 'authorized' user must send a `POST` request with event `id`. When user liked some event, the event itself keep information about liked users and also every user keep information about events which he liked.
 Example: `/events/like/:id`
@@ -272,8 +250,8 @@ Example: `/events/like/:id`
 - **Method:** `POST`
 - **Endpont:** `/events/like/:id`
 
+Every user can recover their password. To fulfill the request, the `user` must provide `email`. A new `password` will be send to the given email address.
 - **Method:** `POST`
 - **Endpont:** `/user/reset-password`
   Body: JSON-formatted data
 
-Password-reset: Every user can recover their password. To fulfill the request, the `user` must provide `email`. A new `password` will be send to the given email address.
