@@ -6,7 +6,6 @@
  *       - name: x-authorization
  *         in: header
  *         description: JWT token needed for the request
- *         required: true
  *         type: string
  *     summary: Register Event.
  *     description: Important!
@@ -86,4 +85,19 @@
  *         description: Details of the Events.
  *       400:
  *         description: Events not found.
+ */
+
+/**
+ * @swagger
+ * /events/upcomingEvents:
+ *   get:
+ *     summary: Upcoming events
+ *     description: If you want to get upcoming events send a get request.
+ *     tags:
+ *       - Event  
+ *     responses:
+ *       200:
+ *         description: Array of events or empty Array if no events in the Database.
+ *       400:
+ *         description: Server Error.
  */
