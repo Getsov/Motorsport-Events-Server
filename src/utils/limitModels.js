@@ -3,7 +3,7 @@ async function limitModels(model, page, limit, criteria) {
   limit = Number(limit);
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
-
+  
   const models = {};
 
   if (!page && !limit) {
@@ -29,6 +29,7 @@ async function limitModels(model, page, limit, criteria) {
     .limit(limit)
     .skip(startIndex)
     .exec();
+    
   return models;
 }
 

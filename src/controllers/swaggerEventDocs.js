@@ -93,6 +93,7 @@
  *   get:
  *     summary: Upcoming events
  *     description: If you want to get upcoming `events` send a get request.
+ *       Only approved and not deleted events will be shown!
  *     tags:
  *       - Event  
  *     responses:
@@ -108,6 +109,7 @@
  *   get:
  *     summary: Past events
  *     description: If you want to get past `events` send a get request.
+ *       Only approved and not deleted events will be shown!
  *     tags:
  *       - Event  
  *     responses:
@@ -123,11 +125,52 @@
  *   get:
  *     summary: All events
  *     description: Retrieve everything inside the `events` collection.
+ *       Only approved and not deleted events will be shown!
  *     tags:
  *       - Event  
  *     responses:
  *       200:
  *         description: Array of events or empty Array if no events in the Database.
+ *       400:
+ *         description: Server Error.
+ */
+
+/**
+ * @swagger
+ * /events?page=1&limit=2&category=&search=:
+ *   get:
+ *     parameters:
+ *       - name: page
+ *         in: query
+ *         description: Add `page` number for pagination
+ *         type: integer
+ *         default: 1
+ *       - name: limit
+ *         in: query
+ *         description: Add `limit` number for pagination
+ *         type: integer
+ *         default: 2
+ *       - name: category
+ *         in: query
+ *         description: Add `category` number for sorting from 1 to 16
+ *         type: integer
+ *         default: 2
+ *       - name: search
+ *         in: query
+ *         description: Add `search` string for searching
+ *         type: string
+ *     summary: Pagination + sorting + search operations on events
+ *     description: Only approved and not deleted events will appear. You can use sorting,
+ *      pagination and search. For sort by categories you need to pass number values which
+ *      corresponds to following category values - 1='Автокрос', 2='Драг', 3='Дрифт',
+ *      4='Картинг', 5='Мото Рейс', 6=Мотокрос', 7='Офроуд', 8='Писта', 9='Планинско изкачване',
+ *      10='Рали', 11='Рали Крос', 12='Рали Спринт', 13='СИМ Рейс', 14='Събори',
+ *      15='Тайм Атак', 16='Други'.
+ *     tags:
+ *       - Event  
+ *     responses:
+ *       200:
+ *         description: Array of events or empty array if no events in the Database.
  *       400:
  *         description: Server Error.
  */
@@ -143,6 +186,9 @@
  *         type: string
  *     summary: Certain event
  *     description: Retrieve a certain event from the `events` collection.
+ *       Only approved and not deleted event will be shown. If you are owner of event you will be
+ *       able to see it if event is not approved and not deleted. If you are active admin,
+ *       you will be able to see not approved and existing deleted event.
  *     tags:
  *       - Event  
  *     responses:
