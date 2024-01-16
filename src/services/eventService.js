@@ -65,8 +65,8 @@ async function findEventByID(eventId, requesterId) {
 
   return event;
 }
-
-async function findAllEvents(query) {
+//TODO - Change name of findAllEvents- using in eventController & userService
+async function findAllEvents(query, idOfLikedUser) {
   const page = query.page;
   const limit = query.limit;
 
@@ -74,6 +74,12 @@ async function findAllEvents(query) {
     isDeleted: false,
     isApproved: true,
   };
+
+  if (idOfLikedUser) {
+    criteria.likes = {
+      $in: idOfLikedUser,
+    };
+  }
 
   if (query.category) {
     criteria.categories = {
