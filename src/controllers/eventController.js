@@ -22,10 +22,17 @@ const { getNeededDates } = require('../utils/getNeededDates');
 
 eventController.get('/eventsForApproval', async (req, res) => {
   try {
-    const requesterId = req.requester._id;
+    const requesterId = req.requester?._id;
+
+    if (!requesterId) {
+      throw new Error('User "_id" is not provided!');
+    }
+
     const result = await getAllEventsForApproval(requesterId);
+
     res.status(200).json(result);
     res.end();
+
   } catch (error) {
     console.log(error);
     res.status(400).json({ error: error.message });
