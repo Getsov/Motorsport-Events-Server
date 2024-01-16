@@ -47,18 +47,9 @@ eventController.post('/register', async (req, res) => {
     checkDatesAndTime(req.body.dates);
 
     checkRequestData(req.body);
-    // Checks if there is not user. Or if the user have admin role or if the user is organization.
-    if (
-      !req.requester ||
-      !(req.requester.role === 'admin' || req.requester.role === 'organizer')
-    ) {
-      throw new Error(
-        'Only user with role "organizer" or "admin" can register an Event!'
-      );
-    }
 
-    const event = await registerEvent(req.body, req.requester._id);
-    await addEventToCreatedEvents(event._id, req.requester._id);
+    const event = await registerEvent(req.body, req.requester?._id);
+    await addEventToCreatedEvents(event._id, req.requester?._id);
 
     res.status(200).json(event);
     res.end();
