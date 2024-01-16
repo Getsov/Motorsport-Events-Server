@@ -25,7 +25,7 @@ eventController.get('/eventsForApproval', async (req, res) => {
     const requesterId = req.requester?._id;
 
     if (!requesterId) {
-      throw new Error('User "_id" is not provided!');
+      throw new Error('User "_id" not found!');
     }
 
     const result = await getAllEventsForApproval(requesterId);
@@ -34,7 +34,6 @@ eventController.get('/eventsForApproval', async (req, res) => {
     res.end();
 
   } catch (error) {
-    console.log(error);
     res.status(400).json({ error: error.message });
   }
 });
