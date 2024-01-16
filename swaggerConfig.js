@@ -4,9 +4,12 @@ const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'Race Fanatic Documentation',
+      title: '"Race Fanatic" Documentation',
       version: '1.0.0',
-      description: 'Description of your API',
+      description: 'This is a REST service, created for "Race Fanatic" APP.\
+      To properly work the server need installed mongoDB on local machine for database. Add the connection string in the `index.js` file.\
+      To build the server, run the following commands in the terminal: `npm install`, `npm start`.\
+      ',
     },
     servers: [
       {
