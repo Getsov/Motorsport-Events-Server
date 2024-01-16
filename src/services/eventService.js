@@ -67,7 +67,6 @@ async function findEventByID(eventId, requesterId) {
 }
 
 async function findAllEvents(query) {
-  // TODO: In later stage we mmay want to search by Organizer Name?
   const page = query.page;
   const limit = query.limit;
 
