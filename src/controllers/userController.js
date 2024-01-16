@@ -245,7 +245,8 @@ userController.get('/getMyEvents', async (req, res) => {
 userController.get('/getMyFavourites', async (req, res) => {
   try {
     const userId = req.requester?._id;
-    const result = await returnAllFavouriteEvents(userId);
+    const result = await returnAllFavouriteEvents(userId, req.query);
+
     res.status(200).json(result);
     res.end();
   } catch (error) {
