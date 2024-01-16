@@ -28,9 +28,6 @@ Admins and organizаtors will be active after approval by active admin.
 
 Login by sending a POST request with `email` and `password` to `http://localhost:3030` + `/user/login`. If the profile is approved and is not deleted, the service will respond with object with details containing a standard `accessToken`,that can be used for authorized requests.
 
-### Logout:
-
-TODO: Add info about `logout` when is done on the Back-End!
 
 ### Authorized Requests:
 
