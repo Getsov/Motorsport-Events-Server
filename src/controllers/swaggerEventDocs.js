@@ -101,3 +101,18 @@
  *       400:
  *         description: Server Error.
  */
+
+/**
+ * @swagger
+ * /events/pastEvents:
+ *   get:
+ *     summary: Past events
+ *     description: If you want to get past events send a get request.
+ *     tags:
+ *       - Event  
+ *     responses:
+ *       200:
+ *         description: Array of events or empty Array if no events in the Database.
+ *       400:
+ *         description: Server Error.
+ */
