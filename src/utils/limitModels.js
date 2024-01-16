@@ -1,10 +1,13 @@
 async function limitModels(model, page, limit, criteria) {
   page = Number(page);
   limit = Number(limit);
+  
+  if (page === 0) page = 1;
+
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
-  
   const models = {};
+  
 
   if (!page && !limit) {
     return await model.find(criteria);
