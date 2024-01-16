@@ -303,7 +303,6 @@ userController.get('/getAllOrganizersForApproval', async (req, res) => {
 });
 
 userController.get('/allOrganizers', async (req, res) => {
-  //TODO: what we want to return - to add parameters
   try {
     const requesterId = req.requester._id;
     const result = await getAllOrganizers(requesterId);
