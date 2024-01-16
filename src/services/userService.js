@@ -4,6 +4,7 @@ const User = require('../models/User');
 const { secret } = require('../utils/parseToken');
 const { checkAuthorizedRequests } = require('../utils/securityCheck');
 const { checkAdmin } = require('../utils/adminsCheck');
+const { findAllEvents } = require('./eventService');
 
 async function registerUser(requestBody) {
   const email = requestBody.email;
@@ -343,18 +344,14 @@ async function returnAllCreatedEvents(userId) {
   }
 }
 
-async function returnAllFavouriteEvents(userId) {
+async function returnAllFavouriteEvents(userId, query) {
   const existingUser = await User.findById(userId);
   if (!existingUser) {
     throw new Error('User not found!');
   }
-  const userWithEvents = await existingUser.populate('likedEvents');
-  const allFavouriteEvents = userWithEvents.likedEvents;
-  if (allFavouriteEvents.length === 0) {
-    return allFavouriteEvents;
-  } else {
-    return allFavouriteEvents;
-  }
+  const allFavouriteEvents = await findAllEvents(query, existingUser._id);
+
+  return allFavouriteEvents;
 }
 
 async function getUserById(userId, requesterId) {

@@ -20,7 +20,9 @@ async function registerEvent(requestBody, requesterId) {
   }
 
   if (!(requester.role === 'admin' || requester.role === 'organizer')) {
-    throw new Error('Only user with role "organizer" or "admin" can register an Event!');
+    throw new Error(
+      'Only user with role "organizer" or "admin" can register an Event!'
+    );
   }
 
   const event = await Event.create({
@@ -63,9 +65,8 @@ async function findEventByID(eventId, requesterId) {
 
   return event;
 }
-
-async function findAllEvents(query) {
-  // TODO: In later stage we mmay want to search by Organizer Name?
+//TODO - Change name of findAllEvents- using in eventController & userService
+async function findAllEvents(query, idOfLikedUser) {
   const page = query.page;
   const limit = query.limit;
 
@@ -73,6 +74,12 @@ async function findAllEvents(query) {
     isDeleted: false,
     isApproved: true,
   };
+
+  if (idOfLikedUser) {
+    criteria.likes = {
+      $in: idOfLikedUser,
+    };
+  }
 
   if (query.category) {
     criteria.categories = {
@@ -114,7 +121,6 @@ async function findAllEvents(query) {
           $options: 'i',
         },
       },
-      // TODO: Discuss searching about following Event properties, look for a good practices about search and sort at one time together!
       { categories: { $regex: query.search.toLowerCase(), $options: 'i' } },
       {
         ['contacts.region']: {
@@ -128,7 +134,6 @@ async function findAllEvents(query) {
   return await limitModels(Event, page, limit, criteria);
 }
 
-// TODO: Update the event later!
 async function updateEvent(requestBody, existingEvent, reqRequester) {
   const creatorId = existingEvent?.creator._id.toLocaleString();
   const requester = await User.findById(reqRequester);

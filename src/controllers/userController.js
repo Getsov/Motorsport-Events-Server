@@ -245,7 +245,8 @@ userController.get('/getMyEvents', async (req, res) => {
 userController.get('/getMyFavourites', async (req, res) => {
   try {
     const userId = req.requester?._id;
-    const result = await returnAllFavouriteEvents(userId);
+    const result = await returnAllFavouriteEvents(userId, req.query);
+
     res.status(200).json(result);
     res.end();
   } catch (error) {
@@ -288,7 +289,6 @@ userController.get('/getApprovedOrganizators', async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
-//TODO: Rearange GET request in README.md
 
 userController.get('/getAllOrganizersForApproval', async (req, res) => {
   try {
@@ -303,7 +303,6 @@ userController.get('/getAllOrganizersForApproval', async (req, res) => {
 });
 
 userController.get('/allOrganizers', async (req, res) => {
-  //TODO: what we want to return - to add parameters
   try {
     const requesterId = req.requester._id;
     const result = await getAllOrganizers(requesterId);

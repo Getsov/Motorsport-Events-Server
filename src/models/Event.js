@@ -67,16 +67,7 @@ const eventSchema = new Schema({
     type: String,
     trim: true,
     default: '',
-    // validate: {
-    //   validator: (value) => validString.test(value),
-    //   message: "Invalid URL, must start with HTTP:// or HTTPS://",
-    // },
   },
-  // TODO: To add some storage later!
-  // imageFile: {
-  //     data: Buffer,
-  //     connectType: String
-  // },
   contacts: {
     // TODO: Check later for unique COORDS..!
     coordinates: {

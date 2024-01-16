@@ -5,7 +5,6 @@ const dbConnectionString = 'mongodb://127.0.0.1:27017/Race-Fanatic-DB';
 const { mongoose } = require('mongoose');
 const session = require('./src/middlewares/session');
 const router = require('./src/routes');
-const trimBoddy = require('./src/middlewares/trimBoddy');
 mongoose.set('strictQuery', true);
 require('dotenv').config();
 
@@ -21,13 +20,10 @@ const initializeDatabase = () =>
 
 async function startServer() {
   initializeDatabase();
-  // TODO: To be tested on the FE.
   app.use(express.json({ limit: '10mb' }));
   app.use(express.urlencoded({ extended: false }));
   app.use(cors());
   app.use(session());
-  // TODO: Check about trim Body is viable solution?
-  // app.use(trimBoddy());
   app.use(router);
   app.listen('3030', () => console.log('Server operational on port: 3030!'));
 }
