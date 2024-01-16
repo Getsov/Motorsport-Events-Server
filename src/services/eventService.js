@@ -20,7 +20,9 @@ async function registerEvent(requestBody, requesterId) {
   }
 
   if (!(requester.role === 'admin' || requester.role === 'organizer')) {
-    throw new Error('Only user with role "organizer" or "admin" can register an Event!');
+    throw new Error(
+      'Only user with role "organizer" or "admin" can register an Event!'
+    );
   }
 
   const event = await Event.create({
@@ -114,7 +116,6 @@ async function findAllEvents(query) {
           $options: 'i',
         },
       },
-      // TODO: Discuss searching about following Event properties, look for a good practices about search and sort at one time together!
       { categories: { $regex: query.search.toLowerCase(), $options: 'i' } },
       {
         ['contacts.region']: {

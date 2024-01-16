@@ -15,11 +15,10 @@ async function resetPassword(requestBody) {
 
   existingUser.hashedPassword = await bcrypt.hash(newPassword, 10);
 
-  const newRecord = await existingUser.save();
+  await existingUser.save();
 
   const { to } = requestBody;
 
-  //TODO: Check if provided emails is actual email!
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
