@@ -165,7 +165,8 @@
  *      corresponds to following category values - 1='Автокрос', 2='Драг', 3='Дрифт',
  *      4='Картинг', 5='Мото Рейс', 6=Мотокрос', 7='Офроуд', 8='Писта', 9='Планинско изкачване',
  *      10='Рали', 11='Рали Крос', 12='Рали Спринт', 13='СИМ Рейс', 14='Събори',
- *      15='Тайм Атак', 16='Други'.
+ *      15='Тайм Атак', 16='Други'. Here the Swagger UI do not accept array of categories, however
+ *      in normal application you will be able to pass `category=[2, 3]`..
  *     tags:
  *       - Event  
  *     responses:
