@@ -22,12 +22,18 @@ const { getNeededDates } = require('../utils/getNeededDates');
 
 eventController.get('/eventsForApproval', async (req, res) => {
   try {
-    const requesterId = req.requester._id;
+    const requesterId = req.requester?._id;
+
+    if (!requesterId) {
+      throw new Error('User "_id" is missing!');
+    }
+
     const result = await getAllEventsForApproval(requesterId);
+
     res.status(200).json(result);
     res.end();
+
   } catch (error) {
-    console.log(error);
     res.status(400).json({ error: error.message });
   }
 });
@@ -41,18 +47,9 @@ eventController.post('/register', async (req, res) => {
     checkDatesAndTime(req.body.dates);
 
     checkRequestData(req.body);
-    // Checks if there is not user. Or if the user have admin role or if the user is organization.
-    if (
-      !req.requester ||
-      !(req.requester.role === 'admin' || req.requester.role === 'organizer')
-    ) {
-      throw new Error(
-        'Only user with role "organizer" or "admin" can register an Event!'
-      );
-    }
 
-    const event = await registerEvent(req.body, req.requester._id);
-    await addEventToCreatedEvents(event._id, req.requester._id);
+    const event = await registerEvent(req.body, req.requester?._id);
+    await addEventToCreatedEvents(event._id, req.requester?._id);
 
     res.status(200).json(event);
     res.end();
@@ -102,6 +99,12 @@ eventController.get('/', async (req, res) => {
 // Get event by ID!
 eventController.get('/:id', async (req, res) => {
   try {
+    const eventId = req.params?.id;
+    
+    if (eventId === ',') {
+      throw new Error('Event "id" is missing!');
+    }
+
     const event = await findEventByID(req.params.id, req.requester?._id);
 
     if (event === null) {

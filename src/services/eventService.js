@@ -19,6 +19,10 @@ async function registerEvent(requestBody, requesterId) {
     throw new Error('This User must be approved to register events!');
   }
 
+  if (!(requester.role === 'admin' || requester.role === 'organizer')) {
+    throw new Error('Only user with role "organizer" or "admin" can register an Event!');
+  }
+
   const event = await Event.create({
     shortTitle: requestBody.shortTitle,
     longTitle: requestBody.longTitle,
