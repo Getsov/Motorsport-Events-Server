@@ -77,7 +77,7 @@
  *         description: JWT token needed for the request
  *         type: string
  *     summary: Events waiting for approval.
- *     description: Retrieve all events waiting for approval! Available only for active and approved admins!
+ *     description: Retrieve all `events` waiting for approval! Available only for active and approved admins!
  *     tags:
  *       - Event  
  *     responses:
@@ -92,7 +92,7 @@
  * /events/upcomingEvents:
  *   get:
  *     summary: Upcoming events
- *     description: If you want to get upcoming events send a get request.
+ *     description: If you want to get upcoming `events` send a get request.
  *     tags:
  *       - Event  
  *     responses:
@@ -107,7 +107,22 @@
  * /events/pastEvents:
  *   get:
  *     summary: Past events
- *     description: If you want to get past events send a get request.
+ *     description: If you want to get past `events` send a get request.
+ *     tags:
+ *       - Event  
+ *     responses:
+ *       200:
+ *         description: Array of events or empty Array if no events in the Database.
+ *       400:
+ *         description: Server Error.
+ */
+
+/**
+ * @swagger
+ * /events:
+ *   get:
+ *     summary: All events
+ *     description: Retrieve everything inside the `events` collection.
  *     tags:
  *       - Event  
  *     responses:
