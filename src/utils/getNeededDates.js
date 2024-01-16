@@ -1,4 +1,12 @@
 function getNeededDates(year, month) {
+  if (typeof year != 'number' || typeof month != 'number') {
+    throw new Error('Invalid querry. Year and month should be numbers.');
+  }
+
+  if (year.toString().length != 4) {
+    throw new Error('Invalid year.');
+  }
+
   if (month < 1 || month > 12) {
     throw new Error('Invalid month value. Month should be in the range 1-12.');
   }
