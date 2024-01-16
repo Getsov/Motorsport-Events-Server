@@ -198,11 +198,7 @@ eventController.post('/like/:id', async (req, res) => {
       isAlreadyLiked = true;
     }
 
-    const likedEvent = await likeUnlikeEvent(
-      event,
-      req.requester._id,
-      isAlreadyLiked
-    );
+    await likeUnlikeEvent(event, req.requester._id, isAlreadyLiked);
 
     await addRemoveLikedEvent(req.params.id, req.requester._id, isAlreadyLiked);
 
