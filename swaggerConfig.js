@@ -11,6 +11,19 @@ const options = {
       To build the server, run the following commands in the terminal: `npm install`, `npm start`.\
       ',
     },
+    components: {
+      securitySchemes: {
+        apiKey: {
+          type: "apiKey",
+          in: "header",
+          name: "x-authorization",
+          description: "Add JSON Web Token (JWT) for authentication."
+        }
+      }
+    },
+    security: [
+      { apiKey: [] }
+    ],
     servers: [
       {
         url: "http://localhost:3030/"
