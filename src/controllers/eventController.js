@@ -2,7 +2,7 @@ const eventController = require('express').Router();
 const {
   registerEvent,
   findEventByID,
-  findAllEvents,
+  getAllOrFilteredEventsWithFavorites,
   updateEvent,
   likeUnlikeEvent,
   getEventsByMonth,
@@ -86,7 +86,7 @@ eventController.get('/pastEvents', async (req, res) => {
 // Get ALL events!
 eventController.get('/', async (req, res) => {
   try {
-    const events = await findAllEvents(req.query);
+    const events = await getAllOrFilteredEventsWithFavorites(req.query);
 
     res.status(200).json(events);
     res.end();
