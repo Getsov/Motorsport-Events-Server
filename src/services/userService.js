@@ -284,7 +284,6 @@ async function approveDisapproveMultipleUsers(requestBody, requesterId) {
   const requester = await User.findById(requesterId);
   const isAdmin = requester.role == 'admin' ? true : false;
   const usersForEdit = requestBody.listOfUsers;
-  // const usersForEdit = requestBody.listOfUsers;
   const updatedUsersList = [];
 
   if (!isAdmin || requester.isDeleted || !requester.isApproved) {
@@ -336,12 +335,7 @@ async function returnAllCreatedEvents(userId) {
   }
   const userWithEvents = await existingUser.populate('createdEvents');
   const allCreatedEvents = userWithEvents.createdEvents;
-  //return empty array if there is no createdEvents by current user
-  if (allCreatedEvents.length === 0) {
-    return allCreatedEvents;
-  } else {
-    return allCreatedEvents;
-  }
+  return allCreatedEvents;
 }
 
 async function returnAllFavouriteEvents(userId, query) {
@@ -349,7 +343,10 @@ async function returnAllFavouriteEvents(userId, query) {
   if (!existingUser) {
     throw new Error('User not found!');
   }
-  const allFavouriteEvents = await getAllOrFilteredEventsWithFavorites(query, existingUser._id);
+  const allFavouriteEvents = await getAllOrFilteredEventsWithFavorites(
+    query,
+    existingUser._id
+  );
 
   return allFavouriteEvents;
 }

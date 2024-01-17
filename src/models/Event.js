@@ -11,7 +11,6 @@ const eventSchema = new Schema({
     type: String,
     required: true,
     trim: true,
-    // index: { unique: true },
     maxlength: [24, 'Short title must be maximum 24 characters long!'],
   },
   longTitle: {
