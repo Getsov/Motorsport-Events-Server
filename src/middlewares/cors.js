@@ -14,10 +14,4 @@ module.exports = () => (req, res, next) => {
   } else {
     next();
   }
-
-  // if (req.method === 'OPTIONS') {
-  //     res.status(200).end();
-  // }
-
-  // next();
 };

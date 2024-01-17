@@ -2,7 +2,7 @@ const eventController = require('express').Router();
 const {
   registerEvent,
   findEventByID,
-  findAllEvents,
+  getAllOrFilteredEventsWithFavorites,
   updateEvent,
   likeUnlikeEvent,
   getEventsByMonth,
@@ -86,7 +86,7 @@ eventController.get('/pastEvents', async (req, res) => {
 // Get ALL events!
 eventController.get('/', async (req, res) => {
   try {
-    const events = await findAllEvents(req.query);
+    const events = await getAllOrFilteredEventsWithFavorites(req.query);
 
     res.status(200).json(events);
     res.end();
@@ -100,11 +100,11 @@ eventController.get('/:id', async (req, res) => {
   try {
     const eventId = req.params?.id;
 
-    if (eventId === ',') {
+    if (eventId === ',' || eventId === '{id}') {
       throw new Error('Event "id" is missing!');
     }
 
-    const event = await findEventByID(req.params.id, req.requester?._id);
+    const event = await findEventByID(eventId, req.requester?._id);
 
     if (event === null) {
       throw new Error("Event is deleted, or doesn't exist!");
@@ -120,13 +120,19 @@ eventController.get('/:id', async (req, res) => {
 // Update event by ID!
 eventController.put('/:id', async (req, res) => {
   try {
+    const eventId = req.params?.id;
+
+    if (eventId === ',' || eventId === '{id}') {
+      throw new Error('Event "id" is missing!');
+    }
+
     if (Object.keys(req.body).length === 0) {
       throw new Error('Invalid request Body!');
     }
 
     checkDatesAndTime(req.body.dates);
 
-    const event = await findEventByID(req.params.id, req.requester?._id);
+    const event = await findEventByID(eventId, req.requester?._id);
 
     const updatedEvent = await updateEvent(req.body, event, req.requester?._id);
 
@@ -139,8 +145,14 @@ eventController.put('/:id', async (req, res) => {
 
 eventController.put('/deleteRestoreEvent/:id', async (req, res) => {
   try {
+    const eventId = req.params?.id;
+
+    if (eventId === ',' || eventId === '{id}') {
+      throw new Error('Event "id" is missing!');
+    }
+
     const event = await deleteRestoreEvent(
-      req.params.id,
+      req.params?.id,
       req.requester?._id,
       req?.body
     );

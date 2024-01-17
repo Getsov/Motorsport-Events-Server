@@ -123,9 +123,9 @@ Retrieve all events created from current user!
 - **Method:** `GET`
 - **Endpont:** `/user/getMyEvents`
 
-Retrieve all events added to favourites from current user!
+Retrieve all events added to favourites from current user!If you want to use filtering you must provide a query string with `category`, `region` or both properties to filter entries.
 - **Method:** `GET`
-- **Endpont:** `/user/getMyFavourites`
+- **Endpont:** `/user/getMyFavourites?category=2&region=16`
 
 ### Create:
 

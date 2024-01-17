@@ -2,15 +2,10 @@
  * @swagger
  * /events/register:
  *   post:
- *     parameters:
- *       - name: x-authorization
- *         in: header
- *         description: JWT token needed for the request
- *         type: string
- *     summary: Register Event.
+ *     summary: Register Event
  *     description: Important!
  *          Event must be approved to be seen from other users than owner and admin!
- *          The shape of the body is restricted. 
+ *          The shape of the body is restricted.
  *          The service will respond with the object, created in the DB, which will have an added
  *          ` _id` property, that is automatically generated.
  *          In this event example only needed fields are provided for creating it.
@@ -53,13 +48,13 @@
  *                  "phone": "0123456789",
  *                  "email": "peter@abv.bg"
  *              }
- *              categories: ["Драг"]
+ *              categories: ["Драг", Дрифт]
  *              visitorPrices: [
  *                  {
  *                      "price": 15,
  *                      "description": "Цена за зрители"
  *                  }
- *              ]                       
+ *              ]
  *     responses:
  *       200:
  *         description: Details of the Event.
@@ -71,15 +66,10 @@
  * @swagger
  * /events/eventsForApproval:
  *   get:
- *     parameters:
- *       - name: x-authorization
- *         in: header
- *         description: JWT token needed for the request
- *         type: string
  *     summary: Events waiting for approval.
  *     description: Retrieve all `events` waiting for approval! Available only for active and approved admins!
  *     tags:
- *       - Event  
+ *       - Event
  *     responses:
  *       200:
  *         description: Details of the Events.
@@ -95,7 +85,7 @@
  *     description: If you want to get upcoming `events` send a get request.
  *       Only approved and not deleted events will be shown!
  *     tags:
- *       - Event  
+ *       - Event
  *     responses:
  *       200:
  *         description: Array of events or empty Array if no events in the Database.
@@ -111,7 +101,7 @@
  *     description: If you want to get past `events` send a get request.
  *       Only approved and not deleted events will be shown!
  *     tags:
- *       - Event  
+ *       - Event
  *     responses:
  *       200:
  *         description: Array of events or empty Array if no events in the Database.
@@ -127,7 +117,7 @@
  *     description: Retrieve everything inside the `events` collection.
  *       Only approved and not deleted events will be shown!
  *     tags:
- *       - Event  
+ *       - Event
  *     responses:
  *       200:
  *         description: Array of events or empty Array if no events in the Database.
@@ -168,7 +158,7 @@
  *      15='Тайм Атак', 16='Други'. Here the Swagger UI do not accept array of categories
  *      in query string, however. In normal application you will be able to pass more categories..
  *     tags:
- *       - Event  
+ *       - Event
  *     responses:
  *       200:
  *         description: Array of events or empty array if no events in the Database.
@@ -191,10 +181,111 @@
  *       able to see it if event is not approved and not deleted. If you are active admin,
  *       you will be able to see not approved and existing deleted event.
  *     tags:
- *       - Event  
+ *       - Event
  *     responses:
  *       200:
  *         description: Array of events or empty array if no events in the Database.
  *       400:
  *         description: Server Error.
+ */
+
+/**
+ * @swagger
+ * /events/{id}:
+ *   put:
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: Required `id` of the event to update
+ *         type: string
+ *     summary: Update Event
+ *     description: Important! Event here is not returned by the data!
+ *          In order to properly edit event check the data in hardcoded event.
+ *          The shape of the body is restricted.
+ *          The service will respond with the object, edited in the DB,
+ *          In this event example only needed fields are provided for editing it.
+ *     tags:
+ *       - Event
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               shortTitle:
+ *                 type: string
+ *               shortDescription:
+ *                 type: string
+ *               dates:
+ *                 type: array
+ *               contacts:
+ *                 type: object
+ *               categories:
+ *                 type: array
+ *               visitorPrices:
+ *                 type: array
+ *             example:
+ *              shortTitle: Hissar Motocross
+ *              shortDescription: Motocross in Hissar..
+ *              dates: [{
+ *                  "date": "2024-12-25",
+ *                  "startTime": "10:59",
+ *                  "endTime": "22:40"
+ *              }]
+ *              contacts: {
+ *                  "coordinates": {
+ *                       "lat": "42.52911093579847",
+ *                       "lng": "24.707900125838766"
+ *                   },
+ *                  "region": "Пловдив",
+ *                  "address": "Хайдут Генчо N1",
+ *                  "phone": "0123456789",
+ *                  "email": "peter@abv.bg"
+ *              }
+ *              categories: ["Драг", Дрифт]
+ *              visitorPrices: [
+ *                  {
+ *                      "price": 15,
+ *                      "description": "Цена за зрители"
+ *                  }
+ *              ]
+ *     responses:
+ *       200:
+ *         description: Details of the Event.
+ *       400:
+ *         description: Event not found.
+ */
+
+/**
+ * @swagger
+ * /events/deleteRestoreEvent/{id}:
+ *   put:
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: Required `id` of the event to delete/restore
+ *         type: string
+ *     summary: Delete/Restore Event
+ *     description: Delete event, event's `isDeleted` property can be changed only to true,
+ *      by admin and owner only! If event is deleted `isApproved` property will be changed
+ *      to false. Event also can be restored only by active admin.
+ *     tags:
+ *       - Event
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               isDeleted:
+ *                 type: string
+ *             example:
+ *              isDeleted: false
+ *     responses:
+ *       200:
+ *         description: Details of the Event.
+ *       400:
+ *         description: Event not found.
  */

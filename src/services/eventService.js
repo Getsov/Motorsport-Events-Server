@@ -65,8 +65,7 @@ async function findEventByID(eventId, requesterId) {
 
   return event;
 }
-//TODO - Change name of findAllEvents- using in eventController & userService
-async function findAllEvents(query, idOfLikedUser) {
+async function getAllOrFilteredEventsWithFavorites(query, idOfLikedUser) {
   const page = query.page;
   const limit = query.limit;
 
@@ -385,7 +384,7 @@ async function getAllEventsForApproval(requesterId) {
 module.exports = {
   registerEvent,
   findEventByID,
-  findAllEvents,
+  getAllOrFilteredEventsWithFavorites,
   updateEvent,
   likeUnlikeEvent,
   getEventsByMonth,
