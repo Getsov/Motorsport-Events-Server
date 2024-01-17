@@ -256,3 +256,36 @@
  *       400:
  *         description: Event not found.
  */
+
+/**
+ * @swagger
+ * /events/deleteRestoreEvent/{id}:
+ *   put:
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: Required `id` of the event to delete/restore
+ *         type: string
+ *     summary: Delete/Restore Event
+ *     description: Delete event, event's `isDeleted` property can be changed only to true,
+ *      by admin and owner only! If event is deleted `isApproved` property will be changed
+ *      to false. Event also can be restored only by active admin.
+ *     tags:
+ *       - Event
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               isDeleted:
+ *                 type: string
+ *             example:
+ *              isDeleted: false          
+ *     responses:
+ *       200:
+ *         description: Details of the Event.
+ *       400:
+ *         description: Event not found.
+ */
