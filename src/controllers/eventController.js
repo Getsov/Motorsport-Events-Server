@@ -104,7 +104,7 @@ eventController.get('/:id', async (req, res) => {
       throw new Error('Event "id" is missing!');
     }
 
-    const event = await findEventByID(req.params.id, req.requester?._id);
+    const event = await findEventByID(eventId, req.requester?._id);
 
     if (event === null) {
       throw new Error("Event is deleted, or doesn't exist!");
@@ -120,13 +120,19 @@ eventController.get('/:id', async (req, res) => {
 // Update event by ID!
 eventController.put('/:id', async (req, res) => {
   try {
+    const eventId = req.params?.id;
+    console.log(req.params);
+    if (eventId === ',') {
+      throw new Error('Event "id" is missing!');
+    }
+
     if (Object.keys(req.body).length === 0) {
       throw new Error('Invalid request Body!');
     }
 
     checkDatesAndTime(req.body.dates);
 
-    const event = await findEventByID(req.params.id, req.requester?._id);
+    const event = await findEventByID(eventId, req.requester?._id);
 
     const updatedEvent = await updateEvent(req.body, event, req.requester?._id);
 
