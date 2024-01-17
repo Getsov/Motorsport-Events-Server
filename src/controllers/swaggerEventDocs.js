@@ -5,7 +5,7 @@
  *     summary: Register Event
  *     description: Important!
  *          Event must be approved to be seen from other users than owner and admin!
- *          The shape of the body is restricted. 
+ *          The shape of the body is restricted.
  *          The service will respond with the object, created in the DB, which will have an added
  *          ` _id` property, that is automatically generated.
  *          In this event example only needed fields are provided for creating it.
@@ -54,7 +54,7 @@
  *                      "price": 15,
  *                      "description": "Цена за зрители"
  *                  }
- *              ]                       
+ *              ]
  *     responses:
  *       200:
  *         description: Details of the Event.
@@ -69,7 +69,7 @@
  *     summary: Events waiting for approval.
  *     description: Retrieve all `events` waiting for approval! Available only for active and approved admins!
  *     tags:
- *       - Event  
+ *       - Event
  *     responses:
  *       200:
  *         description: Details of the Events.
@@ -85,7 +85,7 @@
  *     description: If you want to get upcoming `events` send a get request.
  *       Only approved and not deleted events will be shown!
  *     tags:
- *       - Event  
+ *       - Event
  *     responses:
  *       200:
  *         description: Array of events or empty Array if no events in the Database.
@@ -101,7 +101,7 @@
  *     description: If you want to get past `events` send a get request.
  *       Only approved and not deleted events will be shown!
  *     tags:
- *       - Event  
+ *       - Event
  *     responses:
  *       200:
  *         description: Array of events or empty Array if no events in the Database.
@@ -117,7 +117,7 @@
  *     description: Retrieve everything inside the `events` collection.
  *       Only approved and not deleted events will be shown!
  *     tags:
- *       - Event  
+ *       - Event
  *     responses:
  *       200:
  *         description: Array of events or empty Array if no events in the Database.
@@ -158,7 +158,7 @@
  *      15='Тайм Атак', 16='Други'. Here the Swagger UI do not accept array of categories
  *      in query string, however. In normal application you will be able to pass more categories..
  *     tags:
- *       - Event  
+ *       - Event
  *     responses:
  *       200:
  *         description: Array of events or empty array if no events in the Database.
@@ -181,7 +181,7 @@
  *       able to see it if event is not approved and not deleted. If you are active admin,
  *       you will be able to see not approved and existing deleted event.
  *     tags:
- *       - Event  
+ *       - Event
  *     responses:
  *       200:
  *         description: Array of events or empty array if no events in the Database.
@@ -201,7 +201,7 @@
  *     summary: Update Event
  *     description: Important! Event here is not returned by the data!
  *          In order to properly edit event check the data in hardcoded event.
- *          The shape of the body is restricted. 
+ *          The shape of the body is restricted.
  *          The service will respond with the object, edited in the DB,
  *          In this event example only needed fields are provided for editing it.
  *     tags:
@@ -249,7 +249,7 @@
  *                      "price": 15,
  *                      "description": "Цена за зрители"
  *                  }
- *              ]                       
+ *              ]
  *     responses:
  *       200:
  *         description: Details of the Event.
@@ -282,7 +282,7 @@
  *               isDeleted:
  *                 type: string
  *             example:
- *              isDeleted: false          
+ *              isDeleted: false
  *     responses:
  *       200:
  *         description: Details of the Event.

@@ -121,7 +121,7 @@ eventController.get('/:id', async (req, res) => {
 eventController.put('/:id', async (req, res) => {
   try {
     const eventId = req.params?.id;
-    
+
     if (eventId === ',' || eventId === '{id}') {
       throw new Error('Event "id" is missing!');
     }
