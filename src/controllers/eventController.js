@@ -100,7 +100,7 @@ eventController.get('/:id', async (req, res) => {
   try {
     const eventId = req.params?.id;
 
-    if (eventId === ',') {
+    if (eventId === ',' || eventId === '{id}') {
       throw new Error('Event "id" is missing!');
     }
 
@@ -121,8 +121,8 @@ eventController.get('/:id', async (req, res) => {
 eventController.put('/:id', async (req, res) => {
   try {
     const eventId = req.params?.id;
-    console.log(req.params);
-    if (eventId === ',') {
+    
+    if (eventId === ',' || eventId === '{id}') {
       throw new Error('Event "id" is missing!');
     }
 
@@ -145,8 +145,14 @@ eventController.put('/:id', async (req, res) => {
 
 eventController.put('/deleteRestoreEvent/:id', async (req, res) => {
   try {
+    const eventId = req.params?.id;
+
+    if (eventId === ',' || eventId === '{id}') {
+      throw new Error('Event "id" is missing!');
+    }
+
     const event = await deleteRestoreEvent(
-      req.params.id,
+      req.params?.id,
       req.requester?._id,
       req?.body
     );
