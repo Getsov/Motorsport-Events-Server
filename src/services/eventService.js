@@ -187,7 +187,7 @@ async function updateEvent(requestBody, existingEvent, reqRequester) {
       existingEvent[key] = requestBody[key];
     }
   }
-
+  existingEvent.isApproved = false;
   return await existingEvent.save();
 }
 
