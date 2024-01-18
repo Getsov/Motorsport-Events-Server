@@ -130,7 +130,9 @@ eventController.put('/:id', async (req, res) => {
       throw new Error('Invalid request Body!');
     }
 
-    checkDatesAndTime(req.body.dates);
+    if (req.body.dates) {
+      checkDatesAndTime(req.body.dates);
+    }
 
     const event = await findEventByID(eventId, req.requester?._id);
 
