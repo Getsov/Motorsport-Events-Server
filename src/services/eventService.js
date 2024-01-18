@@ -377,6 +377,7 @@ async function getAllEventsForApproval(requesterId) {
   }
   const waitingEvents = await Event.find({
     isApproved: false,
+    isDeleted: false,
   });
   return waitingEvents;
 }
