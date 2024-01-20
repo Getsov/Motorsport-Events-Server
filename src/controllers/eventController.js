@@ -173,8 +173,14 @@ eventController.put('/deleteRestoreEvent/:id', async (req, res) => {
 
 eventController.put('/approveDisapproveEvent/:id', async (req, res) => {
   try {
+    const eventId = req.params?.id;
+
+    if (eventId === ',' || eventId === '{id}') {
+      throw new Error('Event "id" is missing!');
+    }
+
     const event = await approveDisapproveEvent(
-      req.params?.id,
+      eventId,
       req.requester?._id,
       req?.body
     );
