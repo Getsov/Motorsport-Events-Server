@@ -31,7 +31,7 @@ async function resetPassword(requestBody) {
 
   const mailOptions = {
     from: 'test@racefanatic.app',
-    from: '@racefanatic.app',
+    // from: 'admin@racefanatic.app',
     to,
     subject: 'Password Reset',
     text: `Here is your new password for Race Fanatic app: ${newPassword}`,
