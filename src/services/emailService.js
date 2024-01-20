@@ -6,7 +6,6 @@ const { generatePassword } = require('../utils/generatePassword');
 async function resetPassword(requestBody) {
   // TODO: Try to update the function later, with expired password or magic link..
   const existingUser = await User.findOne({ email: requestBody.to });
-
   if (!existingUser) {
     throw new Error('User-Email not found!');
   }
@@ -20,15 +19,17 @@ async function resetPassword(requestBody) {
   const { to } = requestBody;
 
   const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'mail.racefanatic.app',
+    port: 465,
+    secure: true, // true for 465, false for other ports
     auth: {
-      user: 'hristopturs@gmail.com',
-      pass: process.env.SENDER_EMAIL_PASSWORD,
+      user: 'test@racefanatic.app', // your domain email address
+      pass: process.env.EMAIL_PASS, // your password
     },
   });
 
   const mailOptions = {
-    from: 'hristopturs@gmail.com',
+    from: 'admin@racefanatic.app',
     to,
     subject: 'Password Reset',
     text: `Here is your new password for Race Fanatic app: ${newPassword}`,
