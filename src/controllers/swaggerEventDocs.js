@@ -289,3 +289,36 @@
  *       400:
  *         description: Event not found.
  */
+
+/**
+ * @swagger
+ * /events/approveDisapproveEvent/{id}:
+ *   put:
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: Required `id` of the event to approve/disapprove
+ *         type: string
+ *     summary: Approve/Disapprove Event
+ *     description: Approve event, event's `isApproved` property can be changed,
+ *       by active admin only! Admins can change the property to true or false. Whenever
+ *       they decide
+ *     tags:
+ *       - Event
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               isApproved:
+ *                 type: string
+ *             example:
+ *              isApproved: false
+ *     responses:
+ *       200:
+ *         description: Details of the Event.
+ *       400:
+ *         description: Event not found.
+ */
