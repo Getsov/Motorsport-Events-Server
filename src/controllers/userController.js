@@ -360,6 +360,7 @@ userController.post('/resetPassword', async (req, res) => {
     }
 
     const result = await resetPassword(req.body);
+    console.log(result);
 
     res.status(200).json({ message: 'Email sent successfully' });
     res.end();

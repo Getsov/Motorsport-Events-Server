@@ -20,15 +20,18 @@ async function resetPassword(requestBody) {
   const { to } = requestBody;
 
   const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'zen.superhosting.bg',
+    port: 465,
+    secure: true, // true for 465, false for other ports
     auth: {
-      user: 'hristopturs@gmail.com',
-      pass: process.env.SENDER_EMAIL_PASSWORD,
-    },
+      user: 'test@racefanatic.app', // your domain email address
+      pass: 'test1234test' // your password
+    }
   });
 
   const mailOptions = {
-    from: 'hristopturs@gmail.com',
+    from: 'test@racefanatic.app',
+    from: '@racefanatic.app',
     to,
     subject: 'Password Reset',
     text: `Here is your new password for Race Fanatic app: ${newPassword}`,
