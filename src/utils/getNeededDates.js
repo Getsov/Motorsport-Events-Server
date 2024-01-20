@@ -1,6 +1,6 @@
 function getNeededDates(year, month) {
   if (isNaN(year) || isNaN(month)) {
-    throw new Error('Invalid querry. Year and month should be numbers.');
+    throw new Error('Invalid query. Year and month should be numbers.');
   }
   
   if (year.toString().length != 4) {
