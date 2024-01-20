@@ -25,12 +25,12 @@ async function resetPassword(requestBody) {
     secure: true, // true for 465, false for other ports
     auth: {
       user: 'test@racefanatic.app', // your domain email address
-      pass: 'test1234test' // your password
-    }
+      pass: 'test1234test', // your password
+    },
   });
 
   const mailOptions = {
-    from: 'mail.racefanatic.app',
+    from: 'admin@racefanatic.app',
     // from: 'admin@racefanatic.app',
     to,
     subject: 'Password Reset',
