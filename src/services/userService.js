@@ -107,7 +107,7 @@ async function editUserEmail(idOfUserForEdit, requestBody, requesterId) {
 }
 
 async function editUserPassword(idOfUserForEdit, requestBody, requesterId) {
-  const userForEdit = await User.findById(idOfUserForEdit);
+  const userForEdit = await User.findById(idOfUserForEdit).select('+hashedPassword');
   const requester = await User.findById(requesterId);
   const isAdmin = requester.role == 'admin' ? true : false;
 
