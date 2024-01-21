@@ -173,12 +173,18 @@ eventController.put('/deleteRestoreEvent/:id', async (req, res) => {
 
 eventController.put('/approveDisapproveEvent/:id', async (req, res) => {
   try {
+    const eventId = req.params?.id;
+
+    if (eventId === ',' || eventId === '{id}') {
+      throw new Error('Event "id" is missing!');
+    }
+
     const event = await approveDisapproveEvent(
-      req.params?.id,
+      eventId,
       req.requester?._id,
       req?.body
     );
-    console.log(event);
+    
     if (event?.isApproved) {
       res.status(200).json('Event is successfuly approved!');
       res.end();
@@ -193,6 +199,12 @@ eventController.put('/approveDisapproveEvent/:id', async (req, res) => {
 
 eventController.post('/like/:id', async (req, res) => {
   try {
+    const eventId = req.params?.id;
+
+    if (eventId === ',' || eventId === '{id}') {
+      throw new Error('Event "id" is missing!');
+    }
+
     if (!req.requester) {
       throw new Error('You must log-in to like this Event!');
     }
@@ -203,7 +215,7 @@ eventController.post('/like/:id', async (req, res) => {
       throw new Error('This Event is not Approved by Admin!');
     }
     if (event === null || event.isDeleted) {
-      throw new Error("Event is deleted, or doesn't exist!");
+      throw new Error("Event is deleted!");
     }
 
     let isAlreadyLiked = false;
@@ -218,6 +230,7 @@ eventController.post('/like/:id', async (req, res) => {
 
     res.status(200).json(isAlreadyLiked ? 'Event UnLiked!' : 'Event Liked!');
     res.end();
+
   } catch (error) {
     res.status(400).json(error.message);
     res.end();

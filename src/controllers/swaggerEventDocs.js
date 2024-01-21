@@ -285,7 +285,87 @@
  *              isDeleted: false
  *     responses:
  *       200:
- *         description: Details of the Event.
+ *         description: Successful message.
  *       400:
- *         description: Event not found.
+ *         description: Error message.
+ */
+
+/**
+ * @swagger
+ * /events/approveDisapproveEvent/{id}:
+ *   put:
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: Required `id` of the event to approve/disapprove
+ *         type: string
+ *     summary: Approve/Disapprove Event
+ *     description: Approve event, event's `isApproved` property can be changed,
+ *       by active admin only! Admins can change the property to true or false. Whenever
+ *       they decide
+ *     tags:
+ *       - Event
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               isApproved:
+ *                 type: string
+ *             example:
+ *              isApproved: false
+ *     responses:
+ *       200:
+ *         description: Successful message.
+ *       400:
+ *         description: Error message.
+ */
+
+/**
+ * @swagger
+ * /events/like/{id}:
+ *   post:
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: Required `id` of the event to be liked/unliked
+ *         type: string
+ *     summary: Like/Unlike Event
+ *     description: Like event, event's `likes` property is changind when you like event user's
+ *       ID is set to the array with likes on the event, if user unlike the event the ID
+ *       is removed from the array.
+ *     tags:
+ *       - Event
+ *     responses:
+ *       200:
+ *         description: Successful message.
+ *       400:
+ *         description: Error message.
+ */
+
+/**
+ * @swagger
+ * /events/month/{year}/{month}:
+ *   get:
+ *     parameters:
+ *       - name: year
+ *         in: path
+ *         description: Required `year` of the events to be found
+ *         type: string
+ *       - name: month
+ *         in: path
+ *         description: Required `month` of the events to be found
+ *         type: string
+ *     summary: Events by month
+ *     description: Find events by month, you need to provide the year and month
+ *       in format `2024` for year and `01` - `12` for month.
+ *     tags:
+ *       - Event
+ *     responses:
+ *       200:
+ *         description: Array with events.
+ *       400:
+ *         description: Error message.
  */
