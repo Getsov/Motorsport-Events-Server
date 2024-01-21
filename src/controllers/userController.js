@@ -133,8 +133,8 @@ userController.put('/editUserPassword/:id', async (req, res) => {
     const result = await editUserPassword(userForEdit, req.body, requester);
     res.status(200).json(result);
     res.end();
+    
   } catch (error) {
-    console.log(error);
     res.status(400).json({ error: error.message });
   }
 });
