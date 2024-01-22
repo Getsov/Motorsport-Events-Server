@@ -2,10 +2,12 @@
  * @swagger
  * /user/register:
  *   post:
- *     summary: Register "regular" user
- *     description: Create a new user.
- *          The service automatically creates a session and returns object with accessToken inside,
- *          that can be used for authorized requests.
+ *     summary: Register "regular or organizer" user
+ *     description: Create a new user. The service automatically creates a session
+ *       and returns object with accessToken inside, that can be used for authorized requests.
+ *       If user is regular you can leave the field with empty strings unfilled. If you want to
+ *       create "organizer" User, you need ti fill `role` field with `organizer` value.
+ *       And all other empty fields are necessary except the `firstName` and `lastName`.
  *     tags:
  *       - User
  *     requestBody:
@@ -21,6 +23,10 @@
  *                 type: string
  *               lastName:
  *                 type: string
+ *               organizatorName:
+ *                 type: string
+ *               role:
+ *                 type: string
  *               region:
  *                 type: string
  *               phone:
@@ -31,6 +37,12 @@
  *                 type: string
  *             example:
  *               email: example@abv.bg
+ *               firstName: ""
+ *               lastName: ""
+ *               organizatorName: ""
+ *               role: ""
+ *               region: ""
+ *               phone: ""
  *               password: "123456"
  *               repassword: "123456"
  *     responses:
