@@ -87,21 +87,84 @@
  * @swagger
  * /user/editUserInfo/{id}:
  *   put:
- *     summary: Registry of user.
- *     description: Retrieve a user by their ID.
+ *     summary: Update fields of user.
+ *     description: Edit user by their ID.
  *     tags:
  *       - User
  *     parameters:
  *       - in: path
  *         name: id
- *         required: true
- *         description: ID of the user to retrieve
- *         schema:
- *           type: string
+ *         type: string
+ *         description: Required `_id` of the user to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               organizatorName:
+ *                 type: string
+ *               firstName:
+ *                 type: string
+ *               lastName:
+ *                 type: string
+ *               region:
+ *                 type: string
+ *               phone:
+ *                 type: string
+ *             example:
+ *               organizatorName: "Example Name"
+ *               firstName: "Example"
+ *               lastName: "Example"
+ *               region: "Пловдив"
+ *               phone: "0895344323"
  *     responses:
  *       200:
  *         description: Details of the user.
- *       404:
- *         description: User not found.
+ *       400:
+ *         description: Unsuccessful operation.
  */
 
+/**
+ * @swagger
+ * /user/editUserEmail/{id}:
+ *   put:
+ *     summary: Update email of user.
+ *     description: Update user by their ID.
+ *     tags:
+ *       - User
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         type: string
+ *         description: Required `_id` of the user to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               organizatorName:
+ *                 type: string
+ *               firstName:
+ *                 type: string
+ *               lastName:
+ *                 type: string
+ *               region:
+ *                 type: string
+ *               phone:
+ *                 type: string
+ *             example:
+ *               organizatorName: "Example Name"
+ *               firstName: "Example"
+ *               lastName: "Example"
+ *               region: "Пловдив"
+ *               phone: "0895344323"
+ *     responses:
+ *       200:
+ *         description: Details of the user.
+ *       400:
+ *         description: Unsuccessful operation.
+ */
