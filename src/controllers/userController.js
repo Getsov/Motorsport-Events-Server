@@ -27,6 +27,7 @@ const {
 const { validPassword } = require('../shared/sharedRegex');
 const { checkRequestData } = require('../utils/checkData');
 const { resetPassword } = require('../services/emailService');
+
 userController.post('/register', async (req, res) => {
   try {
     const passwordTest = validPassword.test(req.body.password);
@@ -135,7 +136,16 @@ userController.put('/editUserEmail/:id', async (req, res) => {
 userController.put('/editUserPassword/:id', async (req, res) => {
   try {
     const userForEdit = req.params.id;
-    const requester = req.requester._id;
+    const requester = req.requester?._id;
+
+    if (userForEdit === ',' || userForEdit === '{id}') {
+      throw new Error('User "id" is missing!');
+    }
+
+    if (!requester) {
+      throw new Error('Requester "_id" is missing!');
+    }
+
     checkRequestData(req.body);
     if (req.body.newPassword !== req.body.newRepassword) {
       throw new Error('Password dismatch!');
