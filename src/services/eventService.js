@@ -150,7 +150,7 @@ async function updateEvent(requestBody, existingEvent, reqRequester) {
 
   if (requesterId !== creatorId && requester?.role !== 'admin') {
     throw new Error(
-      'Не сте собственик на събитието или Администратор за да го променяте!'
+      'Не сте собственик на събитието или Администратор, за да го променяте!'
     );
   }
 
