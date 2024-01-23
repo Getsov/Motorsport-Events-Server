@@ -23,7 +23,7 @@ async function registerEvent(requestBody, requesterId) {
 
   if (!(requester.role === 'admin' || requester.role === 'organizer')) {
     throw new Error(
-      'Само потребители с роля "Организатор" или "Админситратор" могат да регистрират събитие!'
+      'Само потребители с роля "Организатор" или "Администратор" могат да регистрират събитие!'
     );
   }
 
@@ -62,7 +62,7 @@ async function findEventByID(eventId, requesterId) {
     requester?._id !== creatorId &&
     requester?.role !== 'admin'
   ) {
-    throw new Error('Събитиети все още не е одобрено от Админстратор!');
+    throw new Error('Събитието все още не е одобрено от Администратор!');
   }
 
   return event;
@@ -150,7 +150,7 @@ async function updateEvent(requestBody, existingEvent, reqRequester) {
 
   if (requesterId !== creatorId && requester?.role !== 'admin') {
     throw new Error(
-      'Не сте собственик на събитието или Администратор за да променяте събитието!'
+      'Не сте собственик на събитието или Администратор за да го променяте!'
     );
   }
 
@@ -159,12 +159,12 @@ async function updateEvent(requestBody, existingEvent, reqRequester) {
   }
 
   if (requester?.isDeleted === true) {
-    throw new Error('Вашия профил е изтрит!');
+    throw new Error('Вашият профил е изтрит!');
   }
 
   if (!requester?.isApproved) {
     throw new Error(
-      'Профила Ви трябва да бъде одобрен за да променяте събитие!'
+      'Профилът Ви трябва да бъде одобрен, за да можете да променяте събитие!'
     );
   }
 
@@ -180,7 +180,7 @@ async function updateEvent(requestBody, existingEvent, reqRequester) {
     ) {
       // throw new Error(`Only Admin can modify '${key}' property!`);
       throw new Error(
-        `Само Администратор може да променя всички данни на събитието!`
+        `Само Администратор може да променя '${key}' !`
       );
     }
 
@@ -215,19 +215,19 @@ async function deleteRestoreEvent(eventId, requesterId, requestBody) {
 
   if (!requester?.isApproved || requester?.isDeleted) {
     throw new Error(
-      'Вашия профил не е одобрен и не можете да изтривате събитие!'
+      'Вашият профил не е одобрен и не можете да изтривате събитие!'
     );
   }
 
   if (requesterId !== creatorId && requester?.role !== 'admin') {
     throw new Error(
-      'Не сте собственик на събитието или Администратор за да променяте събитието!'
+      'Не сте Организатор на събитието или Администратор, за да променяте събитието!'
     );
   }
 
   if (requestBody?.hasOwnProperty('isDeleted')) {
     if (typeof requestBody?.isDeleted !== 'boolean') {
-      throw new Error('Данните които подавате не са валидни!');
+      throw new Error('Само boolean стойности са валидни!');
     }
     if (
       (requestBody?.isDeleted && event.isDeleted) ||
@@ -261,7 +261,7 @@ async function approveDisapproveEvent(eventId, requesterId, requestBody) {
   }
 
   if (!requester?.isApproved || requester?.isDeleted) {
-    throw new Error('Полето е достъпно за промяна само от Администратор!');
+    throw new Error('Вашият профил е изтрит, или е все още неодобрен!');
   }
 
   if (requester?.role !== 'admin') {
@@ -270,7 +270,7 @@ async function approveDisapproveEvent(eventId, requesterId, requestBody) {
 
   if (requestBody?.hasOwnProperty('isApproved')) {
     if (typeof requestBody?.isApproved !== 'boolean') {
-      throw new Error('Данните които подавате не са валидни!');
+      throw new Error('Данните, които подавате не са валидни!');
     }
     if (
       (requestBody?.isApproved && event.isApproved) ||
@@ -298,11 +298,11 @@ async function likeUnlikeEvent(existingEvent, requesterId, isAlreadyLiked) {
   }
 
   if (requester?.isDeleted === true) {
-    throw new Error('Вашия профил е изтрит!');
+    throw new Error('Вашият профил е изтрит!');
   }
 
   if (!requester?.isApproved) {
-    throw new Error('Профила Ви трябва да бъде одобрен за да харесате събитие!');
+    throw new Error('Профилът Ви трябва да бъде одобрен, за да харесате събитие!');
   }
 
   if (isAlreadyLiked) {
@@ -380,10 +380,10 @@ async function getPastEvents() {
 async function getAllEventsForApproval(requesterId) {
   const requester = await User.findById(requesterId);
   if (requester.isDeleted) {
-    throw new Error('Вашия профил е изтрит!');
+    throw new Error('Вашият профил е изтрит!');
   }
   if (!requester.isApproved) {
-    throw new Error('Профила Ви все още не е одобрен!');
+    throw new Error('Профилът Ви все още не е одобрен!');
   }
   if (requester.role !== 'admin') {
     throw new Error('Нямате нужните права за достъп до тези данни!');
