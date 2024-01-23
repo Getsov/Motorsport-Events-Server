@@ -157,4 +157,39 @@
  *         description: Unsuccessful operation.
  */
 
-
+/**
+ * @swagger
+ * /user/editUserPassword/{id}:
+ *   put:
+ *     summary: Update password of user.
+ *     description: Update user password by their ID. Only user who is owner and admin can change password field.
+ *     tags:
+ *       - User
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         type: string
+ *         description: Required `_id` of the user to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               oldPassword:
+ *                 type: string
+ *               newPassword:
+ *                 type: string
+ *               newRepassword:
+ *                 type: string
+ *             example:
+ *               oldPassword: "123456"
+ *               newPassword: "1234567"
+ *               newRepassword: "1234567"
+ *     responses:
+ *       200:
+ *         description: Details of the user.
+ *       400:
+ *         description: Unsuccessful operation.
+ */
