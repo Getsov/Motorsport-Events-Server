@@ -131,7 +131,7 @@
  * /user/editUserEmail/{id}:
  *   put:
  *     summary: Update email of user.
- *     description: Update user by their ID.
+ *     description: Update user email by their ID. Only user who is owner and admin can change email field.
  *     tags:
  *       - User
  *     parameters:
@@ -146,25 +146,15 @@
  *           schema:
  *             type: object
  *             properties:
- *               organizatorName:
- *                 type: string
- *               firstName:
- *                 type: string
- *               lastName:
- *                 type: string
- *               region:
- *                 type: string
- *               phone:
+ *               email:
  *                 type: string
  *             example:
- *               organizatorName: "Example Name"
- *               firstName: "Example"
- *               lastName: "Example"
- *               region: "Пловдив"
- *               phone: "0895344323"
+ *               email: "example@abv.bg"
  *     responses:
  *       200:
  *         description: Details of the user.
  *       400:
  *         description: Unsuccessful operation.
  */
+
+
