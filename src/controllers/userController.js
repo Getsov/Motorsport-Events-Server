@@ -96,10 +96,15 @@ userController.post('/login', async (req, res) => {
 
 userController.put('/editUserInfo/:id', async (req, res) => {
   try {
-    const userForEdit = req.params.id;
-    const requester = req.requester._id;
-    checkRequestData(req.body);
-    const result = await editUserInfo(userForEdit, req.body, requester);
+    const userForEdit = req.params?.id;
+
+    if (userForEdit === ',' || userForEdit === '{id}') {
+      throw new Error('User "id" is missing!');
+    }
+
+    const requester = req.requester?._id;
+    checkRequestData(req?.body);
+    const result = await editUserInfo(userForEdit, req?.body, requester);
     res.status(200).json(result);
     res.end();
   } catch (error) {
@@ -110,7 +115,12 @@ userController.put('/editUserInfo/:id', async (req, res) => {
 
 userController.put('/editUserEmail/:id', async (req, res) => {
   try {
-    const userForEdit = req.params.id;
+    const userForEdit = req.params?.id;
+
+    if (userForEdit === ',' || userForEdit === '{id}') {
+      throw new Error('User "id" is missing!');
+    }
+
     const requester = req.requester._id;
     checkRequestData(req.body);
     const result = await editUserEmail(userForEdit, req.body, requester);
@@ -254,6 +264,7 @@ userController.get('/getMyFavourites', async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
+
 userController.get('/getApprovedAdmins', async (req, res) => {
   try {
     const requesterId = req.requester._id;
