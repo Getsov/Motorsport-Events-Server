@@ -27,6 +27,7 @@ const {
 const { validPassword } = require('../shared/sharedRegex');
 const { checkRequestData } = require('../utils/checkData');
 const { resetPassword } = require('../services/emailService');
+
 userController.post('/register', async (req, res) => {
   try {
     const passwordTest = validPassword.test(req.body.password);
@@ -96,10 +97,15 @@ userController.post('/login', async (req, res) => {
 
 userController.put('/editUserInfo/:id', async (req, res) => {
   try {
-    const userForEdit = req.params.id;
-    const requester = req.requester._id;
-    checkRequestData(req.body);
-    const result = await editUserInfo(userForEdit, req.body, requester);
+    const userForEdit = req.params?.id;
+
+    if (userForEdit === ',' || userForEdit === '{id}') {
+      throw new Error('User "id" is missing!');
+    }
+
+    const requester = req.requester?._id;
+    checkRequestData(req?.body);
+    const result = await editUserInfo(userForEdit, req?.body, requester);
     res.status(200).json(result);
     res.end();
   } catch (error) {
@@ -110,7 +116,12 @@ userController.put('/editUserInfo/:id', async (req, res) => {
 
 userController.put('/editUserEmail/:id', async (req, res) => {
   try {
-    const userForEdit = req.params.id;
+    const userForEdit = req.params?.id;
+
+    if (userForEdit === ',' || userForEdit === '{id}') {
+      throw new Error('User "id" is missing!');
+    }
+
     const requester = req.requester._id;
     checkRequestData(req.body);
     const result = await editUserEmail(userForEdit, req.body, requester);
@@ -125,7 +136,16 @@ userController.put('/editUserEmail/:id', async (req, res) => {
 userController.put('/editUserPassword/:id', async (req, res) => {
   try {
     const userForEdit = req.params.id;
-    const requester = req.requester._id;
+    const requester = req.requester?._id;
+
+    if (userForEdit === ',' || userForEdit === '{id}') {
+      throw new Error('User "id" is missing!');
+    }
+
+    if (!requester) {
+      throw new Error('Requester "_id" is missing!');
+    }
+
     checkRequestData(req.body);
     if (req.body.newPassword !== req.body.newRepassword) {
       throw new Error('Password dismatch!');
@@ -254,6 +274,7 @@ userController.get('/getMyFavourites', async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
+
 userController.get('/getApprovedAdmins', async (req, res) => {
   try {
     const requesterId = req.requester._id;
