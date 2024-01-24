@@ -427,3 +427,17 @@
  *         description: Unsuccessful operation.
  */
 
+/**
+ * @swagger
+ * /user/getApprovedOrganizators:
+ *   get:
+ *     summary: Retrieve all approved organizators.
+ *     description: Retrieve all approved organizators only active admin can make the request.
+ *     tags:
+ *       - User
+ *     responses:
+ *       200:
+ *         description: Events of the user.
+ *       400:
+ *         description: Unsuccessful operation.
+ */
