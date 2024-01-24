@@ -255,3 +255,32 @@
  *       400:
  *         description: Unsuccessful operation.
  */
+
+/**
+ * @swagger
+ * /user/deleteRestoreUsers:
+ *   put:
+ *     summary: Delete/Restore users.
+ *     description: Update users isDeleted property by their ID. Only user who is admin can change isDeleted field.
+ *     tags:
+ *       - User
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               isDeleted:
+ *                 type: boolean
+ *               listOfUsers:
+ *                 type: array
+ *             example:
+ *               isDeleted: false
+ *               listOfUsers: [userId, userId]
+ *     responses:
+ *       200:
+ *         description: Details of the user.
+ *       400:
+ *         description: Unsuccessful operation.
+ */
