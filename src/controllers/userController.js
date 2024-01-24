@@ -161,8 +161,13 @@ userController.put('/editUserPassword/:id', async (req, res) => {
 
 userController.put('/editUserRole/:id', async (req, res) => {
   try {
-    const userForEdit = req.params.id;
-    const requester = req.requester._id;
+    const userForEdit = req.params?.id;
+    const requester = req.requester?._id;
+
+    if (userForEdit === ',' || userForEdit === '{id}') {
+      throw new Error('User "id" is missing!');
+    }
+
     checkRequestData(req.body);
     const result = await editUserRole(userForEdit, req.body, requester);
     res.status(200).json(result);
