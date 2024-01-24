@@ -28,7 +28,10 @@ const {
 const { validPassword } = require('../shared/sharedRegex');
 const { checkRequestData } = require('../utils/checkData');
 const { resetPassword } = require('../services/emailService');
-const { getUpcomingEvents } = require('../services/eventService');
+const {
+  getUpcomingEvents,
+  getPastEvents,
+} = require('../services/eventService');
 
 userController.post('/register', async (req, res) => {
   try {
@@ -426,7 +429,7 @@ userController.get('/myPastEvents', async (req, res) => {
     if (!requesterId) {
       throw new Error('Нямате достъп до тези данни!');
     }
-    const result = await getUpcomingEvents(requesterId);
+    const result = await getPastEvents(requesterId);
     res.status(200).json(result);
     res.end();
   } catch (error) {
