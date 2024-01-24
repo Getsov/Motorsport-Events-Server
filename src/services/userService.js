@@ -472,7 +472,7 @@ async function getMyEventsForApproval(requesterId) {
   if (!requester.isApproved) {
     throw new Error('Профилът Ви все още не е одобрен!');
   }
-  if (requester.role !== 'organizer') {
+  if (requester.role !== 'organizer' || requester.role !== 'admin') {
     throw new Error('Нямате нужните права за достъп до тези данни!');
   }
   const waitingEvents = await Event.find({
