@@ -236,8 +236,13 @@ userController.get('/getUserById/:id', async (req, res) => {
 // Approving / Disapproving user/organizer
 userController.put('/approveDisapproveUser/:id', async (req, res) => {
   try {
-    const userId = req.params.id;
-    const requesterId = req.requester._id;
+    const userId = req.params?.id;
+    const requesterId = req.requester?._id;
+
+    if (userId === ',' || userId === '{id}') {
+      throw new Error('User "id" is missing!');
+    }
+
     checkRequestData(req.body);
 
     const result = await approveDisapproveSingleUser(
