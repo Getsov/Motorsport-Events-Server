@@ -393,7 +393,7 @@ userController.get('/allUsers', async (req, res) => {
   }
 });
 
-userController.get('/allMyEventsForApproval', async (req, res) => {
+userController.get('/myEventsForApproval', async (req, res) => {
   try {
     const requesterId = req.requester?._id;
     const result = await getMyEventsForApproval(requesterId);
@@ -405,7 +405,7 @@ userController.get('/allMyEventsForApproval', async (req, res) => {
   }
 });
 
-userController.get('/allMyUpcomingEvents', async (req, res) => {
+userController.get('/myUpcomingEvents', async (req, res) => {
   try {
     const requesterId = req.requester?._id;
     if (!requesterId) {
