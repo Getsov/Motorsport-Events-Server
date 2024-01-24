@@ -280,7 +280,7 @@
  *               listOfUsers: [userId, userId]
  *     responses:
  *       200:
- *         description: Details of the user.
+ *         description: Details of the users.
  *       400:
  *         description: Unsuccessful operation.
  */
@@ -362,7 +362,7 @@
  *               listOfUsers: [userId, userId]
  *     responses:
  *       200:
- *         description: Details of the user.
+ *         description: Details of the users.
  *       400:
  *         description: Unsuccessful operation.
  */
@@ -392,7 +392,7 @@
  *       - User
  *     responses:
  *       200:
- *         description: Events of the user.
+ *         description: Favorite events of the user.
  *       400:
  *         description: Unsuccessful operation.
  */
@@ -407,7 +407,7 @@
  *       - User
  *     responses:
  *       200:
- *         description: Events of the user.
+ *         description: All approved admins.
  *       400:
  *         description: Unsuccessful operation.
  */
@@ -422,7 +422,7 @@
  *       - User
  *     responses:
  *       200:
- *         description: Events of the user.
+ *         description: All admins for approval.
  *       400:
  *         description: Unsuccessful operation.
  */
@@ -437,7 +437,7 @@
  *       - User
  *     responses:
  *       200:
- *         description: Events of the user.
+ *         description: All approved organizers.
  *       400:
  *         description: Unsuccessful operation.
  */
@@ -452,7 +452,7 @@
  *       - User
  *     responses:
  *       200:
- *         description: Events of the user.
+ *         description: All unapproved organizers.
  *       400:
  *         description: Unsuccessful operation.
  */
@@ -467,7 +467,7 @@
  *       - User
  *     responses:
  *       200:
- *         description: Events of the user.
+ *         description: All organizers.
  *       400:
  *         description: Unsuccessful operation.
  */
@@ -482,7 +482,7 @@
  *       - User
  *     responses:
  *       200:
- *         description: Events of the user.
+ *         description: Regular users.
  *       400:
  *         description: Unsuccessful operation.
  */
@@ -497,7 +497,7 @@
  *       - User
  *     responses:
  *       200:
- *         description: Events of the user.
+ *         description: Found admins.
  *       400:
  *         description: Unsuccessful operation.
  */
@@ -512,7 +512,7 @@
  *       - User
  *     responses:
  *       200:
- *         description: Events of the user.
+ *         description: Found users.
  *       400:
  *         description: Unsuccessful operation.
  */
