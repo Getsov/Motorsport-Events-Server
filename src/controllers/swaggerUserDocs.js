@@ -517,3 +517,28 @@
  *         description: Unsuccessful operation.
  */
 
+/**
+ * @swagger
+ * /user/resetPassword:
+ *   post:
+ *     summary: Reset password of users.
+ *     description: Reset password of given user e-mail address.
+ *     tags:
+ *       - User
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               to:
+ *                 type: string
+ *             example:
+ *               to: example@abv.bg
+ *     responses:
+ *       200:
+ *         description: Successful message.
+ *       400:
+ *         description: Unsuccessful operation.
+ */
