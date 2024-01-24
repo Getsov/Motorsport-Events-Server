@@ -2,12 +2,12 @@
  * @swagger
  * /user/register:
  *   post:
- *     summary: Register "regular or organizer" user
- *     description: Create a new user. The service automatically creates a session
- *       and returns object with accessToken inside, that can be used for authorized requests.
- *       If user is regular you can leave the field with empty strings unfilled. If you want to
- *       create "organizer" User, you need ti fill `role` field with `organizer` value.
- *       And all other empty fields are necessary except the `firstName` and `lastName`.
+ *     summary: Register a new user (either regular or organizer) and create a session
+ *      with an access token for authorized requests.
+ *     description: Create a new user account, automatically generating a session
+ *      and returning an object containing an accessToken. To register a regular user,
+ *      leave optional fields empty. For an organizer, fill in the `role` field with the value
+ *      `organizer`, and provide necessary information except for `firstName` and `lastName`.
  *     tags:
  *       - User
  *     requestBody:
@@ -47,7 +47,7 @@
  *               repassword: "123456"
  *     responses:
  *       200:
- *         description: Details of the user.
+ *         description: Details of the created user.
  *       400:
  *         description: Unsuccessful request.
  */
@@ -56,8 +56,8 @@
  * @swagger
  * /user/login:
  *   post:
- *     summary: Login user
- *     description: Return user with access token.
+ *     summary: Log in a user and return user details with an access token.
+ *     description: Authenticate a user and return user details along with an access token.
  *     tags:
  *       - User
  *     requestBody:
@@ -87,8 +87,8 @@
  * @swagger
  * /user/editUserInfo/{id}:
  *   put:
- *     summary: Update fields of user.
- *     description: Edit user by their ID.
+ *     summary: Update user fields by ID.
+ *     description: Edit user information identified by their unique ID.
  *     tags:
  *       - User
  *     parameters:
@@ -130,8 +130,9 @@
  * @swagger
  * /user/editUserEmail/{id}:
  *   put:
- *     summary: Update email of user.
- *     description: Update user email by their ID. Only user who is owner and admin can change email field.
+ *     summary: Update user email by ID.
+ *     description: Update user email identified by their unique ID.
+ *      Only the user who is the owner and admin can change the email field.
  *     tags:
  *       - User
  *     parameters:
@@ -161,8 +162,9 @@
  * @swagger
  * /user/editUserPassword/{id}:
  *   put:
- *     summary: Update password of user.
- *     description: Update user password by their ID. Only user who is owner and admin can change password field.
+ *     summary: Update user password by ID.
+ *     description: Update user password identified by their unique ID.
+ *      Only the user who is the owner and admin can change the password field.
  *     tags:
  *       - User
  *     parameters:
@@ -198,8 +200,9 @@
  * @swagger
  * /user/editUserRole/{id}:
  *   put:
- *     summary: Update role of user.
- *     description: Update user role by their ID. Only user who is admin can change role field.
+ *     summary: Update user role by ID.
+ *     description: Update user role identified by their unique ID.
+ *      Only the user who is an admin can change the role field.
  *     tags:
  *       - User
  *     parameters:
@@ -230,7 +233,8 @@
  * /user/deleteRestoreUser/{id}:
  *   put:
  *     summary: Delete/Restore user.
- *     description: Update user isDeleted property by their ID. Only user who is admin can change isDeleted field.
+ *     description: Update user `isDeleted` property by their ID.
+ *      Only the user who is an admin can change the `isDeleted` field.
  *     tags:
  *       - User
  *     parameters:
@@ -261,7 +265,8 @@
  * /user/deleteRestoreUsers:
  *   put:
  *     summary: Delete/Restore users.
- *     description: Update users isDeleted property by their ID. Only user who is admin can change isDeleted field.
+ *     description: Update users `isDeleted` property by their ID.
+ *      Only the user who is an admin can change the `isDeleted` field.
  *     tags:
  *       - User
  *     requestBody:
@@ -289,9 +294,9 @@
  * @swagger
  * /user/getUserById/{id}:
  *   get:
- *     summary: Certain user.
- *     description: Retrieve a certain user from the `users` collection.
- *      Only active admin and owner can see requested user!
+ *     summary: Retrieve a certain user.
+ *     description: Retrieve details of a certain user from the `users` collection.
+ *      Only active admin and owner can see the requested user.
  *     tags:
  *       - User
  *     parameters:
@@ -311,8 +316,8 @@
  * /user/approveDisapproveUser/{id}:
  *   put:
  *     summary: Approve/Disapprove user.
- *     description: Approve/Disapprove user isApproved property by their ID.
- *      Only active admin can change isApproved field.
+ *     description: Approve/Disapprove user `isApproved` property by their ID.
+ *      Only active admin can change `isApproved` field.
  *     tags:
  *       - User
  *     parameters:
@@ -343,7 +348,8 @@
  * /user/approveDisapproveUsers:
  *   put:
  *     summary: Approve/Disapprove users.
- *     description: Update users isApproved property by their ID. Only active admin can change isApproved field.
+ *     description: Update users `isApproved` property by their ID.
+ *      Only active admin can change `isApproved` field.
  *     tags:
  *       - User
  *     requestBody:
@@ -372,7 +378,7 @@
  * /user/getMyEvents:
  *   get:
  *     summary: Retrieve events of user.
- *     description: Retrieve all events of the logged in user.
+ *     description: Retrieve all events of the logged-in user.
  *     tags:
  *       - User
  *     responses:
@@ -387,7 +393,7 @@
  * /user/getMyFavourites:
  *   get:
  *     summary: Retrieve favorite events of user.
- *     description: Retrieve all favorite events of the logged in user.
+ *     description: Retrieve all favorite events of the logged-in user.
  *     tags:
  *       - User
  *     responses:
@@ -402,7 +408,7 @@
  * /user/getApprovedAdmins:
  *   get:
  *     summary: Retrieve approved admins.
- *     description: Retrieve all approved admins only active admin can make the request.
+ *     description: Retrieve all approved admins, only an active admin can make the request.
  *     tags:
  *       - User
  *     responses:
@@ -417,7 +423,7 @@
  * /user/getAllAdminsForApproval:
  *   get:
  *     summary: Retrieve all unapproved admins.
- *     description: Retrieve all unapproved admins only active admin can make the request.
+ *     description: Retrieve all unapproved admins, only an active admin can make the request.
  *     tags:
  *       - User
  *     responses:
@@ -432,7 +438,7 @@
  * /user/getApprovedOrganizators:
  *   get:
  *     summary: Retrieve all approved organizers.
- *     description: Retrieve all approved organizers only active admin can make the request.
+ *     description: Retrieve all approved organizers, only an active admin can make the request.
  *     tags:
  *       - User
  *     responses:
@@ -447,7 +453,7 @@
  * /user/getAllOrganizersForApproval:
  *   get:
  *     summary: Retrieve all unapproved organizers.
- *     description: Retrieve all unapproved organizers only active admin can make the request.
+ *     description: Retrieve all unapproved organizers, only an active admin can make the request.
  *     tags:
  *       - User
  *     responses:
@@ -462,7 +468,7 @@
  * /user/allOrganizers:
  *   get:
  *     summary: Retrieve all organizers.
- *     description: Retrieve all organizers only active admin can make the request.
+ *     description: Retrieve all organizers, only an active admin can make the request.
  *     tags:
  *       - User
  *     responses:
@@ -477,7 +483,7 @@
  * /user/allRegularUsers:
  *   get:
  *     summary: Retrieve all regular users.
- *     description: Retrieve all regular users only active admin can make the request.
+ *     description: Retrieve all regular users, only an active admin can make the request.
  *     tags:
  *       - User
  *     responses:
@@ -492,7 +498,7 @@
  * /user/allAdmins:
  *   get:
  *     summary: Retrieve all admin users.
- *     description: Retrieve all admin users only active admin can make the request.
+ *     description: Retrieve all admin users, only an active admin can make the request.
  *     tags:
  *       - User
  *     responses:
@@ -507,7 +513,7 @@
  * /user/allUsers:
  *   get:
  *     summary: Retrieve all users.
- *     description: Retrieve all users only active admin can make the request.
+ *     description: Retrieve all users, only an active admin can make the request.
  *     tags:
  *       - User
  *     responses:
@@ -521,8 +527,9 @@
  * @swagger
  * /user/resetPassword:
  *   post:
- *     summary: Reset password of users.
- *     description: Reset password of given user e-mail address.
+ *     summary: Request Password Reset
+ *     description: Initiates the process to reset the password for a user
+ *      associated with the provided email address.
  *     tags:
  *       - User
  *     requestBody:
