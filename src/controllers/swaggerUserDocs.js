@@ -381,3 +381,18 @@
  *       400:
  *         description: Unsuccessful operation.
  */
+
+/**
+ * @swagger
+ * /user/getMyFavourites:
+ *   get:
+ *     summary: Retrieve favorite events of user.
+ *     description: Retrieve all favorite events of the logged in user.
+ *     tags:
+ *       - User
+ *     responses:
+ *       200:
+ *         description: Events of the user.
+ *       400:
+ *         description: Unsuccessful operation.
+ */
