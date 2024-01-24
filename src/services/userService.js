@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const Event = require('../models/Event');
 const { secret } = require('../utils/parseToken');
 const { checkAuthorizedRequests } = require('../utils/securityCheck');
 const { checkAdmin } = require('../utils/adminsCheck');
@@ -463,7 +464,7 @@ async function getAllUsers(requesterId) {
   return allUsers;
 }
 
-async function getAllMyEventsForApproval(requesterId) {
+async function getMyEventsForApproval(requesterId) {
   const requester = await User.findById(requesterId);
   if (requester.isDeleted) {
     throw new Error('Вашият профил е изтрит!');
@@ -474,7 +475,7 @@ async function getAllMyEventsForApproval(requesterId) {
   if (requester.role !== 'organizer') {
     throw new Error('Нямате нужните права за достъп до тези данни!');
   }
-
+  console.log(requesterId);
   const waitingEvents = await Event.find({
     isApproved: false,
     isDeleted: false,
@@ -567,6 +568,6 @@ module.exports = {
   getAllRegularUsers,
   getAllAdmins,
   getAllUsers,
-  getAllMyEventsForApproval,
+  getMyEventsForApproval,
   getUserById,
 };

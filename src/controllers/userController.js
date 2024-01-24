@@ -22,7 +22,7 @@ const {
   getAllAdminsForApprovals,
   approveDisapproveMultipleUsers,
   getApprovedOrganizators,
-  getAllMyEventsForApproval,
+  getMyEventsForApproval,
 } = require('../services/userService');
 
 const { validPassword } = require('../shared/sharedRegex');
@@ -396,7 +396,7 @@ userController.get('/allUsers', async (req, res) => {
 userController.get('/allMyEventsForApproval', async (req, res) => {
   try {
     const requesterId = req.requester?._id;
-    const result = await getAllMyEventsForApproval(requesterId);
+    const result = await getMyEventsForApproval(requesterId);
     res.status(200).json(result);
     res.end();
   } catch (error) {
