@@ -305,3 +305,35 @@
  *       400:
  *         description: Unsuccessful operation.
  */
+
+/**
+ * @swagger
+ * /user/approveDisapproveUser/{id}:
+ *   put:
+ *     summary: Approve/Disapprove user.
+ *     description: Approve/Disapprove user isApproved property by their ID.
+ *      Only active admin can change isApproved field.
+ *     tags:
+ *       - User
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         type: string
+ *         description: Required `_id` of the user to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               isApproved:
+ *                 type: boolean
+ *             example:
+ *               isApproved: true
+ *     responses:
+ *       200:
+ *         description: Details of the user.
+ *       400:
+ *         description: Unsuccessful operation.
+ */
