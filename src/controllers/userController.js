@@ -28,6 +28,7 @@ const {
 const { validPassword } = require('../shared/sharedRegex');
 const { checkRequestData } = require('../utils/checkData');
 const { resetPassword } = require('../services/emailService');
+const { getUpcomingEvents } = require('../services/eventService');
 
 userController.post('/register', async (req, res) => {
   try {
@@ -397,6 +398,18 @@ userController.get('/allMyEventsForApproval', async (req, res) => {
   try {
     const requesterId = req.requester?._id;
     const result = await getMyEventsForApproval(requesterId);
+    res.status(200).json(result);
+    res.end();
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: error.message });
+  }
+});
+
+userController.get('/allMyUpcomingEvents', async (req, res) => {
+  try {
+    const requesterId = req.requester?._id;
+    const result = await getUpcomingEvents();
     res.status(200).json(result);
     res.end();
   } catch (error) {
