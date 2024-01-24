@@ -260,7 +260,7 @@ userController.put('/approveDisapproveUser/:id', async (req, res) => {
 
 userController.put('/approveDisapproveUsers', async (req, res) => {
   try {
-    const requester = req.requester._id;
+    const requester = req.requester?._id;
     checkRequestData(req.body);
     const result = await approveDisapproveMultipleUsers(req.body, requester);
     res.status(200).json(result);
