@@ -475,7 +475,6 @@ async function getMyEventsForApproval(requesterId) {
   if (requester.role !== 'organizer') {
     throw new Error('Нямате нужните права за достъп до тези данни!');
   }
-  console.log(requesterId);
   const waitingEvents = await Event.find({
     isApproved: false,
     isDeleted: false,
