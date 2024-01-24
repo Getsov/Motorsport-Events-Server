@@ -179,9 +179,7 @@ async function updateEvent(requestBody, existingEvent, reqRequester) {
       (key === 'creator' || key === 'likes' || key === 'isApproved')
     ) {
       // throw new Error(`Only Admin can modify '${key}' property!`);
-      throw new Error(
-        `Само Администратор може да променя '${key}' !`
-      );
+      throw new Error(`Само Администратор може да променя '${key}' !`);
     }
 
     if (
@@ -233,7 +231,9 @@ async function deleteRestoreEvent(eventId, requesterId, requestBody) {
       (requestBody?.isDeleted && event.isDeleted) ||
       (!requestBody?.isDeleted && !event.isDeleted)
     ) {
-      throw new Error('Не може да променяте с данни еднакви спрямо предходните!');
+      throw new Error(
+        'Не може да променяте с данни еднакви спрямо предходните!'
+      );
     }
 
     requestBody.isDeleted
@@ -276,14 +276,18 @@ async function approveDisapproveEvent(eventId, requesterId, requestBody) {
       (requestBody?.isApproved && event.isApproved) ||
       (!requestBody?.isApproved && !event.isApproved)
     ) {
-      throw new Error('Не може да променяте с еднакви данни спрямо предходните!');
+      throw new Error(
+        'Не може да променяте с еднакви данни спрямо предходните!'
+      );
     }
 
     requestBody.isApproved
       ? (event.isApproved = true)
       : (event.isApproved = false);
   } else {
-    throw new Error('Моля подайте правилни данни в тялото на заявката: "isApproved"');
+    throw new Error(
+      'Моля подайте правилни данни в тялото на заявката: "isApproved"'
+    );
   }
 
   return await event.save();
@@ -302,7 +306,9 @@ async function likeUnlikeEvent(existingEvent, requesterId, isAlreadyLiked) {
   }
 
   if (!requester?.isApproved) {
-    throw new Error('Профилът Ви трябва да бъде одобрен, за да харесате събитие!');
+    throw new Error(
+      'Профилът Ви трябва да бъде одобрен, за да харесате събитие!'
+    );
   }
 
   if (isAlreadyLiked) {
@@ -335,11 +341,14 @@ async function getEventsByMonth(startDate, endDate) {
   return events;
 }
 
-async function getUpcomingEvents() {
+async function getUpcomingEvents(requesterId) {
   let query = {
     isDeleted: false,
     isApproved: true,
   };
+  if (requesterId) {
+    query.creator = requesterId;
+  }
 
   let todayStart = new Date(Date.now());
   todayStart.setHours(0, 0, 0, 0);
