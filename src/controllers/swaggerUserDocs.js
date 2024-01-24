@@ -471,3 +471,18 @@
  *       400:
  *         description: Unsuccessful operation.
  */
+
+/**
+ * @swagger
+ * /user/allRegularUsers:
+ *   get:
+ *     summary: Retrieve all regular users.
+ *     description: Retrieve all regular users only active admin can make the request.
+ *     tags:
+ *       - User
+ *     responses:
+ *       200:
+ *         description: Events of the user.
+ *       400:
+ *         description: Unsuccessful operation.
+ */
