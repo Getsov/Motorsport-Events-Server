@@ -341,7 +341,6 @@ async function getEventsByMonth(startDate, endDate) {
   return events;
 }
 
-//TODO: add requ
 async function getUpcomingEvents(requesterId) {
   let query = {
     isDeleted: false,
@@ -379,11 +378,28 @@ async function getUpcomingEvents(requesterId) {
   return events;
 }
 
-async function getPastEvents() {
+async function getPastEvents(requesterId) {
   let query = {
     isDeleted: false,
     isApproved: true,
   };
+
+  if (requesterId) {
+    const requester = await User.findById(requesterId);
+
+    if (!requester) {
+      throw new Error('Потребител с тези данни не е намерен!');
+    }
+
+    if (requester?.isDeleted === true) {
+      throw new Error('Вашият профил е изтрит!');
+    }
+
+    if (!requester?.isApproved) {
+      throw new Error('Профилът Ви не е одобрен!');
+    }
+    query.creator = requesterId;
+  }
 
   let todayStart = new Date(Date.now());
   todayStart.setHours(0, 0, 0, 0);
