@@ -334,7 +334,7 @@ userController.get('/getApprovedOrganizators', async (req, res) => {
 
 userController.get('/getAllOrganizersForApproval', async (req, res) => {
   try {
-    const requesterId = req.requester._id;
+    const requesterId = req.requester?._id;
     const result = await getAllOrganizersForApproval(requesterId);
     res.status(200).json(result);
     res.end();
