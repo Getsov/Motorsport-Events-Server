@@ -12,7 +12,7 @@ async function registerEvent(requestBody, requesterId) {
   }
 
   if (requester?.isDeleted === true) {
-    throw new Error('Профила на текущия потребител е изтрит!');
+    throw new Error('Профилът на текущия потребител е изтрит!');
   }
 
   if (!requester?.isApproved) {
@@ -261,7 +261,7 @@ async function approveDisapproveEvent(eventId, requesterId, requestBody) {
   }
 
   if (!requester?.isApproved || requester?.isDeleted) {
-    throw new Error('Вашият профил е изтрит, или е все още неодобрен!');
+    throw new Error('Вашият профил е изтрит или е все още неодобрен!');
   }
 
   if (requester?.role !== 'admin') {
