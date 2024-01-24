@@ -282,7 +282,7 @@ async function approveDisapproveSingleUser(userId, requesterId, requestBody) {
 
 async function approveDisapproveMultipleUsers(requestBody, requesterId) {
   const requester = await User.findById(requesterId);
-  const isAdmin = requester.role == 'admin' ? true : false;
+  const isAdmin = requester?.role == 'admin' ? true : false;
   const usersForEdit = requestBody.listOfUsers;
   const updatedUsersList = [];
 
