@@ -107,7 +107,9 @@ async function editUserEmail(idOfUserForEdit, requestBody, requesterId) {
 }
 
 async function editUserPassword(idOfUserForEdit, requestBody, requesterId) {
-  const userForEdit = await User.findById(idOfUserForEdit).select('+hashedPassword');
+  const userForEdit = await User.findById(idOfUserForEdit).select(
+    '+hashedPassword'
+  );
   const requester = await User.findById(requesterId);
   const isAdmin = requester.role == 'admin' ? true : false;
 
@@ -461,6 +463,26 @@ async function getAllUsers(requesterId) {
   return allUsers;
 }
 
+async function getAllMyEventsForApproval(requesterId) {
+  const requester = await User.findById(requesterId);
+  if (requester.isDeleted) {
+    throw new Error('Вашият профил е изтрит!');
+  }
+  if (!requester.isApproved) {
+    throw new Error('Профилът Ви все още не е одобрен!');
+  }
+  if (requester.role !== 'organizer') {
+    throw new Error('Нямате нужните права за достъп до тези данни!');
+  }
+
+  const waitingEvents = await Event.find({
+    isApproved: false,
+    isDeleted: false,
+    creator: requesterId,
+  });
+  return waitingEvents;
+}
+
 async function addRemoveLikedEvent(eventId, userId, isAlreadyLiked) {
   const existingUser = await User.findById(userId);
   if (!existingUser) {
@@ -545,5 +567,6 @@ module.exports = {
   getAllRegularUsers,
   getAllAdmins,
   getAllUsers,
+  getAllMyEventsForApproval,
   getUserById,
 };
