@@ -171,7 +171,7 @@ async function deleteRestoreSingleUser(
 ) {
   const userForEdit = await User.findById(idOfUserForEdit);
   const requester = await User.findById(requesterId);
-  const isAdmin = requester.role == 'admin' ? true : false;
+  const isAdmin = requester?.role == 'admin' ? true : false;
 
   if (!userForEdit) {
     throw new Error('User not found');
