@@ -298,7 +298,7 @@ userController.get('/getMyFavourites', async (req, res) => {
 
 userController.get('/getApprovedAdmins', async (req, res) => {
   try {
-    const requesterId = req.requester._id;
+    const requesterId = req.requester?._id;
     const result = await getApprovedAdmins(requesterId);
     res.status(200).json(result);
     res.end();
