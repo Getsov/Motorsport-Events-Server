@@ -203,7 +203,7 @@ async function deleteRestoreSingleUser(
 
 async function deleteRestoreMultipleUsers(requestBody, requesterId) {
   const requester = await User.findById(requesterId);
-  const isAdmin = requester.role == 'admin' ? true : false;
+  const isAdmin = requester?.role == 'admin' ? true : false;
   const usersForEdit = requestBody.listOfUsers;
   const updatedUsersList = [];
 
