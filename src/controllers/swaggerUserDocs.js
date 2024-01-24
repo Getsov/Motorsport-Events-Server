@@ -396,3 +396,18 @@
  *       400:
  *         description: Unsuccessful operation.
  */
+
+/**
+ * @swagger
+ * /user/getApprovedAdmins:
+ *   get:
+ *     summary: Retrieve approved admins.
+ *     description: Retrieve all approved admins only active admin can make the request.
+ *     tags:
+ *       - User
+ *     responses:
+ *       200:
+ *         description: Events of the user.
+ *       400:
+ *         description: Unsuccessful operation.
+ */
