@@ -193,3 +193,34 @@
  *       400:
  *         description: Unsuccessful operation.
  */
+
+/**
+ * @swagger
+ * /user/editUserRole/{id}:
+ *   put:
+ *     summary: Update role of user.
+ *     description: Update user role by their ID. Only user who is admin can change role field.
+ *     tags:
+ *       - User
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         type: string
+ *         description: Required `_id` of the user to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               role:
+ *                 type: string
+ *             example:
+ *               role: "organizer"
+ *     responses:
+ *       200:
+ *         description: Details of the user.
+ *       400:
+ *         description: Unsuccessful operation.
+ */
