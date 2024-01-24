@@ -284,3 +284,24 @@
  *       400:
  *         description: Unsuccessful operation.
  */
+
+/**
+ * @swagger
+ * /user/getUserById/{id}:
+ *   get:
+ *     summary: Certain user.
+ *     description: Retrieve a certain user from the `users` collection.
+ *      Only active admin and owner can see requested user!
+ *     tags:
+ *       - User
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: Required `id` of the user to retrieve
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: Details of the user.
+ *       400:
+ *         description: Unsuccessful operation.
+ */
