@@ -367,4 +367,17 @@
  *         description: Unsuccessful operation.
  */
 
-
+/**
+ * @swagger
+ * /user/getMyEvents:
+ *   get:
+ *     summary: Retrieve events of user.
+ *     description: Retrieve all events of the logged in user.
+ *     tags:
+ *       - User
+ *     responses:
+ *       200:
+ *         description: Events of the user.
+ *       400:
+ *         description: Unsuccessful operation.
+ */
