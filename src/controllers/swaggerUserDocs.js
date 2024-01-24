@@ -501,3 +501,19 @@
  *       400:
  *         description: Unsuccessful operation.
  */
+
+/**
+ * @swagger
+ * /user/allUsers:
+ *   get:
+ *     summary: Retrieve all users.
+ *     description: Retrieve all users only active admin can make the request.
+ *     tags:
+ *       - User
+ *     responses:
+ *       200:
+ *         description: Events of the user.
+ *       400:
+ *         description: Unsuccessful operation.
+ */
+
