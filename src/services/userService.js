@@ -250,7 +250,7 @@ async function deleteRestoreMultipleUsers(requestBody, requesterId) {
 async function approveDisapproveSingleUser(userId, requesterId, requestBody) {
   const userForEdit = await User.findById(userId);
   const requester = await User.findById(requesterId);
-  const isAdmin = requester.role == 'admin' ? true : false;
+  const isAdmin = requester?.role == 'admin' ? true : false;
 
   if (!isAdmin || requester.isDeleted || !requester.isApproved) {
     throw new Error('You do not have rights to modify the record!');
