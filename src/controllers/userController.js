@@ -217,8 +217,13 @@ userController.put('/deleteRestoreUsers', async (req, res) => {
 
 userController.get('/getUserById/:id', async (req, res) => {
   try {
-    const userId = req.params.id;
+    const userId = req.params?.id;
     const requesterId = req.requester?._id;
+
+    if (userId === ',' || userId === '{id}') {
+      throw new Error('User "id" is missing!');
+    }
+
     const user = await getUserById(userId, requesterId);
 
     res.send(user);
