@@ -408,6 +408,9 @@ userController.get('/allMyEventsForApproval', async (req, res) => {
 userController.get('/allMyUpcomingEvents', async (req, res) => {
   try {
     const requesterId = req.requester?._id;
+    if (!requesterId) {
+      throw new Error('Нямате достъп до тези данни!');
+    }
     const result = await getUpcomingEvents(requesterId);
     res.status(200).json(result);
     res.end();
