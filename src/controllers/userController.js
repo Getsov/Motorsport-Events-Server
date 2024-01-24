@@ -155,7 +155,6 @@ userController.put('/editUserPassword/:id', async (req, res) => {
     const result = await editUserPassword(userForEdit, req.body, requester);
     res.status(200).json(result);
     res.end();
-    
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -206,7 +205,7 @@ userController.put('/deleteRestoreUser/:id', async (req, res) => {
 userController.put('/deleteRestoreUsers', async (req, res) => {
   try {
     const requester = req.requester?._id;
-    
+
     checkRequestData(req.body);
     const result = await deleteRestoreMultipleUsers(req.body, requester);
     res.status(200).json(result);
@@ -409,7 +408,7 @@ userController.get('/allMyEventsForApproval', async (req, res) => {
 userController.get('/allMyUpcomingEvents', async (req, res) => {
   try {
     const requesterId = req.requester?._id;
-    const result = await getUpcomingEvents();
+    const result = await getUpcomingEvents(requesterId);
     res.status(200).json(result);
     res.end();
   } catch (error) {
