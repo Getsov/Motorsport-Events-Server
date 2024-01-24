@@ -5,7 +5,7 @@ const { generatePassword } = require('../utils/generatePassword');
 
 async function resetPassword(requestBody) {
   // TODO: Try to update the function later, with expired password or magic link..
-  const existingUser = await User.findOne({ email: requestBody.to });
+  const existingUser = await User.findOne({ email: requestBody?.to });
   if (!existingUser) {
     throw new Error('User-Email not found!');
   }

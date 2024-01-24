@@ -171,7 +171,7 @@ async function deleteRestoreSingleUser(
 ) {
   const userForEdit = await User.findById(idOfUserForEdit);
   const requester = await User.findById(requesterId);
-  const isAdmin = requester.role == 'admin' ? true : false;
+  const isAdmin = requester?.role == 'admin' ? true : false;
 
   if (!userForEdit) {
     throw new Error('User not found');
@@ -203,7 +203,7 @@ async function deleteRestoreSingleUser(
 
 async function deleteRestoreMultipleUsers(requestBody, requesterId) {
   const requester = await User.findById(requesterId);
-  const isAdmin = requester.role == 'admin' ? true : false;
+  const isAdmin = requester?.role == 'admin' ? true : false;
   const usersForEdit = requestBody.listOfUsers;
   const updatedUsersList = [];
 
@@ -250,7 +250,7 @@ async function deleteRestoreMultipleUsers(requestBody, requesterId) {
 async function approveDisapproveSingleUser(userId, requesterId, requestBody) {
   const userForEdit = await User.findById(userId);
   const requester = await User.findById(requesterId);
-  const isAdmin = requester.role == 'admin' ? true : false;
+  const isAdmin = requester?.role == 'admin' ? true : false;
 
   if (!isAdmin || requester.isDeleted || !requester.isApproved) {
     throw new Error('You do not have rights to modify the record!');
@@ -282,7 +282,7 @@ async function approveDisapproveSingleUser(userId, requesterId, requestBody) {
 
 async function approveDisapproveMultipleUsers(requestBody, requesterId) {
   const requester = await User.findById(requesterId);
-  const isAdmin = requester.role == 'admin' ? true : false;
+  const isAdmin = requester?.role == 'admin' ? true : false;
   const usersForEdit = requestBody.listOfUsers;
   const updatedUsersList = [];
 

@@ -161,8 +161,13 @@ userController.put('/editUserPassword/:id', async (req, res) => {
 
 userController.put('/editUserRole/:id', async (req, res) => {
   try {
-    const userForEdit = req.params.id;
-    const requester = req.requester._id;
+    const userForEdit = req.params?.id;
+    const requester = req.requester?._id;
+
+    if (userForEdit === ',' || userForEdit === '{id}') {
+      throw new Error('User "id" is missing!');
+    }
+
     checkRequestData(req.body);
     const result = await editUserRole(userForEdit, req.body, requester);
     res.status(200).json(result);
@@ -175,8 +180,13 @@ userController.put('/editUserRole/:id', async (req, res) => {
 
 userController.put('/deleteRestoreUser/:id', async (req, res) => {
   try {
-    const userForEdit = req.params.id;
-    const requester = req.requester._id;
+    const userForEdit = req.params?.id;
+    const requester = req.requester?._id;
+
+    if (userForEdit === ',' || userForEdit === '{id}') {
+      throw new Error('User "id" is missing!');
+    }
+
     checkRequestData(req.body);
     const result = await deleteRestoreSingleUser(
       userForEdit,
@@ -193,7 +203,8 @@ userController.put('/deleteRestoreUser/:id', async (req, res) => {
 
 userController.put('/deleteRestoreUsers', async (req, res) => {
   try {
-    const requester = req.requester._id;
+    const requester = req.requester?._id;
+    
     checkRequestData(req.body);
     const result = await deleteRestoreMultipleUsers(req.body, requester);
     res.status(200).json(result);
@@ -206,8 +217,13 @@ userController.put('/deleteRestoreUsers', async (req, res) => {
 
 userController.get('/getUserById/:id', async (req, res) => {
   try {
-    const userId = req.params.id;
+    const userId = req.params?.id;
     const requesterId = req.requester?._id;
+
+    if (userId === ',' || userId === '{id}') {
+      throw new Error('User "id" is missing!');
+    }
+
     const user = await getUserById(userId, requesterId);
 
     res.send(user);
@@ -220,8 +236,13 @@ userController.get('/getUserById/:id', async (req, res) => {
 // Approving / Disapproving user/organizer
 userController.put('/approveDisapproveUser/:id', async (req, res) => {
   try {
-    const userId = req.params.id;
-    const requesterId = req.requester._id;
+    const userId = req.params?.id;
+    const requesterId = req.requester?._id;
+
+    if (userId === ',' || userId === '{id}') {
+      throw new Error('User "id" is missing!');
+    }
+
     checkRequestData(req.body);
 
     const result = await approveDisapproveSingleUser(
@@ -239,7 +260,7 @@ userController.put('/approveDisapproveUser/:id', async (req, res) => {
 
 userController.put('/approveDisapproveUsers', async (req, res) => {
   try {
-    const requester = req.requester._id;
+    const requester = req.requester?._id;
     checkRequestData(req.body);
     const result = await approveDisapproveMultipleUsers(req.body, requester);
     res.status(200).json(result);
@@ -277,7 +298,7 @@ userController.get('/getMyFavourites', async (req, res) => {
 
 userController.get('/getApprovedAdmins', async (req, res) => {
   try {
-    const requesterId = req.requester._id;
+    const requesterId = req.requester?._id;
     const result = await getApprovedAdmins(requesterId);
     res.status(200).json(result);
     res.end();
@@ -289,7 +310,7 @@ userController.get('/getApprovedAdmins', async (req, res) => {
 
 userController.get('/getAllAdminsForApproval', async (req, res) => {
   try {
-    const requesterId = req.requester._id;
+    const requesterId = req.requester?._id;
     const result = await getAllAdminsForApprovals(requesterId);
     res.status(200).json(result);
     res.end();
@@ -301,7 +322,7 @@ userController.get('/getAllAdminsForApproval', async (req, res) => {
 
 userController.get('/getApprovedOrganizators', async (req, res) => {
   try {
-    const requesterId = req.requester._id;
+    const requesterId = req.requester?._id;
     const result = await getApprovedOrganizators(requesterId);
     res.status(200).json(result);
     res.end();
@@ -313,7 +334,7 @@ userController.get('/getApprovedOrganizators', async (req, res) => {
 
 userController.get('/getAllOrganizersForApproval', async (req, res) => {
   try {
-    const requesterId = req.requester._id;
+    const requesterId = req.requester?._id;
     const result = await getAllOrganizersForApproval(requesterId);
     res.status(200).json(result);
     res.end();
@@ -325,7 +346,7 @@ userController.get('/getAllOrganizersForApproval', async (req, res) => {
 
 userController.get('/allOrganizers', async (req, res) => {
   try {
-    const requesterId = req.requester._id;
+    const requesterId = req.requester?._id;
     const result = await getAllOrganizers(requesterId);
     res.status(200).json(result);
     res.end();
@@ -337,7 +358,7 @@ userController.get('/allOrganizers', async (req, res) => {
 
 userController.get('/allRegularUsers', async (req, res) => {
   try {
-    const requesterId = req.requester._id;
+    const requesterId = req.requester?._id;
     const result = await getAllRegularUsers(requesterId);
     res.status(200).json(result);
     res.end();
@@ -349,7 +370,7 @@ userController.get('/allRegularUsers', async (req, res) => {
 
 userController.get('/allAdmins', async (req, res) => {
   try {
-    const requesterId = req.requester._id;
+    const requesterId = req.requester?._id;
     const result = await getAllAdmins(requesterId);
     res.status(200).json(result);
     res.end();
@@ -361,7 +382,7 @@ userController.get('/allAdmins', async (req, res) => {
 
 userController.get('/allUsers', async (req, res) => {
   try {
-    const requesterId = req.requester._id;
+    const requesterId = req.requester?._id;
     const result = await getAllUsers(requesterId);
     res.status(200).json(result);
     res.end();
