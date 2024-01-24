@@ -486,3 +486,18 @@
  *       400:
  *         description: Unsuccessful operation.
  */
+
+/**
+ * @swagger
+ * /user/allAdmins:
+ *   get:
+ *     summary: Retrieve all admin users.
+ *     description: Retrieve all admin users only active admin can make the request.
+ *     tags:
+ *       - User
+ *     responses:
+ *       200:
+ *         description: Events of the user.
+ *       400:
+ *         description: Unsuccessful operation.
+ */
