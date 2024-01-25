@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
-//TODO: use env and change secret
-const secret = 'q213fdfsddfasd231adfas12321kl';
-
+require('dotenv').config();
+const secret = process.env.AUTH_TOKEN_SECRET;
+console.log(secret);
 function parseToken(token) {
   try {
     return jwt.verify(token, secret);
