@@ -123,7 +123,7 @@
  *       200:
  *         description: Details of the user.
  *       400:
- *         description: Unsuccessful operation.
+ *         description: Unsuccessful request.
  */
 
 /**
@@ -155,7 +155,7 @@
  *       200:
  *         description: Details of the user.
  *       400:
- *         description: Unsuccessful operation.
+ *         description: Unsuccessful request.
  */
 
 /**
@@ -193,7 +193,7 @@
  *       200:
  *         description: Details of the user.
  *       400:
- *         description: Unsuccessful operation.
+ *         description: Unsuccessful request.
  */
 
 /**
@@ -225,7 +225,7 @@
  *       200:
  *         description: Details of the user.
  *       400:
- *         description: Unsuccessful operation.
+ *         description: Unsuccessful request.
  */
 
 /**
@@ -257,7 +257,7 @@
  *       200:
  *         description: Details of the user.
  *       400:
- *         description: Unsuccessful operation.
+ *         description: Unsuccessful request.
  */
 
 /**
@@ -287,7 +287,7 @@
  *       200:
  *         description: Details of the users.
  *       400:
- *         description: Unsuccessful operation.
+ *         description: Unsuccessful request.
  */
 
 /**
@@ -308,7 +308,7 @@
  *       200:
  *         description: Details of the user.
  *       400:
- *         description: Unsuccessful operation.
+ *         description: Unsuccessful request.
  */
 
 /**
@@ -340,7 +340,7 @@
  *       200:
  *         description: Details of the user.
  *       400:
- *         description: Unsuccessful operation.
+ *         description: Unsuccessful request.
  */
 
 /**
@@ -370,7 +370,7 @@
  *       200:
  *         description: Details of the users.
  *       400:
- *         description: Unsuccessful operation.
+ *         description: Unsuccessful request.
  */
 
 /**
@@ -385,7 +385,7 @@
  *       200:
  *         description: Events of the user.
  *       400:
- *         description: Unsuccessful operation.
+ *         description: Unsuccessful request.
  */
 
 /**
@@ -400,7 +400,7 @@
  *       200:
  *         description: Favorite events of the user.
  *       400:
- *         description: Unsuccessful operation.
+ *         description: Unsuccessful request.
  */
 
 /**
@@ -415,7 +415,7 @@
  *       200:
  *         description: All approved admins.
  *       400:
- *         description: Unsuccessful operation.
+ *         description: Unsuccessful request.
  */
 
 /**
@@ -430,7 +430,7 @@
  *       200:
  *         description: All admins for approval.
  *       400:
- *         description: Unsuccessful operation.
+ *         description: Unsuccessful request.
  */
 
 /**
@@ -445,7 +445,7 @@
  *       200:
  *         description: All approved organizers.
  *       400:
- *         description: Unsuccessful operation.
+ *         description: Unsuccessful request.
  */
 
 /**
@@ -460,7 +460,7 @@
  *       200:
  *         description: All unapproved organizers.
  *       400:
- *         description: Unsuccessful operation.
+ *         description: Unsuccessful request.
  */
 
 /**
@@ -475,7 +475,7 @@
  *       200:
  *         description: All organizers.
  *       400:
- *         description: Unsuccessful operation.
+ *         description: Unsuccessful request.
  */
 
 /**
@@ -490,7 +490,7 @@
  *       200:
  *         description: Regular users.
  *       400:
- *         description: Unsuccessful operation.
+ *         description: Unsuccessful request.
  */
 
 /**
@@ -505,7 +505,7 @@
  *       200:
  *         description: Found admins.
  *       400:
- *         description: Unsuccessful operation.
+ *         description: Unsuccessful request.
  */
 
 /**
@@ -520,7 +520,7 @@
  *       200:
  *         description: Found users.
  *       400:
- *         description: Unsuccessful operation.
+ *         description: Unsuccessful request.
  */
 
 /**
@@ -547,5 +547,21 @@
  *       200:
  *         description: Successful message.
  *       400:
- *         description: Unsuccessful operation.
+ *         description: Unsuccessful request.
+ */
+
+/**
+ * @swagger
+ * /user/myEventsForApproval:
+ *   get:
+ *     summary: Fetch all events pending approval by the requester.
+ *     description: Retrieves a list of events awaiting approval,
+ *      exclusively accessible to active owners.
+ *     tags:
+ *       - User
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved events for approval.
+ *       400:
+ *         description: Unsuccessful request.
  */
