@@ -412,7 +412,7 @@ userController.get('/myUpcomingEvents', async (req, res) => {
   try {
     const requesterId = req.requester?._id;
     if (!requesterId) {
-      throw new Error('Нямате достъп до тези данни!');
+      throw new Error('Влезте в профила си!');
     }
     const result = await getUpcomingEvents(requesterId);
     res.status(200).json(result);
@@ -427,7 +427,7 @@ userController.get('/myPastEvents', async (req, res) => {
   try {
     const requesterId = req.requester?._id;
     if (!requesterId) {
-      throw new Error('Нямате достъп до тези данни!');
+      throw new Error('Влезте в профила си!');
     }
     const result = await getPastEvents(requesterId);
     res.status(200).json(result);
