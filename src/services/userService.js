@@ -466,13 +466,16 @@ async function getAllUsers(requesterId) {
 
 async function getMyEventsForApproval(requesterId) {
   const requester = await User.findById(requesterId);
+  if (!requester) {
+    throw new Error('Влезте в профила си!');
+  }
   if (requester.isDeleted) {
     throw new Error('Вашият профил е изтрит!');
   }
   if (!requester.isApproved) {
     throw new Error('Профилът Ви все още не е одобрен!');
   }
-  if (requester.role !== 'organizer' || requester.role !== 'admin') {
+  if (requester.role !== 'organizer' && requester.role !== 'admin') {
     throw new Error('Нямате нужните права за достъп до тези данни!');
   }
   const waitingEvents = await Event.find({
