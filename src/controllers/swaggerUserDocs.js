@@ -554,7 +554,7 @@
  * @swagger
  * /user/myEventsForApproval:
  *   get:
- *     summary: Fetch all events pending approval by the requester.
+ *     summary: Fetch all events who are not deleted and pending approval by the requester.
  *     description: Retrieves a list of events who are not deleted and awaiting approval,
  *      exclusively accessible to active owners.
  *     tags:
@@ -570,7 +570,7 @@
  * @swagger
  * /user/myUpcomingEvents:
  *   get:
- *     summary: Fetch all upcoming events by the requester.
+ *     summary: Fetch all upcoming events who are not deleted by the requester.
  *     description: Retrieves a list of upcoming events who are not deleted and approved,
  *      exclusively accessible to active owners.
  *     tags:
@@ -586,7 +586,7 @@
  * @swagger
  * /user/myPastEvents:
  *   get:
- *     summary: Fetch all past events by the requester.
+ *     summary: Fetch all past events who are not deleted by the requester.
  *     description: Retrieves a list of past events who are not deleted and approved,
  *      exclusively accessible to active owners.
  *     tags:
