@@ -555,7 +555,7 @@
  * /user/myEventsForApproval:
  *   get:
  *     summary: Fetch all events pending approval by the requester.
- *     description: Retrieves a list of events awaiting approval,
+ *     description: Retrieves a list of events who are not deleted and awaiting approval,
  *      exclusively accessible to active owners.
  *     tags:
  *       - User
@@ -571,13 +571,13 @@
  * /user/myUpcomingEvents:
  *   get:
  *     summary: Fetch all upcoming events by the requester.
- *     description: Retrieves a list of upcoming events,
+ *     description: Retrieves a list of upcoming events who are not deleted and approved,
  *      exclusively accessible to active owners.
  *     tags:
  *       - User
  *     responses:
  *       200:
- *         description: Successfully retrieved events for approval.
+ *         description: Successfully retrieved upcoming events.
  *       400:
  *         description: Unsuccessful request.
  */
@@ -587,13 +587,13 @@
  * /user/myPastEvents:
  *   get:
  *     summary: Fetch all past events by the requester.
- *     description: Retrieves a list of past events,
+ *     description: Retrieves a list of past events who are not deleted and approved,
  *      exclusively accessible to active owners.
  *     tags:
  *       - User
  *     responses:
  *       200:
- *         description: Successfully retrieved events for approval.
+ *         description: Successfully retrieved past events.
  *       400:
  *         description: Unsuccessful request.
  */
