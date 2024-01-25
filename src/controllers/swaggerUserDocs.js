@@ -581,3 +581,19 @@
  *       400:
  *         description: Unsuccessful request.
  */
+
+/**
+ * @swagger
+ * /user/myPastEvents:
+ *   get:
+ *     summary: Fetch all past events by the requester.
+ *     description: Retrieves a list of past events,
+ *      exclusively accessible to active owners.
+ *     tags:
+ *       - User
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved events for approval.
+ *       400:
+ *         description: Unsuccessful request.
+ */
