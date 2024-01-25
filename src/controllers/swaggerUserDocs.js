@@ -565,3 +565,19 @@
  *       400:
  *         description: Unsuccessful request.
  */
+
+/**
+ * @swagger
+ * /user/myUpcomingEvents:
+ *   get:
+ *     summary: Fetch all upcoming events by the requester.
+ *     description: Retrieves a list of upcoming events,
+ *      exclusively accessible to active owners.
+ *     tags:
+ *       - User
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved events for approval.
+ *       400:
+ *         description: Unsuccessful request.
+ */
