@@ -1,4 +1,5 @@
 # 'Race Fanatic' Server-Documentation!
+-You also can use the "Swagger" UI for documentation at `http://localhost:3030/swagger/`.
 
 ## Usage:
 
