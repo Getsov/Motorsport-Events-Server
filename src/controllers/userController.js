@@ -22,11 +22,16 @@ const {
   getAllAdminsForApprovals,
   approveDisapproveMultipleUsers,
   getApprovedOrganizators,
+  getMyEventsForApproval,
 } = require('../services/userService');
 
 const { validPassword } = require('../shared/sharedRegex');
 const { checkRequestData } = require('../utils/checkData');
 const { resetPassword } = require('../services/emailService');
+const {
+  getUpcomingEvents,
+  getPastEvents,
+} = require('../services/eventService');
 
 userController.post('/register', async (req, res) => {
   try {
@@ -153,7 +158,6 @@ userController.put('/editUserPassword/:id', async (req, res) => {
     const result = await editUserPassword(userForEdit, req.body, requester);
     res.status(200).json(result);
     res.end();
-    
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -204,7 +208,7 @@ userController.put('/deleteRestoreUser/:id', async (req, res) => {
 userController.put('/deleteRestoreUsers', async (req, res) => {
   try {
     const requester = req.requester?._id;
-    
+
     checkRequestData(req.body);
     const result = await deleteRestoreMultipleUsers(req.body, requester);
     res.status(200).json(result);
@@ -384,6 +388,51 @@ userController.get('/allUsers', async (req, res) => {
   try {
     const requesterId = req.requester?._id;
     const result = await getAllUsers(requesterId);
+    res.status(200).json(result);
+    res.end();
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: error.message });
+  }
+});
+
+userController.get('/myEventsForApproval', async (req, res) => {
+  try {
+    const requesterId = req.requester?._id;
+    if (!requesterId) {
+      throw new Error('Влезте в профила си!');
+    }
+    const result = await getMyEventsForApproval(requesterId);
+    res.status(200).json(result);
+    res.end();
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: error.message });
+  }
+});
+
+userController.get('/myUpcomingEvents', async (req, res) => {
+  try {
+    const requesterId = req.requester?._id;
+    if (!requesterId) {
+      throw new Error('Влезте в профила си!');
+    }
+    const result = await getUpcomingEvents(requesterId);
+    res.status(200).json(result);
+    res.end();
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: error.message });
+  }
+});
+
+userController.get('/myPastEvents', async (req, res) => {
+  try {
+    const requesterId = req.requester?._id;
+    if (!requesterId) {
+      throw new Error('Влезте в профила си!');
+    }
+    const result = await getPastEvents(requesterId);
     res.status(200).json(result);
     res.end();
   } catch (error) {
