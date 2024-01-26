@@ -402,7 +402,7 @@ userController.get('/myEventsForApproval', async (req, res) => {
     if (!requesterId) {
       throw new Error('Влезте в профила си!');
     }
-    const result = await getMyEventsForApproval(requesterId);
+    const result = await getMyEventsForApproval(requesterId, req.query);
     res.status(200).json(result);
     res.end();
   } catch (error) {
