@@ -6,7 +6,7 @@ const { secret } = require('../utils/parseToken');
 const { checkAuthorizedRequests } = require('../utils/securityCheck');
 const { checkAdmin } = require('../utils/adminsCheck');
 const { getAllOrFilteredEventsWithFavorites } = require('./eventService');
-const { sendWhenApproveDisapprove } = require('./emailService');
+const { sendWhenApproveDisapproveUser } = require('./emailService');
 
 async function registerUser(requestBody) {
   const email = requestBody.email;
@@ -255,6 +255,7 @@ async function approveDisapproveSingleUser(userId, requesterId, requestBody) {
   const userForEdit = await User.findById(userId);
   const requester = await User.findById(requesterId);
   const isAdmin = requester?.role == 'admin' ? true : false;
+  // let isApproved = true;
 
   if (!isAdmin || requester.isDeleted || !requester.isApproved) {
     throw new Error('You do not have rights to modify the record!');
@@ -281,6 +282,9 @@ async function approveDisapproveSingleUser(userId, requesterId, requestBody) {
     : (userForEdit.isApproved = false);
 
   const newRecord = await userForEdit.save();
+  let updatedUsersList = [newRecord];
+  sendWhenApproveDisapproveUser(updatedUsersList, requestBody?.isApproved);
+
   return createToken(newRecord);
 }
 
@@ -330,7 +334,7 @@ async function approveDisapproveMultipleUsers(requestBody, requesterId) {
     })
   );
 
-  // sendWhenApproveDisapprove(updatedUsersList, isApproved);
+  sendWhenApproveDisapproveUser(updatedUsersList, isApproved);
   return updatedUsersList;
 }
 
@@ -469,7 +473,7 @@ async function getAllUsers(requesterId) {
 
 async function getMyEventsForApproval(requesterId, query) {
   const requester = await User.findById(requesterId);
-  
+
   if (!requester) {
     throw new Error('Влезте в профила си!');
   }
