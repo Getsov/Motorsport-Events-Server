@@ -292,7 +292,6 @@ async function approveDisapproveMultipleUsers(requestBody, requesterId) {
   const isAdmin = requester?.role == 'admin' ? true : false;
   const usersForEdit = requestBody.listOfUsers;
   const updatedUsersList = [];
-  let isApproved = true;
 
   if (!isAdmin || requester.isDeleted || !requester.isApproved) {
     throw new Error('You do not have rights to modify the record!');
@@ -327,13 +326,13 @@ async function approveDisapproveMultipleUsers(requestBody, requesterId) {
 
       requestBody.isApproved
         ? (userForEdit.isApproved = true)
-        : ((userForEdit.isApproved = false), (isApproved = false));
+        : (userForEdit.isApproved = false);
       const newRecord = await userForEdit.save();
       updatedUsersList.push(newRecord);
     })
   );
 
-  sendWhenApproveDisapproveUser(updatedUsersList, isApproved);
+  sendWhenApproveDisapproveUser(updatedUsersList, requestBody.isApproved);
   return updatedUsersList;
 }
 
