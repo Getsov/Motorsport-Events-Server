@@ -113,7 +113,7 @@ async function sendWhenApproveDisapproveEvent(
 
   const info = await transporter.sendMail(mailOptions);
 
-  console.log('Email sent: ' + info.response);
+  // console.log('Email sent: ' + info.response);
   return info;
 }
 
