@@ -44,16 +44,16 @@ async function resetPassword(requestBody) {
 }
 
 async function sendWhenApproveDisapproveUser(usersList, isApproved) {
-  let text = 'Your profile is approved in Race Fanatic app';
-  const to = [];
+  let text = 'Your profile has been approved in Race Fanatic app';
+  let to = [];
+
   if (!isApproved) {
-    text = 'Your profile is disapproved in Race Fanatic app';
+    text = 'Your profile has been disapproved in Race Fanatic app';
   }
 
   usersList.forEach((user) => {
     to.push(user.email);
   });
-  console.log(to);
 
   const transporter = nodemailer.createTransport({
     host: 'mail.racefanatic.app',
@@ -68,7 +68,7 @@ async function sendWhenApproveDisapproveUser(usersList, isApproved) {
   const mailOptions = {
     from: 'admin@racefanatic.app',
     to,
-    subject: 'Race Fanatic approoved/disapproved profile',
+    subject: 'Race Fanatic approved/unapproved profile',
     text: text,
   };
 
