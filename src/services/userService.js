@@ -464,8 +464,9 @@ async function getAllUsers(requesterId) {
   return allUsers;
 }
 
-async function getMyEventsForApproval(requesterId) {
+async function getMyEventsForApproval(requesterId, query) {
   const requester = await User.findById(requesterId);
+  
   if (!requester) {
     throw new Error('Влезте в профила си!');
   }
@@ -478,11 +479,16 @@ async function getMyEventsForApproval(requesterId) {
   if (requester.role !== 'organizer' && requester.role !== 'admin') {
     throw new Error('Нямате нужните права за достъп до тези данни!');
   }
-  const waitingEvents = await Event.find({
-    isApproved: false,
-    isDeleted: false,
-    creator: requesterId,
-  });
+
+  const waitingEvents = await getAllOrFilteredEventsWithFavorites(
+    query,
+    undefined,
+    {
+      isApproved: false,
+      requesterId,
+    }
+  );
+
   return waitingEvents;
 }
 
