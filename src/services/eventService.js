@@ -3,6 +3,7 @@ const User = require('../models/User');
 const { categories } = require('../shared/categories');
 const { regions } = require('../shared/regions');
 const { limitModels } = require('../utils/limitModels');
+const { sendWhenApproveDisapproveEvent } = require('./emailService');
 
 async function registerEvent(requestBody, requesterId) {
   const requester = await User.findById(requesterId);
@@ -67,7 +68,11 @@ async function findEventByID(eventId, requesterId) {
 
   return event;
 }
-async function getAllOrFilteredEventsWithFavorites(query, idOfLikedUser, ownerOptions) {
+async function getAllOrFilteredEventsWithFavorites(
+  query,
+  idOfLikedUser,
+  ownerOptions
+) {
   const page = query.page;
   const limit = query.limit;
 
@@ -83,9 +88,9 @@ async function getAllOrFilteredEventsWithFavorites(query, idOfLikedUser, ownerOp
   }
 
   if (ownerOptions) {
-    criteria.isApproved = ownerOptions.isApproved,
-    criteria.creator = ownerOptions.requesterId
-    ownerOptions.dates ? criteria.dates = ownerOptions.dates : null
+    (criteria.isApproved = ownerOptions.isApproved),
+      (criteria.creator = ownerOptions.requesterId);
+    ownerOptions.dates ? (criteria.dates = ownerOptions.dates) : null;
   }
 
   if (query.category) {
@@ -257,6 +262,7 @@ async function deleteRestoreEvent(eventId, requesterId, requestBody) {
 async function approveDisapproveEvent(eventId, requesterId, requestBody) {
   const event = await Event.findById(eventId);
   const requester = await User.findById(requesterId);
+  const owner = await User.findById(event.creator);
 
   if (!requester) {
     throw new Error('Потребител с тези данни не е намерен!');
@@ -269,7 +275,7 @@ async function approveDisapproveEvent(eventId, requesterId, requestBody) {
   if (!requester?.isApproved || requester?.isDeleted) {
     throw new Error('Вашият профил е изтрит или е все още неодобрен!');
   }
-
+  
   if (requester?.role !== 'admin') {
     throw new Error('Полето е достъпно за промяна само от Администратор!');
   }
@@ -295,7 +301,11 @@ async function approveDisapproveEvent(eventId, requesterId, requestBody) {
       'Моля подайте правилни данни в тялото на заявката: "isApproved"'
     );
   }
-
+  sendWhenApproveDisapproveEvent(
+    owner.email,
+    requestBody.isApproved,
+    event.shortTitle
+  );
   return await event.save();
 }
 
@@ -362,7 +372,7 @@ async function getUpcomingEvents() {
       date: { $gte: todayStart },
     },
   };
-  
+
   const events = await Event.find(query);
   return events;
 }
@@ -390,7 +400,7 @@ async function getMyUpcomingPastEvents(requesterId, dates, query) {
     {
       isApproved: true,
       requesterId,
-      dates
+      dates,
     }
   );
 
@@ -449,7 +459,7 @@ module.exports = {
   getPastEvents,
   deleteRestoreEvent,
   approveDisapproveEvent,
-  getMyUpcomingPastEvents
+  getMyUpcomingPastEvents,
 };
 
 // Commented code below is for postman tests!
