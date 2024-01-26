@@ -6,6 +6,7 @@ const { secret } = require('../utils/parseToken');
 const { checkAuthorizedRequests } = require('../utils/securityCheck');
 const { checkAdmin } = require('../utils/adminsCheck');
 const { getAllOrFilteredEventsWithFavorites } = require('./eventService');
+const { sendWhenApproveDisapprove } = require('./emailService');
 
 async function registerUser(requestBody) {
   const email = requestBody.email;
@@ -328,6 +329,7 @@ async function approveDisapproveMultipleUsers(requestBody, requesterId) {
     })
   );
 
+  sendWhenApproveDisapprove(updatedUsersList);
   return updatedUsersList;
 }
 
