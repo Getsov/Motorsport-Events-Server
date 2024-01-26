@@ -422,7 +422,7 @@ userController.get('/myUpcomingEvents', async (req, res) => {
     let todayStart = new Date(Date.now());
     todayStart.setHours(0, 0, 0, 0);
 
-    let dates =  {
+    let dates = {
       $elemMatch: {
         date: { $gte: todayStart },
       },
@@ -449,14 +449,14 @@ userController.get('/myPastEvents', async (req, res) => {
     let todayStart = new Date(Date.now());
     todayStart.setHours(0, 0, 0, 0);
 
-    let dates =  {
+    let dates = {
       $not: {
         $elemMatch: {
           date: { $gte: todayStart },
         },
       },
     };
-    
+
     const result = await getMyUpcomingPastEvents(requesterId, dates, req.query);
 
     res.status(200).json(result);
