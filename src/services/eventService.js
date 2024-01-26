@@ -67,7 +67,7 @@ async function findEventByID(eventId, requesterId) {
 
   return event;
 }
-async function getAllOrFilteredEventsWithFavorites(query, idOfLikedUser) {
+async function getAllOrFilteredEventsWithFavorites(query, idOfLikedUser, ownerOptions) {
   const page = query.page;
   const limit = query.limit;
 
@@ -80,6 +80,11 @@ async function getAllOrFilteredEventsWithFavorites(query, idOfLikedUser) {
     criteria.likes = {
       $in: idOfLikedUser,
     };
+  }
+
+  if (ownerOptions) {
+    criteria.isApproved = ownerOptions.isApproved,
+    criteria.creator = ownerOptions.requesterId
   }
 
   if (query.category) {
@@ -373,7 +378,7 @@ async function getUpcomingEvents(requesterId) {
       date: { $gte: todayStart },
     },
   };
-
+  
   const events = await Event.find(query);
   return events;
 }
