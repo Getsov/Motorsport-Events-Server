@@ -42,7 +42,7 @@ async function resetPassword(requestBody) {
   // console.log('Email sent: ' + info.response);
   return info;
 }
-
+//TODO: update reamde
 async function sendWhenApproveDisapproveUsers(usersList, isApproved) {
   let text = 'Your profile has been approved in Race Fanatic app.';
   let subject = 'Profile approved by Race Fanatic';
@@ -79,6 +79,7 @@ async function sendWhenApproveDisapproveUsers(usersList, isApproved) {
   // console.log('Email sent: ' + info.response);
   return info;
 }
+//TODO: update reamde
 async function sendWhenApproveDisapproveEvent(
   userEmail,
   isApproved,
