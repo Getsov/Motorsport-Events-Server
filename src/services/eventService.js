@@ -85,6 +85,7 @@ async function getAllOrFilteredEventsWithFavorites(query, idOfLikedUser, ownerOp
   if (ownerOptions) {
     criteria.isApproved = ownerOptions.isApproved,
     criteria.creator = ownerOptions.requesterId
+    ownerOptions.dates ? criteria.dates = ownerOptions.dates : null
   }
 
   if (query.category) {
@@ -346,28 +347,11 @@ async function getEventsByMonth(startDate, endDate) {
   return events;
 }
 
-async function getUpcomingEvents(requesterId) {
+async function getUpcomingEvents() {
   let query = {
     isDeleted: false,
     isApproved: true,
   };
-
-  if (requesterId) {
-    const requester = await User.findById(requesterId);
-
-    if (!requester) {
-      throw new Error('Потребител с тези данни не е намерен!');
-    }
-
-    if (requester?.isDeleted === true) {
-      throw new Error('Вашият профил е изтрит!');
-    }
-
-    if (!requester?.isApproved) {
-      throw new Error('Профилът Ви не е одобрен!');
-    }
-    query.creator = requesterId;
-  }
 
   let todayStart = new Date(Date.now());
   todayStart.setHours(0, 0, 0, 0);
@@ -383,12 +367,7 @@ async function getUpcomingEvents(requesterId) {
   return events;
 }
 
-async function getPastEvents(requesterId) {
-  let query = {
-    isDeleted: false,
-    isApproved: true,
-  };
-
+async function getMyUpcomingPastEvents(requesterId, dates, query) {
   if (requesterId) {
     const requester = await User.findById(requesterId);
 
@@ -403,8 +382,26 @@ async function getPastEvents(requesterId) {
     if (!requester?.isApproved) {
       throw new Error('Профилът Ви не е одобрен!');
     }
-    query.creator = requesterId;
   }
+
+  const upcomingEvents = await getAllOrFilteredEventsWithFavorites(
+    query,
+    undefined,
+    {
+      isApproved: true,
+      requesterId,
+      dates
+    }
+  );
+
+  return upcomingEvents;
+}
+
+async function getPastEvents() {
+  let query = {
+    isDeleted: false,
+    isApproved: true,
+  };
 
   let todayStart = new Date(Date.now());
   todayStart.setHours(0, 0, 0, 0);
@@ -452,6 +449,7 @@ module.exports = {
   getPastEvents,
   deleteRestoreEvent,
   approveDisapproveEvent,
+  getMyUpcomingPastEvents
 };
 
 // Commented code below is for postman tests!
