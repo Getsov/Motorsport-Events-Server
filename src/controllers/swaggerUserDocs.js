@@ -555,10 +555,31 @@
  * /user/myEventsForApproval:
  *   get:
  *     summary: Fetch all events which are not deleted and pending approval by the requester.
+ *      Pagination + sorting + search operations are available on events.
  *     description: Retrieves a list of events which are not deleted and awaiting approval,
- *      exclusively accessible to active owners.
+ *      exclusively accessible to active owners. Keep in mind for the default query parameters!
  *     tags:
  *       - User
+ *     parameters:
+ *       - name: page
+ *         in: query
+ *         description: Add `page` number for pagination
+ *         type: integer
+ *         default: 1
+ *       - name: limit
+ *         in: query
+ *         description: Add `limit` number for pagination
+ *         type: integer
+ *         default: 2
+ *       - name: category
+ *         in: query
+ *         description: Add `category` number for sorting from 1 to 16
+ *         type: integer
+ *         default: 2
+ *       - name: search
+ *         in: query
+ *         description: Add `search` string for searching
+ *         type: string
  *     responses:
  *       200:
  *         description: Successfully retrieved events for approval.
@@ -571,10 +592,31 @@
  * /user/myUpcomingEvents:
  *   get:
  *     summary: Fetch all upcoming events which are not deleted by the requester.
+ *      Pagination + sorting + search operations are available on events.
  *     description: Retrieves a list of upcoming events which are not deleted and approved,
- *      exclusively accessible to active owners.
+ *      exclusively accessible to active owners. Keep in mind for the default query parameters!
  *     tags:
  *       - User
+ *     parameters:
+ *       - name: page
+ *         in: query
+ *         description: Add `page` number for pagination
+ *         type: integer
+ *         default: 1
+ *       - name: limit
+ *         in: query
+ *         description: Add `limit` number for pagination
+ *         type: integer
+ *         default: 2
+ *       - name: category
+ *         in: query
+ *         description: Add `category` number for sorting from 1 to 16
+ *         type: integer
+ *         default: 2
+ *       - name: search
+ *         in: query
+ *         description: Add `search` string for searching
+ *         type: string
  *     responses:
  *       200:
  *         description: Successfully retrieved upcoming events.
@@ -587,10 +629,31 @@
  * /user/myPastEvents:
  *   get:
  *     summary: Fetch all past events which are not deleted by the requester.
+ *      Pagination + sorting + search operations are available on events.
  *     description: Retrieves a list of past events which are not deleted and approved,
- *      exclusively accessible to active owners.
+ *      exclusively accessible to active owners. Keep in mind for the default query parameters!
  *     tags:
  *       - User
+ *     parameters:
+ *       - name: page
+ *         in: query
+ *         description: Add `page` number for pagination
+ *         type: integer
+ *         default: 1
+ *       - name: limit
+ *         in: query
+ *         description: Add `limit` number for pagination
+ *         type: integer
+ *         default: 2
+ *       - name: category
+ *         in: query
+ *         description: Add `category` number for sorting from 1 to 16
+ *         type: integer
+ *         default: 2
+ *       - name: search
+ *         in: query
+ *         description: Add `search` string for searching
+ *         type: string
  *     responses:
  *       200:
  *         description: Successfully retrieved past events.

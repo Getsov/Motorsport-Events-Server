@@ -456,7 +456,7 @@ userController.get('/myPastEvents', async (req, res) => {
         },
       },
     };
-    console.log('what');
+    
     const result = await getMyUpcomingPastEvents(requesterId, dates, req.query);
 
     res.status(200).json(result);
