@@ -377,7 +377,7 @@ async function getUserById(userId, requesterId) {
     throw new Error('You are not authorized to see User details!');
   }
 
-  return user;
+  return createToken(user);
 }
 
 async function getApprovedAdmins(requesterId) {
