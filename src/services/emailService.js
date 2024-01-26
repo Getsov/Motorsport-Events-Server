@@ -44,11 +44,13 @@ async function resetPassword(requestBody) {
 }
 
 async function sendWhenApproveDisapproveUsers(usersList, isApproved) {
-  let text = 'Your profile has been approved in Race Fanatic app';
+  let text = 'Your profile has been approved in Race Fanatic app.';
+  let subject = 'Profile approved by Race Fanatic';
   let to = [];
 
   if (!isApproved) {
-    text = 'Your profile has been disapproved in Race Fanatic app';
+    text = 'Your profile has been disapproved in Race Fanatic app.';
+    subject = 'Profile dissapproved by Race Fanatic';
   }
 
   usersList.forEach((user) => {
@@ -68,7 +70,7 @@ async function sendWhenApproveDisapproveUsers(usersList, isApproved) {
   const mailOptions = {
     from: 'admin@racefanatic.app',
     to,
-    subject: 'Race Fanatic approved/unapproved profile',
+    subject: subject,
     text: text,
   };
 
@@ -83,11 +85,13 @@ async function sendWhenApproveDisapproveEvent(
   eventName
 ) {
   let text =
-    'Your event ' + eventName + ' has been approved in Race Fanatic app';
+    'Your event "' + eventName + '" has been approved in Race Fanatic app';
+  let subject = 'Event approved by Race Fanatic';
 
   if (!isApproved) {
     text =
-      'Your event ' + eventName + ' has been disapproved in Race Fanatic app';
+      'Your event "' + eventName + '" has been disapproved in Race Fanatic app';
+    subject = 'Event dissapproved by Race Fanatic';
   }
 
   const transporter = nodemailer.createTransport({
@@ -103,7 +107,7 @@ async function sendWhenApproveDisapproveEvent(
   const mailOptions = {
     from: 'admin@racefanatic.app',
     to: userEmail,
-    subject: 'Race Fanatic approved/unapproved profile',
+    subject: subject,
     text: text,
   };
 
