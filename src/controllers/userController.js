@@ -29,8 +29,8 @@ const { validPassword } = require('../shared/sharedRegex');
 const { checkRequestData } = require('../utils/checkData');
 const { resetPassword } = require('../services/emailService');
 const {
-  getUpcomingEvents,
   getPastEvents,
+  getMyUpcomingPastEvents,
 } = require('../services/eventService');
 
 userController.post('/register', async (req, res) => {
@@ -414,10 +414,22 @@ userController.get('/myEventsForApproval', async (req, res) => {
 userController.get('/myUpcomingEvents', async (req, res) => {
   try {
     const requesterId = req.requester?._id;
+
     if (!requesterId) {
       throw new Error('Влезте в профила си!');
     }
-    const result = await getUpcomingEvents(requesterId);
+
+    let todayStart = new Date(Date.now());
+    todayStart.setHours(0, 0, 0, 0);
+
+    let dates =  {
+      $elemMatch: {
+        date: { $gte: todayStart },
+      },
+    };
+
+    const result = await getMyUpcomingPastEvents(requesterId, dates, req.query);
+
     res.status(200).json(result);
     res.end();
   } catch (error) {
@@ -429,10 +441,24 @@ userController.get('/myUpcomingEvents', async (req, res) => {
 userController.get('/myPastEvents', async (req, res) => {
   try {
     const requesterId = req.requester?._id;
+
     if (!requesterId) {
       throw new Error('Влезте в профила си!');
     }
-    const result = await getPastEvents(requesterId);
+
+    let todayStart = new Date(Date.now());
+    todayStart.setHours(0, 0, 0, 0);
+
+    let dates =  {
+      $not: {
+        $elemMatch: {
+          date: { $gte: todayStart },
+        },
+      },
+    };
+    console.log('what');
+    const result = await getMyUpcomingPastEvents(requesterId, dates, req.query);
+
     res.status(200).json(result);
     res.end();
   } catch (error) {
