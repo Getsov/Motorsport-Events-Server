@@ -302,7 +302,7 @@
  *     summary: Approve/Disapprove Event
  *     description: Approve event, event's `isApproved` property can be changed,
  *       by active admin only! Admins can change the property to true or false. Whenever
- *       they decide
+ *       they decide. After a successful operation, email will be sent to the users.
  *     tags:
  *       - Event
  *     requestBody:
