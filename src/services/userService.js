@@ -53,7 +53,7 @@ async function loginUser(email, password) {
   }
   const accessToken = createAccessToken(user);
   const refreshToken = createRefreshToken(user);
-  return { accessToken, refreshToken };
+  return { accessToken, refreshToken, user };
 }
 
 //updateUser can be invoked by adminController and userController
