@@ -92,7 +92,16 @@ userController.post('/login', async (req, res) => {
   try {
     checkRequestData(req.body);
     const user = await loginUser(req.body.email, req.body.password);
-    res.status(200).json(user);
+    const accessToken = user.accessToken;
+    const refreshToken = user.refreshToken;
+    res
+      .status(200)
+      .cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        sameSite: 'strict',
+      })
+      // .header('Authorization', accessToken)
+      .send(accessToken);
     res.end();
   } catch (error) {
     console.log(error);
