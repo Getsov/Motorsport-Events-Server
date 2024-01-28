@@ -318,7 +318,7 @@
  *     summary: Approve/Disapprove user.
  *     description: Approve/Disapprove user `isApproved` property by their ID.
  *      Only active admin can change `isApproved` field. After a successful operation,
- *      emails will be sent to the users.
+ *      email will be sent to the user.
  *     tags:
  *       - User
  *     parameters:
@@ -351,7 +351,7 @@
  *     summary: Approve/Disapprove users.
  *     description: Update users `isApproved` property by their ID.
  *      Only active admin can change `isApproved` field. After a successful operation,
- *      emails will be sent to the users.
+ *      email will be sent to the users.
  *     tags:
  *       - User
  *     requestBody:
