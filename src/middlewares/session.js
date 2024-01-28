@@ -1,14 +1,24 @@
-const { parseToken } = require('../utils/parseToken');
+const { parseAccesToken } = require('../utils/parseToken');
+const { parseRefreshToken } = require('../utils/parseToken');
 
 module.exports = () => (req, res, next) => {
   const token = req.headers['x-authorization'];
+  const refreshtoken = req.body.refreshToken;
   if (token) {
     try {
-      const payload = parseToken(token);
+      const payload = parseAccesToken(token);
       req.requester = payload;
       req.token = token;
     } catch (error) {
       return res.status(401).json({ message: 'Invalid authorization token' });
+    }
+  } else if (refreshtoken) {
+    try {
+      const payload = parseRefreshToken(refreshtoken);
+      const pathInfo = path.parse(filePath);
+      console.log(pathInfo);
+    } catch (error) {
+      return res.status(401).json({ message: 'Invalid refresh token' });
     }
   }
   next();
