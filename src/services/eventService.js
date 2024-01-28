@@ -88,8 +88,8 @@ async function getAllOrFilteredEventsWithFavorites(
   }
 
   if (ownerOptions.requesterId) {
-    criteria.creator = ownerOptions.requesterId
     criteria.isApproved = ownerOptions.isApproved
+    criteria.creator = ownerOptions.requesterId
   }
   
   if (query.dates) {
