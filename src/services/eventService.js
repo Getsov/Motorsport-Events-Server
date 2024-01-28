@@ -87,12 +87,13 @@ async function getAllOrFilteredEventsWithFavorites(
     };
   }
 
-  if (ownerOptions) {
-    (criteria.isApproved = ownerOptions.isApproved),
-      (criteria.creator = ownerOptions.requesterId);
-    ownerOptions.dates ? (criteria.dates = ownerOptions.dates) : null;
-  } else if (query.dates) {
-    criteria.dates = query.dates
+  if (ownerOptions.requesterId) {
+    criteria.creator = ownerOptions.requesterId
+    criteria.isApproved = ownerOptions.isApproved
+  }
+  
+  if (query.dates) {
+    criteria.dates = query.dates;
   }
 
   if (query.category) {
@@ -359,24 +360,9 @@ async function getEventsByMonth(startDate, endDate) {
   return events;
 }
 
-async function getUpcomingEvents(query) {
-  let todayStart = new Date(Date.now());
-  todayStart.setHours(0, 0, 0, 0);
-  // An event is upcoming if any of its dates are on or after todayEnd
-  query.dates = {
-    $elemMatch: {
-      date: { $gte: todayStart },
-    },
-  };
-
-  const events = await getAllOrFilteredEventsWithFavorites(query);
-  return events;
-}
-
-async function getMyUpcomingPastEvents(requesterId, dates, query) {
+async function getUpcomingEvents(requesterId, query) {
   if (requesterId) {
     const requester = await User.findById(requesterId);
-
     if (!requester) {
       throw new Error('Потребител с тези данни не е намерен!');
     }
@@ -390,20 +376,42 @@ async function getMyUpcomingPastEvents(requesterId, dates, query) {
     }
   }
 
-  const upcomingEvents = await getAllOrFilteredEventsWithFavorites(
+  let todayStart = new Date(Date.now());
+  todayStart.setHours(0, 0, 0, 0);
+  // An event is upcoming if any of its dates are on or after todayEnd
+  query.dates = {
+    $elemMatch: {
+      date: { $gte: todayStart },
+    },
+  };
+
+  const events = await getAllOrFilteredEventsWithFavorites(
     query,
     undefined,
     {
       isApproved: true,
       requesterId,
-      dates,
     }
   );
-
-  return upcomingEvents;
+  return events;
 }
 
-async function getPastEvents(query) {
+async function getPastEvents(requesterId, query) {
+  if (requesterId) {
+    const requester = await User.findById(requesterId);
+    if (!requester) {
+      throw new Error('Потребител с тези данни не е намерен!');
+    }
+
+    if (requester?.isDeleted === true) {
+      throw new Error('Вашият профил е изтрит!');
+    }
+
+    if (!requester?.isApproved) {
+      throw new Error('Профилът Ви не е одобрен!');
+    }
+  }
+
   let todayStart = new Date(Date.now());
   todayStart.setHours(0, 0, 0, 0);
   // An event is past if all of its dates are before todayStart
@@ -415,7 +423,14 @@ async function getPastEvents(query) {
     },
   };
 
-  const events = await getAllOrFilteredEventsWithFavorites(query);
+  const events = await getAllOrFilteredEventsWithFavorites(
+    query,
+    undefined,
+    {
+      isApproved: true,
+      requesterId,
+    }
+  );
   return events;
 }
 
@@ -449,7 +464,6 @@ module.exports = {
   getPastEvents,
   deleteRestoreEvent,
   approveDisapproveEvent,
-  getMyUpcomingPastEvents,
 };
 
 // Commented code below is for postman tests!
