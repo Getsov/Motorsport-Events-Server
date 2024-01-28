@@ -359,16 +359,7 @@ async function getEventsByMonth(startDate, endDate) {
   return events;
 }
 
-async function getUpcomingEvents(query) {
-  let todayStart = new Date(Date.now());
-  todayStart.setHours(0, 0, 0, 0);
-  // An event is upcoming if any of its dates are on or after todayEnd
-  query.dates = {
-    $elemMatch: {
-      date: { $gte: todayStart },
-    },
-  };
-
+async function getUpcomingPastEvents(query) {
   const events = await getAllOrFilteredEventsWithFavorites(query);
   return events;
 }
@@ -403,22 +394,6 @@ async function getMyUpcomingPastEvents(requesterId, dates, query) {
   return upcomingEvents;
 }
 
-async function getPastEvents(query) {
-  let todayStart = new Date(Date.now());
-  todayStart.setHours(0, 0, 0, 0);
-  // An event is past if all of its dates are before todayStart
-  query.dates = {
-    $not: {
-      $elemMatch: {
-        date: { $gte: todayStart },
-      },
-    },
-  };
-
-  const events = await getAllOrFilteredEventsWithFavorites(query);
-  return events;
-}
-
 async function getAllEventsForApproval(requesterId) {
   const requester = await User.findById(requesterId);
   if (requester.isDeleted) {
@@ -445,8 +420,7 @@ module.exports = {
   likeUnlikeEvent,
   getEventsByMonth,
   getAllEventsForApproval,
-  getUpcomingEvents,
-  getPastEvents,
+  getUpcomingPastEvents,
   deleteRestoreEvent,
   approveDisapproveEvent,
   getMyUpcomingPastEvents,
