@@ -5,6 +5,7 @@ module.exports = () => (req, res, next) => {
   const refreshtoken = req.body.refreshToken;
   const path = req.path;
   console.log(path);
+  //TODO: IT IS NOT FINISHED
   if (path != '/refreshToken') {
     if (token) {
       try {
