@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const { secret } = require('../utils/parseToken');
+const { secretAccesToken, secretRefreshToken } = require('../utils/parseToken');
 const { checkAuthorizedRequests } = require('../utils/securityCheck');
 const { checkAdmin } = require('../utils/adminsCheck');
 const { getAllOrFilteredEventsWithFavorites } = require('./eventService');
@@ -526,6 +526,13 @@ async function addEventToCreatedEvents(eventId, userId) {
   return await existingUser.save();
 }
 
+async function getUserForTokenGenereating(userId) {
+  const user = await User.findById(userId);
+  const accessToken = createAccessToken(user);
+  const refreshToken = createRefreshToken(user);
+  return { accessToken, refreshToken };
+}
+
 function createAccessToken(user) {
   // As a rule, seconds are set for the duration of tokens.
   const expiresInTenDays = 10 * 24 * 60 * 60;
@@ -556,7 +563,9 @@ function createAccessToken(user) {
     isApproved: user.isApproved,
     likedEvents: user.likedEvents,
     createdEvents: user.createdEvents,
-    accessToken: jwt.sign(payload, secret, { expiresIn: expiresInTenDays }),
+    accessToken: jwt.sign(payload, secretAccesToken, {
+      expiresIn: expiresInTenDays,
+    }),
   };
 }
 
@@ -568,7 +577,9 @@ function createRefreshToken(user) {
     email: user.email,
   };
 
-  return jwt.sign(payload, secret, { expiresIn: expiresInThirtyDays });
+  return jwt.sign(payload, secretRefreshToken, {
+    expiresIn: expiresInThirtyDays,
+  });
 }
 
 module.exports = {
@@ -596,4 +607,5 @@ module.exports = {
   getAllUsers,
   getMyEventsForApproval,
   getUserById,
+  getUserForTokenGenereating,
 };
