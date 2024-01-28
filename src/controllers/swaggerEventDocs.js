@@ -86,6 +86,26 @@
  *       Only approved and not deleted events will be shown!
  *     tags:
  *       - Event
+ *     parameters:
+ *       - name: page
+ *         in: query
+ *         description: Add `page` number for pagination
+ *         type: integer
+ *         default: 1
+ *       - name: limit
+ *         in: query
+ *         description: Add `limit` number for pagination
+ *         type: integer
+ *         default: 2
+ *       - name: category
+ *         in: query
+ *         description: Add `category` number for sorting from 1 to 16
+ *         type: integer
+ *         default: 2
+ *       - name: search
+ *         in: query
+ *         description: Add `search` string for searching
+ *         type: string
  *     responses:
  *       200:
  *         description: Array of events or empty Array if no events in the Database.
@@ -102,6 +122,26 @@
  *       Only approved and not deleted events will be shown!
  *     tags:
  *       - Event
+ *     parameters:
+ *       - name: page
+ *         in: query
+ *         description: Add `page` number for pagination
+ *         type: integer
+ *         default: 1
+ *       - name: limit
+ *         in: query
+ *         description: Add `limit` number for pagination
+ *         type: integer
+ *         default: 2
+ *       - name: category
+ *         in: query
+ *         description: Add `category` number for sorting from 1 to 16
+ *         type: integer
+ *         default: 2
+ *       - name: search
+ *         in: query
+ *         description: Add `search` string for searching
+ *         type: string
  *     responses:
  *       200:
  *         description: Array of events or empty Array if no events in the Database.
