@@ -91,6 +91,8 @@ async function getAllOrFilteredEventsWithFavorites(
     (criteria.isApproved = ownerOptions.isApproved),
       (criteria.creator = ownerOptions.requesterId);
     ownerOptions.dates ? (criteria.dates = ownerOptions.dates) : null;
+  } else if (query.dates) {
+    criteria.dates = query.dates
   }
 
   if (query.category) {
@@ -357,15 +359,9 @@ async function getEventsByMonth(startDate, endDate) {
   return events;
 }
 
-async function getUpcomingEvents() {
-  let query = {
-    isDeleted: false,
-    isApproved: true,
-  };
-
+async function getUpcomingEvents(query) {
   let todayStart = new Date(Date.now());
   todayStart.setHours(0, 0, 0, 0);
-  // Query for upcoming events
   // An event is upcoming if any of its dates are on or after todayEnd
   query.dates = {
     $elemMatch: {
@@ -373,7 +369,7 @@ async function getUpcomingEvents() {
     },
   };
 
-  const events = await Event.find(query);
+  const events = await getAllOrFilteredEventsWithFavorites(query);
   return events;
 }
 
@@ -407,15 +403,9 @@ async function getMyUpcomingPastEvents(requesterId, dates, query) {
   return upcomingEvents;
 }
 
-async function getPastEvents() {
-  let query = {
-    isDeleted: false,
-    isApproved: true,
-  };
-
+async function getPastEvents(query) {
   let todayStart = new Date(Date.now());
   todayStart.setHours(0, 0, 0, 0);
-  // Query for past events
   // An event is past if all of its dates are before todayStart
   query.dates = {
     $not: {
@@ -425,7 +415,7 @@ async function getPastEvents() {
     },
   };
 
-  const events = await Event.find(query);
+  const events = await getAllOrFilteredEventsWithFavorites(query);
   return events;
 }
 
