@@ -70,8 +70,8 @@ async function findEventByID(eventId, requesterId) {
 }
 async function getAllOrFilteredEventsWithFavorites(
   query,
-  idOfLikedUser,
-  ownerOptions
+  ownerOptions,
+  idOfLikedUser
 ) {
   const page = query.page;
   const limit = query.limit;
@@ -385,7 +385,7 @@ async function getUpcomingEvents(query, requesterId) {
     },
   };
 
-  const events = await getAllOrFilteredEventsWithFavorites(query, undefined, {
+  const events = await getAllOrFilteredEventsWithFavorites(query, {
     isApproved: true,
     requesterId,
   });
@@ -419,7 +419,7 @@ async function getPastEvents(query, requesterId) {
     },
   };
 
-  const events = await getAllOrFilteredEventsWithFavorites(query, undefined, {
+  const events = await getAllOrFilteredEventsWithFavorites(query, {
     isApproved: true,
     requesterId,
   });
