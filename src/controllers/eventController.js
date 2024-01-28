@@ -7,10 +7,9 @@ const {
   likeUnlikeEvent,
   getEventsByMonth,
   getAllEventsForApproval,
-  getPastEvents,
-  getUpcomingEvents,
   deleteRestoreEvent,
   approveDisapproveEvent,
+  getUpcomingPastEvents,
 } = require('../services/eventService');
 const {
   addRemoveLikedEvent,
@@ -60,7 +59,16 @@ eventController.post('/register', async (req, res) => {
 // Upcoming Events
 eventController.get('/upcomingEvents', async (req, res) => {
   try {
-    const events = await getUpcomingEvents(req.query);
+    let todayStart = new Date(Date.now());
+    todayStart.setHours(0, 0, 0, 0);
+    // An event is upcoming if any of its dates are on or after todayEnd
+    req.query.dates = {
+      $elemMatch: {
+        date: { $gte: todayStart },
+      },
+    };
+
+    const events = await getUpcomingPastEvents(req.query);
 
     res.status(200).json(events);
     res.end();
@@ -73,7 +81,18 @@ eventController.get('/upcomingEvents', async (req, res) => {
 // Past events
 eventController.get('/pastEvents', async (req, res) => {
   try {
-    const events = await getPastEvents(req.query);
+    let todayStart = new Date(Date.now());
+    todayStart.setHours(0, 0, 0, 0);
+    // An event is past if all of its dates are before todayStart
+    req.query.dates = {
+      $not: {
+        $elemMatch: {
+          date: { $gte: todayStart },
+        },
+      },
+    };
+
+    const events = await getUpcomingPastEvents(req.query);
 
     res.status(200).json(events);
     res.end();
