@@ -417,7 +417,7 @@ userController.get('/myUpcomingEvents', async (req, res) => {
     if (!requesterId) {
       throw new Error('Влезте в профила си!');
     }
-    const result = await getUpcomingEvents(requesterId, req.query);
+    const result = await getUpcomingEvents(req.query, requesterId);
     res.status(200).json(result);
     res.end();
   } catch (error) {
@@ -432,7 +432,7 @@ userController.get('/myPastEvents', async (req, res) => {
     if (!requesterId) {
       throw new Error('Влезте в профила си!');
     }
-    const result = await getPastEvents(requesterId, req.query);
+    const result = await getPastEvents(req.query, requesterId);
     res.status(200).json(result);
     res.end();
   } catch (error) {
