@@ -79,9 +79,9 @@
 
 /**
  * @swagger
- * /events/upcomingEvents:
+ * /events/upcomingEvents?page=&limit=&category=&search=:
  *   get:
- *     summary: Upcoming events
+ *     summary: Pagination + sorting + search operations on upcoming events
  *     description: If you want to get upcoming `events` send a get request.
  *       Only approved and not deleted events will be shown!
  *     tags:
@@ -115,9 +115,9 @@
 
 /**
  * @swagger
- * /events/pastEvents:
+ * /events/pastEvents?page=&limit=&category=&search=:
  *   get:
- *     summary: Past events
+ *     summary: Pagination + sorting + search operations on past events
  *     description: If you want to get past `events` send a get request.
  *       Only approved and not deleted events will be shown!
  *     tags:
