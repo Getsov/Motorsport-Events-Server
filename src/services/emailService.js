@@ -43,13 +43,13 @@ async function resetPassword(requestBody) {
   return info;
 }
 async function sendUserApprovalEmail(usersList, isApproved) {
-  let text = 'Your profile has been approved in Race Fanatic app.';
-  let subject = 'Profile approved by Race Fanatic';
+  let text = 'Congratulations! Your profile has been successfully approved for the Race Fanatic app.';
+  let subject = 'Welcome Aboard! Your Race Fanatic Profile is Approved.';
   let to = [];
 
   if (!isApproved) {
-    text = 'Your profile has been disapproved in Race Fanatic app.';
-    subject = 'Profile dissapproved by Race Fanatic';
+    text = 'We regret to inform you that your profile has not met the approval criteria for the Race Fanatic app at this time. Please check our guidelines and feel free to reapply.';
+    subject = 'Race Fanatic Profile Review: Important Update.';
   }
 
   usersList.forEach((user) => {
