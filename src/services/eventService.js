@@ -360,7 +360,7 @@ async function getEventsByMonth(startDate, endDate) {
   return events;
 }
 
-async function getUpcomingEvents(requesterId, query) {
+async function getUpcomingEvents(query, requesterId) {
   if (requesterId) {
     const requester = await User.findById(requesterId);
     if (!requester) {
@@ -396,7 +396,7 @@ async function getUpcomingEvents(requesterId, query) {
   return events;
 }
 
-async function getPastEvents(requesterId, query) {
+async function getPastEvents(query, requesterId) {
   if (requesterId) {
     const requester = await User.findById(requesterId);
     if (!requester) {
