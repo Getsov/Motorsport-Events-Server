@@ -51,7 +51,9 @@ async function loginUser(email, password) {
   if (!match) {
     throw new Error('Invalid email or password!');
   }
-  return createToken(user);
+  const accessToken = createAccessToken(user);
+  const refreshToken = createRefreshToken(user);
+  return { accessToken, refreshToken };
 }
 
 //updateUser can be invoked by adminController and userController
@@ -524,7 +526,7 @@ async function addEventToCreatedEvents(eventId, userId) {
   return await existingUser.save();
 }
 
-function createToken(user) {
+function createAccessToken(user) {
   // As a rule, seconds are set for the duration of tokens.
   const expiresInTenDays = 10 * 24 * 60 * 60;
 
@@ -556,6 +558,17 @@ function createToken(user) {
     createdEvents: user.createdEvents,
     accessToken: jwt.sign(payload, secret, { expiresIn: expiresInTenDays }),
   };
+}
+
+function createRefreshToken(user) {
+  const expiresInThirtyDays = 30 * 24 * 60 * 60;
+
+  const payload = {
+    _id: user._id,
+    email: user.email,
+  };
+
+  return jwt.sign(payload, secret, { expiresIn: expiresInThirtyDays });
 }
 
 module.exports = {
