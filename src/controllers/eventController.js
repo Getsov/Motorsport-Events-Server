@@ -60,7 +60,7 @@ eventController.post('/register', async (req, res) => {
 // Upcoming Events
 eventController.get('/upcomingEvents', async (req, res) => {
   try {
-    const events = await getUpcomingEvents();
+    const events = await getUpcomingEvents(req.query);
 
     res.status(200).json(events);
     res.end();
@@ -73,7 +73,7 @@ eventController.get('/upcomingEvents', async (req, res) => {
 // Past events
 eventController.get('/pastEvents', async (req, res) => {
   try {
-    const events = await getPastEvents();
+    const events = await getPastEvents(req.query);
 
     res.status(200).json(events);
     res.end();

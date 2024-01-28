@@ -79,13 +79,33 @@
 
 /**
  * @swagger
- * /events/upcomingEvents:
+ * /events/upcomingEvents?page=&limit=&category=&search=:
  *   get:
- *     summary: Upcoming events
+ *     summary: Pagination + sorting + search operations on upcoming events
  *     description: If you want to get upcoming `events` send a get request.
  *       Only approved and not deleted events will be shown!
  *     tags:
  *       - Event
+ *     parameters:
+ *       - name: page
+ *         in: query
+ *         description: Add `page` number for pagination
+ *         type: integer
+ *         default: 1
+ *       - name: limit
+ *         in: query
+ *         description: Add `limit` number for pagination
+ *         type: integer
+ *         default: 2
+ *       - name: category
+ *         in: query
+ *         description: Add `category` number for sorting from 1 to 16
+ *         type: integer
+ *         default: 2
+ *       - name: search
+ *         in: query
+ *         description: Add `search` string for searching
+ *         type: string
  *     responses:
  *       200:
  *         description: Array of events or empty Array if no events in the Database.
@@ -95,13 +115,33 @@
 
 /**
  * @swagger
- * /events/pastEvents:
+ * /events/pastEvents?page=&limit=&category=&search=:
  *   get:
- *     summary: Past events
+ *     summary: Pagination + sorting + search operations on past events
  *     description: If you want to get past `events` send a get request.
  *       Only approved and not deleted events will be shown!
  *     tags:
  *       - Event
+ *     parameters:
+ *       - name: page
+ *         in: query
+ *         description: Add `page` number for pagination
+ *         type: integer
+ *         default: 1
+ *       - name: limit
+ *         in: query
+ *         description: Add `limit` number for pagination
+ *         type: integer
+ *         default: 2
+ *       - name: category
+ *         in: query
+ *         description: Add `category` number for sorting from 1 to 16
+ *         type: integer
+ *         default: 2
+ *       - name: search
+ *         in: query
+ *         description: Add `search` string for searching
+ *         type: string
  *     responses:
  *       200:
  *         description: Array of events or empty Array if no events in the Database.
@@ -302,7 +342,7 @@
  *     summary: Approve/Disapprove Event
  *     description: Approve event, event's `isApproved` property can be changed,
  *       by active admin only! Admins can change the property to true or false. Whenever
- *       they decide
+ *       they decide. After a successful operation, email will be sent to the users.
  *     tags:
  *       - Event
  *     requestBody:

@@ -29,8 +29,8 @@ const { validPassword } = require('../shared/sharedRegex');
 const { checkRequestData } = require('../utils/checkData');
 const { resetPassword } = require('../services/emailService');
 const {
-  getUpcomingEvents,
   getPastEvents,
+  getUpcomingEvents,
 } = require('../services/eventService');
 
 userController.post('/register', async (req, res) => {
@@ -402,7 +402,7 @@ userController.get('/myEventsForApproval', async (req, res) => {
     if (!requesterId) {
       throw new Error('Влезте в профила си!');
     }
-    const result = await getMyEventsForApproval(requesterId);
+    const result = await getMyEventsForApproval(requesterId, req.query);
     res.status(200).json(result);
     res.end();
   } catch (error) {
@@ -417,7 +417,7 @@ userController.get('/myUpcomingEvents', async (req, res) => {
     if (!requesterId) {
       throw new Error('Влезте в профила си!');
     }
-    const result = await getUpcomingEvents(requesterId);
+    const result = await getUpcomingEvents(req.query, requesterId);
     res.status(200).json(result);
     res.end();
   } catch (error) {
@@ -432,7 +432,7 @@ userController.get('/myPastEvents', async (req, res) => {
     if (!requesterId) {
       throw new Error('Влезте в профила си!');
     }
-    const result = await getPastEvents(requesterId);
+    const result = await getPastEvents(req.query, requesterId);
     res.status(200).json(result);
     res.end();
   } catch (error) {

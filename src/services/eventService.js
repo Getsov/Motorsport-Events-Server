@@ -3,6 +3,7 @@ const User = require('../models/User');
 const { categories } = require('../shared/categories');
 const { regions } = require('../shared/regions');
 const { limitModels } = require('../utils/limitModels');
+const { sendEventApprovalStatusEmail } = require('./emailService');
 
 async function registerEvent(requestBody, requesterId) {
   const requester = await User.findById(requesterId);
@@ -67,7 +68,11 @@ async function findEventByID(eventId, requesterId) {
 
   return event;
 }
-async function getAllOrFilteredEventsWithFavorites(query, idOfLikedUser) {
+async function getAllOrFilteredEventsWithFavorites(
+  query,
+  ownerOptions,
+  idOfLikedUser
+) {
   const page = query.page;
   const limit = query.limit;
 
@@ -80,6 +85,15 @@ async function getAllOrFilteredEventsWithFavorites(query, idOfLikedUser) {
     criteria.likes = {
       $in: idOfLikedUser,
     };
+  }
+
+  if (ownerOptions.requesterId) {
+    criteria.isApproved = ownerOptions.isApproved;
+    criteria.creator = ownerOptions.requesterId;
+  }
+
+  if (query.dates) {
+    criteria.dates = query.dates;
   }
 
   if (query.category) {
@@ -251,6 +265,7 @@ async function deleteRestoreEvent(eventId, requesterId, requestBody) {
 async function approveDisapproveEvent(eventId, requesterId, requestBody) {
   const event = await Event.findById(eventId);
   const requester = await User.findById(requesterId);
+  const owner = await User.findById(event.creator);
 
   if (!requester) {
     throw new Error('Потребител с тези данни не е намерен!');
@@ -289,7 +304,11 @@ async function approveDisapproveEvent(eventId, requesterId, requestBody) {
       'Моля подайте правилни данни в тялото на заявката: "isApproved"'
     );
   }
-
+  sendEventApprovalStatusEmail(
+    owner.email,
+    requestBody.isApproved,
+    event.shortTitle
+  );
   return await event.save();
 }
 
@@ -341,15 +360,9 @@ async function getEventsByMonth(startDate, endDate) {
   return events;
 }
 
-async function getUpcomingEvents(requesterId) {
-  let query = {
-    isDeleted: false,
-    isApproved: true,
-  };
-
+async function getUpcomingEvents(query, requesterId) {
   if (requesterId) {
     const requester = await User.findById(requesterId);
-
     if (!requester) {
       throw new Error('Потребител с тези данни не е намерен!');
     }
@@ -361,12 +374,10 @@ async function getUpcomingEvents(requesterId) {
     if (!requester?.isApproved) {
       throw new Error('Профилът Ви не е одобрен!');
     }
-    query.creator = requesterId;
   }
 
   let todayStart = new Date(Date.now());
   todayStart.setHours(0, 0, 0, 0);
-  // Query for upcoming events
   // An event is upcoming if any of its dates are on or after todayEnd
   query.dates = {
     $elemMatch: {
@@ -374,19 +385,16 @@ async function getUpcomingEvents(requesterId) {
     },
   };
 
-  const events = await Event.find(query);
+  const events = await getAllOrFilteredEventsWithFavorites(query, {
+    isApproved: true,
+    requesterId,
+  });
   return events;
 }
 
-async function getPastEvents(requesterId) {
-  let query = {
-    isDeleted: false,
-    isApproved: true,
-  };
-
+async function getPastEvents(query, requesterId) {
   if (requesterId) {
     const requester = await User.findById(requesterId);
-
     if (!requester) {
       throw new Error('Потребител с тези данни не е намерен!');
     }
@@ -398,12 +406,10 @@ async function getPastEvents(requesterId) {
     if (!requester?.isApproved) {
       throw new Error('Профилът Ви не е одобрен!');
     }
-    query.creator = requesterId;
   }
 
   let todayStart = new Date(Date.now());
   todayStart.setHours(0, 0, 0, 0);
-  // Query for past events
   // An event is past if all of its dates are before todayStart
   query.dates = {
     $not: {
@@ -413,7 +419,10 @@ async function getPastEvents(requesterId) {
     },
   };
 
-  const events = await Event.find(query);
+  const events = await getAllOrFilteredEventsWithFavorites(query, {
+    isApproved: true,
+    requesterId,
+  });
   return events;
 }
 

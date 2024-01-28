@@ -1,11 +1,11 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const Event = require('../models/Event');
 const { secret } = require('../utils/parseToken');
 const { checkAuthorizedRequests } = require('../utils/securityCheck');
 const { checkAdmin } = require('../utils/adminsCheck');
 const { getAllOrFilteredEventsWithFavorites } = require('./eventService');
+const { sendUserApprovalEmail } = require('./emailService');
 
 async function registerUser(requestBody) {
   const email = requestBody.email;
@@ -254,6 +254,7 @@ async function approveDisapproveSingleUser(userId, requesterId, requestBody) {
   const userForEdit = await User.findById(userId);
   const requester = await User.findById(requesterId);
   const isAdmin = requester?.role == 'admin' ? true : false;
+  // let isApproved = true;
 
   if (!isAdmin || requester.isDeleted || !requester.isApproved) {
     throw new Error('You do not have rights to modify the record!');
@@ -280,6 +281,9 @@ async function approveDisapproveSingleUser(userId, requesterId, requestBody) {
     : (userForEdit.isApproved = false);
 
   const newRecord = await userForEdit.save();
+  let updatedUsersList = [newRecord];
+  sendUserApprovalEmail(updatedUsersList, requestBody?.isApproved);
+
   return createToken(newRecord);
 }
 
@@ -328,6 +332,7 @@ async function approveDisapproveMultipleUsers(requestBody, requesterId) {
     })
   );
 
+  sendUserApprovalEmail(updatedUsersList, requestBody.isApproved);
   return updatedUsersList;
 }
 
@@ -464,8 +469,9 @@ async function getAllUsers(requesterId) {
   return allUsers;
 }
 
-async function getMyEventsForApproval(requesterId) {
+async function getMyEventsForApproval(requesterId, query) {
   const requester = await User.findById(requesterId);
+
   if (!requester) {
     throw new Error('Влезте в профила си!');
   }
@@ -478,11 +484,16 @@ async function getMyEventsForApproval(requesterId) {
   if (requester.role !== 'organizer' && requester.role !== 'admin') {
     throw new Error('Нямате нужните права за достъп до тези данни!');
   }
-  const waitingEvents = await Event.find({
-    isApproved: false,
-    isDeleted: false,
-    creator: requesterId,
-  });
+
+  const waitingEvents = await getAllOrFilteredEventsWithFavorites(
+    query,
+    undefined,
+    {
+      isApproved: false,
+      requesterId,
+    }
+  );
+
   return waitingEvents;
 }
 
