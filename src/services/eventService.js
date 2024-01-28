@@ -3,7 +3,7 @@ const User = require('../models/User');
 const { categories } = require('../shared/categories');
 const { regions } = require('../shared/regions');
 const { limitModels } = require('../utils/limitModels');
-const { sendWhenApproveDisapproveEvent } = require('./emailService');
+const { sendEventApprovalStatusEmail } = require('./emailService');
 
 async function registerEvent(requestBody, requesterId) {
   const requester = await User.findById(requesterId);
@@ -88,10 +88,10 @@ async function getAllOrFilteredEventsWithFavorites(
   }
 
   if (ownerOptions.requesterId) {
-    criteria.isApproved = ownerOptions.isApproved
-    criteria.creator = ownerOptions.requesterId
+    criteria.isApproved = ownerOptions.isApproved;
+    criteria.creator = ownerOptions.requesterId;
   }
-  
+
   if (query.dates) {
     criteria.dates = query.dates;
   }
@@ -278,7 +278,7 @@ async function approveDisapproveEvent(eventId, requesterId, requestBody) {
   if (!requester?.isApproved || requester?.isDeleted) {
     throw new Error('Вашият профил е изтрит или е все още неодобрен!');
   }
-  
+
   if (requester?.role !== 'admin') {
     throw new Error('Полето е достъпно за промяна само от Администратор!');
   }
@@ -304,7 +304,7 @@ async function approveDisapproveEvent(eventId, requesterId, requestBody) {
       'Моля подайте правилни данни в тялото на заявката: "isApproved"'
     );
   }
-  sendWhenApproveDisapproveEvent(
+  sendEventApprovalStatusEmail(
     owner.email,
     requestBody.isApproved,
     event.shortTitle
@@ -385,14 +385,10 @@ async function getUpcomingEvents(query, requesterId) {
     },
   };
 
-  const events = await getAllOrFilteredEventsWithFavorites(
-    query,
-    undefined,
-    {
-      isApproved: true,
-      requesterId,
-    }
-  );
+  const events = await getAllOrFilteredEventsWithFavorites(query, undefined, {
+    isApproved: true,
+    requesterId,
+  });
   return events;
 }
 
@@ -423,14 +419,10 @@ async function getPastEvents(query, requesterId) {
     },
   };
 
-  const events = await getAllOrFilteredEventsWithFavorites(
-    query,
-    undefined,
-    {
-      isApproved: true,
-      requesterId,
-    }
-  );
+  const events = await getAllOrFilteredEventsWithFavorites(query, undefined, {
+    isApproved: true,
+    requesterId,
+  });
   return events;
 }
 
