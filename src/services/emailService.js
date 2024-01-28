@@ -45,7 +45,7 @@ async function resetPassword(requestBody) {
 async function sendUserApprovalEmail(usersList, isApproved) {
   let text = 'Congratulations! Your profile has been successfully approved for the Race Fanatic app.';
   let subject = 'Welcome Aboard! Your Race Fanatic Profile is Approved.';
-  let to = [];
+  let to = []; // Assuming this array will be populated with recipient email addresses
 
   if (!isApproved) {
     text = 'We regret to inform you that your profile has not met the approval criteria for the Race Fanatic app at this time. Please check our guidelines and feel free to reapply.';
