@@ -42,8 +42,7 @@ async function resetPassword(requestBody) {
   // console.log('Email sent: ' + info.response);
   return info;
 }
-//TODO: update reamde
-async function sendWhenApproveDisapproveUsers(usersList, isApproved) {
+async function sendUserApprovalEmail(usersList, isApproved) {
   let text = 'Your profile has been approved in Race Fanatic app.';
   let subject = 'Profile approved by Race Fanatic';
   let to = [];
@@ -80,19 +79,15 @@ async function sendWhenApproveDisapproveUsers(usersList, isApproved) {
   return info;
 }
 //TODO: update reamde
-async function sendWhenApproveDisapproveEvent(
-  userEmail,
-  isApproved,
-  eventName
-) {
-  let text =
-    'Your event "' + eventName + '" has been approved in Race Fanatic app';
-  let subject = 'Event approved by Race Fanatic';
+async function sendEventApprovalStatusEmail(userEmail, isApproved, eventName) {
+  let text = `Great news! Your event "${eventName}" has been approved and is now listed in the Race Fanatic app.`;
+  let subject = 'Your Event is Live on Race Fanatic!';
 
   if (!isApproved) {
-    text =
-      'Your event "' + eventName + '" has been disapproved in Race Fanatic app';
-    subject = 'Event dissapproved by Race Fanatic';
+    text = `We're sorry to inform you that your event "${eventName}"
+     did not meet the approval criteria for listing in the Race Fanatic app at this time.
+      Please review our guidelines for more details.`;
+    subject = 'Important Update on Your Race Fanatic Event Submission';
   }
 
   const transporter = nodemailer.createTransport({
@@ -120,6 +115,6 @@ async function sendWhenApproveDisapproveEvent(
 
 module.exports = {
   resetPassword,
-  sendWhenApproveDisapproveUsers,
-  sendWhenApproveDisapproveEvent,
+  sendUserApprovalEmail,
+  sendEventApprovalStatusEmail,
 };

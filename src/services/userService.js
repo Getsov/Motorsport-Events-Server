@@ -5,7 +5,7 @@ const { secret } = require('../utils/parseToken');
 const { checkAuthorizedRequests } = require('../utils/securityCheck');
 const { checkAdmin } = require('../utils/adminsCheck');
 const { getAllOrFilteredEventsWithFavorites } = require('./eventService');
-const { sendWhenApproveDisapproveUsers } = require('./emailService');
+const { sendUserApprovalEmail } = require('./emailService');
 
 async function registerUser(requestBody) {
   const email = requestBody.email;
@@ -282,7 +282,7 @@ async function approveDisapproveSingleUser(userId, requesterId, requestBody) {
 
   const newRecord = await userForEdit.save();
   let updatedUsersList = [newRecord];
-  sendWhenApproveDisapproveUsers(updatedUsersList, requestBody?.isApproved);
+  sendUserApprovalEmail(updatedUsersList, requestBody?.isApproved);
 
   return createToken(newRecord);
 }
@@ -332,7 +332,7 @@ async function approveDisapproveMultipleUsers(requestBody, requesterId) {
     })
   );
 
-  sendWhenApproveDisapproveUsers(updatedUsersList, requestBody.isApproved);
+  sendUserApprovalEmail(updatedUsersList, requestBody.isApproved);
   return updatedUsersList;
 }
 
