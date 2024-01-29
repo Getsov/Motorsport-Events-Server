@@ -87,30 +87,30 @@ async function getAllOrFilteredEventsWithFavorites(
     };
   }
 
-  if (ownerOptions?.requesterId) {
+  if (ownerOptions.requesterId) {
     criteria.isApproved = ownerOptions.isApproved;
     criteria.creator = ownerOptions.requesterId;
   }
 
-  if (query?.dates) {
+  if (query.dates) {
     criteria.dates = query.dates;
   }
 
-  if (query?.category) {
+  if (query.category) {
     criteria.categories = {
       $in: Array.isArray(query.category)
         ? query.category.map((key) => categories[key])
         : [categories[query.category]],
     };
   }
-  if (query?.region) {
+  if (query.region) {
     criteria['contacts.region'] = {
       $in: Array.isArray(query.region)
         ? query.region.map((key) => regions[key])
         : [regions[query.region]],
     };
   }
-  if (query?.search) {
+  if (query.search) {
     criteria.$or = [
       {
         shortTitle: {

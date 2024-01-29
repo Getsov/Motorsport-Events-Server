@@ -7,12 +7,7 @@ const router = require('./src/routes');
 mongoose.set('strictQuery', true);
 require('dotenv').config();
 
-// Production DB connection string
-// const dbConnectionString = process.env.MONGO_URI;
-
-// Local DB connection string
-const dbConnectionString = 'mongodb://127.0.0.1:27017/Race-Fanatic-DB';
-
+const dbConnectionString = process.env.MONGO_URI;
 const initializeDatabase = () =>
   mongoose
     .connect(dbConnectionString)
