@@ -1,20 +1,21 @@
 const express = require('express');
 const app = express();
 const cors = require('./src/middlewares/cors');
-const dbConnectionString = 'mongodb://127.0.0.1:27017/Race-Fanatic-DB';
 const { mongoose } = require('mongoose');
 const session = require('./src/middlewares/session');
 const router = require('./src/routes');
 mongoose.set('strictQuery', true);
 require('dotenv').config();
 
+const dbConnectionString = process.env.MONGO_URI;
 const initializeDatabase = () =>
   mongoose
     .connect(dbConnectionString)
     .then(() => {
       console.log('Database connected!');
     })
-    .catch(() => {
+    .catch((err) => {
+      console.log(err);
       console.log('Database connection FAILED!');
     });
 
