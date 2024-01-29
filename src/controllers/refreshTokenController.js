@@ -3,16 +3,16 @@ const { getUserForTokenGenereating } = require('../services/userService');
 const { parseRefreshToken } = require('../utils/parseToken');
 
 refreshTokenController.post('/', async (req, res) => {
-  const refreshToken = req.cookies['refreshToken'];
-  console.log(refreshToken);
-  if (!refreshToken) {
+  const cookieRefreshToken = req.cookies['refreshToken'];
+  console.log(cookieRefreshToken);
+  if (!cookieRefreshToken) {
     return res.status(401).send('Access Denied. No refresh token provided.');
   }
-  if (refreshToken) {
+  if (cookieRefreshToken) {
     console.log('have refreshtoken');
     try {
       console.log('before');
-      const payload = parseRefreshToken(refreshToken);
+      const payload = parseRefreshToken(cookieRefreshToken);
       console.log('after');
       const userId = payload._id;
       const tokens = await getUserForTokenGenereating(userId);
