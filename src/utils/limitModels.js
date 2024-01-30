@@ -26,19 +26,25 @@ async function limitModels(model, page, limit, criteria, sortCriteria) {
     };
   }
 
+  if (sortCriteria === 'pastEvents') {
+    models.results = await model
+    .find(criteria)
+    .sort(sortCriteria)
+    .limit(limit)
+    .skip(startIndex)
+    .exec();
+    async function sortModels(models) {
+      return models.results.sort((a, b) => b.dates.slice(-1)[0].date -  a.dates.slice(-1)[0].date)
+    }
+    return await sortModels(models);
+  }
+
   models.results = await model
     .find(criteria)
     .sort(sortCriteria)
     .limit(limit)
     .skip(startIndex)
     .exec();
-
-    if (sortCriteria === 'pastEvents') {
-      async function sortt(models) {
-        return models.results.sort((a, b) => b.dates.slice(-1)[0].date -  a.dates.slice(-1)[0].date)
-      }
-      return await sortt(models);
-    }
 
   return models;
 }
