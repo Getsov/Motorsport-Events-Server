@@ -92,6 +92,7 @@ userController.post('/login', async (req, res) => {
   try {
     checkRequestData(req.body);
     const user = await loginUser(req.body.email, req.body.password);
+    const userData = user.userData;
     const accessToken = user.accessToken;
     const refreshToken = user.refreshToken;
     res
@@ -101,7 +102,7 @@ userController.post('/login', async (req, res) => {
         sameSite: 'strict',
       })
       // .header('Authorization', accessToken)
-      .send(accessToken);
+      .send({ userData, accessToken });
     res.end();
   } catch (error) {
     console.log(error);
