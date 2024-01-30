@@ -56,7 +56,7 @@ userController.post('/register', async (req, res) => {
       throw new Error('Email is required!');
     }
 
-    const userData = {
+    const userDataFromRequest = {
       email: req.body.email,
       firstName: req.body.firstName ? req.body.firstName : '',
       lastName: req.body.lastName ? req.body.lastName : '',
@@ -66,7 +66,7 @@ userController.post('/register', async (req, res) => {
       hashedPassword: await bcrypt.hash(req.body.password, 10),
     };
 
-    if (userData.role == 'regular') {
+    if (userDataFromRequest.role == 'regular') {
       userData.isApproved = true;
     }
 
@@ -77,11 +77,21 @@ userController.post('/register', async (req, res) => {
       if (!req.body.phone) {
         throw new Error('Phone is required!');
       }
-      userData.organizatorName = req.body.organizatorName;
+      userDataFromRequest.organizatorName = req.body.organizatorName;
     }
 
-    const user = await registerUser(userData);
-    res.status(200).json(user);
+    const user = await registerUser(userDataFromRequest);
+    const userData = user.userData;
+    const accessToken = user.accessToken;
+    const refreshToken = user.refreshToken;
+    res
+      .status(200)
+      .cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        sameSite: 'strict',
+      })
+      // .header('Authorization', accessToken)
+      .send({ userData, accessToken });
     res.end();
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -105,7 +115,6 @@ userController.post('/login', async (req, res) => {
       .send({ userData, accessToken });
     res.end();
   } catch (error) {
-    console.log(error);
     res.status(400).json({ error: error.message });
   }
 });
@@ -239,8 +248,17 @@ userController.get('/getUserById/:id', async (req, res) => {
     }
 
     const user = await getUserById(userId, requesterId);
-
-    res.send(user);
+    const userData = user.userData;
+    const accessToken = user.accessToken;
+    const refreshToken = user.refreshToken;
+    res
+      .status(200)
+      .cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        sameSite: 'strict',
+      })
+      // .header('Authorization', accessToken)
+      .send({ userData, accessToken });
     res.end();
   } catch (error) {
     res.status(400).json({ error: error.message });
