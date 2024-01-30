@@ -24,7 +24,6 @@ async function registerUser(requestBody) {
 
 async function loginUser(email, password) {
   const user = await User.findOne({ email }).select('+hashedPassword');
-
   if (!user) {
     throw new Error('Invalid email or password!');
   }
@@ -51,9 +50,10 @@ async function loginUser(email, password) {
   if (!match) {
     throw new Error('Invalid email or password!');
   }
+  const userData = createUserData(user);
   const accessToken = createAccessToken(user);
   const refreshToken = createRefreshToken(user);
-  return { accessToken, refreshToken, user };
+  return { userData, accessToken, refreshToken };
 
   //TODO: Change "createToken(user)" with createAccessToken(user);
 }
@@ -534,24 +534,7 @@ async function getUserForTokenGenereating(userId) {
   const refreshToken = createRefreshToken(user);
   return { accessToken, refreshToken };
 }
-
-function createAccessToken(user) {
-  // As a rule, seconds are set for the duration of tokens.
-  const expiresInTenDays = 10 * 24 * 60 * 60;
-
-  const payload = {
-    _id: user._id,
-    email: user.email,
-    organizatorName: user.organizatorName,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    role: user.role,
-    region: user.region,
-    phone: user.phone,
-    isDeleted: user.isDeleted,
-    isApproved: user.isApproved,
-  };
-
+function createUserData(user) {
   return {
     _id: user._id,
     email: user.email,
@@ -565,10 +548,20 @@ function createAccessToken(user) {
     isApproved: user.isApproved,
     likedEvents: user.likedEvents,
     createdEvents: user.createdEvents,
-    accessToken: jwt.sign(payload, secretAccesToken, {
-      expiresIn: expiresInTenDays,
-    }),
   };
+}
+
+function createAccessToken(user) {
+  // As a rule, seconds are set for the duration of tokens.
+  const expiresInTenDays = 10 * 24 * 60 * 60;
+  const payload = {
+    _id: user._id,
+    email: user.email,
+  };
+
+  return jwt.sign(payload, secretAccesToken, {
+    expiresIn: expiresInTenDays,
+  });
 }
 
 function createRefreshToken(user) {
