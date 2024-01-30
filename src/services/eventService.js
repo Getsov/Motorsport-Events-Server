@@ -80,6 +80,7 @@ async function getAllOrFilteredEventsWithFavorites(
     isDeleted: false,
     isApproved: true,
   };
+  let sortCriteria;
 
   if (idOfLikedUser) {
     criteria.likes = {
@@ -97,9 +98,7 @@ async function getAllOrFilteredEventsWithFavorites(
   }
 
   if (query?.sort) {
-    criteria.sort = query.sort;
-  } else {
-    criteria.sort = {}
+    sortCriteria = query.sort;
   }
 
   if (query?.category) {
@@ -152,7 +151,7 @@ async function getAllOrFilteredEventsWithFavorites(
     ];
   }
 
-  return await limitModels(Event, page, limit, criteria);
+  return await limitModels(Event, page, limit, criteria, sortCriteria);
 }
 
 async function updateEvent(requestBody, existingEvent, reqRequester) {
@@ -427,7 +426,7 @@ async function getPastEvents(query, requesterId) {
     },
   };
 
-  // query.sort = { 'dates.0.date': -1 };
+  query.sort = 'pastEvents';
 
   const events = await getAllOrFilteredEventsWithFavorites(query, {
     isApproved: true,
