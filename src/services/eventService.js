@@ -96,6 +96,12 @@ async function getAllOrFilteredEventsWithFavorites(
     criteria.dates = query.dates;
   }
 
+  if (query?.sort) {
+    criteria.sort = query.sort;
+  } else {
+    criteria.sort = {}
+  }
+
   if (query?.category) {
     criteria.categories = {
       $in: Array.isArray(query.category)
@@ -385,6 +391,8 @@ async function getUpcomingEvents(query, requesterId) {
     },
   };
 
+  query.sort = { 'dates.0.date': 1 };
+  
   const events = await getAllOrFilteredEventsWithFavorites(query, {
     isApproved: true,
     requesterId,
@@ -418,6 +426,8 @@ async function getPastEvents(query, requesterId) {
       },
     },
   };
+
+  // query.sort = { 'dates.0.date': -1 };
 
   const events = await getAllOrFilteredEventsWithFavorites(query, {
     isApproved: true,
