@@ -13,9 +13,7 @@ function parseAccesToken(token) {
 }
 
 function parseRefreshToken(token) {
-  console.log('token');
   try {
-    console.log('token');
     return jwt.verify(token, secretRefreshToken);
   } catch (error) {
     throw new Error('Invalid refresh token!');
