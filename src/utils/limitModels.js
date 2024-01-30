@@ -28,6 +28,7 @@ async function limitModels(model, page, limit, criteria) {
 
   models.results = await model
     .find(criteria)
+    .sort(criteria.sort)
     .limit(limit)
     .skip(startIndex)
     .exec();
