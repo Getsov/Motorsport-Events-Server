@@ -3,9 +3,6 @@ const { eventController } = require('./controllers/eventController');
 
 const swaggerUi = require('swagger-ui-express');
 const specs = require('../swaggerConfig');
-const {
-  refreshTokenController,
-} = require('./controllers/refreshTokenController');
 
 const router = require('express').Router();
 
@@ -15,7 +12,6 @@ router.get('/', (req, res) => {
 
 router.use('/user', userController);
 router.use('/events', eventController);
-router.use('/refreshToken', refreshTokenController);
 router.use('/swagger', swaggerUi.serve, swaggerUi.setup(specs));
 
 // Error Page (404).

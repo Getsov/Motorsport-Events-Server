@@ -23,6 +23,7 @@ const {
   approveDisapproveMultipleUsers,
   getApprovedOrganizators,
   getMyEventsForApproval,
+  getUserForTokenGenereating,
 } = require('../services/userService');
 
 const { validPassword } = require('../shared/sharedRegex');
@@ -32,6 +33,7 @@ const {
   getPastEvents,
   getUpcomingEvents,
 } = require('../services/eventService');
+const { parseRefreshToken } = require('../utils/parseToken');
 
 userController.post('/register', async (req, res) => {
   try {
@@ -485,6 +487,33 @@ userController.post('/resetPassword', async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(400).json({ error: error.message });
+  }
+});
+userController.post('/refreshToken', async (req, res) => {
+  const cookieRefreshToken = req.cookies['refreshToken'];
+  if (!cookieRefreshToken) {
+    return res.status(401).send('Access Denied. No refresh token provided.');
+  }
+  if (cookieRefreshToken) {
+    try {
+      const payload = parseRefreshToken(cookieRefreshToken);
+      const userId = payload._id;
+      const tokens = await getUserForTokenGenereating(userId);
+      const accessToken = tokens.accessToken;
+      const refreshToken = tokens.refreshToken;
+      res
+        .status(200)
+        .cookie('refreshToken', refreshToken, {
+          httpOnly: true,
+          sameSite: 'strict',
+        })
+        // .header('Authorization', accessToken)
+        .send({ accessToken });
+      res.end();
+      res.end();
+    } catch (error) {
+      return res.status(401).json({ message: 'Invalid refresh token' });
+    }
   }
 });
 
