@@ -80,7 +80,7 @@ async function getAllOrFilteredEventsWithFavorites(
     isDeleted: false,
     isApproved: true,
   };
-  let sortCriteria;
+  let sortCriteria = {};
 
   if (idOfLikedUser) {
     criteria.likes = {
