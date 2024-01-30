@@ -259,7 +259,7 @@ async function deleteRestoreEvent(eventId, requesterId, requestBody) {
     );
   }
 
-  return await event.save();
+  return await event.save({ validateBeforeSave: false });
 }
 
 async function approveDisapproveEvent(eventId, requesterId, requestBody) {
@@ -309,7 +309,7 @@ async function approveDisapproveEvent(eventId, requesterId, requestBody) {
     requestBody.isApproved,
     event.shortTitle
   );
-  return await event.save();
+  return await event.save({ validateBeforeSave: false });
 }
 
 // Like/Unlike event.
