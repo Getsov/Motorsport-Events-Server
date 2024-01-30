@@ -70,8 +70,8 @@ async function findEventByID(eventId, requesterId) {
 }
 async function getAllOrFilteredEventsWithFavorites(
   query,
-  idOfLikedUser,
-  ownerOptions
+  ownerOptions,
+  idOfLikedUser
 ) {
   const page = query.page;
   const limit = query.limit;
@@ -87,30 +87,30 @@ async function getAllOrFilteredEventsWithFavorites(
     };
   }
 
-  if (ownerOptions.requesterId) {
+  if (ownerOptions?.requesterId) {
     criteria.isApproved = ownerOptions.isApproved;
     criteria.creator = ownerOptions.requesterId;
   }
 
-  if (query.dates) {
+  if (query?.dates) {
     criteria.dates = query.dates;
   }
 
-  if (query.category) {
+  if (query?.category) {
     criteria.categories = {
       $in: Array.isArray(query.category)
         ? query.category.map((key) => categories[key])
         : [categories[query.category]],
     };
   }
-  if (query.region) {
+  if (query?.region) {
     criteria['contacts.region'] = {
       $in: Array.isArray(query.region)
         ? query.region.map((key) => regions[key])
         : [regions[query.region]],
     };
   }
-  if (query.search) {
+  if (query?.search) {
     criteria.$or = [
       {
         shortTitle: {
@@ -259,7 +259,7 @@ async function deleteRestoreEvent(eventId, requesterId, requestBody) {
     );
   }
 
-  return await event.save();
+  return await event.save({ validateBeforeSave: false });
 }
 
 async function approveDisapproveEvent(eventId, requesterId, requestBody) {
@@ -309,7 +309,7 @@ async function approveDisapproveEvent(eventId, requesterId, requestBody) {
     requestBody.isApproved,
     event.shortTitle
   );
-  return await event.save();
+  return await event.save({ validateBeforeSave: false });
 }
 
 // Like/Unlike event.
@@ -385,7 +385,7 @@ async function getUpcomingEvents(query, requesterId) {
     },
   };
 
-  const events = await getAllOrFilteredEventsWithFavorites(query, undefined, {
+  const events = await getAllOrFilteredEventsWithFavorites(query, {
     isApproved: true,
     requesterId,
   });
@@ -419,7 +419,7 @@ async function getPastEvents(query, requesterId) {
     },
   };
 
-  const events = await getAllOrFilteredEventsWithFavorites(query, undefined, {
+  const events = await getAllOrFilteredEventsWithFavorites(query, {
     isApproved: true,
     requesterId,
   });

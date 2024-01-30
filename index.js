@@ -13,13 +13,15 @@ const dbConnectionString = process.env.MONGO_URI;
 
 // Development DB connection string
 // const dbConnectionString = 'mongodb://127.0.0.1:27017/Race-Fanatic-DB';
+
 const initializeDatabase = () =>
   mongoose
     .connect(dbConnectionString)
     .then(() => {
       console.log('Database connected!');
     })
-    .catch(() => {
+    .catch((err) => {
+      console.log(err);
       console.log('Database connection FAILED!');
     });
 
