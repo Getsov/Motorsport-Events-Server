@@ -73,13 +73,14 @@ async function getAllOrFilteredEventsWithFavorites(
   ownerOptions,
   idOfLikedUser
 ) {
-  const page = query.page;
-  const limit = query.limit;
-
+  const page = query.page || 1;
+  const limit = query.limit || 0;
+  
   const criteria = {
     isDeleted: false,
     isApproved: true,
   };
+  let sortCriteria = {};
 
   if (idOfLikedUser) {
     criteria.likes = {
@@ -94,6 +95,15 @@ async function getAllOrFilteredEventsWithFavorites(
 
   if (query?.dates) {
     criteria.dates = query.dates;
+  }
+
+  if (query?.isDeleted) {
+    criteria.isDeleted = query.isDeleted;
+    criteria.isApproved = false;
+  }
+  
+  if (query?.sort) {
+    sortCriteria = query.sort;
   }
 
   if (query?.category) {
@@ -146,7 +156,7 @@ async function getAllOrFilteredEventsWithFavorites(
     ];
   }
 
-  return await limitModels(Event, page, limit, criteria);
+  return await limitModels(Event, page, limit, criteria, sortCriteria);
 }
 
 async function updateEvent(requestBody, existingEvent, reqRequester) {
@@ -267,6 +277,10 @@ async function approveDisapproveEvent(eventId, requesterId, requestBody) {
   const requester = await User.findById(requesterId);
   const owner = await User.findById(event.creator);
 
+  if (!owner) {
+    throw new Error('Собственикът на това събитие не е намерен!');
+  }
+  
   if (!requester) {
     throw new Error('Потребител с тези данни не е намерен!');
   }
@@ -385,6 +399,8 @@ async function getUpcomingEvents(query, requesterId) {
     },
   };
 
+  query.sort = 'upcomingEvents';
+  
   const events = await getAllOrFilteredEventsWithFavorites(query, {
     isApproved: true,
     requesterId,
@@ -419,10 +435,33 @@ async function getPastEvents(query, requesterId) {
     },
   };
 
+  query.sort = 'pastEvents';
+
   const events = await getAllOrFilteredEventsWithFavorites(query, {
     isApproved: true,
     requesterId,
   });
+  return events;
+}
+
+async function getAllDeletedEvents(query, requesterId) {
+  const requester = await User.findById(requesterId);
+  if (!requester) {
+    throw new Error('Няма потребител с такова ID') 
+  }
+  
+  if (requester.isDeleted) {
+    throw new Error('Вашият профил е изтрит!');
+  }
+  if (!requester.isApproved) {
+    throw new Error('Профилът Ви все още не е одобрен!');
+  }
+  if (requester.role !== 'admin') {
+    throw new Error('Нямате нужните права за достъп до тези данни!');
+  }
+  query.isDeleted = true;
+  query.sort = 'allEvents'
+  const events = await getAllOrFilteredEventsWithFavorites(query);
   return events;
 }
 
@@ -456,6 +495,7 @@ module.exports = {
   getPastEvents,
   deleteRestoreEvent,
   approveDisapproveEvent,
+  getAllDeletedEvents
 };
 
 // Commented code below is for postman tests!
