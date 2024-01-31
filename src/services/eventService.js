@@ -446,6 +446,10 @@ async function getPastEvents(query, requesterId) {
 
 async function getAllDeletedEvents(query, requesterId) {
   const requester = await User.findById(requesterId);
+  if (!requester) {
+    throw new Error('Няма потребител с такова ID') 
+  }
+  
   if (requester.isDeleted) {
     throw new Error('Вашият профил е изтрит!');
   }
