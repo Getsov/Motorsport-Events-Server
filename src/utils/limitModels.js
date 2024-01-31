@@ -27,16 +27,29 @@ async function limitModels(model, page, limit, criteria, sortCriteria) {
   }
 
   if (sortCriteria === 'pastEvents') {
-    models.results = await model
-    .find(criteria)
-    .sort(sortCriteria)
-    .limit(limit)
-    .skip(startIndex)
-    .exec();
-    async function sortModels(models) {
-      return models.results.sort((a, b) => b.dates.slice(-1)[0].date -  a.dates.slice(-1)[0].date)
+    const aggregationPipeline = [
+      { $match: criteria }, // Match documents based on criteria
+      {
+        $addFields: {
+          lastDate: {
+            $cond: {
+              if: { $ne: ['$dates', []] },
+              then: { $arrayElemAt: ['$dates.date', -1] },
+              else: null,
+            },
+          },
+        },
+      },
+      { $sort: { lastDate: -1 } }, // Sort by the last date in descending order
+      { $skip: startIndex },
+    ];
+
+    if (limit > 0) {
+      aggregationPipeline.push({ $limit: limit });
     }
-    return await sortModels(models);
+
+    models.results = await model.aggregate(aggregationPipeline).exec();
+    return models;
   }
 
   models.results = await model
