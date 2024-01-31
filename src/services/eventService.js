@@ -278,7 +278,7 @@ async function approveDisapproveEvent(eventId, requesterId, requestBody) {
   const owner = await User.findById(event.creator);
 
   if (!owner) {
-    throw new Error('Собственикът на този имейл не е намерен!');
+    throw new Error('Собственикът на този емейл не е намерен!');
   }
   
   if (!requester) {
