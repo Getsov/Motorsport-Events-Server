@@ -351,7 +351,7 @@ async function returnAllFavouriteEvents(userId, query) {
   if (!existingUser) {
     throw new Error('User not found!');
   }
-  query.sort = 'allEvents'
+  query.sort = 'allEvents';
   const allFavouriteEvents = await getAllOrFilteredEventsWithFavorites(
     query,
     existingUser._id
@@ -432,41 +432,102 @@ async function getAllOrganizersForApproval(requesterId) {
   return waitingOrganizers;
 }
 
-async function getAllOrganizers(requesterId) {
-  const requester = await User.findById(requesterId);
+function genereteCriteriaForSearch(query) {
+  return [
+    {
+      email: {
+        $regex: query.search.toLowerCase(),
+        $options: 'i',
+      },
+    },
+    {
+      organizatorName: {
+        $regex: query.search.toLowerCase(),
+        $options: 'i',
+      },
+    },
+    {
+      firstName: {
+        $regex: query.search.toLowerCase(),
+        $options: 'i',
+      },
+    },
+    {
+      lastName: {
+        $regex: query.search.toLowerCase(),
+        $options: 'i',
+      },
+    },
+    {
+      region: {
+        $regex: query.search.toLowerCase(),
+        $options: 'i',
+      },
+    },
+    {
+      phone: {
+        $regex: query.search.toLowerCase(),
+        $options: 'i',
+      },
+    },
+  ];
+}
 
+async function getAllOrganizers(requesterId, query) {
+  const requester = await User.findById(requesterId);
+  const criteria = {
+    role: 'organizer',
+  };
+  if (query?.search) {
+    const searchCriteria = genereteCriteriaForSearch(query);
+    Object.assign(criteria, { $or: searchCriteria });
+  }
   await checkAdmin(requester);
 
-  const allOrganizers = await User.find({
-    role: 'organizer',
-  });
+  const allOrganizers = await User.find(criteria);
   return allOrganizers;
 }
 
-async function getAllRegularUsers(requesterId) {
+async function getAllRegularUsers(requesterId, query) {
   const requester = await User.findById(requesterId);
-
+  const criteria = {
+    role: 'regular',
+  };
+  if (query?.search) {
+    const searchCriteria = genereteCriteriaForSearch(query);
+    Object.assign(criteria, { $or: searchCriteria });
+  }
   await checkAdmin(requester);
 
-  const allRegularUsers = await User.find({ role: 'regular' });
+  const allRegularUsers = await User.find(criteria);
   return allRegularUsers;
 }
 
-async function getAllAdmins(requesterId) {
+async function getAllAdmins(requesterId, query) {
   const requester = await User.findById(requesterId);
-
+  const criteria = {
+    role: 'admin',
+  };
+  if (query?.search) {
+    const searchCriteria = genereteCriteriaForSearch(query);
+    Object.assign(criteria, { $or: searchCriteria });
+  }
   await checkAdmin(requester);
 
-  const allAdmins = await User.find({ role: 'admin' });
+  const allAdmins = await User.find(criteria);
   return allAdmins;
 }
 
-async function getAllUsers(requesterId) {
+async function getAllUsers(requesterId, query) {
   const requester = await User.findById(requesterId);
-
+  const criteria = {};
+  if (query?.search) {
+    const searchCriteria = genereteCriteriaForSearch(query);
+    Object.assign(criteria, { $or: searchCriteria });
+  }
   await checkAdmin(requester);
 
-  const allUsers = await User.find();
+  const allUsers = await User.find(criteria);
   return allUsers;
 }
 
@@ -485,7 +546,7 @@ async function getMyEventsForApproval(requesterId, query) {
   if (requester.role !== 'organizer' && requester.role !== 'admin') {
     throw new Error('Нямате нужните права за достъп до тези данни!');
   }
-  query.sort = 'allEvents'
+  query.sort = 'allEvents';
   const waitingEvents = await getAllOrFilteredEventsWithFavorites(
     query,
     undefined,

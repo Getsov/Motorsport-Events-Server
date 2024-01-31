@@ -351,7 +351,8 @@ userController.get('/getAllOrganizersForApproval', async (req, res) => {
 userController.get('/allOrganizers', async (req, res) => {
   try {
     const requesterId = req.requester?._id;
-    const result = await getAllOrganizers(requesterId);
+    const query = req.query;
+    const result = await getAllOrganizers(requesterId, query);
     res.status(200).json(result);
     res.end();
   } catch (error) {
@@ -363,7 +364,8 @@ userController.get('/allOrganizers', async (req, res) => {
 userController.get('/allRegularUsers', async (req, res) => {
   try {
     const requesterId = req.requester?._id;
-    const result = await getAllRegularUsers(requesterId);
+    const query = req.query;
+    const result = await getAllRegularUsers(requesterId, query);
     res.status(200).json(result);
     res.end();
   } catch (error) {
@@ -375,7 +377,8 @@ userController.get('/allRegularUsers', async (req, res) => {
 userController.get('/allAdmins', async (req, res) => {
   try {
     const requesterId = req.requester?._id;
-    const result = await getAllAdmins(requesterId);
+    const query = req.query;
+    const result = await getAllAdmins(requesterId, query);
     res.status(200).json(result);
     res.end();
   } catch (error) {
@@ -387,7 +390,8 @@ userController.get('/allAdmins', async (req, res) => {
 userController.get('/allUsers', async (req, res) => {
   try {
     const requesterId = req.requester?._id;
-    const result = await getAllUsers(requesterId);
+    const query = req.query;
+    const result = await getAllUsers(requesterId, query);
     res.status(200).json(result);
     res.end();
   } catch (error) {
