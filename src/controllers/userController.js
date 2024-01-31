@@ -483,8 +483,7 @@ userController.post('/refreshToken', async (req, res) => {
   const cookieRefreshToken = req.cookies['refreshToken'];
   if (!cookieRefreshToken) {
     return res.status(401).send('Access Denied. No refresh token provided.');
-  }
-  if (cookieRefreshToken) {
+  } else {
     try {
       const payload = parseRefreshToken(cookieRefreshToken);
       const userId = payload._id;
