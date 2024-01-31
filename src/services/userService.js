@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const { secretAccesToken, secretRefreshToken } = require('../utils/parseToken');
+const { secret } = require('../utils/parseToken');
 const { checkAuthorizedRequests } = require('../utils/securityCheck');
 const { checkAdmin } = require('../utils/adminsCheck');
 const { getAllOrFilteredEventsWithFavorites } = require('./eventService');
@@ -19,14 +19,12 @@ async function registerUser(requestBody) {
   }
 
   const user = await User.create(requestBody);
-  const userData = createUserData(user);
-  const accessToken = createAccessToken(user);
-  const refreshToken = createRefreshToken(user);
-  return { userData, accessToken, refreshToken };
+  return createToken(user);
 }
 
 async function loginUser(email, password) {
   const user = await User.findOne({ email }).select('+hashedPassword');
+
   if (!user) {
     throw new Error('Invalid email or password!');
   }
@@ -53,12 +51,7 @@ async function loginUser(email, password) {
   if (!match) {
     throw new Error('Invalid email or password!');
   }
-  const userData = createUserData(user);
-  const accessToken = createAccessToken(user);
-  const refreshToken = createRefreshToken(user);
-  return { userData, accessToken, refreshToken };
-
-  //TODO: Change "createUserData(user)" with createAccessToken(user);
+  return createToken(user);
 }
 
 //updateUser can be invoked by adminController and userController
@@ -95,7 +88,7 @@ async function editUserInfo(idOfUserForEdit, requestBody, requesterId) {
   }
 
   const newRecord = await userForEdit.save();
-  return createUserData(newRecord);
+  return createToken(newRecord);
 }
 
 async function editUserEmail(idOfUserForEdit, requestBody, requesterId) {
@@ -111,7 +104,7 @@ async function editUserEmail(idOfUserForEdit, requestBody, requesterId) {
 
   userForEdit.email = requestBody.email;
   const newRecord = await userForEdit.save();
-  return createUserData(newRecord);
+  return createToken(newRecord);
 }
 
 async function editUserPassword(idOfUserForEdit, requestBody, requesterId) {
@@ -135,7 +128,7 @@ async function editUserPassword(idOfUserForEdit, requestBody, requesterId) {
 
   userForEdit.hashedPassword = await bcrypt.hash(requestBody.newPassword, 10);
   const newRecord = await userForEdit.save();
-  return createUserData(newRecord);
+  return createToken(newRecord);
 }
 
 async function editUserRole(idOfUserForEdit, requestBody, requesterId) {
@@ -171,7 +164,7 @@ async function editUserRole(idOfUserForEdit, requestBody, requesterId) {
   userForEdit.role = requestBody.role;
 
   const newRecord = await userForEdit.save();
-  return createUserData(newRecord);
+  return createToken(newRecord);
 }
 
 async function deleteRestoreSingleUser(
@@ -208,7 +201,7 @@ async function deleteRestoreSingleUser(
     : (userForEdit.isDeleted = false);
 
   const newRecord = await userForEdit.save();
-  return createUserData(newRecord);
+  return createToken(newRecord);
 }
 
 async function deleteRestoreMultipleUsers(requestBody, requesterId) {
@@ -291,7 +284,7 @@ async function approveDisapproveSingleUser(userId, requesterId, requestBody) {
   let updatedUsersList = [newRecord];
   sendUserApprovalEmail(updatedUsersList, requestBody?.isApproved);
 
-  return createUserData(newRecord);
+  return createToken(newRecord);
 }
 
 async function approveDisapproveMultipleUsers(requestBody, requesterId) {
@@ -390,7 +383,7 @@ async function getUserById(userId, requesterId) {
     throw new Error('You are not authorized to see User details!');
   }
 
-  return createUserData(user);
+  return createToken(user);
 }
 
 async function getApprovedAdmins(requesterId) {
@@ -532,13 +525,23 @@ async function addEventToCreatedEvents(eventId, userId) {
   return await existingUser.save();
 }
 
-async function getUserForTokenGeneration(userId) {
-  const user = await User.findById(userId);
-  const accessToken = createAccessToken(user);
-  const refreshToken = createRefreshToken(user);
-  return { accessToken, refreshToken };
-}
-function createUserData(user) {
+function createToken(user) {
+  // As a rule, seconds are set for the duration of tokens.
+  const expiresInTenDays = 10 * 24 * 60 * 60;
+
+  const payload = {
+    _id: user._id,
+    email: user.email,
+    organizatorName: user.organizatorName,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    role: user.role,
+    region: user.region,
+    phone: user.phone,
+    isDeleted: user.isDeleted,
+    isApproved: user.isApproved,
+  };
+
   return {
     _id: user._id,
     email: user.email,
@@ -552,35 +555,8 @@ function createUserData(user) {
     isApproved: user.isApproved,
     likedEvents: user.likedEvents,
     createdEvents: user.createdEvents,
+    accessToken: jwt.sign(payload, secret, { expiresIn: expiresInTenDays }),
   };
-}
-
-function createAccessToken(user) {
-  // As a rule, seconds are set for the duration of tokens.
-  const expiresInTenDays = 10 * 24 * 60 * 60;
-  const expiresInOneMinutes = 60;
-  const expiresInTenMinutes = 10 * 60;
-  const payload = {
-    _id: user._id,
-    email: user.email,
-  };
-
-  return jwt.sign(payload, secretAccesToken, {
-    expiresIn: expiresInTenMinutes,
-  });
-}
-
-function createRefreshToken(user) {
-  const expiresInThirtyDays = 30 * 24 * 60 * 60;
-
-  const payload = {
-    _id: user._id,
-    email: user.email,
-  };
-
-  return jwt.sign(payload, secretRefreshToken, {
-    expiresIn: expiresInThirtyDays,
-  });
 }
 
 module.exports = {
@@ -608,5 +584,4 @@ module.exports = {
   getAllUsers,
   getMyEventsForApproval,
   getUserById,
-  getUserForTokenGeneration,
 };
