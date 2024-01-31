@@ -435,6 +435,22 @@ async function getPastEvents(query, requesterId) {
   return events;
 }
 
+async function getAllDeletedEvents(query, requesterId) {
+  const requester = await User.findById(requesterId);
+  if (requester.isDeleted) {
+    throw new Error('Вашият профил е изтрит!');
+  }
+  if (!requester.isApproved) {
+    throw new Error('Профилът Ви все още не е одобрен!');
+  }
+  if (requester.role !== 'admin') {
+    throw new Error('Нямате нужните права за достъп до тези данни!');
+  }
+  query.isDeleted = true;
+  const events = await getAllOrFilteredEventsWithFavorites(query);
+  return events;
+}
+
 async function getAllEventsForApproval(requesterId) {
   const requester = await User.findById(requesterId);
   if (requester.isDeleted) {
@@ -465,6 +481,7 @@ module.exports = {
   getPastEvents,
   deleteRestoreEvent,
   approveDisapproveEvent,
+  getAllDeletedEvents
 };
 
 // Commented code below is for postman tests!

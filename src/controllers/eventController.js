@@ -11,6 +11,7 @@ const {
   getUpcomingEvents,
   deleteRestoreEvent,
   approveDisapproveEvent,
+  getAllDeletedEvents,
 } = require('../services/eventService');
 const {
   addRemoveLikedEvent,
