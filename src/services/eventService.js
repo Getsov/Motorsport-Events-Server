@@ -390,7 +390,7 @@ async function getUpcomingEvents(query, requesterId) {
     },
   };
 
-  query.sort = { 'dates.0.date': 1 };
+  query.sort = 'upcomingEvents';
   
   const events = await getAllOrFilteredEventsWithFavorites(query, {
     isApproved: true,
