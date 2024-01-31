@@ -351,6 +351,7 @@ async function returnAllFavouriteEvents(userId, query) {
   if (!existingUser) {
     throw new Error('User not found!');
   }
+  query.sort = 'allEvents'
   const allFavouriteEvents = await getAllOrFilteredEventsWithFavorites(
     query,
     existingUser._id
@@ -484,7 +485,7 @@ async function getMyEventsForApproval(requesterId, query) {
   if (requester.role !== 'organizer' && requester.role !== 'admin') {
     throw new Error('Нямате нужните права за достъп до тези данни!');
   }
-
+  query.sort = 'allEvents'
   const waitingEvents = await getAllOrFilteredEventsWithFavorites(
     query,
     undefined,
