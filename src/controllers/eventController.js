@@ -83,6 +83,21 @@ eventController.get('/pastEvents', async (req, res) => {
   }
 });
 
+eventController.get('/deletedEvents', async (req, res) => {
+  try {
+    const requesterId = req.requester?._id;
+    if (!requesterId) {
+      throw new Error('Влезте в профила си!');
+    }
+    const result = await getAllDeletedEvents(req.query, requesterId);
+    res.status(200).json(result);
+    res.end();
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: error.message });
+  }
+});
+
 // Get ALL events!
 eventController.get('/', async (req, res) => {
   try {
