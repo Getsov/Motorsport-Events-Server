@@ -23,7 +23,6 @@ const {
   approveDisapproveMultipleUsers,
   getApprovedOrganizators,
   getMyEventsForApproval,
-  getUserForTokenGeneration,
 } = require('../services/userService');
 
 const { validPassword } = require('../shared/sharedRegex');
@@ -33,7 +32,6 @@ const {
   getPastEvents,
   getUpcomingEvents,
 } = require('../services/eventService');
-const { parseRefreshToken } = require('../utils/parseToken');
 
 userController.post('/register', async (req, res) => {
   try {
@@ -58,7 +56,7 @@ userController.post('/register', async (req, res) => {
       throw new Error('Email is required!');
     }
 
-    const userDataFromRequest = {
+    const userData = {
       email: req.body.email,
       firstName: req.body.firstName ? req.body.firstName : '',
       lastName: req.body.lastName ? req.body.lastName : '',
@@ -68,7 +66,7 @@ userController.post('/register', async (req, res) => {
       hashedPassword: await bcrypt.hash(req.body.password, 10),
     };
 
-    if (userDataFromRequest.role == 'regular') {
+    if (userData.role == 'regular') {
       userData.isApproved = true;
     }
 
@@ -79,21 +77,11 @@ userController.post('/register', async (req, res) => {
       if (!req.body.phone) {
         throw new Error('Phone is required!');
       }
-      userDataFromRequest.organizatorName = req.body.organizatorName;
+      userData.organizatorName = req.body.organizatorName;
     }
 
-    const user = await registerUser(userDataFromRequest);
-    const userData = user.userData;
-    const accessToken = user.accessToken;
-    const refreshToken = user.refreshToken;
-    res
-      .status(200)
-      .cookie('refreshToken', refreshToken, {
-        httpOnly: true,
-        sameSite: 'strict',
-      })
-      // .header('Authorization', accessToken)
-      .send({ userData, accessToken });
+    const user = await registerUser(userData);
+    res.status(200).json(user);
     res.end();
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -104,19 +92,10 @@ userController.post('/login', async (req, res) => {
   try {
     checkRequestData(req.body);
     const user = await loginUser(req.body.email, req.body.password);
-    const userData = user.userData;
-    const accessToken = user.accessToken;
-    const refreshToken = user.refreshToken;
-    res
-      .status(200)
-      .cookie('refreshToken', refreshToken, {
-        httpOnly: true,
-        sameSite: 'strict',
-      })
-      // .header('Authorization', accessToken)
-      .send({ userData, accessToken });
+    res.status(200).json(user);
     res.end();
   } catch (error) {
+    console.log(error);
     res.status(400).json({ error: error.message });
   }
 });
@@ -250,7 +229,8 @@ userController.get('/getUserById/:id', async (req, res) => {
     }
 
     const user = await getUserById(userId, requesterId);
-    res.status(200).json(user);
+
+    res.send(user);
     res.end();
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -477,32 +457,6 @@ userController.post('/resetPassword', async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(400).json({ error: error.message });
-  }
-});
-userController.post('/refreshToken', async (req, res) => {
-  const cookieRefreshToken = req.cookies['refreshToken'];
-  if (!cookieRefreshToken) {
-    return res.status(401).send('Access Denied. No refresh token provided.');
-  } else {
-    try {
-      const payload = parseRefreshToken(cookieRefreshToken);
-      const userId = payload._id;
-      const tokens = await getUserForTokenGeneration(userId);
-      const accessToken = tokens.accessToken;
-      const refreshToken = tokens.refreshToken;
-      res
-        .status(200)
-        .cookie('refreshToken', refreshToken, {
-          httpOnly: true,
-          sameSite: 'strict',
-        })
-        // .header('Authorization', accessToken)
-        .send({ accessToken });
-      res.end();
-      res.end();
-    } catch (error) {
-      return res.status(401).json({ message: 'Invalid refresh token' });
-    }
   }
 });
 
