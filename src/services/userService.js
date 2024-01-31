@@ -531,7 +531,7 @@ async function addEventToCreatedEvents(eventId, userId) {
   return await existingUser.save();
 }
 
-async function getUserForTokenGenereating(userId) {
+async function getUserForTokenGeneration(userId) {
   const user = await User.findById(userId);
   const accessToken = createAccessToken(user);
   const refreshToken = createRefreshToken(user);
@@ -607,5 +607,5 @@ module.exports = {
   getAllUsers,
   getMyEventsForApproval,
   getUserById,
-  getUserForTokenGenereating,
+  getUserForTokenGeneration,
 };

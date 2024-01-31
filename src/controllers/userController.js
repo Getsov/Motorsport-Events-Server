@@ -23,7 +23,7 @@ const {
   approveDisapproveMultipleUsers,
   getApprovedOrganizators,
   getMyEventsForApproval,
-  getUserForTokenGenereating,
+  getUserForTokenGeneration,
 } = require('../services/userService');
 
 const { validPassword } = require('../shared/sharedRegex');
@@ -487,7 +487,7 @@ userController.post('/refreshToken', async (req, res) => {
     try {
       const payload = parseRefreshToken(cookieRefreshToken);
       const userId = payload._id;
-      const tokens = await getUserForTokenGenereating(userId);
+      const tokens = await getUserForTokenGeneration(userId);
       const accessToken = tokens.accessToken;
       const refreshToken = tokens.refreshToken;
       res
