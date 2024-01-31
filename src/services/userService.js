@@ -432,7 +432,7 @@ async function getAllOrganizersForApproval(requesterId) {
   return waitingOrganizers;
 }
 
-function genereteCriteriaForSearch(query) {
+function generateCriteriaForUserSearch(query) {
   return [
     {
       email: {
@@ -479,7 +479,7 @@ async function getAllOrganizers(requesterId, query) {
     role: 'organizer',
   };
   if (query?.search) {
-    const searchCriteria = genereteCriteriaForSearch(query);
+    const searchCriteria = generateCriteriaForUserSearch(query);
     Object.assign(criteria, { $or: searchCriteria });
   }
   await checkAdmin(requester);
@@ -494,7 +494,7 @@ async function getAllRegularUsers(requesterId, query) {
     role: 'regular',
   };
   if (query?.search) {
-    const searchCriteria = genereteCriteriaForSearch(query);
+    const searchCriteria = generateCriteriaForUserSearch(query);
     Object.assign(criteria, { $or: searchCriteria });
   }
   await checkAdmin(requester);
@@ -509,7 +509,7 @@ async function getAllAdmins(requesterId, query) {
     role: 'admin',
   };
   if (query?.search) {
-    const searchCriteria = genereteCriteriaForSearch(query);
+    const searchCriteria = generateCriteriaForUserSearch(query);
     Object.assign(criteria, { $or: searchCriteria });
   }
   await checkAdmin(requester);
@@ -522,7 +522,7 @@ async function getAllUsers(requesterId, query) {
   const requester = await User.findById(requesterId);
   const criteria = {};
   if (query?.search) {
-    const searchCriteria = genereteCriteriaForSearch(query);
+    const searchCriteria = generateCriteriaForUserSearch(query);
     Object.assign(criteria, { $or: searchCriteria });
   }
   await checkAdmin(requester);
