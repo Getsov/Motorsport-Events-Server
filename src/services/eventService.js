@@ -97,7 +97,7 @@ async function getAllOrFilteredEventsWithFavorites(
     criteria.dates = query.dates;
   }
 
-  if (query.isDeleted) {
+  if (query?.isDeleted) {
     criteria.isDeleted = query.isDeleted;
     criteria.isApproved = false;
   }
