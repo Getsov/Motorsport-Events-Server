@@ -97,6 +97,11 @@ async function getAllOrFilteredEventsWithFavorites(
     criteria.dates = query.dates;
   }
 
+  if (query.isDeleted) {
+    criteria.isDeleted = query.isDeleted;
+    criteria.isApproved = false;
+  }
+  
   if (query?.sort) {
     sortCriteria = query.sort;
   }
@@ -447,6 +452,7 @@ async function getAllDeletedEvents(query, requesterId) {
     throw new Error('Нямате нужните права за достъп до тези данни!');
   }
   query.isDeleted = true;
+  query.sort = 'allEvents'
   const events = await getAllOrFilteredEventsWithFavorites(query);
   return events;
 }
