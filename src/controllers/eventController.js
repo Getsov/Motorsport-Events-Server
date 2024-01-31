@@ -86,6 +86,7 @@ eventController.get('/pastEvents', async (req, res) => {
 // Get ALL events!
 eventController.get('/', async (req, res) => {
   try {
+    req.query.sort = 'allEvents'
     const events = await getAllOrFilteredEventsWithFavorites(req.query);
 
     res.status(200).json(events);
