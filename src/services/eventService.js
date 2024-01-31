@@ -73,9 +73,9 @@ async function getAllOrFilteredEventsWithFavorites(
   ownerOptions,
   idOfLikedUser
 ) {
-  const page = query.page;
-  const limit = query.limit;
-
+  const page = query.page || 1;
+  const limit = query.limit || 0;
+  
   const criteria = {
     isDeleted: false,
     isApproved: true,
