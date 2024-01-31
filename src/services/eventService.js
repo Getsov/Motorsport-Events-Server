@@ -277,6 +277,10 @@ async function approveDisapproveEvent(eventId, requesterId, requestBody) {
   const requester = await User.findById(requesterId);
   const owner = await User.findById(event.creator);
 
+  if (!owner) {
+    throw new Error('Собственикът на този имейл не е намерен!');
+  }
+  
   if (!requester) {
     throw new Error('Потребител с тези данни не е намерен!');
   }
