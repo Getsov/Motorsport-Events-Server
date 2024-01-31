@@ -389,10 +389,7 @@ async function getUserById(userId, requesterId) {
     throw new Error('You are not authorized to see User details!');
   }
 
-  const userData = createUserData(user);
-  const accessToken = createAccessToken(user);
-  const refreshToken = createRefreshToken(user);
-  return { userData, accessToken, refreshToken };
+  return createUserData(user);
 }
 
 async function getApprovedAdmins(requesterId) {

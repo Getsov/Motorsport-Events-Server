@@ -250,17 +250,7 @@ userController.get('/getUserById/:id', async (req, res) => {
     }
 
     const user = await getUserById(userId, requesterId);
-    const userData = user.userData;
-    const accessToken = user.accessToken;
-    const refreshToken = user.refreshToken;
-    res
-      .status(200)
-      .cookie('refreshToken', refreshToken, {
-        httpOnly: true,
-        sameSite: 'strict',
-      })
-      // .header('Authorization', accessToken)
-      .send({ userData, accessToken });
+    res.status(200).json(user);
     res.end();
   } catch (error) {
     res.status(400).json({ error: error.message });
