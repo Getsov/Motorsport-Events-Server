@@ -62,7 +62,7 @@ async function findEventByID(eventId, requesterId) {
 
   if (
     !event?.isApproved &&
-    requester?._id !== creatorId &&
+    requester?._id.toString() !== creatorId &&
     requester?.role !== 'admin'
   ) {
     throw new Error('Събитието все още не е одобрено от Администратор!');
