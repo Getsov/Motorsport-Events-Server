@@ -549,7 +549,6 @@ async function getMyEventsForApproval(requesterId, query) {
   query.sort = 'allEvents';
   const waitingEvents = await getAllOrFilteredEventsWithFavorites(
     query,
-    undefined,
     {
       isApproved: false,
       requesterId,

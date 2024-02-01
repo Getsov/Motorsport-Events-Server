@@ -4,6 +4,8 @@ const { categories } = require('../shared/categories');
 const { regions } = require('../shared/regions');
 const { limitModels } = require('../utils/limitModels');
 const { sendEventApprovalStatusEmail } = require('./emailService');
+const mongoose = require('mongoose');
+const { ObjectId } = mongoose.Types;
 
 async function registerEvent(requestBody, requesterId) {
   const requester = await User.findById(requesterId);
@@ -89,8 +91,11 @@ async function getAllOrFilteredEventsWithFavorites(
   }
 
   if (ownerOptions?.requesterId) {
+    const objectId = ObjectId.isValid(ownerOptions.requesterId)
+    ? new ObjectId(ownerOptions.requesterId)
+    : null;
     criteria.isApproved = ownerOptions.isApproved;
-    criteria.creator = ownerOptions.requesterId;
+    criteria.creator = objectId;
   }
 
   if (query?.dates) {
