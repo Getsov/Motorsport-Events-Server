@@ -62,7 +62,7 @@ async function findEventByID(eventId, requesterId) {
 
   if (
     !event?.isApproved &&
-    requester?._id !== creatorId &&
+    requester?._id.toString() !== creatorId &&
     requester?.role !== 'admin'
   ) {
     throw new Error('Събитието все още не е одобрено от Администратор!');
@@ -178,6 +178,11 @@ async function updateEvent(requestBody, existingEvent, reqRequester) {
   }
 
   if (requesterId !== creatorId && requester?.role !== 'admin') {
+    throw new Error(
+      'Не сте Организатор на събитието или Администратор, за да го променяте!'
+    );
+  }
+  if (requester?.role === 'regular') {
     throw new Error(
       'Не сте Организатор на събитието или Администратор, за да го променяте!'
     );
