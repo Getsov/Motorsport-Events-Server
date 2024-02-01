@@ -182,6 +182,11 @@ async function updateEvent(requestBody, existingEvent, reqRequester) {
       'Не сте Организатор на събитието или Администратор, за да го променяте!'
     );
   }
+  if (requester?.role === 'regular') {
+    throw new Error(
+      'Не сте Организатор на събитието или Администратор, за да го променяте!'
+    );
+  }
 
   if (!requester) {
     throw new Error('Потребител с тези данни не е намерен!');
