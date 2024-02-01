@@ -65,10 +65,10 @@ async function limitModels(model, page, limit, criteria, sortCriteria) {
     }
     if (limit) {
       models.results = concatenatedEvents.slice(startIndex, startIndex + limit);
-      return models;
+      return models.results;
     }
     models.results = concatenatedEvents;
-    return models;
+    return models.results;
   }
   
   if (sortCriteria === 'pastEvents') {
@@ -107,11 +107,11 @@ async function limitModels(model, page, limit, criteria, sortCriteria) {
     
     if (limit) {
       models.results = foundEvents.slice(startIndex, startIndex + limit);
-      return models;
+      return models.results;
     }
-
+    // To discuss with the team whether they want model object or result array.
     models.results = foundEvents;
-    return models;
+    return models.results;
   }
   
   if (sortCriteria === 'upcomingEvents') {
@@ -136,11 +136,10 @@ async function limitModels(model, page, limit, criteria, sortCriteria) {
   
     if (limit) {
       models.results = foundEvents.slice(startIndex, startIndex + limit);
-      return models;
+      return models.results;
     }
-  
     models.results = foundEvents;
-    return models;
+    return models.results;
   }
 
 }
