@@ -177,10 +177,10 @@ eventController.put('/deleteRestoreEvent/:id', async (req, res) => {
     );
 
     if (event?.isDeleted) {
-      res.status(200).json('Event is successfuly deleted!');
+      res.status(200).json('Събитието е успешно изтрито!');
       res.end();
     } else {
-      res.status(200).json('Event is successfuly restored!');
+      res.status(200).json('Събитието е успешно възстановено!');
       res.end();
     }
   } catch (error) {
