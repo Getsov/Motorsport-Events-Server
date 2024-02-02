@@ -174,22 +174,19 @@
  *         in: query
  *         description: Add `page` number for pagination
  *         type: integer
- *         default: 1
  *       - name: limit
  *         in: query
  *         description: Add `limit` number for pagination
  *         type: integer
- *         default: 2
  *       - name: category
  *         in: query
  *         description: Add `category` number for sorting from 1 to 16
  *         type: integer
- *         default: 2
  *       - name: search
  *         in: query
  *         description: Add `search` string for searching
  *         type: string
- *     summary: Pagination + sorting + search operations on events
+ *     summary: Retrieve all events with optional pagination + sorting + search operations on events
  *     description: Only approved and not deleted events will appear. You can use sorting,
  *      pagination and search. For sort by categories you need to pass number values which
  *      corresponds to following category values - 1='Автокрос', 2='Драг', 3='Дрифт',
