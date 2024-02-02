@@ -12,9 +12,9 @@ async function registerUser(requestBody) {
   const existingUser = await User.findOne({ email });
   if (existingUser) {
     if (existingUser.isDeleted == true) {
-      throw new Error('This account has been deleted, please contact support');
+      throw new Error('Този акаунт е изтрит, моля свържете се с администратор');
     } else {
-      throw new Error('Email is already taken!');
+      throw new Error('Имейлът вече е зает!');
     }
   }
 
@@ -26,30 +26,30 @@ async function loginUser(email, password) {
   const user = await User.findOne({ email }).select('+hashedPassword');
 
   if (!user) {
-    throw new Error('Invalid email or password!');
+    throw new Error('Невалиден имейл или парола!');
   }
   if (user.isDeleted) {
-    throw new Error('This account has been deleted, please contact support');
+    throw new Error('Този акаунт е изтрит, моля свържете се с администратор');
   }
   if (!user.isApproved) {
-    throw new Error('Your profile is not approved yet!');
+    throw new Error('Вашият профил все още не е одобрен!');
   }
 
   // Validate user when login
   const validateUser = user.validateSync();
   if (validateUser) {
-    throw new Error('User data validation failed!');
+    throw new Error('Невалидни данни на потребител');
   }
   if (user.role == 'organizer') {
     if (user.organizatorName == '' || user.phone == '') {
-      throw new Error('User data validation failed!');
+      throw new Error('Невалидни данни на потребител');
     }
   }
 
   const match = await bcrypt.compare(password, user.hashedPassword);
 
   if (!match) {
-    throw new Error('Invalid email or password!');
+    throw new Error('Невалиден имейл или парола!');
   }
   return createToken(user);
 }
@@ -65,10 +65,10 @@ async function editUserInfo(idOfUserForEdit, requestBody, requesterId) {
 
   if (userForEdit.role == 'organizer') {
     if (requestBody.organizatorName == '') {
-      throw new Error('Name of organization is required');
+      throw new Error('Името на организацията е задължително');
     }
     if (requestBody.phone == '') {
-      throw new Error('Phone is required');
+      throw new Error('Телефонът е задължителен');
     }
   }
 
@@ -99,7 +99,7 @@ async function editUserEmail(idOfUserForEdit, requestBody, requesterId) {
   await checkAuthorizedRequests(userForEdit, requester, isAdmin);
 
   if (requestBody.email == '') {
-    throw new Error("Email field can't be empty!");
+    throw new Error('Полето за имейл не може да бъде празно');
   }
 
   userForEdit.email = requestBody.email;
@@ -122,7 +122,7 @@ async function editUserPassword(idOfUserForEdit, requestBody, requesterId) {
       userForEdit.hashedPassword
     );
     if (!match) {
-      throw new Error('Password dismatch!');
+      throw new Error('Паролите не съвпадат');
     }
   }
 
@@ -137,17 +137,17 @@ async function editUserRole(idOfUserForEdit, requestBody, requesterId) {
   const isAdmin = requester.role == 'admin' ? true : false;
 
   if (!isAdmin || requester.isDeleted || !requester.isApproved) {
-    throw new Error('You do not have rights to modify the record!');
+    throw new Error('Нямате права да модифицирате записа!');
   }
 
   if (!userForEdit) {
-    throw new Error('User not found');
+    throw new Error('Потребителят не е намерен');
   }
 
   if (requestBody.role == 'organizer') {
     if (userForEdit.organizatorName == '') {
       if (!requestBody.organizatorName) {
-        throw new Error('Name of organization is required!');
+        throw new Error('Името на организацията е задължително');
       } else {
         userForEdit.organizatorName = requestBody.organizatorName;
       }
@@ -155,7 +155,7 @@ async function editUserRole(idOfUserForEdit, requestBody, requesterId) {
 
     if (userForEdit.phone == '') {
       if (!requestBody.phone) {
-        throw new Error('Phone is required!');
+        throw new Error('Телефонът е задължителен');
       } else {
         userForEdit.phone = requestBody.phone;
       }
@@ -177,23 +177,23 @@ async function deleteRestoreSingleUser(
   const isAdmin = requester?.role == 'admin' ? true : false;
 
   if (!userForEdit) {
-    throw new Error('User not found');
+    throw new Error('Потребителят не е намерен');
   }
 
   if (!isAdmin || requester.isDeleted || !requester.isApproved) {
-    throw new Error('You do not have rights to modify the record!');
+    throw new Error('Нямате права да модифицирате записа!');
   }
 
   if (requestBody?.hasOwnProperty('isDeleted')) {
     if (typeof requestBody?.isDeleted !== 'boolean') {
-      throw new Error('Only boolean values are valid!');
+      throw new Error('Валидни са само булеви стойности!');
     }
   } else {
-    throw new Error('Add correct data in the request: "isDeleted"');
+    throw new Error('Добавете коректни данни в заявката: "isDeleted"');
   }
 
   if (requestBody?.isDeleted == userForEdit.isDeleted) {
-    throw new Error('You cannot modify with the same value!');
+    throw new Error('Не можете да модифицирате със същата стойност!');
   }
 
   requestBody.isDeleted
@@ -211,7 +211,7 @@ async function deleteRestoreMultipleUsers(requestBody, requesterId) {
   const updatedUsersList = [];
 
   if (!isAdmin || requester.isDeleted || !requester.isApproved) {
-    throw new Error('You do not have rights to modify the record!');
+    throw new Error('Нямате права да модифицирате записа!');
   }
 
   if (
@@ -219,24 +219,24 @@ async function deleteRestoreMultipleUsers(requestBody, requesterId) {
     requestBody?.hasOwnProperty('listOfUsers')
   ) {
     if (typeof requestBody?.isDeleted !== 'boolean') {
-      throw new Error('Only boolean values are valid!');
+      throw new Error('Валидни са само булеви стойности!');
     }
   } else {
-    throw new Error('Add correct data in the request: "isDeleted"');
+    throw new Error('Добавете коректни данни в заявката: "isDeleted"');
   }
 
   if (!Array.isArray(usersForEdit) || usersForEdit.length <= 0) {
-    throw new Error('There are no users for edit!');
+    throw new Error('Няма потребители за редакция');
   }
 
   await Promise.all(
     usersForEdit.map(async (userId) => {
       const userForEdit = await User.findById(userId);
       if (!userForEdit) {
-        throw new Error('User not found');
+        throw new Error('Потребителят не е намерен');
       }
       if (requestBody?.isDeleted == userForEdit.isDeleted) {
-        throw new Error('You cannot modify with the same value!');
+        throw new Error('Не можете да модифицирате със същата стойност!');
       }
 
       requestBody.isDeleted
@@ -257,23 +257,23 @@ async function approveDisapproveSingleUser(userId, requesterId, requestBody) {
   // let isApproved = true;
 
   if (!isAdmin || requester.isDeleted || !requester.isApproved) {
-    throw new Error('You do not have rights to modify the record!');
+    throw new Error('Нямате права да модифицирате записа!');
   }
 
   if (!userForEdit) {
-    throw new Error('User not found!');
+    throw new Error('Потребителят не е намерен!');
   }
 
   if (requestBody?.hasOwnProperty('isApproved')) {
     if (typeof requestBody?.isApproved !== 'boolean') {
-      throw new Error('Only boolean values are valid!');
+      throw new Error('Валидни са само булеви стойности!');
     }
   } else {
-    throw new Error('Add correct data in the request: "isApproved"');
+    throw new Error('Добавете коректни данни в заявката: "isApproved"');
   }
 
   if (requestBody?.isApproved == userForEdit.isApproved) {
-    throw new Error('You cannot modify with the same value!');
+    throw new Error('Не можете да модифицирате със същата стойност!');
   }
 
   requestBody.isApproved
@@ -294,7 +294,7 @@ async function approveDisapproveMultipleUsers(requestBody, requesterId) {
   const updatedUsersList = [];
 
   if (!isAdmin || requester.isDeleted || !requester.isApproved) {
-    throw new Error('You do not have rights to modify the record!');
+    throw new Error('Нямате права да модифицирате записа!');
   }
 
   if (
@@ -302,26 +302,26 @@ async function approveDisapproveMultipleUsers(requestBody, requesterId) {
     requestBody?.hasOwnProperty('listOfUsers')
   ) {
     if (typeof requestBody?.isApproved !== 'boolean') {
-      throw new Error('Only boolean values are valid!');
+      throw new Error('Валидни са само булеви стойности!');
     }
   } else {
     throw new Error(
-      'Add correct data in the request: "isApproved", "listOfUsers'
+      'Добавете коректни данни в заявката: "isApproved", "listOfUsers'
     );
   }
 
   if (!Array.isArray(usersForEdit) || usersForEdit.length <= 0) {
-    throw new Error('There are no users for edit!');
+    throw new Error('Няма потребители за редакция');
   }
 
   await Promise.all(
     usersForEdit.map(async (userId) => {
       const userForEdit = await User.findById(userId);
       if (!userForEdit) {
-        throw new Error('User not found');
+        throw new Error('Потребителят не е намерен');
       }
       if (requestBody?.isApproved == userForEdit.isApproved) {
-        throw new Error('You cannot modify with the same value!');
+        throw new Error('Не можете да модифицирате със същата стойност!');
       }
 
       requestBody.isApproved
@@ -339,7 +339,7 @@ async function approveDisapproveMultipleUsers(requestBody, requesterId) {
 async function returnAllCreatedEvents(userId) {
   const existingUser = await User.findById(userId);
   if (!existingUser) {
-    throw new Error('User not found!');
+    throw new Error('Потребителят не е намерен!');
   }
   const userWithEvents = await existingUser.populate('createdEvents');
   const allCreatedEvents = userWithEvents.createdEvents;
@@ -349,7 +349,7 @@ async function returnAllCreatedEvents(userId) {
 async function returnAllFavouriteEvents(userId, query) {
   const existingUser = await User.findById(userId);
   if (!existingUser) {
-    throw new Error('User not found!');
+    throw new Error('Потребителят не е намерен!');
   }
   query.sort = 'allEvents';
   const allFavouriteEvents = await getAllOrFilteredEventsWithFavorites(
@@ -366,22 +366,24 @@ async function getUserById(userId, requesterId) {
   const requester = await User.findById(requesterId);
 
   if (!user) {
-    throw new Error('User not found!');
+    throw new Error('Потребителят не е намерен');
   }
 
   if (!requester) {
-    throw new Error('Your profile is not found!');
+    throw new Error('Профилът не е намерен');
   }
 
   if (requester?.isDeleted || !requester?.isApproved) {
-    throw new Error('You do not have access to these records!');
+    throw new Error('Нямате нужните права за достъп до тези данни!');
   }
 
   if (
     requester?.role !== 'admin' &&
     requester?._id.toString() != user?._id.toString()
   ) {
-    throw new Error('You are not authorized to see User details!');
+    throw new Error(
+      'Не сте оторизиран, за да видите детайлите на потребителя.'
+    );
   }
 
   return createToken(user);
@@ -559,7 +561,7 @@ async function getMyEventsForApproval(requesterId, query) {
 async function addRemoveLikedEvent(eventId, userId, isAlreadyLiked) {
   const existingUser = await User.findById(userId);
   if (!existingUser) {
-    throw new Error('User not found!');
+    throw new Error('Потребителят не е намерен!');
   }
 
   if (existingUser.likedEvents.includes(eventId) && isAlreadyLiked) {
@@ -576,7 +578,7 @@ async function addEventToCreatedEvents(eventId, userId) {
   eventId = eventId.toString();
   const existingUser = await User.findById(userId);
   if (!existingUser) {
-    throw new Error('User not found!');
+    throw new Error('Потребителят не е намерен!');
   }
 
   existingUser.createdEvents.push(eventId);

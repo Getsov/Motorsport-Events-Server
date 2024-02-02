@@ -26,7 +26,7 @@ eventController.get('/eventsForApproval', async (req, res) => {
     const requesterId = req.requester?._id;
 
     if (!requesterId) {
-      throw new Error('User "_id" is missing!');
+      throw new Error('Липсва идентификаторът "_id" на потребителя!');
     }
 
     const result = await getAllEventsForApproval(requesterId);
@@ -41,7 +41,7 @@ eventController.get('/eventsForApproval', async (req, res) => {
 eventController.post('/register', async (req, res) => {
   try {
     if (Object.keys(req.body).length === 0) {
-      throw new Error('Invalid request Body!');
+      throw new Error('Невалидно тяло (body) на заявката!');
     }
 
     checkDatesAndTime(req.body.dates);
@@ -118,13 +118,13 @@ eventController.get('/:id', async (req, res) => {
     const eventId = req.params?.id;
 
     if (eventId === ',' || eventId === '{id}') {
-      throw new Error('Event "id" is missing!');
+      throw new Error('Липсва идентификаторът "id" на събитието!');
     }
 
     const event = await findEventByID(eventId, req.requester?._id);
 
     if (event === null) {
-      throw new Error("Event is deleted, or doesn't exist!");
+      throw new Error('Събитието е изтрито или не съществува!');
     }
 
     res.status(200).json(event);
@@ -140,11 +140,11 @@ eventController.put('/:id', async (req, res) => {
     const eventId = req.params?.id;
 
     if (eventId === ',' || eventId === '{id}') {
-      throw new Error('Event "id" is missing!');
+      throw new Error('Липсва идентификаторът "id" на събитието!');
     }
 
     if (Object.keys(req.body).length === 0) {
-      throw new Error('Invalid request Body!');
+      throw new Error('Невалидно тяло (body) на заявката!');
     }
 
     if (req.body.dates) {
@@ -167,7 +167,7 @@ eventController.put('/deleteRestoreEvent/:id', async (req, res) => {
     const eventId = req.params?.id;
 
     if (eventId === ',' || eventId === '{id}') {
-      throw new Error('Event "id" is missing!');
+      throw new Error('Липсва идентификаторът "id" на събитието!');
     }
 
     const event = await deleteRestoreEvent(
@@ -193,7 +193,7 @@ eventController.put('/approveDisapproveEvent/:id', async (req, res) => {
     const eventId = req.params?.id;
 
     if (eventId === ',' || eventId === '{id}') {
-      throw new Error('Event "id" is missing!');
+      throw new Error('Липсва идентификаторът "id" на събитието!');
     }
 
     const event = await approveDisapproveEvent(
@@ -203,10 +203,10 @@ eventController.put('/approveDisapproveEvent/:id', async (req, res) => {
     );
 
     if (event?.isApproved) {
-      res.status(200).json('Event is successfuly approved!');
+      res.status(200).json('Събитието е успешно одобрено!');
       res.end();
     } else {
-      res.status(200).json('Event is successfuly disapproved!');
+      res.status(200).json('Събитието е успешно неодобрено!');
       res.end();
     }
   } catch (error) {
@@ -219,20 +219,22 @@ eventController.post('/like/:id', async (req, res) => {
     const eventId = req.params?.id;
 
     if (eventId === ',' || eventId === '{id}') {
-      throw new Error('Event "id" is missing!');
+      throw new Error('Липсва идентификаторът "id" на събитието!');
     }
 
     if (!req.requester) {
-      throw new Error('You must log-in to like this Event!');
+      throw new Error(
+        'Трябва да влезете в системата, за да харесате това събитие!'
+      );
     }
 
     const event = await findEventByID(req.params.id, req.requester?._id);
 
     if (event?.isApproved === false) {
-      throw new Error('This Event is not Approved by Admin!');
+      throw new Error('Това събитие не е одобрено от администратора!');
     }
     if (event === null || event.isDeleted) {
-      throw new Error('Event is deleted!');
+      throw new Error('Събитието е изтрито!');
     }
 
     let isAlreadyLiked = false;
@@ -275,7 +277,7 @@ eventController.get('/month/:year/:month', async (req, res) => {
 // Unmatched route
 eventController.use((req, res) => {
   res.status(404).json({
-    message: 'Route not found or request is not right!',
+    message: 'Пътят не е намерен или заявката не е коректна!',
   });
 });
 
