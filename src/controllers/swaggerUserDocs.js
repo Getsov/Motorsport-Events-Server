@@ -471,6 +471,11 @@
  *   get:
  *     summary: Retrieve all organizers.
  *     description: Retrieve all organizers, only an active admin can make the request.
+ *     parameters:
+ *       - name: search
+ *         in: query
+ *         description: Add `search` qury string for searching in Users
+ *         type: string
  *     tags:
  *       - User
  *     responses:
@@ -486,6 +491,11 @@
  *   get:
  *     summary: Retrieve all regular users.
  *     description: Retrieve all regular users, only an active admin can make the request.
+ *     parameters:
+ *       - name: search
+ *         in: query
+ *         description: Add `search` qury string for searching in Users
+ *         type: string
  *     tags:
  *       - User
  *     responses:
@@ -501,6 +511,11 @@
  *   get:
  *     summary: Retrieve all admin users.
  *     description: Retrieve all admin users, only an active admin can make the request.
+ *     parameters:
+ *       - name: search
+ *         in: query
+ *         description: Add `search` qury string for searching in Users
+ *         type: string
  *     tags:
  *       - User
  *     responses:
@@ -516,6 +531,11 @@
  *   get:
  *     summary: Retrieve all users.
  *     description: Retrieve all users, only an active admin can make the request.
+ *     parameters:
+ *       - name: search
+ *         in: query
+ *         description: Add `search` qury string for searching in Users
+ *         type: string
  *     tags:
  *       - User
  *     responses:
