@@ -354,7 +354,7 @@ async function returnAllFavouriteEvents(userId, query) {
   query.sort = 'allEvents';
   const allFavouriteEvents = await getAllOrFilteredEventsWithFavorites(
     query,
-    existingUser,
+    null,
     existingUser._id
   );
 
