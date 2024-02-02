@@ -11,6 +11,7 @@ const {
   getUpcomingEvents,
   deleteRestoreEvent,
   approveDisapproveEvent,
+  getAllDeletedEvents,
 } = require('../services/eventService');
 const {
   addRemoveLikedEvent,
@@ -83,9 +84,25 @@ eventController.get('/pastEvents', async (req, res) => {
   }
 });
 
+eventController.get('/deletedEvents', async (req, res) => {
+  try {
+    const requesterId = req.requester?._id;
+    if (!requesterId) {
+      throw new Error('Влезте в профила си!');
+    }
+    const result = await getAllDeletedEvents(req.query, requesterId);
+    res.status(200).json(result);
+    res.end();
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: error.message });
+  }
+});
+
 // Get ALL events!
 eventController.get('/', async (req, res) => {
   try {
+    req.query.sort = 'allEvents';
     const events = await getAllOrFilteredEventsWithFavorites(req.query);
 
     res.status(200).json(events);
@@ -160,10 +177,10 @@ eventController.put('/deleteRestoreEvent/:id', async (req, res) => {
     );
 
     if (event?.isDeleted) {
-      res.status(200).json('Event is successfuly deleted!');
+      res.status(200).json('Събитието е успешно изтрито!');
       res.end();
     } else {
-      res.status(200).json('Event is successfuly restored!');
+      res.status(200).json('Събитието е успешно възстановено!');
       res.end();
     }
   } catch (error) {
@@ -184,7 +201,7 @@ eventController.put('/approveDisapproveEvent/:id', async (req, res) => {
       req.requester?._id,
       req?.body
     );
-    
+
     if (event?.isApproved) {
       res.status(200).json('Event is successfuly approved!');
       res.end();
@@ -215,7 +232,7 @@ eventController.post('/like/:id', async (req, res) => {
       throw new Error('This Event is not Approved by Admin!');
     }
     if (event === null || event.isDeleted) {
-      throw new Error("Event is deleted!");
+      throw new Error('Event is deleted!');
     }
 
     let isAlreadyLiked = false;
@@ -230,7 +247,6 @@ eventController.post('/like/:id', async (req, res) => {
 
     res.status(200).json(isAlreadyLiked ? 'Event UnLiked!' : 'Event Liked!');
     res.end();
-
   } catch (error) {
     res.status(400).json(error.message);
     res.end();

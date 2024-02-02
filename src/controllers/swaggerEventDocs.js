@@ -174,22 +174,19 @@
  *         in: query
  *         description: Add `page` number for pagination
  *         type: integer
- *         default: 1
  *       - name: limit
  *         in: query
  *         description: Add `limit` number for pagination
  *         type: integer
- *         default: 2
  *       - name: category
  *         in: query
  *         description: Add `category` number for sorting from 1 to 16
  *         type: integer
- *         default: 2
  *       - name: search
  *         in: query
  *         description: Add `search` string for searching
  *         type: string
- *     summary: Pagination + sorting + search operations on events
+ *     summary: Retrieve all events with optional pagination + sorting + search operations on events
  *     description: Only approved and not deleted events will appear. You can use sorting,
  *      pagination and search. For sort by categories you need to pass number values which
  *      corresponds to following category values - 1='Автокрос', 2='Драг', 3='Дрифт',
@@ -408,4 +405,41 @@
  *         description: Array with events.
  *       400:
  *         description: Error message.
+ */
+
+/**
+ * @swagger
+ * /events/deletedEvents?page=&limit=&category=&search=:
+ *   get:
+ *     parameters:
+ *       - name: page
+ *         in: query
+ *         description: Add `page` number for pagination
+ *         type: integer
+ *         default: 1
+ *       - name: limit
+ *         in: query
+ *         description: Add `limit` number for pagination
+ *         type: integer
+ *         default: 2
+ *       - name: category
+ *         in: query
+ *         description: Add `category` number for sorting from 1 to 16
+ *         type: integer
+ *         default: 2
+ *       - name: search
+ *         in: query
+ *         description: Add `search` string for searching
+ *         type: string
+ *     summary: Retrieve all deleted events requested only by active admin also Pagination + sorting + search operations on events
+ *     description: Only deleted events will appear. You need to be authorized as an
+ *      active admin to fetch the request. You can use sorting,
+ *      pagination and search.
+ *     tags:
+ *       - Event
+ *     responses:
+ *       200:
+ *         description: Array of events or empty array if no events in the Database.
+ *       400:
+ *         description: Server Error.
  */

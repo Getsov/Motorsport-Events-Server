@@ -4,6 +4,8 @@ const { categories } = require('../shared/categories');
 const { regions } = require('../shared/regions');
 const { limitModels } = require('../utils/limitModels');
 const { sendEventApprovalStatusEmail } = require('./emailService');
+const mongoose = require('mongoose');
+const { ObjectId } = mongoose.Types;
 
 async function registerEvent(requestBody, requesterId) {
   const requester = await User.findById(requesterId);
@@ -60,7 +62,7 @@ async function findEventByID(eventId, requesterId) {
 
   if (
     !event?.isApproved &&
-    requester?._id !== creatorId &&
+    requester?._id.toString() !== creatorId &&
     requester?.role !== 'admin'
   ) {
     throw new Error('Събитието все още не е одобрено от Администратор!');
@@ -73,13 +75,14 @@ async function getAllOrFilteredEventsWithFavorites(
   ownerOptions,
   idOfLikedUser
 ) {
-  const page = query.page;
-  const limit = query.limit;
-
+  const page = query.page || 1;
+  const limit = query.limit || 0;
+  
   const criteria = {
     isDeleted: false,
     isApproved: true,
   };
+  let sortCriteria = {};
 
   if (idOfLikedUser) {
     criteria.likes = {
@@ -88,12 +91,24 @@ async function getAllOrFilteredEventsWithFavorites(
   }
 
   if (ownerOptions?.requesterId) {
+    const objectId = ObjectId.isValid(ownerOptions.requesterId)
+    ? new ObjectId(ownerOptions.requesterId)
+    : null;
     criteria.isApproved = ownerOptions.isApproved;
-    criteria.creator = ownerOptions.requesterId;
+    criteria.creator = objectId;
   }
 
   if (query?.dates) {
     criteria.dates = query.dates;
+  }
+
+  if (query?.isDeleted) {
+    criteria.isDeleted = query.isDeleted;
+    criteria.isApproved = false;
+  }
+  
+  if (query?.sort) {
+    sortCriteria = query.sort;
   }
 
   if (query?.category) {
@@ -146,7 +161,7 @@ async function getAllOrFilteredEventsWithFavorites(
     ];
   }
 
-  return await limitModels(Event, page, limit, criteria);
+  return await limitModels(Event, page, limit, criteria, sortCriteria);
 }
 
 async function updateEvent(requestBody, existingEvent, reqRequester) {
@@ -163,6 +178,11 @@ async function updateEvent(requestBody, existingEvent, reqRequester) {
   }
 
   if (requesterId !== creatorId && requester?.role !== 'admin') {
+    throw new Error(
+      'Не сте Организатор на събитието или Администратор, за да го променяте!'
+    );
+  }
+  if (requester?.role === 'regular') {
     throw new Error(
       'Не сте Организатор на събитието или Администратор, за да го променяте!'
     );
@@ -259,7 +279,7 @@ async function deleteRestoreEvent(eventId, requesterId, requestBody) {
     );
   }
 
-  return await event.save();
+  return await event.save({ validateBeforeSave: false });
 }
 
 async function approveDisapproveEvent(eventId, requesterId, requestBody) {
@@ -267,6 +287,10 @@ async function approveDisapproveEvent(eventId, requesterId, requestBody) {
   const requester = await User.findById(requesterId);
   const owner = await User.findById(event.creator);
 
+  if (!owner) {
+    throw new Error('Собственикът на това събитие не е намерен!');
+  }
+  
   if (!requester) {
     throw new Error('Потребител с тези данни не е намерен!');
   }
@@ -309,7 +333,7 @@ async function approveDisapproveEvent(eventId, requesterId, requestBody) {
     requestBody.isApproved,
     event.shortTitle
   );
-  return await event.save();
+  return await event.save({ validateBeforeSave: false });
 }
 
 // Like/Unlike event.
@@ -385,6 +409,8 @@ async function getUpcomingEvents(query, requesterId) {
     },
   };
 
+  query.sort = 'upcomingEvents';
+  
   const events = await getAllOrFilteredEventsWithFavorites(query, {
     isApproved: true,
     requesterId,
@@ -419,10 +445,33 @@ async function getPastEvents(query, requesterId) {
     },
   };
 
+  query.sort = 'pastEvents';
+
   const events = await getAllOrFilteredEventsWithFavorites(query, {
     isApproved: true,
     requesterId,
   });
+  return events;
+}
+
+async function getAllDeletedEvents(query, requesterId) {
+  const requester = await User.findById(requesterId);
+  if (!requester) {
+    throw new Error('Няма потребител с такова ID') 
+  }
+  
+  if (requester.isDeleted) {
+    throw new Error('Вашият профил е изтрит!');
+  }
+  if (!requester.isApproved) {
+    throw new Error('Профилът Ви все още не е одобрен!');
+  }
+  if (requester.role !== 'admin') {
+    throw new Error('Нямате нужните права за достъп до тези данни!');
+  }
+  query.isDeleted = true;
+  query.sort = 'allEvents'
+  const events = await getAllOrFilteredEventsWithFavorites(query);
   return events;
 }
 
@@ -456,6 +505,7 @@ module.exports = {
   getPastEvents,
   deleteRestoreEvent,
   approveDisapproveEvent,
+  getAllDeletedEvents
 };
 
 // Commented code below is for postman tests!
