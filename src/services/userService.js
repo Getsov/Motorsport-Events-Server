@@ -354,6 +354,7 @@ async function returnAllFavouriteEvents(userId, query) {
   query.sort = 'allEvents';
   const allFavouriteEvents = await getAllOrFilteredEventsWithFavorites(
     query,
+    existingUser,
     existingUser._id
   );
 
@@ -547,13 +548,10 @@ async function getMyEventsForApproval(requesterId, query) {
     throw new Error('Нямате нужните права за достъп до тези данни!');
   }
   query.sort = 'allEvents';
-  const waitingEvents = await getAllOrFilteredEventsWithFavorites(
-    query,
-    {
-      isApproved: false,
-      requesterId,
-    }
-  );
+  const waitingEvents = await getAllOrFilteredEventsWithFavorites(query, {
+    isApproved: false,
+    requesterId,
+  });
 
   return waitingEvents;
 }
