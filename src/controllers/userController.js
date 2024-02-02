@@ -38,22 +38,22 @@ userController.post('/register', async (req, res) => {
     const passwordTest = validPassword.test(req.body.password);
     checkRequestData(req.body);
     if (!passwordTest) {
-      throw new Error('Password cannot contain spaces!');
+      throw new Error('Паролата не може да съдържа интервали!');
     }
     if (!req.body.password) {
-      throw new Error('Password is required!');
+      throw new Error('Паролата е задължителна!');
     }
     if (req.body.password.length < 6) {
-      throw new Error('Password must be at least 6 characters long!');
+      throw new Error('Паролата трябва да бъде поне 6 символа дълга!');
     }
     if (req.body.password.length > 24) {
-      throw new Error('Password must be maximum 24 characters long!');
+      throw new Error('Паролата трябва да бъде максимум 24 символа дълга!');
     }
     if (req.body.password !== req.body.repassword) {
-      throw new Error('Password dismatch!');
+      throw new Error('Паролите не съвпадат!');
     }
     if (!req.body.email || req.body.email == '') {
-      throw new Error('Email is required!');
+      throw new Error('Имейлът е задължителен!');
     }
 
     const userData = {
@@ -72,10 +72,10 @@ userController.post('/register', async (req, res) => {
 
     if (req.body.role == 'organizer') {
       if (!req.body.organizatorName) {
-        throw new Error('Name of organizator is required!');
+        throw new Error('Името на организатора е задължително!');
       }
       if (!req.body.phone) {
-        throw new Error('Phone is required!');
+        throw new Error('Телефонът е задължителен!');
       }
       userData.organizatorName = req.body.organizatorName;
     }
@@ -105,7 +105,7 @@ userController.put('/editUserInfo/:id', async (req, res) => {
     const userForEdit = req.params?.id;
 
     if (userForEdit === ',' || userForEdit === '{id}') {
-      throw new Error('User "id" is missing!');
+      throw new Error('Липсва идентификатор "id" на потребителя!');
     }
 
     const requester = req.requester?._id;
@@ -124,7 +124,7 @@ userController.put('/editUserEmail/:id', async (req, res) => {
     const userForEdit = req.params?.id;
 
     if (userForEdit === ',' || userForEdit === '{id}') {
-      throw new Error('User "id" is missing!');
+      throw new Error('Липсва идентификатор "id" на потребителя!');
     }
 
     const requester = req.requester._id;
@@ -144,7 +144,7 @@ userController.put('/editUserPassword/:id', async (req, res) => {
     const requester = req.requester?._id;
 
     if (userForEdit === ',' || userForEdit === '{id}') {
-      throw new Error('User "id" is missing!');
+      throw new Error('Липсва идентификатор "id" на потребителя!');
     }
 
     if (!requester) {
@@ -169,7 +169,7 @@ userController.put('/editUserRole/:id', async (req, res) => {
     const requester = req.requester?._id;
 
     if (userForEdit === ',' || userForEdit === '{id}') {
-      throw new Error('User "id" is missing!');
+      throw new Error('Липсва идентификатор "id" на потребителя!');
     }
 
     checkRequestData(req.body);
@@ -188,7 +188,7 @@ userController.put('/deleteRestoreUser/:id', async (req, res) => {
     const requester = req.requester?._id;
 
     if (userForEdit === ',' || userForEdit === '{id}') {
-      throw new Error('User "id" is missing!');
+      throw new Error('Липсва идентификатор "id" на потребителя!');
     }
 
     checkRequestData(req.body);
@@ -225,7 +225,7 @@ userController.get('/getUserById/:id', async (req, res) => {
     const requesterId = req.requester?._id;
 
     if (userId === ',' || userId === '{id}') {
-      throw new Error('User "id" is missing!');
+      throw new Error('Липсва идентификатор "id" на потребителя!');
     }
 
     const user = await getUserById(userId, requesterId);
@@ -244,7 +244,7 @@ userController.put('/approveDisapproveUser/:id', async (req, res) => {
     const requesterId = req.requester?._id;
 
     if (userId === ',' || userId === '{id}') {
-      throw new Error('User "id" is missing!');
+      throw new Error('Липсва идентификатор "id" на потребителя!');
     }
 
     checkRequestData(req.body);
@@ -448,15 +448,15 @@ userController.get('/myPastEvents', async (req, res) => {
 userController.post('/resetPassword', async (req, res) => {
   try {
     if (req.body.to === undefined) {
-      throw new Error('Email is not passed!');
+      throw new Error('Липсва имейл');
     }
     if (req.body.to === '') {
-      throw new Error('Email field is empty!');
+      throw new Error('Полето за имейл е празно!');
     }
 
     const result = await resetPassword(req.body);
 
-    res.status(200).json({ message: 'Email sent successfully' });
+    res.status(200).json({ message: 'Имейлът е изпратен успешно' });
     res.end();
   } catch (error) {
     console.log(error);
@@ -467,7 +467,7 @@ userController.post('/resetPassword', async (req, res) => {
 // Unmatched route
 userController.use((req, res) => {
   res.status(404).json({
-    message: 'Route not found or request is not right!',
+    message: 'Пътят не е намерен или заявката не е правилна!',
   });
 });
 

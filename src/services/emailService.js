@@ -9,7 +9,7 @@ async function resetPassword(requestBody) {
   // TODO: Try to update the function later, with expired password or magic link..
   const existingUser = await User.findOne({ email: requestBody?.to });
   if (!existingUser) {
-    throw new Error('User-Email not found!');
+    throw new Error('Потребителският имейл не е намерен!');
   }
 
   const newPassword = generatePassword();
@@ -33,8 +33,8 @@ async function resetPassword(requestBody) {
   const mailOptions = {
     from: 'admin@racefanatic.app',
     to,
-    subject: 'Password Reset',
-    text: `Here is your new password for Race Fanatic app: ${newPassword}`,
+    subject: 'Нулиране на парола',
+    text: `Ето вашата нова парола за приложението Race Fanatic: ${newPassword}`,
   };
 
   const info = await transporter.sendMail(mailOptions);
@@ -43,13 +43,15 @@ async function resetPassword(requestBody) {
   return info;
 }
 async function sendUserApprovalEmail(usersList, isApproved) {
-  let text = 'Congratulations! Your profile has been successfully approved for the Race Fanatic app.';
-  let subject = 'Welcome Aboard! Your Race Fanatic Profile is Approved.';
+  let text =
+    'Поздравления! Вашият профил беше успешно одобрен за приложението Race Fanatic.';
+  let subject = 'Добре дошли на борда! Вашият профил в Race Fanatic е одобрен.';
   let to = []; // Assuming this array will be populated with recipient email addresses
 
   if (!isApproved) {
-    text = 'We regret to inform you that your profile has not met the approval criteria for the Race Fanatic app at this time. Please check our guidelines and feel free to reapply.';
-    subject = 'Race Fanatic Profile Review: Important Update.';
+    text =
+      'Съжаляваме, че вашият профил не отговаря на критериите за одобрение за приложението Race Fanatic в момента. Моля, проверете нашите насоки и не се колебайте да кандидатствате отново.';
+    subject = 'Review на профила в Race Fanatic: Важно обновление.';
   }
 
   usersList.forEach((user) => {
@@ -80,14 +82,13 @@ async function sendUserApprovalEmail(usersList, isApproved) {
 }
 //TODO: update reamde
 async function sendEventApprovalStatusEmail(userEmail, isApproved, eventName) {
-  let text = `Great news! Your event "${eventName}" has been approved and is now listed in the Race Fanatic app.`;
-  let subject = 'Your Event is Live on Race Fanatic!';
+  let text = `Страхотни новини! Вашето събитие "${eventName}" беше одобрено и вече е изброено в приложението Race Fanatic.`;
+  let subject = 'Вашето събитие е качено в Race Fanatic!';
 
   if (!isApproved) {
-    text = `We're sorry to inform you that your event "${eventName}"
-     did not meet the approval criteria for listing in the Race Fanatic app at this time.
-      Please review our guidelines for more details.`;
-    subject = 'Important Update on Your Race Fanatic Event Submission';
+    text = `Съжаляваме да ви информираме, че вашето събитие "${eventName}"
+    не отговаря на критериите за одобрение за включване в приложението Race Fanatic в момента. Моля, прегледайте нашите насоки за повече подробности.`;
+    subject = 'Важно обновление относно Вашето събитие в Race Fanatic';
   }
 
   const transporter = nodemailer.createTransport({
