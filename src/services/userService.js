@@ -122,7 +122,7 @@ async function editUserPassword(idOfUserForEdit, requestBody, requesterId) {
       userForEdit.hashedPassword
     );
     if (!match) {
-      throw new Error('Паролите не съвпадат');
+      throw new Error('Невалидна стара парола');
     }
   }
 
