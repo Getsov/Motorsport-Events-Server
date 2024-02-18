@@ -17,7 +17,7 @@ const eventSchema = new Schema({
     type: String,
     trim: true,
     default: '',
-    maxlength: [80, 'Ling title must be maximum 80 characters long!']
+    maxlength: [80, 'Long title must be maximum 80 characters long!']
   },
   shortDescription: {
     type: String,
