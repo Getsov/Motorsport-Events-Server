@@ -34,6 +34,7 @@ const {
   getUpcomingEvents,
 } = require('../services/eventService');
 const { parseRefreshToken } = require('../utils/parseToken');
+const { error } = require('console');
 
 userController.post('/register', async (req, res) => {
   try {
@@ -488,7 +489,9 @@ userController.post('/resetPassword', async (req, res) => {
 userController.post('/refreshToken', async (req, res) => {
   const cookieRefreshToken = req.cookies['refreshToken'];
   if (!cookieRefreshToken) {
-    return res.status(401).send('Access Denied. No refresh token provided.');
+    return res
+      .status(401)
+      .json({ error: 'Access Denied. No refresh token provided.' });
   } else {
     try {
       const payload = parseRefreshToken(cookieRefreshToken);
