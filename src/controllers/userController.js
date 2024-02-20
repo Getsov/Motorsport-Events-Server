@@ -23,6 +23,7 @@ const {
   approveDisapproveMultipleUsers,
   getApprovedOrganizators,
   getMyEventsForApproval,
+  getUserForTokenGeneration,
 } = require('../services/userService');
 
 const { validPassword } = require('../shared/sharedRegex');
@@ -56,7 +57,7 @@ userController.post('/register', async (req, res) => {
       throw new Error('Имейлът е задължителен!');
     }
 
-    const userData = {
+    const userDataFromRequest = {
       email: req.body.email,
       firstName: req.body.firstName ? req.body.firstName : '',
       lastName: req.body.lastName ? req.body.lastName : '',
@@ -66,7 +67,7 @@ userController.post('/register', async (req, res) => {
       hashedPassword: await bcrypt.hash(req.body.password, 10),
     };
 
-    if (userData.role == 'regular') {
+    if (userDataFromRequest.role == 'regular') {
       userData.isApproved = true;
     }
 
@@ -77,11 +78,20 @@ userController.post('/register', async (req, res) => {
       if (!req.body.phone) {
         throw new Error('Телефонът е задължителен!');
       }
-      userData.organizatorName = req.body.organizatorName;
+      userDataFromRequest.organizatorName = req.body.organizatorName;
     }
 
-    const user = await registerUser(userData);
-    res.status(200).json(user);
+    const user = await registerUser(userDataFromRequest);
+    const userData = user.userData;
+    const accessToken = user.accessToken;
+    const refreshToken = user.refreshToken;
+    res
+      .status(200)
+      .cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        sameSite: 'strict',
+      })
+      .send({ userData, accessToken });
     res.end();
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -91,8 +101,18 @@ userController.post('/register', async (req, res) => {
 userController.post('/login', async (req, res) => {
   try {
     checkRequestData(req.body);
-    const user = await loginUser(req.body.email, req.body.password);
-    res.status(200).json(user);
+    const user = await registerUser(userDataFromRequest);
+    const userData = user.userData;
+    const accessToken = user.accessToken;
+    const refreshToken = user.refreshToken;
+    res
+      .status(200)
+      .status(200)
+      .cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        sameSite: 'strict',
+      })
+      .send({ userData, accessToken });
     res.end();
   } catch (error) {
     console.log(error);
@@ -461,6 +481,33 @@ userController.post('/resetPassword', async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(400).json({ error: error.message });
+  }
+});
+
+userController.post('/refreshToken', async (req, res) => {
+  const cookieRefreshToken = req.cookies['refreshToken'];
+  if (!cookieRefreshToken) {
+    return res.status(401).send('Access Denied. No refresh token provided.');
+  } else {
+    try {
+      const payload = parseRefreshToken(cookieRefreshToken);
+      const userId = payload._id;
+      const tokens = await getUserForTokenGeneration(userId);
+      const accessToken = tokens.accessToken;
+      const refreshToken = tokens.refreshToken;
+      res
+        .status(200)
+        .cookie('refreshToken', refreshToken, {
+          httpOnly: true,
+          sameSite: 'strict',
+        })
+        // .header('Authorization', accessToken)
+        .send({ accessToken });
+      res.end();
+      res.end();
+    } catch (error) {
+      return res.status(401).json({ message: 'Invalid refresh token' });
+    }
   }
 });
 
