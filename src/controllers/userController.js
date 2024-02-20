@@ -33,6 +33,7 @@ const {
   getPastEvents,
   getUpcomingEvents,
 } = require('../services/eventService');
+const { parseRefreshToken } = require('../utils/parseToken');
 
 userController.post('/register', async (req, res) => {
   try {
