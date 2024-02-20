@@ -631,7 +631,7 @@ function createAccessToken(user) {
 }
 
 function createRefreshToken(user) {
-  constexpiresInThirtyDays = 30 * 24 * 60 * 60;
+  const expiresInThirtyDays = 30 * 24 * 60 * 60;
 
   const payload = {
     _id: user._id,
