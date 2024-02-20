@@ -27,7 +27,6 @@ async function registerUser(requestBody) {
 
 async function loginUser(email, password) {
   const user = await User.findOne({ email }).select('+hashedPassword');
-
   if (!user) {
     throw new Error('Невалиден имейл или парола!');
   }
@@ -618,15 +617,17 @@ function createUserData(user) {
 function createAccessToken(user) {
   // As a rule, seconds are set for the duration of tokens.
   const expiresInTenDays = 10 * 24 * 60 * 60;
-  const expiresInOneMinutes = 60;
-  const expiresInTenMinutes = 10 * 60;
+
+  //DIFFERENT EXPIRE TIME FOR TESTING
+  // const expiresInOneMinutes = 60;
+  // const expiresInTenMinutes = 10 * 60;
   const payload = {
     _id: user._id,
     email: user.email,
   };
 
   return jwt.sign(payload, secretAccesToken, {
-    expiresIn: expiresInTenMinutes,
+    expiresIn: expiresInTenDays,
   });
 }
 
