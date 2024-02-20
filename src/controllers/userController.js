@@ -102,7 +102,7 @@ userController.post('/register', async (req, res) => {
 userController.post('/login', async (req, res) => {
   try {
     checkRequestData(req.body);
-    const user = await registerUser(userDataFromRequest);
+    const user = await registerUser(req.body.email, req.body.password);
     const userData = user.userData;
     const accessToken = user.accessToken;
     const refreshToken = user.refreshToken;
