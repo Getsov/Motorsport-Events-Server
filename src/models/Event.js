@@ -106,6 +106,7 @@ const eventSchema = new Schema({
         'Хасково',
         'Шумен',
         'Ямбол',
+        'Чужбина'
       ],
     },
     address: { type: String, required: true, trim: true },
