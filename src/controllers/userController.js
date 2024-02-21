@@ -37,6 +37,7 @@ const { parseRefreshToken } = require('../utils/parseToken');
 const { error } = require('console');
 
 userController.post('/register', async (req, res) => {
+  console.log(req.body);
   try {
     const passwordTest = validPassword.test(req.body.password);
     checkRequestData(req.body);
@@ -70,7 +71,7 @@ userController.post('/register', async (req, res) => {
     };
 
     if (userDataFromRequest.role == 'regular') {
-      userData.isApproved = true;
+      userDataFromRequest.isApproved = true;
     }
 
     if (req.body.role == 'organizer') {
