@@ -37,7 +37,6 @@ const { parseRefreshToken } = require('../utils/parseToken');
 const { error } = require('console');
 
 userController.post('/register', async (req, res) => {
-  console.log(req.body);
   try {
     const passwordTest = validPassword.test(req.body.password);
     checkRequestData(req.body);
@@ -511,7 +510,9 @@ userController.post('/refreshToken', async (req, res) => {
       res.end();
       res.end();
     } catch (error) {
-      return res.status(401).json({ message: 'Invalid refresh token' });
+      return res.status(401).
+      json({ message: 'Invalid refresh token, please login again in RaceFanatic application!' });
+      
     }
   }
 });
