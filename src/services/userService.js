@@ -109,7 +109,7 @@ async function editUserEmail(idOfUserForEdit, requestBody, requesterId) {
 
   userForEdit.email = requestBody.email;
   const newRecord = await userForEdit.save();
-  return createToken(newRecord);
+  return createUserData(newRecord);
 }
 
 async function editUserPassword(idOfUserForEdit, requestBody, requesterId) {
