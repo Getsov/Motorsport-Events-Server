@@ -592,9 +592,15 @@ async function addEventToCreatedEvents(eventId, userId) {
 
 async function getUserForTokenGeneration(userId) {
   const user = await User.findById(userId);
-  const accessToken = createAccessToken(user);
-  const refreshToken = createRefreshToken(user);
-  return { accessToken, refreshToken };
+
+  if (user && !user.isDeleted && user.isApproved) {
+    const accessToken = createAccessToken(user);
+    const refreshToken = createRefreshToken(user);
+    return { accessToken, refreshToken };
+  }
+
+  throw new Error();
+  return;
 }
 
 function createUserData(user) {
