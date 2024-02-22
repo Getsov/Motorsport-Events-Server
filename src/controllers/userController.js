@@ -487,7 +487,6 @@ userController.post('/resetPassword', async (req, res) => {
 });
 
 userController.post('/refreshToken', async (req, res) => {
-  console.log("COOKIES:", req.cookies);
   const cookieRefreshToken = req.cookies['refreshToken'];
   if (!cookieRefreshToken) {
     return res
