@@ -85,6 +85,23 @@
 
 /**
  * @swagger
+ * /user/refreshToken:
+ *   post:
+ *     summary: Generating new access token with "refreshToken" cookie.
+ *     description: This endpoint is used for automatically generating a new access token 
+ *       using the "refreshToken" cookie received from the front end. 
+ *       It returns a newly created access token.
+ *     tags:
+ *       - User
+ *     responses:
+ *       200:
+ *         description: New generated access token.
+ *       400:
+ *         description: Unsuccessful request.
+ */
+
+/**
+ * @swagger
  * /user/editUserInfo/{id}:
  *   put:
  *     summary: Update user fields by ID.
