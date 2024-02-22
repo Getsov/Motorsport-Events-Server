@@ -2,10 +2,7 @@ const { parseAccesToken } = require('../utils/parseToken');
 module.exports = () => (req, res, next) => {
   const token = req.headers['x-authorization'];
   const path = req.path;
-  console.log("TOKEN:", token);
-  // May be path must be: '/user/refreshToken'
-  if (path != '/refreshToken') {
-    console.log('not equal');
+  if (path != '/user/refreshToken') {
     if (token) {
       try {
         const payload = parseAccesToken(token);
