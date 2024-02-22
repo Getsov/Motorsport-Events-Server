@@ -90,7 +90,9 @@
  *     summary: Generating new access token with "refreshToken" cookie.
  *     description: This endpoint is used for automatically generating a new access token 
  *       using the "refreshToken" cookie received from the front end. 
- *       It returns a newly created access token.
+ *       It returns a newly created access token. When using Swagger UI,
+ *       the newly generated access token must be provided in the 
+ *       `Authorize` section for proper authentication.
  *     tags:
  *       - User
  *     responses:
