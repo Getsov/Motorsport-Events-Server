@@ -487,6 +487,7 @@ userController.post('/resetPassword', async (req, res) => {
 });
 
 userController.post('/refreshToken', async (req, res) => {
+  // TODO: Be sure that you will remove the refreshToken Cookie from logout for FE! 
   const cookieRefreshToken = req.cookies['refreshToken'];
   if (!cookieRefreshToken) {
     return res
