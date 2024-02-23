@@ -34,7 +34,6 @@ const {
   getUpcomingEvents,
 } = require('../services/eventService');
 const { parseRefreshToken } = require('../utils/parseToken');
-const { error } = require('console');
 
 userController.post('/register', async (req, res) => {
   try {
@@ -486,7 +485,7 @@ userController.post('/resetPassword', async (req, res) => {
   }
 });
 
-userController.post('/refreshToken', async (req, res) => {
+userController.get('/refreshToken', async (req, res) => {
   // TODO: Be sure that you will remove the refreshToken Cookie from logout for FE! 
   const cookieRefreshToken = req.cookies['refreshToken'];
   if (!cookieRefreshToken) {
