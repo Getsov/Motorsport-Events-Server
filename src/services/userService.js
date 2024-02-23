@@ -27,6 +27,7 @@ async function registerUser(requestBody) {
 
 async function loginUser(email, password) {
   const user = await User.findOne({ email }).select('+hashedPassword');
+  
   if (!user) {
     throw new Error('Невалиден имейл или парола!');
   }
@@ -599,8 +600,7 @@ async function getUserForTokenGeneration(userId) {
     return { accessToken, refreshToken };
   }
 
-  throw new Error("User does not have the right for this request!");
-
+  throw new Error('User does not have the right for this request!');
 }
 
 function createUserData(user) {

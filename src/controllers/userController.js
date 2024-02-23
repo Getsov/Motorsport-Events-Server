@@ -485,8 +485,8 @@ userController.post('/resetPassword', async (req, res) => {
   }
 });
 
-userController.get('/refreshToken', async (req, res) => {
-  // TODO: Be sure that you will remove the refreshToken Cookie from logout for FE! 
+userController.get('/accessToken', async (req, res) => {
+  // TODO: Be sure that you will remove the refreshToken Cookie from logout for FE!
   const cookieRefreshToken = req.cookies['refreshToken'];
   if (!cookieRefreshToken) {
     return res
@@ -510,9 +510,12 @@ userController.get('/refreshToken', async (req, res) => {
       res.end();
       res.end();
     } catch (error) {
-      return res.status(401).
-      json({ message: 'Invalid refresh token, please login again in RaceFanatic application!' });
-      
+      return res
+        .status(401)
+        .json({
+          message:
+            'Invalid refresh token, please login again in RaceFanatic application!',
+        });
     }
   }
 });
