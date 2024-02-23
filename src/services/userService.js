@@ -599,8 +599,8 @@ async function getUserForTokenGeneration(userId) {
     return { accessToken, refreshToken };
   }
 
-  throw new Error();
-  return;
+  throw new Error("User does not have the right for this request!");
+
 }
 
 function createUserData(user) {
