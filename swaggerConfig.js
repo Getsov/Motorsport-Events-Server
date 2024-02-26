@@ -25,8 +25,8 @@ const options = {
     security: [{ apiKey: [] }],
     servers: [
       {
-        url: 'http://localhost:3030/',
-        //TODO: IN PROD "URL" MUST BE CHANGED
+        // url: 'http://localhost:3030/',
+        url: 'https://race-fanatic-server.onrender.com/',
       },
     ],
   },
