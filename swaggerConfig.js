@@ -26,7 +26,7 @@ const options = {
     servers: [
       {
         url: 'http://localhost:3030/',
-        description: 'URL for tesing in the local environment.',
+        description: 'URL for testing in the local environment.',
       },
       {
         url: 'https://race-fanatic-server.onrender.com/',
