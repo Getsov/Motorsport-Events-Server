@@ -8,7 +8,7 @@ const options = {
       version: '1.0.0',
       description:
         'This is a REST service, created for "Race Fanatic" APP.\
-      To properly work the server need installed mongoDB on local machine for database. Add the connection string in the `index.js` file.\
+      To properly work the server needs MongoDB installed on the local machine for database. Add the connection string in the `index.js` file.\
       To build the server, run the following commands in the terminal: `npm install`, `npm start`.\
       ',
     },
@@ -26,6 +26,11 @@ const options = {
     servers: [
       {
         url: 'http://localhost:3030/',
+        description: 'URL for testing in the local environment.',
+      },
+      {
+        url: 'https://race-fanatic-server.onrender.com/',
+        description: 'URL for production environment.',
       },
     ],
   },
