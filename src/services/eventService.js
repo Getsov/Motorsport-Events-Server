@@ -30,6 +30,11 @@ async function registerEvent(requestBody, requesterId) {
     );
   }
 
+  let dateOfCreation = new Date(Date.now());
+  let localTime = dateOfCreation.toLocaleTimeString().split(' ч.')[0].split(':');
+  dateOfCreation.setUTCHours(localTime[0], localTime[1], localTime[2], 999);
+  dateOfCreation.toISOString();
+
   const event = await Event.create({
     shortTitle: requestBody.shortTitle,
     longTitle: requestBody.longTitle,
@@ -38,7 +43,7 @@ async function registerEvent(requestBody, requesterId) {
     dates: requestBody.dates.sort(
       (a, b) => new Date(a.date) - new Date(b.date)
     ),
-    dateCreated: new Date(Date.now()), // TODO: Ask about specific time about the creation date?
+    dateCreated: dateOfCreation,
     imageUrl: requestBody.imageUrl,
     contacts: requestBody.contacts,
     categories: requestBody.categories,
@@ -78,7 +83,7 @@ async function getAllOrFilteredEventsWithFavorites(
 ) {
   const page = query.page || 1;
   const limit = query.limit || 0;
-  
+
   const criteria = {
     isDeleted: false,
     isApproved: true,
@@ -93,8 +98,8 @@ async function getAllOrFilteredEventsWithFavorites(
 
   if (ownerOptions?.requesterId) {
     const objectId = ObjectId.isValid(ownerOptions.requesterId)
-    ? new ObjectId(ownerOptions.requesterId)
-    : null;
+      ? new ObjectId(ownerOptions.requesterId)
+      : null;
     criteria.isApproved = ownerOptions.isApproved;
     criteria.creator = objectId;
   }
@@ -107,7 +112,7 @@ async function getAllOrFilteredEventsWithFavorites(
     criteria.isDeleted = query.isDeleted;
     criteria.isApproved = false;
   }
-  
+
   if (query?.sort) {
     sortCriteria = query.sort;
   }
@@ -291,7 +296,7 @@ async function approveDisapproveEvent(eventId, requesterId, requestBody) {
   if (!owner) {
     throw new Error('Собственикът на това събитие не е намерен!');
   }
-  
+
   if (!requester) {
     throw new Error('Потребител с тези данни не е намерен!');
   }
@@ -411,7 +416,7 @@ async function getUpcomingEvents(query, requesterId) {
   };
 
   query.sort = 'upcomingEvents';
-  
+
   const events = await getAllOrFilteredEventsWithFavorites(query, {
     isApproved: true,
     requesterId,
@@ -458,9 +463,9 @@ async function getPastEvents(query, requesterId) {
 async function getAllDeletedEvents(query, requesterId) {
   const requester = await User.findById(requesterId);
   if (!requester) {
-    throw new Error('Няма потребител с такова ID') 
+    throw new Error('Няма потребител с такова ID')
   }
-  
+
   if (requester.isDeleted) {
     throw new Error('Вашият профил е изтрит!');
   }
