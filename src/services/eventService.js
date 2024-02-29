@@ -38,6 +38,7 @@ async function registerEvent(requestBody, requesterId) {
     dates: requestBody.dates.sort(
       (a, b) => new Date(a.date) - new Date(b.date)
     ),
+    dateCreated: new Date(Date.now()), // TODO: Ask about specific time about the creation date?
     imageUrl: requestBody.imageUrl,
     contacts: requestBody.contacts,
     categories: requestBody.categories,
