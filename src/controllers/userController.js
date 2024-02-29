@@ -508,14 +508,11 @@ userController.get('/accessToken', async (req, res) => {
         // .header('Authorization', accessToken)
         .send({ accessToken });
       res.end();
-      res.end();
     } catch (error) {
-      return res
-        .status(401)
-        .json({
-          message:
-            'Invalid refresh token, please login again in RaceFanatic application!',
-        });
+      return res.status(401).json({
+        message:
+          'Invalid refresh token, please login again in RaceFanatic application!',
+      });
     }
   }
 });
