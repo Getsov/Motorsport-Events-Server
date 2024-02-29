@@ -65,13 +65,7 @@ const eventSchema = new Schema({
   },
   dateCreated: {
     type: Date,
-    required: true,
-    validate: {
-      validator: function (date) {
-        return date >= new Date(new Date().setHours(0, 0, 0, 0));
-      },
-      message: 'Start date cannot be in the past!',
-    },
+    required: true
   },
   imageUrl: {
     type: String,
