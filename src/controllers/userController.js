@@ -34,6 +34,7 @@ const {
   getUpcomingEvents,
 } = require('../services/eventService');
 const { parseRefreshToken } = require('../utils/parseToken');
+const { generateDateWithCurrentTime } = require('../utils/generateDateWithCurrentTime');
 
 userController.post('/register', async (req, res) => {
   try {
@@ -66,6 +67,7 @@ userController.post('/register', async (req, res) => {
       region: req.body.region ? req.body.region : '',
       phone: req.body.phone ? req.body.phone : '',
       hashedPassword: await bcrypt.hash(req.body.password, 10),
+      dateCreated: generateDateWithCurrentTime(),
     };
 
     if (userDataFromRequest.role == 'regular') {
