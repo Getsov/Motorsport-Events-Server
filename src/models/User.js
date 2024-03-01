@@ -87,6 +87,8 @@ const userSchema = new Schema({
       message: 'Invalid phone number!',
     },
   },
+  dateCreated: { type: Date, required: true },
+  lastEditDate: { type: Date },
   createdEvents: [{ type: ObjectId, ref: 'Event' }],
   likedEvents: [{ type: ObjectId, ref: 'Event' }],
   hashedPassword: { type: String, required: true, select: false },
