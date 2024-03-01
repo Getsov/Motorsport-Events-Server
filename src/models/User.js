@@ -5,7 +5,6 @@ const {
 } = require('mongoose');
 
 const { emailRegex, phoneRegex } = require('../shared/sharedRegex');
-const { generateDateWithCurrentTime } = require('../utils/generateDateWithCurrentTime');
 
 const userSchema = new Schema({
   email: {
@@ -94,9 +93,7 @@ const userSchema = new Schema({
   isDeleted: { type: Boolean, default: false },
   isApproved: { type: Boolean, default: false },
 }, {
-  timestamps: {
-      currentTime: () => generateDateWithCurrentTime()
-  }
+  timestamps: true
 });
 
 userSchema.index(
