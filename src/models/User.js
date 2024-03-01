@@ -5,6 +5,7 @@ const {
 } = require('mongoose');
 
 const { emailRegex, phoneRegex } = require('../shared/sharedRegex');
+const { generateDateWithCurrentTime } = require('../utils/generateDateWithCurrentTime');
 
 const userSchema = new Schema({
   email: {
@@ -92,6 +93,10 @@ const userSchema = new Schema({
   hashedPassword: { type: String, required: true, select: false },
   isDeleted: { type: Boolean, default: false },
   isApproved: { type: Boolean, default: false },
+}, {
+  timestamps: {
+      currentTime: () => generateDateWithCurrentTime()
+  }
 });
 
 userSchema.index(
