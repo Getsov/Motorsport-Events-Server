@@ -30,9 +30,7 @@ async function registerEvent(requestBody, requesterId) {
       'Само потребители с роля "Организатор" или "Администратор" могат да регистрират събитие!'
     );
   }
-
   const dateOfCreation = generateDateWithCurrentTime();
-  
   const event = await Event.create({
     shortTitle: requestBody.shortTitle,
     longTitle: requestBody.longTitle,
@@ -232,6 +230,8 @@ async function updateEvent(requestBody, existingEvent, reqRequester) {
       existingEvent[key] = requestBody[key];
     }
   }
+
+  existingEvent.lastEditDate = generateDateWithCurrentTime();
   existingEvent.isApproved = false;
   return await existingEvent.save();
 }
@@ -282,7 +282,8 @@ async function deleteRestoreEvent(eventId, requesterId, requestBody) {
       'Моля подайте правилни данни в тялото на заявката: "isDeleted"'
     );
   }
-
+  
+  event.lastEditDate = generateDateWithCurrentTime();
   return await event.save({ validateBeforeSave: false });
 }
 
@@ -337,6 +338,8 @@ async function approveDisapproveEvent(eventId, requesterId, requestBody) {
     requestBody.isApproved,
     event.shortTitle
   );
+
+  event.lastEditDate = generateDateWithCurrentTime();
   return await event.save({ validateBeforeSave: false });
 }
 
