@@ -5,7 +5,6 @@ const {
 } = require('mongoose');
 
 const { phoneRegex, validTime, emailRegex } = require('../shared/sharedRegex');
-const { generateDateWithCurrentTime } = require('../utils/generateDateWithCurrentTime');
 
 const eventSchema = new Schema({
   shortTitle: {
