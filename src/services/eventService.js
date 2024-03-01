@@ -2,6 +2,7 @@ const Event = require('../models/Event');
 const User = require('../models/User');
 const { categories } = require('../shared/categories');
 const { regions } = require('../shared/regions');
+const { generateDateWithCurrentTime } = require('../utils/generateDateWithCurrentTime');
 const { limitModels } = require('../utils/limitModels');
 const { sendEventApprovalStatusEmail } = require('./emailService');
 const mongoose = require('mongoose');
@@ -30,11 +31,8 @@ async function registerEvent(requestBody, requesterId) {
     );
   }
 
-  let dateOfCreation = new Date(Date.now());
-  let localTime = dateOfCreation.toLocaleTimeString().split(' ч.')[0].split(':');
-  dateOfCreation.setUTCHours(localTime[0], localTime[1], localTime[2], 999);
-  dateOfCreation.toISOString();
-
+  const dateOfCreation = generateDateWithCurrentTime();
+  
   const event = await Event.create({
     shortTitle: requestBody.shortTitle,
     longTitle: requestBody.longTitle,
