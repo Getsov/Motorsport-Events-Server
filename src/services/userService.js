@@ -6,6 +6,7 @@ const { checkAuthorizedRequests } = require('../utils/securityCheck');
 const { checkAdmin } = require('../utils/adminsCheck');
 const { getAllOrFilteredEventsWithFavorites } = require('./eventService');
 const { sendUserApprovalEmail } = require('./emailService');
+const { generateDateWithCurrentTime } = require('../utils/generateDateWithCurrentTime');
 
 async function registerUser(requestBody) {
   const email = requestBody.email;
@@ -93,6 +94,7 @@ async function editUserInfo(idOfUserForEdit, requestBody, requesterId) {
     userForEdit[key] = requestBody[key];
   }
 
+  userForEdit.lastEditDate = generateDateWithCurrentTime();
   const newRecord = await userForEdit.save();
   return createUserData(newRecord);
 }
@@ -108,6 +110,7 @@ async function editUserEmail(idOfUserForEdit, requestBody, requesterId) {
     throw new Error('Полето за имейл не може да бъде празно');
   }
 
+  userForEdit.lastEditDate = generateDateWithCurrentTime();
   userForEdit.email = requestBody.email;
   const newRecord = await userForEdit.save();
   return createUserData(newRecord);
@@ -132,6 +135,7 @@ async function editUserPassword(idOfUserForEdit, requestBody, requesterId) {
     }
   }
 
+  userForEdit.lastEditDate = generateDateWithCurrentTime();
   userForEdit.hashedPassword = await bcrypt.hash(requestBody.newPassword, 10);
   const newRecord = await userForEdit.save();
   return createUserData(newRecord);
@@ -168,7 +172,7 @@ async function editUserRole(idOfUserForEdit, requestBody, requesterId) {
     }
   }
   userForEdit.role = requestBody.role;
-
+  userForEdit.lastEditDate = generateDateWithCurrentTime();
   const newRecord = await userForEdit.save();
   return createUserData(newRecord);
 }
@@ -206,6 +210,7 @@ async function deleteRestoreSingleUser(
     ? ((userForEdit.isDeleted = true), (userForEdit.isApproved = false))
     : (userForEdit.isDeleted = false);
 
+  userForEdit.lastEditDate = generateDateWithCurrentTime();
   const newRecord = await userForEdit.save();
   return createUserData(newRecord);
 }
@@ -248,6 +253,7 @@ async function deleteRestoreMultipleUsers(requestBody, requesterId) {
       requestBody.isDeleted
         ? ((userForEdit.isDeleted = true), (userForEdit.isApproved = false))
         : (userForEdit.isDeleted = false);
+      userForEdit.lastEditDate = generateDateWithCurrentTime();
       const newRecord = await userForEdit.save();
       updatedUsersList.push(newRecord);
     })
@@ -286,6 +292,7 @@ async function approveDisapproveSingleUser(userId, requesterId, requestBody) {
     ? (userForEdit.isApproved = true)
     : (userForEdit.isApproved = false);
 
+  userForEdit.lastEditDate = generateDateWithCurrentTime();
   const newRecord = await userForEdit.save();
   let updatedUsersList = [newRecord];
   sendUserApprovalEmail(updatedUsersList, requestBody?.isApproved);
@@ -333,6 +340,7 @@ async function approveDisapproveMultipleUsers(requestBody, requesterId) {
       requestBody.isApproved
         ? (userForEdit.isApproved = true)
         : (userForEdit.isApproved = false);
+      userForEdit.lastEditDate = generateDateWithCurrentTime();
       const newRecord = await userForEdit.save();
       updatedUsersList.push(newRecord);
     })
@@ -617,6 +625,8 @@ function createUserData(user) {
     isApproved: user.isApproved,
     likedEvents: user.likedEvents,
     createdEvents: user.createdEvents,
+    dateCreated: user.dateCreated,
+    lastEditDate: user?.lastEditDate
   };
 }
 
