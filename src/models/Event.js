@@ -67,6 +67,9 @@ const eventSchema = new Schema({
     type: Date,
     required: true
   },
+  lastEditDate: {
+    type: Date,
+  },
   imageUrl: {
     type: String,
     trim: true,
