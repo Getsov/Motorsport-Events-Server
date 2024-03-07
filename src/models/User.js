@@ -92,6 +92,8 @@ const userSchema = new Schema({
   hashedPassword: { type: String, required: true, select: false },
   isDeleted: { type: Boolean, default: false },
   isApproved: { type: Boolean, default: false },
+}, {
+  timestamps: true
 });
 
 userSchema.index(
